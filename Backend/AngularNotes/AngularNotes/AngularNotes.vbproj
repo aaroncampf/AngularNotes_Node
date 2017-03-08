@@ -220,6 +220,7 @@
     <Compile Include="Areas\HelpPage\SampleGeneration\TextSample.vb" />
     <Compile Include="Areas\HelpPage\XmlDocumentationProvider.vb" />
     <Compile Include="Controllers\CompanyController.vb" />
+    <Compile Include="Controllers\ContactController.vb" />
     <Compile Include="Database\Company.vb" />
     <Compile Include="Database\Contact.vb" />
     <Compile Include="Database\Database.vb" />

@@ -17,8 +17,6 @@ Public Class CompanyController
 	End Sub
 
 
-
-
 	' GET api/<controller>
 	''' <summary>
 	''' Test
@@ -35,12 +33,22 @@ Public Class CompanyController
 
 	' POST api/<controller>
 	Public Sub PostValue(<FromBody()> ByVal value As Company)
-
+		db.Companies.Add(value)
+		db.SaveChanges()
 	End Sub
 
 	' PUT api/<controller>/5
 	Public Sub PutValue(ByVal id As Integer, <FromBody()> ByVal value As Company)
+		Dim Record = db.Companies.Find(id)
+		Record.ID = value.ID
+		Record.Name = value.Name
+		Record.Address = value.Address
+		Record.City = value.City
+		Record.Phone = value.Phone
+		Record.Zip = value.Zip
+		Record.Misc = value.Misc
 
+		db.SaveChanges()
 	End Sub
 
 	' DELETE api/<controller>/5
