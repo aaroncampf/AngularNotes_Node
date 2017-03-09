@@ -17,17 +17,33 @@ Public Class ContactController
 	End Function
 
 	' GET api/<controller>/5
+	''' <summary>
+	''' Get a contact
+	''' </summary>
+	''' <param name="id">The contact's id number</param>
+	''' <returns></returns>
 	Public Function GetValue(ByVal id As Integer) As Contact
 		Return db.Contacts.Find(id)
 	End Function
 
 	' POST api/<controller>
-	Public Sub PostValue(<FromBody()> ByVal value As Contact)
-		db.Contacts.Add(value)
+	''' <summary>
+	''' Post a contact
+	''' </summary>
+	''' <param name="CompanyID">The ID of the contact's company</param>
+	''' <param name="value"></param>
+	Public Sub PostValue(CompanyID As Integer, <FromBody()> ByVal value As Contact)
+		db.Companies.Find(CompanyID).Contacts.Add(value)
+		'db.Contacts.Add(value)
 		db.SaveChanges()
 	End Sub
 
 	' PUT api/<controller>/5
+	''' <summary>
+	'''	Put a contact
+	''' </summary>
+	''' <param name="id">The contact's ID</param>
+	''' <param name="value">The updated contact</param>
 	Public Sub PutValue(ByVal id As Integer, <FromBody()> ByVal value As Contact)
 		Dim Record = db.Contacts.Find(id)
 		Record.ID = value.ID

@@ -1,7 +1,7 @@
 ﻿Imports System.Net
 Imports System.Web.Http
 
-Public Class CompanyController
+Public Class Company1Controller
 	Inherits ApiController
 
 	Dim db As New Database()
@@ -18,8 +18,9 @@ Public Class CompanyController
 
 
 	' GET api/<controller>
+
 	''' <summary>
-	''' Test
+	''' 
 	''' </summary>
 	''' <returns></returns>
 	Public Function GetValues() As IEnumerable(Of Company)
@@ -27,17 +28,31 @@ Public Class CompanyController
 	End Function
 
 	' GET api/<controller>/5
+	''' <summary>
+	''' 
+	''' </summary>
+	''' <param name="id"></param>
+	''' <returns></returns>
 	Public Function GetValue(ByVal id As Integer) As Company
 		Return db.Companies.Find(id)
 	End Function
 
 	' POST api/<controller>
+	''' <summary>
+	''' 
+	''' </summary>
+	''' <param name="value"></param>
 	Public Sub PostValue(<FromBody()> ByVal value As Company)
 		db.Companies.Add(value)
 		db.SaveChanges()
 	End Sub
 
 	' PUT api/<controller>/5
+	''' <summary>
+	''' 
+	''' </summary>
+	''' <param name="id"></param>
+	''' <param name="value"></param>
 	Public Sub PutValue(ByVal id As Integer, <FromBody()> ByVal value As Company)
 		Dim Record = db.Companies.Find(id)
 		Record.ID = value.ID
@@ -52,6 +67,10 @@ Public Class CompanyController
 	End Sub
 
 	' DELETE api/<controller>/5
+	''' <summary>
+	''' 
+	''' </summary>
+	''' <param name="id"></param>
 	Public Sub DeleteValue(ByVal id As Integer)
 		db.Companies.Remove(db.Companies.Find(id))
 		db.SaveChanges()

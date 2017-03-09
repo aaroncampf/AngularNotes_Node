@@ -19,7 +19,9 @@ Partial Public Class Company
     Public Property Zip As String
     Public Property Misc As String
 
-    Public Overridable Property Contacts As ICollection(Of Contact) = New HashSet(Of Contact)
-    Public Overridable Property Quotes As ICollection(Of Quote) = New HashSet(Of Quote)
+	<Newtonsoft.Json.JsonIgnore>
+	Public Overridable Property Contacts As ICollection(Of Contact) = New HashSet(Of Contact)
+	<Newtonsoft.Json.JsonIgnore>
+	Public Overridable Property Quotes As ICollection(Of Quote) = New HashSet(Of Quote)
 
 End Class
