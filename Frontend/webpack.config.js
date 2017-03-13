@@ -6,7 +6,7 @@ var webpackMerge = require('webpack-merge');
 var webpackConfig = {
   entry: './src/index.ts',
   output: {
-    publicPath: './dist',
+    //publicPath: './dist',
     path: path.resolve(__dirname, './dist'),
   },
 
