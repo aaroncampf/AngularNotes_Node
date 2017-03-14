@@ -1,3 +1,5 @@
+import {Contact} from "./contact.model";
+import {Quote} from "./quote.model";
 export interface Company {
 	ID: number;
 	Name: string;
@@ -7,4 +9,13 @@ export interface Company {
 	Phone: string;
 	Misc: string;
 
+	/**
+	 * The contacts inside of the company
+	 */
+	Contacts: Contact[];
+
+	/**
+	 * The quotes written for this company
+	 */
+	Quotes: Quote[];
 }
