@@ -2,6 +2,7 @@
 Imports System.Collections.Generic
 Imports System.Linq
 Imports System.Web.Http
+Imports System.Web.Http.Cors
 
 Public Module WebApiConfig
 	Public Sub Register(ByVal config As HttpConfiguration)
@@ -15,5 +16,10 @@ Public Module WebApiConfig
 			routeTemplate:="api/{controller}/{id}",
 			defaults:=New With {.id = RouteParameter.Optional}
 		)
+
+
+		'config.EnableCors()
+		Dim Cors = New EnableCorsAttribute("*", "*", "*")
+		config.EnableCors(Cors)
 	End Sub
 End Module
