@@ -1,22 +1,22 @@
 home-component {
-  .navbar ul{
-    display: flex;
+  .navbar > ul{
     padding-left: 15px;
   }
 
-  .search-item {
-    flex-grow: 2;
-  }
-
   .nav.nav-tabs {
-    margin-top: 65px;
+    display: flex;
+    margin-top: 112px;
+    & li {
+      flex-grow: 1;
+      text-align: center;
+    }
   }
 
   .side-menu {
     width: 0px;
     position: fixed;
     left: 0;
-    top: 65px;
+    top: 112px;
     height: 100%;
     overflow-x: hidden;
     overflow-y: scroll;
@@ -28,8 +28,8 @@ home-component {
   }
 
   .side-menu.active {
-    width: 450px;
-    padding: 10px 10px 20px 15px;
+    width: 350px;
+    padding: 10px 10px 125px 15px;
     -webkit-transition: all .5s ease;
     transition: all .5s ease;
     & content-area {

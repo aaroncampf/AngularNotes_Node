@@ -9,16 +9,34 @@ import {CompanyService} from '../services/company.service';
 	<div class="container">
 	 	<div class="navbar navbar-default navbar-fixed-top" role="navigation">
 			<ul class="col-xs-12">
-				<li class="col-xs-2" >
-				 	<a (click)="sideMenuClick()" [class.active]="sideMenu">Menu</a>
-				 </li>
-				<li class="col-xs-6 search-item">
-					<input type="search" />
-				</li>
-				<li class="col-xs-2">
-					<a>Options</a>
+				<li class="pull-left">
+				 	<button (click)="sideMenuClick()" [class.active]="sideMenu" class="btn btn-default" type="button">Menu</button>
+			 	</li>
+				<li class="pull-right">
+					<div class="dropdown">
+						<button class="btn btn-default dropdown-toggle" type="button" id="dropdownMenu1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">Options<span class="caret"></span></button>
+						<ul class="dropdown-menu" aria-labelledby="dropdownMenu1">
+							<div *ngIf="tab===CONTACTS">
+								<li>
+									<a href="#">Download</a>
+								</li>
+							</div>
+							<div *ngIf="tab===QUOTES">
+								<li>
+									<a href="#">Add</a>
+								</li>
+								<li>
+									<a href="#">Download</a>
+								</li>
+								<li>
+								<a href="#">Remove</a>
+								</li>
+							</div>
+						</ul>
+					</div>
 				</li>
 			</ul>
+			<input  type="search" placeholder="search" />
 		</div>
 		<content-area (click)="sideMenu = false">
 			<ul class="nav nav-tabs nav-tabs-justified nav-pills">
@@ -40,19 +58,20 @@ import {CompanyService} from '../services/company.service';
 		</content-area>
 		<div [class.active]="sideMenu" class="side-menu">
 			<div class="row">
-			Companies:
+				<div class="col-xs-12">Companies:</div>
+				<div class="col-xs-12">
 					<select class="form-control">
 						<option>Company 1</option>
 						<option>Company 1</option>
-						<option>Company 1</option>
+						<option>Add Company...</option>
 					</select>
-			
+				</div>
 			</div> 
-				<input-component label="Name"></input-component>
-				<input-component label="Address"></input-component>
-				<input-component label="City"></input-component>
-				<input-component label="ZipCode"></input-component>
-				<input-component label="Phone"></input-component>
+			<input-component label="Name"></input-component>
+			<input-component label="Address"></input-component>
+			<input-component label="City"></input-component>
+			<input-component label="ZipCode"></input-component>
+			<input-component label="Phone"></input-component>
 			<div class="row">
 				Misc: <textarea></textarea>
 			</div>
