@@ -8,6 +8,7 @@ import {HomeComponent} from './components/home.component';
 import {ContactsComponent} from './components/contacts.component';
 import {QuotesComponent} from './components/quotes.component';
 import {InputComponent} from './components/input.component';
+import {CompanyService} from './services/company.service';
 
 const MAIN_ROUTES: Routes = [
 	{path: '', children: [
@@ -31,6 +32,7 @@ const MAIN_ROUTES: Routes = [
 		RouterModule.forRoot(MAIN_ROUTES)
 	],
 	providers: [
+		CompanyService
 	],
 	schemas: [
 		CUSTOM_ELEMENTS_SCHEMA

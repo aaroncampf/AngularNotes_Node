@@ -1,8 +1,7 @@
-import {Component, ViewContainerRef, OnInit} from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 import '../styles/main.scss';
 import {ActivatedRoute} from '@angular/router';
-import {ContactsComponent} from '../components/contacts.component';
-import {QuotesComponent} from '../components/quotes.component';
+import {CompanyService} from '../services/company.service';
 
 @Component({
 	selector: 'home-component',
@@ -10,15 +9,19 @@ import {QuotesComponent} from '../components/quotes.component';
 	<div class="container">
 	 	<div class="navbar navbar-default navbar-fixed-top" role="navigation">
 			<ul class="col-xs-12">
-				<li class="col-xs-2" (click)="sideMenuClick()">Menu</li>
-				<li class="col-xs-6">
+				<li class="col-xs-2" >
+				 	<a (click)="sideMenuClick()" [class.active]="sideMenu">Menu</a>
+				 </li>
+				<li class="col-xs-6 search-item">
 					<input type="search" />
 				</li>
-				<li class="col-xs-2">Options</li>
+				<li class="col-xs-2">
+					<a>Options</a>
+				</li>
 			</ul>
 		</div>
-		<content-area>
-			<ul class="nav nav-tabs nav-pills">
+		<content-area (click)="sideMenu = false">
+			<ul class="nav nav-tabs nav-tabs-justified nav-pills">
 				 <li ngClass="active:tab === CONTACTS">
 					 <a class="tab" [routerLink]="['/contacts']">
 						<tab-heading>Contacts</tab-heading>
@@ -51,7 +54,7 @@ import {QuotesComponent} from '../components/quotes.component';
 				<input-component label="ZipCode"></input-component>
 				<input-component label="Phone"></input-component>
 			<div class="row">
-				Misc: <textarea rows="5" col="50"></textarea>
+				Misc: <textarea></textarea>
 			</div>
 			<div class="row">
 				 <table class="table table-bordered table-hover">
@@ -83,18 +86,18 @@ export class HomeComponent implements OnInit {
 	public tab: string;
 	public sideMenu: boolean = false;
 
-	constructor(private route: ActivatedRoute) {
+	constructor(private route: ActivatedRoute, private companies:CompanyService) {
 	}
 
 	public ngOnInit(): void {
 		this.route.params.subscribe(params => {
 			this.tab = params['tab'];
 		})
+		this.companies.getCompanies().subscribe(res => console.log('res', res));
 	}
 
 	public sideMenuClick(): void {
 		this.sideMenu = !this.sideMenu;
-		console.log(this.sideMenu);
 	}
 
 

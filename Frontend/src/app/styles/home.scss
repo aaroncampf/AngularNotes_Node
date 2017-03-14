@@ -1,27 +1,39 @@
 home-component {
+  .navbar ul{
+    display: flex;
+    padding-left: 15px;
+  }
+
+  .search-item {
+    flex-grow: 2;
+  }
+
   .nav.nav-tabs {
     margin-top: 65px;
   }
+
   .side-menu {
     width: 0px;
     position: fixed;
     left: 0;
     top: 65px;
-    overflow: hidden;
+    height: 100%;
+    overflow-x: hidden;
+    overflow-y: scroll;
     margin: 0;
-    padding: 10px 0 10px 0;
+    padding: 10px 0px 20px 0;
     -webkit-transition: all .5s ease;
     transition: all .5s ease;
     background: lightgrey;
   }
+
   .side-menu.active {
     width: 450px;
-    padding: 10px 10px 10px 15px;
+    padding: 10px 10px 20px 15px;
     -webkit-transition: all .5s ease;
     transition: all .5s ease;
     & content-area {
       padding-left: 450px;
     }
   }
-
 }
