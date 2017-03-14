@@ -51,7 +51,7 @@ import {QuotesComponent} from '../components/quotes.component';
 				<input-component label="ZipCode"></input-component>
 				<input-component label="Phone"></input-component>
 			<div class="row">
-				Misc: <text-area></text-area>
+				Misc: <textarea rows="5" col="50"></textarea>
 			</div>
 			<div class="row">
 				 <table class="table table-bordered table-hover">

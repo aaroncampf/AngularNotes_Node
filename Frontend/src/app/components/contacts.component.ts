@@ -16,19 +16,19 @@ import {Component} from '@angular/core';
 					<th>Date</th>
 					<th>Title</th>
 				</tr>
+				<tr>
+					<td>3/13/2017</td>
+					<td>Title 1</td>
+				</tr>
+				<tr>
+					<td>3/13/2017</td>
+					<td>Title 1</td>
+				</tr>
+				<tr>
+					<td>3/13/2017</td>
+					<td>Title 1</td>
+				</tr>
 			</table>
-				<tr>
-					<td>3/13/2017</td>
-					<td>Title 1</td>
-				</tr>
-				<tr>
-					<td>3/13/2017</td>
-					<td>Title 1</td>
-				</tr>
-				<tr>
-					<td>3/13/2017</td>
-					<td>Title 1</td>
-				</tr>
 		</div>
 	</div>
 	<div class="row">
@@ -36,7 +36,7 @@ import {Component} from '@angular/core';
 		<div class="row">
 			<input-component label="Title"></input-component>
 		</div>
-		<text-area placeholder="Text"></text-area>
+		<textarea class="form-control"></textarea>
 	</div>
 `
 
