@@ -18,8 +18,8 @@ Public Module WebApiConfig
 		)
 
 
-		config.EnableCors()
-		'Dim Cors = New EnableCorsAttribute("www.example.com", "*", "*")
-		'config.EnableCors(Cors)
+		'config.EnableCors()
+		Dim Cors = New EnableCorsAttribute("*", "*", "*")
+		config.EnableCors(Cors)
 	End Sub
 End Module
