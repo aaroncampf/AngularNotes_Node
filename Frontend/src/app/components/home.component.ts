@@ -89,7 +89,6 @@ export class HomeComponent implements OnInit {
 	public sideMenu: boolean = true;
 
 	constructor(private route: ActivatedRoute) {
-
 	}
 
 	public ngOnInit(): void {
