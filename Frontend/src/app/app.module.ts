@@ -4,16 +4,24 @@ import {BrowserModule} from '@angular/platform-browser';
 import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 import {HttpModule} from '@angular/http';
 import {MainComponent} from './main/main.component';
+import {HomeComponent} from './components/home.component';
+import {ContactsComponent} from './components/contacts.component';
+import {QuotesComponent} from './components/quotes.component';
+import {InputComponent} from './components/input.component';
 
 const MAIN_ROUTES: Routes = [
 	{path: '', children: [
-		{path:':tab', component: MainComponent},
-		{path:'', redirectTo: '/contacts.component.ts'}
+		{path:':tab', component: HomeComponent },
+		{path:'', redirectTo: 'contacts', pathMatch: 'full'}
 	]}];
 
 @NgModule({
 	declarations: [
 		MainComponent,
+		HomeComponent,
+		ContactsComponent,
+		QuotesComponent,
+		InputComponent
 	],
 	imports: [
 		BrowserModule,
