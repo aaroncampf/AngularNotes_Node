@@ -1,7 +1,8 @@
-import {Component, OnInit} from '@angular/core';
+import {Component, OnInit, OnChanges} from '@angular/core';
 import '../styles/main.scss';
 import {ActivatedRoute} from '@angular/router';
 import {CompanyService} from '../services/company.service';
+import {Company} from '../models/company.model';
 
 @Component({
 	selector: 'home-component',
@@ -57,45 +58,45 @@ import {CompanyService} from '../services/company.service';
 			</div>
 		</content-area>
 		<div [class.active]="sideMenu" class="side-menu">
-			<div class="row">
-				<div class="col-xs-12">Companies:</div>
-				<div class="col-xs-12">
-					<select class="form-control">
-						<option>Company 1</option>
-						<option>Company 1</option>
-						<option>Add Company...</option>
-					</select>
+			<!--<form>-->
+				<div class="row">
+					<div class="col-xs-12">Companies:</div>
+					<div class="col-xs-12">
+						<select [(ngModel)]="selectedCompany" class="form-control">
+							<option *ngFor="let company of companies" [ngValue]="company">{{company.Name}}</option>
+						</select>
+					</div>
+				</div> 
+				<input-component label="name" [(model)]="selectedCompany"></input-component>
+				<input-component label="Address"></input-component>
+				<input-component label="City"></input-component>
+				<input-component label="ZipCode"></input-component>
+				<input-component label="Phone"></input-component>
+				<div class="row">
+					Misc: <textarea></textarea>
 				</div>
-			</div> 
-			<input-component label="Name"></input-component>
-			<input-component label="Address"></input-component>
-			<input-component label="City"></input-component>
-			<input-component label="ZipCode"></input-component>
-			<input-component label="Phone"></input-component>
-			<div class="row">
-				Misc: <textarea></textarea>
-			</div>
-			<div class="row">
-				 <table class="table table-bordered table-hover">
-					<tr>
-						<th>Contact</th>
-					</tr>	
-					<tr>
-						<td>Contact 1</td> 	
-					</tr>
-					<tr>
-						<td>Contact 2</td> 	
-					</tr>	
-					<tr>
-						<td>Contact 3</td> 	
-					</tr>	
-				</table>
-			</div>
+				<div class="row">
+					 <table class="table table-bordered table-hover">
+						<tr>
+							<th>Contact</th>
+						</tr>	
+						<tr>
+							<td>Contact 1</td> 	
+						</tr>
+						<tr>
+							<td>Contact 2</td> 	
+						</tr>	
+						<tr>
+							<td>Contact 3</td> 	
+						</tr>	
+					</table>
+				</div>
+			<!--</form>-->
 		</div>
 	</div>
 `
 })
-export class HomeComponent implements OnInit {
+export class HomeComponent implements OnInit, OnChanges {
 	public get QUOTES(): string {
 		return 'quotes';
 	}
@@ -104,20 +105,27 @@ export class HomeComponent implements OnInit {
 	}
 	public tab: string;
 	public sideMenu: boolean = false;
+	public companies: Company[];
+	public selectedCompany: Company;
 
-	constructor(private route: ActivatedRoute, private companies:CompanyService) {
+	constructor(private route: ActivatedRoute, private companyService:CompanyService) {
 	}
 
 	public ngOnInit(): void {
 		this.route.params.subscribe(params => {
 			this.tab = params['tab'];
-		})
-		this.companies.getCompanies().subscribe(res => console.log('res', res));
+		});
+		this.companyService.getCompanies().subscribe(response => {
+			console.log(response);
+			this.companies = response;
+		});
+	}
+
+	public ngOnChanges(): void {
+		console.log('selected', this.selectedCompany);
 	}
 
 	public sideMenuClick(): void {
 		this.sideMenu = !this.sideMenu;
 	}
-
-
 }

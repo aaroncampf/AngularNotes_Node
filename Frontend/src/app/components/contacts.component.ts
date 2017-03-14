@@ -1,4 +1,5 @@
-import {Component} from '@angular/core';
+import {Component, OnInit} from '@angular/core';
+import {CompanyService} from '../services/company.service';
 
 @Component({
 	selector: 'contacts-component',
@@ -42,4 +43,15 @@ import {Component} from '@angular/core';
 
 
 })
-	export class ContactsComponent {}
+
+export class ContactsComponent implements OnInit{
+	public CompaniesData: any[];
+	constructor(private companiesService: CompanyService) {}
+
+	public ngOnInit(): void {
+		this.companiesService.getCompanies()
+			.subscribe(response => this.CompaniesData = response)
+	}
+
+
+}
