@@ -7,7 +7,8 @@ import {MainComponent} from './main/main.component';
 
 const MAIN_ROUTES: Routes = [
 	{path: '', children: [
-		{path:'', redirectTo: 'notes', pathMatch: 'full'}
+		{path:':tab', component: MainComponent},
+		{path:'', redirectTo: '/contacts.component.ts'}
 	]}];
 
 @NgModule({

@@ -84363,16 +84363,16 @@ __webpack_require__(691);
 var MainComponent = (function () {
     function MainComponent() {
     }
-    Object.defineProperty(MainComponent.prototype, "ABOUT", {
+    Object.defineProperty(MainComponent.prototype, "QUOTES", {
         get: function () {
-            return 'about';
+            return 'quotes';
         },
         enumerable: true,
         configurable: true
     });
-    Object.defineProperty(MainComponent.prototype, "RESUME", {
+    Object.defineProperty(MainComponent.prototype, "CONTACTS", {
         get: function () {
-            return 'resume';
+            return 'contacts.component.ts';
         },
         enumerable: true,
         configurable: true
@@ -84382,7 +84382,7 @@ var MainComponent = (function () {
 MainComponent = __decorate([
     core_1.Component({
         selector: 'main',
-        template: "\n\t<div class=\"container\">\n\t \t<div class=\"navbar navbar-default navbar-fixed-bottom\" role=\"navigation\">\n\t\t\t<ul class=\"nav nav-tabs nav-justified\">\n\t\t\t\t <li>\n\t\t\t\t\t <a role=\"link\" class=\"btn\" [routerLink]=\"[RESUME]\">R\u00E9sum\u00E9</a>\n\t\t\t\t </li>\n\t\t\t\t <li>\n\t\t\t\t\t <a role=\"link\" class=\"btn\" [routerLink]=\"[ABOUT]\">About</a>\n\t\t\t\t </li>\n\t\t\t</ul>\n\t\t</div>\n\t\t<router-outlet></router-outlet>\n\t</div>\n"
+        template: "\n\t<div class=\"container\">\n\t \t<div class=\"navbar navbar-default navbar-fixed-top\" role=\"navigation\">\n\t\t\t<ul class=\"nav nav-tabs nav-justified\">\n\t\t\t\t<li>\n\t\t\t\t\t<button class=\"btn\">Menu</button>\n\t\t\t\t</li>\n\t\t\t\t<li>\n\t\t\t\t\t<input type=\"search\" />\n\t\t\t\t</li>\n\t\t\t\t<li>\n\t\t\t\t\t<button class=\"btn\">Options</button>\n\t\t\t\t</li>\n\t\t\t</ul>\n\t\t\t<ul class=\"nav nav-tabs nav-justified\">\n\t\t\t\t <li>\n\t\t\t\t\t <a role=\"link\" class=\"btn\" [routerLink]=\"[CONTACTS]\">Contacts</a>\n\t\t\t\t </li>\n\t\t\t\t <li>\n\t\t\t\t\t <a role=\"link\" class=\"btn\" [routerLink]=\"[QUOTES]\">Quotes</a>\n\t\t\t\t </li>\n\t\t\t</ul>\n\t\t</div>\n\t\t<div class=\"side-nav\">\n\t\t\t<div class=\"row\">\n\t\t\t\t<span class=\"col-xs-12\">Companies:</span>\n\t\t\t\t<select>\n\t\t\t\t\t<option>Compoany 1</option>\n\t\t\t\t</select>\n\t\t\t</div>\n\t\t</div>\n\t\t<router-outlet></router-outlet>\n\t</div>\n"
     })
 ], MainComponent);
 exports.MainComponent = MainComponent;
@@ -91407,7 +91407,6 @@ Object.defineProperty(exports, "__esModule", { value: true });
 __webpack_require__(394);
 var platform_browser_dynamic_1 = __webpack_require__(392);
 var app_module_1 = __webpack_require__(393);
-var core_1 = __webpack_require__(0);
 exports.platformRef = platform_browser_dynamic_1.platformBrowserDynamic();
 function main() {
     return exports.platformRef.bootstrapModule(app_module_1.AppModule)
@@ -91418,7 +91417,7 @@ exports.main = main;
 switch (document.readyState) {
     case 'interactive':
     case 'complete':
-        core_1.enableProdMode();
+        //enableProdMode();
         main();
         break;
     case 'loading':
