@@ -67,11 +67,11 @@ import {Company} from '../models/company.model';
 						</select>
 					</div>
 				</div> 
-				<input-component label="name" [(model)]="selectedCompany"></input-component>
-				<input-component label="Address"></input-component>
-				<input-component label="City"></input-component>
-				<input-component label="ZipCode"></input-component>
-				<input-component label="Phone"></input-component>
+				<input-component label="name" [(model)]="selectedCompany.Name"></input-component>
+				<input-component label="Address" [(model)]="selectedCompany.Address"></input-component>
+				<input-component label="City" [(model)]="selectedCompany.City"></input-component>
+				<input-component label="ZipCode" [(model)]="selectedCompany.Zip"></input-component>
+				<input-component label="Phone" [(model)]="selectedCompany.Phone"></input-component>
 				<div class="row">
 					Misc: <textarea></textarea>
 				</div>
@@ -106,7 +106,7 @@ export class HomeComponent implements OnInit, OnChanges {
 	public tab: string;
 	public sideMenu: boolean = false;
 	public companies: Company[];
-	public selectedCompany: Company;
+	public selectedCompany: Company = <Company>{};
 
 	constructor(private route: ActivatedRoute, private companyService:CompanyService) {
 	}
