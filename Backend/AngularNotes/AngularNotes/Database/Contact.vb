@@ -11,11 +11,12 @@ Imports System
 Imports System.Collections.Generic
 
 Partial Public Class Contact
-    Public Property ID As Integer
-    Public Property Name As String
-    Public Property Phone As String
-    Public Property Email As String
-    Public Property Position As String
+	<ComponentModel.DataAnnotations.Key>
+	Public Property ID As Integer
+	Public Property Name As String
+	Public Property Phone As String
+	Public Property Email As String
+	Public Property Position As String
 
 	<Newtonsoft.Json.JsonIgnore>
 	Public Overridable Property Notes As ICollection(Of Note) = New HashSet(Of Note)

@@ -23,4 +23,6 @@ Partial Public Class Database
 	Public Overridable Property Quotes() As DbSet(Of Quote)
 	Public Overridable Property Notes() As DbSet(Of Note)
 	Public Overridable Property QuoteLines() As DbSet(Of QuoteLine)
+	Public Overridable Property Settings() As DbSet(Of Setting)
+
 End Class
