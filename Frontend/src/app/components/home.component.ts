@@ -5,6 +5,7 @@ import {CompanyService} from '../services/company.service';
 import {Company} from '../models/company.model';
 //Testing
 import {Quote} from "../models/quote.model";
+import {QuoteLine} from "../models/quotelines.model";
 
 
 
@@ -147,8 +148,27 @@ export class HomeComponent implements OnInit, OnChanges {
             Company : null,
             Lines: null
         };
+        let _Company: Company = {
+            ID: 1,
+            Name: "",
+            Address: "",
+            City: "",
+            Zip: "",
+            Phone: "",
+            Misc: "",
+            Contacts:null,
+            Quotes:null
+        };
 
-
-
+        let _QuoteLines: QuoteLine[] = [];
+        _QuoteLines.push({
+            ID: 1,
+            Display: 1,
+            UNIT: "",
+            COST: "",
+            DESC: "",
+            IsCentered: false,
+            Quote: null
+        });
     }
 }
