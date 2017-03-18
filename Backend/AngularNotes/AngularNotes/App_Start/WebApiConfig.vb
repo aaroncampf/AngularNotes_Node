@@ -5,6 +5,9 @@ Imports System.Web.Http
 
 Public Module WebApiConfig
 	Public Sub Register(ByVal config As HttpConfiguration)
+		config.EnableCors()
+
+
 		' Web API configuration and services
 
 		' Web API routes
