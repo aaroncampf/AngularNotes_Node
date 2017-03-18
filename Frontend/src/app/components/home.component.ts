@@ -3,10 +3,15 @@ import '../styles/main.scss';
 import {ActivatedRoute} from '@angular/router';
 import {CompanyService} from '../services/company.service';
 import {Company} from '../models/company.model';
+//Testing
+import {Quote} from "../models/quote.model";
+
+
+
 
 @Component({
-	selector: 'home-component',
-	template: `
+    selector: 'home-component',
+    template: `
 	<div class="container">
 	 	<div class="navbar navbar-default navbar-fixed-top" role="navigation">
 			<ul class="col-xs-12">
@@ -92,40 +97,58 @@ import {Company} from '../models/company.model';
 					</table>
 				</div>
 			<!--</form>-->
+			
+			<br><br><br><br><br>
+			<button (click)="OpenTestQuote" />
 		</div>
 	</div>
 `
 })
 export class HomeComponent implements OnInit, OnChanges {
-	public get QUOTES(): string {
-		return 'quotes';
-	}
-	public get CONTACTS(): string {
-		return 'contacts';
-	}
-	public tab: string;
-	public sideMenu: boolean = false;
-	public companies: Company[];
-	public selectedCompany: Company = <Company>{};
+    public get QUOTES(): string {
+        return 'quotes';
+    }
 
-	constructor(private route: ActivatedRoute, private companyService:CompanyService) {
-	}
+    public get CONTACTS(): string {
+        return 'contacts';
+    }
 
-	public ngOnInit(): void {
-		this.route.params.subscribe(params => {
-			this.tab = params['tab'];
-		});
-		this.companyService.getCompanies().subscribe(response => {
-			console.log(response);
-			this.companies = response;
-		});
-	}
+    public tab: string;
+    public sideMenu: boolean = false;
+    public companies: Company[];
+    public selectedCompany: Company = <Company>{};
 
-	public ngOnChanges(): void {
-		console.log('selected', this.selectedCompany);
-	}
+    constructor(private route: ActivatedRoute, private companyService: CompanyService) {
+    }
 
-	public sideMenuClick(): void {
-		this.sideMenu = !this.sideMenu;
-	}
+    public ngOnInit(): void {
+        this.route.params.subscribe(params => {
+            this.tab = params['tab'];
+        });
+        this.companyService.getCompanies().subscribe(response => {
+            console.log(response);
+            this.companies = response;
+        });
+    }
+
+    public ngOnChanges(): void {
+        console.log('selected', this.selectedCompany);
+    }
+
+    public sideMenuClick(): void {
+        this.sideMenu = !this.sideMenu;
+    }
+
+    public OpenTestQuote(): void {
+        let _Quote: Quote = {
+            ID : 1,
+            Date : null,
+            Name : "Hello World",
+            Company : null,
+            Lines: null
+        };
+
+
+
+    }
 }
