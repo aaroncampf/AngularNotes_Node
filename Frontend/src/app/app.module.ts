@@ -9,6 +9,7 @@ import {ContactsComponent} from './components/contacts.component';
 import {QuotesComponent} from './components/quotes.component';
 import {InputComponent} from './components/input.component';
 import {CompanyService} from './services/company.service';
+import {CompaniesComponent} from './components/companies.component';
 
 const MAIN_ROUTES: Routes = [
 	{path: '', children: [
@@ -22,7 +23,8 @@ const MAIN_ROUTES: Routes = [
 		HomeComponent,
 		ContactsComponent,
 		QuotesComponent,
-		InputComponent
+		InputComponent,
+		CompaniesComponent
 	],
 	imports: [
 		BrowserModule,

@@ -2,6 +2,8 @@
 >uses sem-ver 
 
 ##unreleased
+[refactor] made the sidemenu into a `companies.component` and new tab-view
+
 
 ##version 0.1.0
 
