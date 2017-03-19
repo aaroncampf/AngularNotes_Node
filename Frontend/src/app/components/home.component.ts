@@ -1,8 +1,8 @@
-import {Component, OnInit, OnChanges} from '@angular/core';
-import '../styles/main.scss';
+import {Component, OnInit} from '@angular/core';
 import {ActivatedRoute} from '@angular/router';
 import {CompanyService} from '../services/company.service';
 import {Company} from '../models/company.model';
+import '../styles/main.scss';
 
 @Component({
 	selector: 'home-component',
@@ -91,12 +91,13 @@ import {Company} from '../models/company.model';
 						</tr>	
 					</table>
 				</div>
+				
 			<!--</form>-->
 		</div>
 	</div>
 `
 })
-export class HomeComponent implements OnInit, OnChanges {
+export class HomeComponent implements OnInit {
 	public get QUOTES(): string {
 		return 'quotes';
 	}
@@ -119,10 +120,6 @@ export class HomeComponent implements OnInit, OnChanges {
 			console.log(response);
 			this.companies = response;
 		});
-	}
-
-	public ngOnChanges(): void {
-		console.log('selected', this.selectedCompany);
 	}
 
 	public sideMenuClick(): void {
