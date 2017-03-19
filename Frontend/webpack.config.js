@@ -1,20 +1,20 @@
-var webpack = require('webpack');
-var path = require('path');
-var webpackMerge = require('webpack-merge');
+var webpack = require("webpack"); // jshint ignore:line
+var path = require("path"); // jshint ignore:line
+var webpackMerge = require("webpack-merge"); // jshint ignore:line
 
 // Webpack Config
 var webpackConfig = {
-  entry: './src/index.ts',
+  entry: "./src/index.ts",
   output: {
     //publicPath: './dist',
-    path: path.resolve(__dirname, './dist'),
+    path: path.resolve(__dirname, "./dist"), // jshint ignore:line
   },
 
 plugins: [
     new webpack.ContextReplacementPlugin(
       // The (\\|\/) piece accounts for path separators in *nix and Windows
       /angular(\\|\/)core(\\|\/)src(\\|\/)linker/,
-      path.resolve(__dirname, './src'),
+      path.resolve(__dirname, "./src"),  // jshint ignore:line
       {
         // your Angular Async Route paths relative to this root directory
       }
@@ -32,9 +32,9 @@ plugins: [
           'angular2-router-loader'
         ]
       },
-      { test: /\.scss$/, exclude: /node_modules/, loaders: ['style-loader', 'css-loader', 'sass-loader']},
-      { test: /\.css$/, loaders: ['to-string-loader', 'css-loader']},
-      { test: /\.html$/, loader: 'raw-loader' }
+      { test: /\.scss$/, exclude: /node_modules/, loaders: ["style-loader", "css-loader", "sass-loader"]},
+      { test: /\.css$/, loaders: ["to-string-loader", "css-loader"]},
+      { test: /\.html$/, loader: "raw-loader" }
     ]
   }
 };
@@ -42,7 +42,7 @@ plugins: [
 
 // Our Webpack Defaults
 var defaultConfig = {
-  devtool: 'source-map',
+  devtool: "source-map",
 
   output: {
     filename: '[name].bundle.js',
@@ -51,8 +51,8 @@ var defaultConfig = {
   },
 
   resolve: {
-    extensions: [ '.ts', '.js' ],
-    modules: [ path.resolve(__dirname, 'node_modules') ]
+    extensions: [ ".ts", ".js" ],
+    modules: [ path.resolve(__dirname, "node_modules") ]  // jshint ignore:line
   },
 
   devServer: {
@@ -80,4 +80,4 @@ var defaultConfig = {
 // module.exports = {
 //   target: 'node'
 // };
-module.exports = webpackMerge(defaultConfig, webpackConfig);
+module.exports = webpackMerge(defaultConfig, webpackConfig); // jshint ignore:line

@@ -3,10 +3,17 @@ import {ActivatedRoute} from '@angular/router';
 import {CompanyService} from '../services/company.service';
 import {Company} from '../models/company.model';
 import '../styles/main.scss';
+//Testing
+import {Quote} from "../models/quote.model";
+import {QuoteLine} from "../models/quotelines.model";
+
+
+
+>>>>>>> 183d7b1cebe819fccc7a9ac63ba94e92804774a7
 
 @Component({
-	selector: 'home-component',
-	template: `
+    selector: 'home-component',
+    template: `
 	<div class="container">
 	 	<div class="navbar navbar-default navbar-fixed-top" role="navigation">
 			<ul class="col-xs-12">
@@ -93,6 +100,9 @@ import '../styles/main.scss';
 				</div>
 				
 			<!--</form>-->
+			
+			<br><br><br><br><br>
+			<button (click)="OpenTestQuote" />
 		</div>
 	</div>
 `
@@ -108,11 +118,10 @@ export class HomeComponent implements OnInit {
 	public sideMenu: boolean = false;
 	public companies: Company[];
 	public selectedCompany: Company = <Company>{};
+    constructor(private route: ActivatedRoute, private companyService: CompanyService) {
+    }
 
-	constructor(private route: ActivatedRoute, private companyService:CompanyService) {
-	}
-
-	public ngOnInit(): void {
+    public ngOnInit(): void {
 		this.route.params.subscribe(params => {
 			this.tab = params['tab'];
 		});
@@ -120,9 +129,39 @@ export class HomeComponent implements OnInit {
 			console.log(response);
 			this.companies = response;
 		});
-	}
-
+}
 	public sideMenuClick(): void {
 		this.sideMenu = !this.sideMenu;
 	}
+    public OpenTestQuote(): void {
+        let _Quote: Quote = {
+            ID : 1,
+            Date : null,
+            Name : "Hello World",
+            Company : null,
+            Lines: null
+        };
+        let _Company: Company = {
+            ID: 1,
+            Name: "",
+            Address: "",
+            City: "",
+            Zip: "",
+            Phone: "",
+            Misc: "",
+            Contacts:null,
+            Quotes:null
+        };
+
+        let _QuoteLines: QuoteLine[] = [];
+        _QuoteLines.push({
+            ID: 1,
+            Display: 1,
+            UNIT: "",
+            COST: "",
+            DESC: "",
+            IsCentered: false,
+            Quote: null
+        });
+    }
 }
