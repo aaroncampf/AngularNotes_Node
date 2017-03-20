@@ -9,6 +9,7 @@ import {QuoteLine} from "../models/quotelines.model";
 import {Overlay} from 'angular2-modal';
 import { Modal } from 'angular2-modal/plugins/bootstrap';
 import {Setting} from '../models/setting.model';
+import {Contact} from "../models/contact.model";
 
 
 @Component({
@@ -54,7 +55,7 @@ import {Setting} from '../models/setting.model';
 				<companies-component [@contentState]="companies" [(companySelected)]="activeCompany" class="tab-pane" role="tabpanel" [class.active]="tab===COMPANIES"></companies-component>
 				<contacts-component [@contentState]="contacts" class="tab-pane" role="tabpanel" [class.active]="tab===CONTACTS"></contacts-component>
 				<quotes-component [@contentState]="quotes" class="tab-pane" role="tabpanel" [class.active]="tab===QUOTES"></quotes-component>
-				<quotes-printout-component class="tab-pane" role="tabpanel" [class.active]="tab===QUOTE_PRINT"[_Quote]="quote" [_Company]="company" [_QuoteLines]="quoteLines" [_Settings]="settings"></quotes-printout-component>
+				<quotes-printout-component class="tab-pane" role="tabpanel" [class.active]="tab===QUOTE_PRINT"[_Quote]="quote" [_Company]="company" [_QuoteLines]="quoteLines" [_Settings]="settings" [_Contact]="contact"></quotes-printout-component>
 				
 			</div>
 		</content-area>
@@ -118,7 +119,7 @@ export class HomeComponent implements OnInit {
 	public quote: Quote = {
             ID : 1,
             Date : null,
-            Name : "Hello World",
+            Name : "First Quote",
             Company : null,
             Lines: null
         };
@@ -127,9 +128,9 @@ export class HomeComponent implements OnInit {
             Name: "AJP Northwest",
             Address: "1111 SW Portland",
             City: "Portland",
-            Zip: "",
-            Phone: "",
-            Misc: "",
+            Zip: "97034",
+            Phone: "555-555-5555",
+            Misc: "aswrfghjkjhgfdc",
             Contacts:null,
             Quotes:null
         };
@@ -137,12 +138,22 @@ export class HomeComponent implements OnInit {
 	public quoteLines: QuoteLine[] = [{
 		ID: 1,
 		Display: 1,
-		UNIT: "",
-		COST: "",
-		DESC: "",
+		UNIT: "Case",
+		COST: "$1.76",
+		DESC: "sfh",
 		IsCentered: false,
 		Quote: null
 	}];
+
+	public contact: Contact = {
+		ID: 1,
+		Name: "Contact_Test",
+		Phone: "503-999-8085",
+		Email: "contact@contact.com",
+		Position: "CEO",
+		Company: void 0,
+		Notes:  void 0,
+	};
 
 	public settings: Setting = {
 	ID: 1,

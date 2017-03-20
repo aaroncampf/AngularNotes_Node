@@ -34,43 +34,47 @@ import {Contact} from '../models/contact.model';
                 <p>
                     <b>TO:</b> {{_Company.Name}} <br>
                     {{_Contact.Name}}<br>
-                    {{_Company.Address}}
+                    {{_Company.Address}}  <br>
                     {{_Company.Phone}}
                 </p>
             </td>
             <td>
                 <table  style="float:right">
                     <tr>
-                        <th>Salesperson</th>
-                        <th>Email</th>
+                        <th style="background-color:lightblue;text-align: center;">Salesperson</th>
+                        <th style="background-color:lightblue;text-align: center;">Email</th>
                     </tr>
                     <tr>
-                        <td>{{_Settings.Name}}</td>
-                        <td>{{_Settings.Email}}</td>
+                        <td style="text-align: center;">{{_Settings.Name}}</td>
+                        <td style="text-align: center;">{{_Settings.Email}}</td>
                     </tr>
                 </table>
             </td>
         </tr>
     </table>  
     
-    
+    <br>
     <table class="table table-striped">
-        <caption>{{_Quote.Name}}</caption>
-        <tr >
-            <th>Unit</th>
-            <th>Description</th>
-            <th>Cost</th>
+        <caption style="text-align: center;">{{_Quote.Name}}</caption>
+        <tr>
+            <th style="background-color: lightblue;text-align: center;">Unit</th>
+            <th style="background-color: lightblue;text-align: center;">Description</th>
+            <th style="background-color: lightblue;text-align: center;">Cost</th>
         </tr>
         <tbody>
             <tr *ngFor="let Line of _QuoteLines">        
-                <td>{{Line.UNIT}}</td>
-                <td>{{Line.DESC}}</td>
-                <td>{{Line.UNIT}}</td>
+                <td style="text-align: center;">{{Line.UNIT}}</td>
+                <td style="text-align: center;">{{Line.DESC}}</td>
+                <td style="text-align: center;">{{Line.COST}}</td>
             </tr>
         </tbody>
     </table>
-        
-    <button (click)="Quit()">Exit</button>
+    <table>
+        <tr>
+            <td>Supplies on Request</td>
+            <td  style="text-align: right;">All prices subject to change without notice</td>
+        </tr>
+    </table>
 `
 })
 /**
@@ -82,14 +86,14 @@ export class Quotes_Printout  {
 	//TODO: Maybe this might help make this less interpolated - http://stackoverflow.com/questions/38996376/generate-pdf-file-from-html-using-angular2-typescript :)
 
 	@Input()
-	public _Quote: Quote = <Quote>{};
+	public _Quote: Quote;
 	@Input()
-	public _Company: Company = <Company>{};
+	public _Company: Company;
 	@Input()
 	public  _QuoteLines: QuoteLine[];
 	@Input()
-	public _Settings: Setting = <Setting>{};
+	public _Settings: Setting;
 	@Input()
-	public _Contact: Contact = <Contact>{};
+	public _Contact: Contact;
 
 }
