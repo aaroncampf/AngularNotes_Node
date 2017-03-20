@@ -6,11 +6,13 @@ Imports System.Web.Http.Cors
 
 Public Module WebApiConfig
 	Public Sub Register(ByVal config As HttpConfiguration)
+		config.EnableCors()
+
+
 		' Web API configuration and services
 
 		' Web API routes
 		config.MapHttpAttributeRoutes()
-
 		config.Routes.MapHttpRoute(
 			name:="DefaultApi",
 			routeTemplate:="api/{controller}/{id}",

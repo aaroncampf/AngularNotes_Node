@@ -11,11 +11,12 @@ Imports System
 Imports System.Collections.Generic
 
 Partial Public Class Quote
-    Public Property ID As Integer
-    Public Property [Date] As Date
-    Public Property Name As String
+	<ComponentModel.DataAnnotations.Key>
+	Public Property ID As Integer
+	Public Property [Date] As Date
+	Public Property Name As String
 
-    Public Overridable Property Company As Company
-    Public Overridable Property Lines As ICollection(Of QuoteLine) = New HashSet(Of QuoteLine)
+	Public Overridable Property Company As Company
+	Public Overridable Property Lines As ICollection(Of QuoteLine) = New HashSet(Of QuoteLine)
 
 End Class

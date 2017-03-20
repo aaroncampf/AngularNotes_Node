@@ -1,4 +1,5 @@
 import {Component, Input, Output, EventEmitter} from '@angular/core';
+import {FormControl} from '@angular/forms';
 @Component({
 	selector: 'input-component',
 	template: `
@@ -7,7 +8,7 @@ import {Component, Input, Output, EventEmitter} from '@angular/core';
 			<strong>{{label}}</strong>
 		</div>
 		<div class="col-xs-9">
-			<input type="text" [(ngModel)]="model"/>
+			<input type="text" class="form-control" [(ngModel)]="model" [formControl]="control"/>
 		</div>
 	</div>
 `
@@ -17,6 +18,8 @@ export class InputComponent {
 	public label: string;
 	@Input()
 	public model: string;
+	@Input()
+	public control: FormControl = new FormControl;
 	@Output()
 	public changeModel: EventEmitter<string> = new EventEmitter<string>();
 

@@ -11,13 +11,14 @@ Imports System
 Imports System.Collections.Generic
 
 Partial Public Class Company
-    Public Property ID As Integer
-    Public Property Name As String
-    Public Property Address As String
-    Public Property City As String
-    Public Property Phone As String
-    Public Property Zip As String
-    Public Property Misc As String
+	<ComponentModel.DataAnnotations.Key>
+	Public Property ID As Integer
+	Public Property Name As String
+	Public Property Address As String
+	Public Property City As String
+	Public Property Phone As String
+	Public Property Zip As String
+	Public Property Misc As String
 
 	<Newtonsoft.Json.JsonIgnore>
 	Public Overridable Property Contacts As ICollection(Of Contact) = New HashSet(Of Contact)

@@ -1,39 +1,5 @@
 home-component {
-  .navbar > ul{
-    padding-left: 15px;
-  }
-
-  .nav.nav-tabs {
-    display: flex;
-    margin-top: 112px;
-    & li {
-      flex-grow: 1;
-      text-align: center;
-    }
-  }
-
-  .side-menu {
-    width: 0px;
-    position: fixed;
-    left: 0;
-    top: 112px;
-    height: 100%;
-    overflow-x: hidden;
-    overflow-y: scroll;
-    margin: 0;
-    padding: 10px 0px 20px 0;
-    -webkit-transition: all .5s ease;
-    transition: all .5s ease;
-    background: lightgrey;
-  }
-
-  .side-menu.active {
-    width: 350px;
-    padding: 10px 10px 125px 15px;
-    -webkit-transition: all .5s ease;
-    transition: all .5s ease;
-    & content-area {
-      padding-left: 450px;
-    }
+  .tab-content {
+      margin-bottom: 65px;
   }
 }

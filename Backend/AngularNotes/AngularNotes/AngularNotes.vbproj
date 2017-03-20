@@ -231,12 +231,14 @@
     <Compile Include="Controllers\NotesController.vb" />
     <Compile Include="Controllers\QuoteLinesController.vb" />
     <Compile Include="Controllers\QuotesController.vb" />
+    <Compile Include="Controllers\SettingsController.vb" />
     <Compile Include="Database\Company.vb" />
     <Compile Include="Database\Contact.vb" />
     <Compile Include="Database\Database.vb" />
     <Compile Include="Database\Note.vb" />
     <Compile Include="Database\Quote.vb" />
     <Compile Include="Database\QuoteLine.vb" />
+    <Compile Include="Database\Settings.vb" />
     <Compile Include="Global.asax.vb">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>

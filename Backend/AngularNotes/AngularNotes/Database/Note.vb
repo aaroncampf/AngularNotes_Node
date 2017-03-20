@@ -11,11 +11,12 @@ Imports System
 Imports System.Collections.Generic
 
 Partial Public Class Note
-    Public Property ID As Integer
-    Public Property [Date] As Date
-    Public Property Title As String
-    Public Property Text As String
+	<ComponentModel.DataAnnotations.Key>
+	Public Property ID As Integer
+	Public Property [Date] As Date
+	Public Property Title As String
+	Public Property Text As String
 
-    Public Overridable Property Contact As Contact
+	Public Overridable Property Contact As Contact
 
 End Class

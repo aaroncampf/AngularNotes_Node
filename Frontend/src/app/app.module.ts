@@ -8,12 +8,13 @@ import {HomeComponent} from './components/home.component';
 import {ContactsComponent} from './components/contacts.component';
 import {QuotesComponent} from './components/quotes.component';
 import {InputComponent} from './components/input.component';
-import {CompanyService} from './services/company.service';
+import {CompanyService} from './services/companies.service';
+import {CompaniesComponent} from './components/companies.component';
 
 const MAIN_ROUTES: Routes = [
 	{path: '', children: [
 		{path:':tab', component: HomeComponent },
-		{path:'', redirectTo: 'contacts', pathMatch: 'full'}
+		{path:'', redirectTo: 'companies', pathMatch: 'full'}
 	]}];
 
 @NgModule({
@@ -22,7 +23,8 @@ const MAIN_ROUTES: Routes = [
 		HomeComponent,
 		ContactsComponent,
 		QuotesComponent,
-		InputComponent
+		InputComponent,
+		CompaniesComponent
 	],
 	imports: [
 		BrowserModule,
