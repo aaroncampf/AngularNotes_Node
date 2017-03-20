@@ -124,9 +124,9 @@ export class HomeComponent implements OnInit {
         };
 	public company: Company = {
             ID: 1,
-            Name: "",
-            Address: "",
-            City: "",
+            Name: "AJP Northwest",
+            Address: "1111 SW Portland",
+            City: "Portland",
             Zip: "",
             Phone: "",
             Misc: "",

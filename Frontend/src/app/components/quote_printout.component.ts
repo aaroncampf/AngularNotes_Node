@@ -16,35 +16,42 @@ import {Contact} from '../models/contact.model';
 @Component({
 	selector: 'quotes-printout-component',
 	template: `
-    <h1>{{_Settings.CompanyName}}</h1>
-    <p>{{_Settings.Address}}</p>
-    <p>{{_Settings.CompanyWebsite}}</p>
+    <h1 style="text-align: center;">{{_Settings.CompanyName}}</h1>
+    <p style="text-align: center;">{{_Settings.Address}}</p>
+    <p style="text-align: center;">{{_Settings.CompanyWebsite}}</p>
     
     <table>
           <tr>
-            <td>Cell: {{_Settings.CellPhone}}</td>
-            <td>Phone: {{_Settings.CompanyPhone}}</td>
-            <td>Fax: {{_Settings.CompanyFax}}</td>
+            <td style="text-align: center;">Cell: {{_Settings.CellPhone}}</td>
+            <td style="text-align: center;">Phone: {{_Settings.CompanyPhone}}</td>
+            <td style="text-align: center;">Fax: {{_Settings.CompanyFax}}</td>
           </tr>
     </table>
         
-    <p>
-        <b>TO:</b> {{_Company.Name}} <br>
-        {{_Contact.Name}}<br>
-        {{_Company.Address}}
-        {{_Company.Phone}}
-    </p>
-    
-        <table>
-        <tr>           
-            <th>Salesperson</th>
-            <th>Email</th>
-        </tr>
+    <table>
         <tr>
-            <td>{{_Settings.Name}}</td>
-            <td>{{_Settings.Email}}</td>
+            <td>
+                <p>
+                    <b>TO:</b> {{_Company.Name}} <br>
+                    {{_Contact.Name}}<br>
+                    {{_Company.Address}}
+                    {{_Company.Phone}}
+                </p>
+            </td>
+            <td>
+                <table  style="float:right">
+                    <tr>
+                        <th>Salesperson</th>
+                        <th>Email</th>
+                    </tr>
+                    <tr>
+                        <td>{{_Settings.Name}}</td>
+                        <td>{{_Settings.Email}}</td>
+                    </tr>
+                </table>
+            </td>
         </tr>
-    </table>
+    </table>  
     
     
     <table class="table table-striped">
