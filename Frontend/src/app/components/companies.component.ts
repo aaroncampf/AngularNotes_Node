@@ -87,7 +87,10 @@ export class CompaniesComponent implements OnInit{
 			.subscribe(res => {
 				console.log(res); //todo toastr
 				this.companyService.getCompanies()
-					.subscribe(companies => this.companies = companies);
+					.subscribe(companies => {
+						this.companies = companies;
+						this.selectedCompany = companies;
+					});
 			});
 	}
 	public removeCompany(): void {

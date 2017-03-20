@@ -3,18 +3,19 @@
  */
 
 
-import {Component} from '@angular/core';
+import {Component, Input} from '@angular/core';
 import {Company} from "../models/company.model";
 import {Quote} from "../models/quote.model";
 import {QuoteLine} from "../models/quotelines.model";
 import {Setting} from "../models/setting.model";
+import {Contact} from '../models/contact.model';
 
 /**
  * Displays a quote as a beautiful printout
  */
 @Component({
-    selector: 'quotes_printout-component',
-    template: `
+	selector: 'quotes-printout-component',
+	template: `
     <h1>{{_Settings.CompanyName}}</h1>
     <p>{{_Settings.Address}}</p>
     <p>{{_Settings.CompanyWebsite}}</p>
@@ -46,9 +47,9 @@ import {Setting} from "../models/setting.model";
     </table>
     
     
-    <table>
+    <table class="table table-striped">
         <caption>{{_Quote.Name}}</caption>
-        <tr css="background=lightgray">
+        <tr >
             <th>Unit</th>
             <th>Description</th>
             <th>Cost</th>
@@ -61,24 +62,27 @@ import {Setting} from "../models/setting.model";
             </tr>
         </tbody>
     </table>
+        
+    <button (click)="Quit()">Exit</button>
 `
 })
 /**
  * Displays a quote as a motha fuckn beautiful printout
  */
-export class QuotesComponent {
-    //TODO: Consider only using [Quote] and not the others
-    //TODO: Find out how to order _QuoteLines by Display
-    //TODO: Maybe this might help make this less interpolated - http://stackoverflow.com/questions/38996376/generate-pdf-file-from-html-using-angular2-typescript :)
+export class Quotes_Printout  {
+	//TODO: Consider only using [Quote] and not the others
+	//TODO: Find out how to order _QuoteLines by Display
+	//TODO: Maybe this might help make this less interpolated - http://stackoverflow.com/questions/38996376/generate-pdf-file-from-html-using-angular2-typescript :)
 
-    /**
-     * The constructor for the [Component]
-     * @param _Quote The quote that will be displayed
-     * @param _Company The quote's company
-     * @param _QuoteLines The lines in the quote
-     * @param _Settings The setting for that user
-     */
-    constructor(public _Quote: Quote, public _Company: Company, public  _QuoteLines: QuoteLine[], _Settings: Setting) {}
+	@Input()
+	public _Quote: Quote = <Quote>{};
+	@Input()
+	public _Company: Company = <Company>{};
+	@Input()
+	public  _QuoteLines: QuoteLine[];
+	@Input()
+	public _Settings: Setting = <Setting>{};
+	@Input()
+	public _Contact: Contact = <Contact>{};
 
 }
-

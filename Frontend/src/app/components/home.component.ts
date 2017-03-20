@@ -1,4 +1,4 @@
-import {Component, OnInit, trigger, state, style, transition, animate, OnDestroy, OnChanges} from '@angular/core';
+import {Component, OnInit, trigger, state, style, transition, animate, ViewContainerRef} from '@angular/core';
 import {ActivatedRoute} from '@angular/router';
 import {CompanyService} from '../services/companies.service';
 import {Company} from '../models/company.model';
@@ -6,6 +6,10 @@ import '../styles/main.scss';
 //TODO Testing
 import {Quote} from "../models/quote.model";
 import {QuoteLine} from "../models/quotelines.model";
+import {Overlay} from 'angular2-modal';
+import { Modal } from 'angular2-modal/plugins/bootstrap';
+import {Setting} from '../models/setting.model';
+
 
 @Component({
     selector: 'home-component',
@@ -50,18 +54,24 @@ import {QuoteLine} from "../models/quotelines.model";
 				<companies-component [@contentState]="companies" [(companySelected)]="activeCompany" class="tab-pane" role="tabpanel" [class.active]="tab===COMPANIES"></companies-component>
 				<contacts-component [@contentState]="contacts" class="tab-pane" role="tabpanel" [class.active]="tab===CONTACTS"></contacts-component>
 				<quotes-component [@contentState]="quotes" class="tab-pane" role="tabpanel" [class.active]="tab===QUOTES"></quotes-component>
+				<quotes-printout-component class="tab-pane" role="tabpanel" [class.active]="tab===QUOTE_PRINT"[_Quote]="quote" [_Company]="company" [_QuoteLines]="quoteLines" [_Settings]="settings"></quotes-printout-component>
+				
 			</div>
 		</content-area>
+
+			<button (click)="onClick()">Modal</button>
 			
-			<!--TODO Fix button ;)-->
-			<!--<br><br><br><br><br>-->
-			<!--<button (click)="OpenTestQuote"/>-->
+			<br><br><br><br><br>
+			<button  [routerLink]="['/' + QUOTE_PRINT]">Test Quote</button>
 	</div>
 `
 })
-export class HomeComponent implements OnInit, OnChanges {
+export class HomeComponent implements OnInit {
 	public get COMPANIES(): string {
 		return 'companies';
+	}
+	public get QUOTE_PRINT(): string {
+		return 'quote_print';
 	}
 	public get QUOTES(): string {
 		return 'quotes';
@@ -69,9 +79,6 @@ export class HomeComponent implements OnInit, OnChanges {
 	public get CONTACTS(): string {
 		return 'contacts';
 	}
-	public toggleState(state: string): void {
-
-	};
 	public quotes: string;
 	public companies: string;
 	public contacts: string;
@@ -79,52 +86,43 @@ export class HomeComponent implements OnInit, OnChanges {
 	public tab: string;
 	public companiesData: Company[];
 	public selectedCompany: Company = <Company>{};
-    constructor(private route: ActivatedRoute, private companyService: CompanyService) {}
+    constructor(private overlay: Overlay, private vcRef: ViewContainerRef, public modal: Modal, private route: ActivatedRoute, private companyService: CompanyService) {
+		overlay.defaultViewContainer = vcRef;
+	}
+
+	public onClick() {
+		this.modal.alert()
+			.size('lg')
+			.showClose(true)
+			.title('A simple Alert style modal window')
+			.body(`
+                <quotes-printout-component [_Quote]="quote" [_Company]="company" [_QuoteLines]="quoteLines" [_Settings]=""></quotes-printout-component>
+			`)
+			.open();
+	}
 
     public ngOnInit(): void {
-    	console.log(this.companies, this.contacts, this.quotes);
 		this.route.params.subscribe(params => {
 			this.tab = params['tab'];
 			this.companies = 'inactive';
 			this.quotes= 'inactive';
 			this.contacts = 'inactive';
 			this[params['tab']] = 'active';
-			console.log(this.companies, this.contacts, this.quotes);
 		});
-
 		this.companyService.getCompanies()
 			.subscribe(response => {
-				console.log(response);
 				this.companiesData = response;
 			});
 	}
 
-	public ngOnChanges(): void {
-    	console.log('des');
-
-	}
-
-	// public toggleState(state: string): void {
-    	// this.quotesState = 'inactive';
-    	// this.contactsState = 'inactive';
-    	// this.companyState = 'inactive';
-	// 	console.log(this[state]);
-    	// this[state] = 'active';
-	// 	console.log(this[state]);
-	// }
-
-
-
-	//TODO I will not touch other peopls code, I will not touch other peoples code, I ...
-	public OpenTestQuote(): void {
-        let _Quote: Quote = {
+	public quote: Quote = {
             ID : 1,
             Date : null,
             Name : "Hello World",
             Company : null,
             Lines: null
         };
-        let _Company: Company = {
+	public company: Company = {
             ID: 1,
             Name: "",
             Address: "",
@@ -136,15 +134,60 @@ export class HomeComponent implements OnInit, OnChanges {
             Quotes:null
         };
 
-        let _QuoteLines: QuoteLine[] = [];
-        _QuoteLines.push({
-            ID: 1,
-            Display: 1,
-            UNIT: "",
-            COST: "",
-            DESC: "",
-            IsCentered: false,
-            Quote: null
-        });
-    }
+	public quoteLines: QuoteLine[] = [{
+		ID: 1,
+		Display: 1,
+		UNIT: "",
+		COST: "",
+		DESC: "",
+		IsCentered: false,
+		Quote: null
+	}];
+
+	public settings: Setting = {
+	ID: 1,
+	Name: "Aaron Campf",
+	Gmail: "Example@Gmail.com",
+	GmailPassword: "",
+	Email: "Company@Gmail.com",
+	Address: "1600 Amphitheatre Parkway, Mountan View CA",
+	Phone: "503-999-9999",
+	CompanyName: "AJP",
+	CompanyWebsite: "www.ajp.com",
+	CompanyPhone: "503-333-3333",
+	CellPhone: "503-555-5555",
+	CompanyFax: "503-987-9854"
+};
+
+    // }public OpenTestQuote(): void {
+    //     let _Quote: Quote = {
+    //         ID : 1,
+    //         Date : null,
+    //         Name : "Hello World",
+    //         Company : null,
+    //         Lines: null
+    //     };
+    //     let _Company: Company = {
+    //         ID: 1,
+    //         Name: "",
+    //         Address: "",
+    //         City: "",
+    //         Zip: "",
+    //         Phone: "",
+    //         Misc: "",
+    //         Contacts:null,
+    //         Quotes:null
+    //     };
+	//
+    //     let _QuoteLines: QuoteLine[] = [];
+    //     _QuoteLines.push({
+    //         ID: 1,
+    //         Display: 1,
+    //         UNIT: "",
+    //         COST: "",
+    //         DESC: "",
+    //         IsCentered: false,
+    //         Quote: null
+    //     });
+    // }
 }

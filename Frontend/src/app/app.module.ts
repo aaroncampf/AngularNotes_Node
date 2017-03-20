@@ -10,6 +10,12 @@ import {QuotesComponent} from './components/quotes.component';
 import {InputComponent} from './components/input.component';
 import {CompanyService} from './services/companies.service';
 import {CompaniesComponent} from './components/companies.component';
+import {ContactService} from './services/contact.service';
+import {ModalModule} from 'angular2-modal';
+import {BootstrapModalModule} from 'angular2-modal/plugins/bootstrap';
+import {Quotes_Printout} from './components/quote_printout.component';
+
+
 
 const MAIN_ROUTES: Routes = [
 	{path: '', children: [
@@ -23,6 +29,7 @@ const MAIN_ROUTES: Routes = [
 		HomeComponent,
 		ContactsComponent,
 		QuotesComponent,
+		Quotes_Printout,
 		InputComponent,
 		CompaniesComponent
 	],
@@ -31,10 +38,13 @@ const MAIN_ROUTES: Routes = [
 		FormsModule,
 		ReactiveFormsModule,
 		HttpModule,
+		ModalModule.forRoot(),
+		BootstrapModalModule,
 		RouterModule.forRoot(MAIN_ROUTES)
 	],
 	providers: [
-		CompanyService
+		CompanyService,
+		ContactService
 	],
 	schemas: [
 		CUSTOM_ELEMENTS_SCHEMA
