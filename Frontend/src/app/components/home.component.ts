@@ -1,6 +1,6 @@
 import {Component, OnInit} from '@angular/core';
 import {ActivatedRoute} from '@angular/router';
-import {CompanyService} from '../services/company.service';
+import {CompanyService} from '../services/companies.service';
 import {Company} from '../models/company.model';
 import '../styles/main.scss';
 //Testing
@@ -11,37 +11,9 @@ import {QuoteLine} from "../models/quotelines.model";
     selector: 'home-component',
     template: `
 	<div class="container">
-	 	<div class="navbar navbar-default navbar-fixed-top" role="navigation" title="AngularBros' Notes">
-			<ul class="col-xs-12">
-				<li class="pull-right">
-					<div class="dropdown">
-						<button class="btn btn-default dropdown-toggle" type="button" id="dropdownMenu1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">Options<span class="caret"></span></button>
-						<ul class="dropdown-menu" aria-labelledby="dropdownMenu1">
-							<div *ngIf="tab===CONTACTS">
-								<li>
-									<a href="#">Download</a>
-								</li>
-							</div>
-							<div *ngIf="tab===QUOTES">
-								<li>
-									<a href="#">Add</a>
-								</li>
-								<li>
-									<a href="#">Download</a>
-								</li>
-								<li>
-								<a href="#">Remove</a>
-								</li>
-							</div>
-						</ul>
-					</div>
-				</li>
-				<li class="">
-					<input type="search" placeholder="search"/>
-				</li>
-			</ul>
-		</div>
-		<content-area (click)="sideMenu = false">
+		<b>AngularBro's Notes</b>
+		<input type="search" placeholder="search"/>
+		<content-area>
 			<ul class="nav nav-tabs nav-tabs-justified nav-pills">
 				 <li ngClass="active:tab === COMPANIES">
 					 <a class="tab" [routerLink]="['/companies']">
@@ -83,10 +55,10 @@ export class HomeComponent implements OnInit {
 		return 'contacts';
 	}
 	public tab: string;
-	public sideMenu: boolean = false;
 	public companies: Company[];
 	public selectedCompany: Company = <Company>{};
     constructor(private route: ActivatedRoute, private companyService: CompanyService) {}
+
     public ngOnInit(): void {
 		this.route.params.subscribe(params => {
 			this.tab = params['tab'];
@@ -96,9 +68,7 @@ export class HomeComponent implements OnInit {
 			this.companies = response;
 		});
 	}
-	public sideMenuClick(): void {
-		this.sideMenu = !this.sideMenu;
-	}
+
     public OpenTestQuote(): void {
         let _Quote: Quote = {
             ID : 1,

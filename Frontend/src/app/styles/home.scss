@@ -1,14 +1,5 @@
 home-component {
-  .navbar > ul{
-    padding-left: 15px;
-  }
-
-  .nav.nav-tabs {
-    display: flex;
-    margin-top: 112px;
-    & li {
-      flex-grow: 1;
-      text-align: center;
-    }
+  .tab-content {
+      margin-bottom: 65px;
   }
 }

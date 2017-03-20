@@ -1,18 +1,20 @@
-import {Component} from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 import {FormControl, Validators, FormGroup} from '@angular/forms';
 import {Company} from '../models/company.model';
+import {CompanyService} from '../services/companies.service';
 @Component({
 	selector: 'companies-component',
 	template: `
 		<div class="row">
-			<div class="col-xs-12">Companies:</div>
 			<div class="col-xs-12">
-				<select [(ngModel)]="selectedCompany" class="form-control">
+				<select [(ngModel)]="selectedCompany" class="form-control" placeholder="Select a Company">
 					<option *ngFor="let company of companies" [ngValue]="company">{{company.Name}}</option>
+					<option [ngValue]="newCompany">New Company...</option>
 				</select>
+			<div class="col-xs-12">Company ID: {{selectedCompany.ID}}</div>
 			</div>
 		</div>
-		<form [formGroup]="companiesGroup" (ngSubmit)="companiesSave()">
+		<form [formGroup]="companiesGroup" (ngSubmit)="companySave()">
 			<input-component label="Name" [(model)]="selectedCompany.Name" [control]="nameControl"></input-component>
 			<input-component label="Address" [(model)]="selectedCompany.Address" [control]="addressControl"></input-component>
 			<input-component label="City" [(model)]="selectedCompany.City" [control]="cityControl"></input-component>
@@ -41,15 +43,18 @@ import {Company} from '../models/company.model';
 					</tbody>
 				</table>
 			</div>
-			<button class="btn btn-lg" type="submit">Save</button>
+			<button class="btn btn-lg" type="submit" [disabled]="companiesGroup.invalid" [class.disabled]="companiesGroup.invalid">Save</button>
 		</form>
 `
 })
 
-export class CompaniesComponent {
-	public companyForm: any;
-	public selectedCompany = <Company>{};
-	public nameControl: FormControl = new FormControl('', [Validators.required]);
+export class CompaniesComponent implements OnInit{
+	public selectedCompany:Company = <Company>{};
+	public newCompany: Company = <Company>{
+		ID: void 0
+	};
+	public companies: Company[];
+	public nameControl: FormControl = new FormControl('', [Validators.maxLength(255)]);
 	public addressControl: FormControl = new FormControl('', []);
 	public cityControl: FormControl = new FormControl('', []);
 	public zipControl: FormControl = new FormControl('', []);
@@ -59,12 +64,18 @@ export class CompaniesComponent {
 		addressControl: this.addressControl,
 		cityControl: this.cityControl,
 		zipControl: this.zipControl,
+		phoneControl: this.phoneControl,
 	});
 
-	constructor(){};
+	constructor(private companyService: CompanyService){};
 
-	public companiesSave(): void {
+	public ngOnInit(): void {
+		this.companyService.getCompanies()
+			.subscribe(companies => this.companies = companies);
+	}
 
+	public companySave(): void {
+		this.companyService.saveCompany(this.companiesGroup.value, this.selectedCompany.ID)
 	}
 
 }
