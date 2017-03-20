@@ -126,6 +126,15 @@ export class HomeComponent implements OnInit, OnChanges {
     // }
 
 
+
+
+
+
+
+
+
+
+
     //TODO I will not touch other peopls code, I will not touch other peoples code, I ...
     public OpenTestQuote(): void {
         let _Settings: Setting = {
@@ -174,6 +183,7 @@ export class HomeComponent implements OnInit, OnChanges {
             Quote: null
         });
 
-        let Test = new Quotes_Printout(_Quote, _Company, _QuoteLines, _Settings);
+        //let Test = new Quotes_Printout(_Quote, _Company, _QuoteLines, _Settings);
+        Test.Show()
     }
 }

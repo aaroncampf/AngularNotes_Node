@@ -3,7 +3,7 @@
  */
 
 
-import {Component} from '@angular/core';
+import {Component, Input} from '@angular/core';
 import {Company} from "../models/company.model";
 import {Quote} from "../models/quote.model";
 import {QuoteLine} from "../models/quotelines.model";
@@ -66,10 +66,21 @@ import {Setting} from "../models/setting.model";
 /**
  * Displays a quote as a motha fuckn beautiful printout
  */
-export class Quotes_Printout {
+export class Quotes_Printout implements  ModalComponent {
     //TODO: Consider only using [Quote] and not the others
     //TODO: Find out how to order _QuoteLines by Display
     //TODO: Maybe this might help make this less interpolated - http://stackoverflow.com/questions/38996376/generate-pdf-file-from-html-using-angular2-typescript :)
+
+    @Input()
+    public _Quote: Quote;
+    @Input()
+    public _Company: Company;
+    @Input()
+    public  _QuoteLines: QuoteLine[];
+    @Input()
+    public _Settings: Setting;
+
+
 
     /**
      * The constructor for the [Component]
@@ -78,7 +89,7 @@ export class Quotes_Printout {
      * @param _QuoteLines The lines in the quote
      * @param _Settings The setting for that user
      */
-    constructor(public _Quote: Quote, public _Company: Company, public  _QuoteLines: QuoteLine[], _Settings: Setting) {}
+    ///constructor(public _Quote: Quote, public _Company: Company, public  _QuoteLines: QuoteLine[], _Settings: Setting) {}
 
 }
 
