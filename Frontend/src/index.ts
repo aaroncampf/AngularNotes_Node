@@ -14,10 +14,10 @@ export function main() {
 switch (document.readyState) {
 	case 'interactive':
 	case 'complete':
+		// enableProdMode();
 		main();
 		break;
 	case 'loading':
 	default:
-		//enableProdMode();
 		document.addEventListener('DOMContentLoaded', () => main());
 }

@@ -1,40 +1,55 @@
-import {Component, OnInit} from '@angular/core';
+import {Component, OnInit, trigger, state, style, transition, animate, OnDestroy, OnChanges} from '@angular/core';
 import {ActivatedRoute} from '@angular/router';
 import {CompanyService} from '../services/companies.service';
 import {Company} from '../models/company.model';
 import '../styles/main.scss';
-//Testing
+//TODO Testing
 import {Quote} from "../models/quote.model";
 import {QuoteLine} from "../models/quotelines.model";
 
 @Component({
     selector: 'home-component',
+	animations: [
+		trigger('contentState', [
+			state('active', style({
+				opacity: '1',
+				transform: 'translateX(0%)',
+			})),
+			state('inactive', style({
+				opacity: '0',
+				transform: 'translateX(-100%)',
+			})),
+			transition('inactive => active', animate('250ms, ease-in')),
+			//TODO figure out how to outro
+			// transition('active => inactive', animate('1000ms, ease-in'))
+		])
+	],
     template: `
 	<div class="container">
 		<b>AngularBro's Notes</b>
 		<input type="search" placeholder="search"/>
 		<content-area>
-			<ul class="nav nav-tabs nav-tabs-justified nav-pills">
-				 <li ngClass="active:tab === COMPANIES">
+			<ul class="nav nav-tabs">
+				 <li [class.active]="tab === COMPANIES">
 					 <a class="tab" [routerLink]="['/companies']">
 						<tab-heading>Companies</tab-heading>
 					</a>
 				 </li>
-				 <li ngClass="active:tab === CONTACTS">
+				 <li [class.active]="tab === CONTACTS">
 					 <a class="tab" [routerLink]="['/contacts']">
 						<tab-heading>Contacts</tab-heading>
 					</a>
 				 </li>
-				 <li ngClass="active:tab === QUOTES">
+				 <li [class.active]="tab === QUOTES">
 					 <a [routerLink]="['/quotes']">
 						 <tab-heading>Quotes</tab-heading>
 					</a>
 				 </li>
 			</ul>
 			<div class="tab-content">
-				<companies-component class="tab-pane" role="tabpanel" [class.active]="tab===COMPANIES"></companies-component>
-				<contacts-component class="tab-pane" role="tabpanel" [class.active]="tab===CONTACTS"></contacts-component>
-				<quotes-component class="tab-pane" role="tabpanel" [class.active]="tab===QUOTES"></quotes-component>
+				<companies-component [@contentState]="companies" [(companySelected)]="activeCompany" class="tab-pane" role="tabpanel" [class.active]="tab===COMPANIES"></companies-component>
+				<contacts-component [@contentState]="contacts" class="tab-pane" role="tabpanel" [class.active]="tab===CONTACTS"></contacts-component>
+				<quotes-component [@contentState]="quotes" class="tab-pane" role="tabpanel" [class.active]="tab===QUOTES"></quotes-component>
 			</div>
 		</content-area>
 			
@@ -44,7 +59,7 @@ import {QuoteLine} from "../models/quotelines.model";
 	</div>
 `
 })
-export class HomeComponent implements OnInit {
+export class HomeComponent implements OnInit, OnChanges {
 	public get COMPANIES(): string {
 		return 'companies';
 	}
@@ -54,22 +69,54 @@ export class HomeComponent implements OnInit {
 	public get CONTACTS(): string {
 		return 'contacts';
 	}
+	public toggleState(state: string): void {
+
+	};
+	public quotes: string;
+	public companies: string;
+	public contacts: string;
+	public activeCompany: boolean;
 	public tab: string;
-	public companies: Company[];
+	public companiesData: Company[];
 	public selectedCompany: Company = <Company>{};
     constructor(private route: ActivatedRoute, private companyService: CompanyService) {}
 
     public ngOnInit(): void {
+    	console.log(this.companies, this.contacts, this.quotes);
 		this.route.params.subscribe(params => {
 			this.tab = params['tab'];
+			this.companies = 'inactive';
+			this.quotes= 'inactive';
+			this.contacts = 'inactive';
+			this[params['tab']] = 'active';
+			console.log(this.companies, this.contacts, this.quotes);
 		});
-		this.companyService.getCompanies().subscribe(response => {
-			console.log(response);
-			this.companies = response;
-		});
+
+		this.companyService.getCompanies()
+			.subscribe(response => {
+				console.log(response);
+				this.companiesData = response;
+			});
 	}
 
-    public OpenTestQuote(): void {
+	public ngOnChanges(): void {
+    	console.log('des');
+
+	}
+
+	// public toggleState(state: string): void {
+    	// this.quotesState = 'inactive';
+    	// this.contactsState = 'inactive';
+    	// this.companyState = 'inactive';
+	// 	console.log(this[state]);
+    	// this[state] = 'active';
+	// 	console.log(this[state]);
+	// }
+
+
+
+	//TODO I will not touch other peopls code, I will not touch other peoples code, I ...
+	public OpenTestQuote(): void {
         let _Quote: Quote = {
             ID : 1,
             Date : null,

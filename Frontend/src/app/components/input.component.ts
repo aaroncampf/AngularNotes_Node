@@ -8,7 +8,7 @@ import {FormControl} from '@angular/forms';
 			<strong>{{label}}</strong>
 		</div>
 		<div class="col-xs-9">
-			<input type="text" class="form-control" [(ngModel)]="model" [formControl]="control"/>
+			<input type="text" class="form-control" [(ngModel)]="model" [formControl]="control" />
 		</div>
 	</div>
 `

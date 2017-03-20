@@ -64,11 +64,12 @@ import {Setting} from "../models/setting.model";
 `
 })
 /**
- * Displays a quote as a beautiful printout
+ * Displays a quote as a motha fuckn beautiful printout
  */
 export class QuotesComponent {
     //TODO: Consider only using [Quote] and not the others
     //TODO: Find out how to order _QuoteLines by Display
+    //TODO: Maybe this might help make this less interpolated - http://stackoverflow.com/questions/38996376/generate-pdf-file-from-html-using-angular2-typescript :)
 
     /**
      * The constructor for the [Component]
