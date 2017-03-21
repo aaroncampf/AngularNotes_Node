@@ -16,6 +16,11 @@ Public Class ContactController
 		Return db.Contacts
 	End Function
 
+	Public Function GetValues(CompanyID As Integer) As IEnumerable(Of Contact)
+		Return db.Companies.Find(CompanyID).Contacts
+	End Function
+
+
 	' GET api/<controller>/5
 	''' <summary>
 	''' Get a contact
@@ -60,4 +65,5 @@ Public Class ContactController
 		db.Contacts.Remove(db.Contacts.Find(id))
 		db.SaveChanges()
 	End Sub
+
 End Class

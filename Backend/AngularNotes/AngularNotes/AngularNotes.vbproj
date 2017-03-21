@@ -226,7 +226,6 @@
     <Compile Include="Areas\HelpPage\SampleGeneration\TextSample.vb" />
     <Compile Include="Areas\HelpPage\XmlDocumentationProvider.vb" />
     <Compile Include="Controllers\CompaniesController.vb" />
-    <Compile Include="Controllers\Company1Controller.vb" />
     <Compile Include="Controllers\ContactController.vb" />
     <Compile Include="Controllers\NotesController.vb" />
     <Compile Include="Controllers\QuoteLinesController.vb" />

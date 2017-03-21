@@ -14,13 +14,18 @@ Namespace Controllers
 
         Private db As New Database
 
-        ' GET: api/Notes
-        Function GetNotes() As IQueryable(Of Note)
-            Return db.Notes
-        End Function
+		' GET: api/Notes
+		Function GetNotes() As IQueryable(Of Note)
+			Return db.Notes
+		End Function
 
-        ' GET: api/Notes/5
-        <ResponseType(GetType(Note))>
+		Function GetNotes(ContactID As Integer) As IQueryable(Of Note)
+			Return db.Contacts(ContactID).Notes
+		End Function
+
+
+		' GET: api/Notes/5
+		<ResponseType(GetType(Note))>
         Function GetNote(ByVal id As Integer) As IHttpActionResult
             Dim note As Note = db.Notes.Find(id)
             If IsNothing(note) Then
