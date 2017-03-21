@@ -61,21 +61,32 @@ Namespace Controllers
             Return StatusCode(HttpStatusCode.NoContent)
         End Function
 
-        ' POST: api/Notes
-        <ResponseType(GetType(Note))>
-        Function PostNote(ByVal note As Note) As IHttpActionResult
-            If Not ModelState.IsValid Then
-                Return BadRequest(ModelState)
-            End If
+		'' POST: api/Notes
+		'<ResponseType(GetType(Note))>
+		'Function PostNote(ByVal note As Note) As IHttpActionResult
+		'	If Not ModelState.IsValid Then
+		'		Return BadRequest(ModelState)
+		'	End If
 
-            db.Notes.Add(note)
-            db.SaveChanges()
+		'	db.Notes.Add(note)
+		'	db.SaveChanges()
 
-            Return CreatedAtRoute("DefaultApi", New With {.id = note.ID}, note)
-        End Function
+		'	Return CreatedAtRoute("DefaultApi", New With {.id = note.ID}, note)
+		'End Function
 
-        ' DELETE: api/Notes/5
-        <ResponseType(GetType(Note))>
+		<ResponseType(GetType(Note))>
+		Function PostValue(ContactID As Integer, <FromBody()> ByVal value As Note) As IHttpActionResult
+			If Not ModelState.IsValid Then
+				Return BadRequest(ModelState)
+			End If
+
+			db.Contacts.Find(ContactID).Notes.Add(value)
+			db.SaveChanges()
+			Return CreatedAtRoute("DefaultApi", New With {.id = value.ID}, value)
+		End Function
+
+		' DELETE: api/Notes/5
+		<ResponseType(GetType(Note))>
         Function DeleteNote(ByVal id As Integer) As IHttpActionResult
             Dim note As Note = db.Notes.Find(id)
             If IsNothing(note) Then
