@@ -13,10 +13,10 @@ export interface Contact {
     /**
      * The company that this contact belongs to
      */
-    Company: Company;
+    Company?: Company;
 
     /**
      * All notes written for this contact
      */
-    Notes: Note[];
+    Notes?: Note[];
 }
