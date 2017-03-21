@@ -1,4 +1,4 @@
-import {Component, OnInit, Input, Output, EventEmitter} from '@angular/core';
+import {Component, OnInit, Input, Output, EventEmitter, OnChanges, SimpleChanges} from '@angular/core';
 import {FormControl, Validators, FormGroup} from '@angular/forms';
 import {Company} from '../models/company.model';
 import {CompanyService} from '../services/companies.service';
@@ -11,24 +11,46 @@ import {Router, NavigationExtras} from '@angular/router';
 		<div class="row">
 			<div class="col-xs-12">
 				<strong>Select a Company:</strong>
-				<select [(ngModel)]="selectedCompany" class="form-control">
-					<option (click)="companyIsSelected()" *ngFor="let company of companies" [ngValue]="company">{{company.Name}}</option>
-					<option [ngValue]="newCompany">New Company...</option>
-				</select>
+				<table class="table table-striped table-bordered table-hover">
+					<thead>
+						<th>Name</th>
+						<th>Phone</th>
+						<th></th>
+					</thead>
+					<tbody>
+						<tr *ngFor="let company of companies">
+							<td (click)="companyIsSelected(company)">
+								<strong>{{company?.Name}}</strong>
+							</td>
+							<td (click)="companyIsSelected(company)">{{company.Phone}}</td>
+							<td (click)="removeCompany(company.ID)">
+								<i class="glyphicon glyphicon-remove-circle"></i>
+							</td>
+						</tr>
+					</tbody>
+				</table>
 			</div>
 		</div>
 		<form [formGroup]="companiesGroup" (ngSubmit)="companySave()">
-			<input-component label="Name" [(model)]="selectedCompany.Name" [control]="nameControl"></input-component>
-			<input-component label="Address" [(model)]="selectedCompany.Address" [control]="addressControl"></input-component>
-			<input-component label="City" [(model)]="selectedCompany.City" [control]="cityControl"></input-component>
-			<input-component label="ZipCode" [(model)]="selectedCompany.Zip" [control]="zipControl"></input-component>
-			<input-component label="Phone" [(model)]="selectedCompany.Phone" [control]="phoneControl"></input-component>
+			<span class="col-xs-6">
+				<input-component label="Name" [model]="selectedCompany.Name" [control]="nameControl"></input-component>
+			</span>
+			<span class="col-xs-6">
+				<input-component label="Phone" [model]="selectedCompany.Phone" [control]="phoneControl"></input-component>	
+			</span>
+			<input-component label="Address" [model]="selectedCompany.Address" [control]="addressControl"></input-component>
+			<span class="col-xs-6">
+				<input-component label="City" [model]="selectedCompany.City" [control]="cityControl"></input-component>
+			</span>
+			<span class="col-xs-6">
+				<input-component label="ZipCode" [model]="selectedCompany.Zip" [control]="zipControl"></input-component>
+			</span>
 			<div class="row">
-				Misc: <textarea [(ngModel)]="selectedCompany.Misc" class="form-control" [formControl]="miscControl"></textarea>
+				Misc: <textarea [ngModel]="selectedCompany.Misc" class="form-control" [formControl]="miscControl"></textarea>
 			</div>
 			<div class="row">
 				<button class="btn btn-lg" type="submit" [disabled]="companiesGroup.invalid" [class.disabled]="companiesGroup.invalid">Save</button>
-				<button class="btn btn-danger" type="button" (click)="removeCompany()">Remove</button>
+				<button class="btn btn-danger" type="button" (click)="removeCompany(selectedCompany.ID)">Remove</button>
 			</div>
 			<h4>{{selectedCompany.Name}} Contacts</h4>
 			<div class="row">
@@ -40,36 +62,33 @@ import {Router, NavigationExtras} from '@angular/router';
 							<th>Phone</th>
 							<th>Email</th>
 							<th>Position</th>
+							<th></th>
 						</tr>	
 					</thead>
 					<tbody>
-						<tr *ngFor="let contact of contacts" (click)="selectContact(contact.ID)" >
+						<tr *ngFor="let contact of contacts" >
 							<td>{{contact.ID}}</td> 
 							<td>{{contact.Name}}</td>
 							<td>{{contact.Phone}}</td>
 							<td>{{contact.Email}}</td>
 							<td>{{contact.Position}}</td>
-							<i class="glyphicon glyphicon-remove"></i>
-
+							<td>
+								<i class="glyphicon glyphicon-list" (click)="selectContact(contact.ID, 0)"></i>
+							</td>
 						</tr>	
 					</tbody>
 				</table>
 			</div>
 		</form>
-		<button class="btn btn-block">Add A {{selectedCompany.Name}} Contact</button>
+		<button class="btn btn-block" (click)="selectContact(0, selectedCompany.ID)">Add A {{selectedCompany.Name}} Contact</button>
 `
 })
 
-export class CompaniesComponent implements OnInit{
-	@Input()
-	public companySelected: boolean;
+export class CompaniesComponent implements OnInit {
 	@Output()
-	public changeCompanySelected: EventEmitter<boolean> = new EventEmitter<boolean>();
+	public companySelected: EventEmitter<boolean> = new EventEmitter<boolean>();
 	public selectedCompany:Company = <Company>{};
-	public newCompany: Company = <Company>{
-		ID: void 0
-	};
-	public contacts: any[] = [];
+	public contacts: Contact[] = [];
 	public companies: Company[];
 	public nameControl: FormControl = new FormControl('', [Validators.maxLength(255)]);
 	public addressControl: FormControl = new FormControl('', []);
@@ -88,18 +107,16 @@ export class CompaniesComponent implements OnInit{
 	constructor(private contactService: ContactService, private companyService: CompanyService, private router: Router){};
 
 	public ngOnInit(): void {
-		this.companyService.getCompanies()
-			.subscribe(companies => {
-				this.companies = companies;
-				this.contactService.getContacts()
-					.subscribe(res => {
-					this.contacts = res;
-				}, err => console.log(err));
-			});
+		this.companyService.getCompanies().subscribe(companies => {
+			this.companies = companies;
+		});
 	}
 
-	public companyIsSelected(): void {
-		this.companySelected = true;
+	public companyIsSelected(company: Company): void {
+		this.selectedCompany = company;
+		this.companySelected.emit(true);
+		this.contactService.getCompanyContacts(company.ID)
+			.subscribe(contacts => this.contacts = contacts, err => console.log('getCompanyContacts Error', err));
 	}
 
 	public companySave(): void {
@@ -113,8 +130,8 @@ export class CompaniesComponent implements OnInit{
 					});
 			});
 	}
-	public removeCompany(): void {
-		this.companyService.deleteCompany(this.selectedCompany.ID).subscribe(res => {
+	public removeCompany(id: number): void {
+		this.companyService.deleteCompany(id).subscribe(res => {
 			console.log(res); //todo toastr
 			this.companyService.getCompanies()
 				.subscribe(companies => {
@@ -124,10 +141,11 @@ export class CompaniesComponent implements OnInit{
 			});
 	}
 
-	public selectContact(contactId: number): void {
+	public selectContact(contactId: number, companyId: number): void {
 		let navigationExtras: NavigationExtras = {
 			queryParams: {
-				"contactId": contactId.toString()
+				"contactId": contactId.toString(),
+				"companyId": companyId.toString()
 			}
 		};
 		this.router.navigate(['/contacts'], navigationExtras);

@@ -11,10 +11,10 @@ import {ActivatedRoute} from '@angular/router';
 	<div class="row">
 		<div class="col-xs-6">
 			<form [formGroup]="contactsGroup" (ngSubmit)="saveContact()">
-				<input-component label="Name:" [control]="nameControl" [(model)]="contact.Name"></input-component>
-				<input-component label="Phone:" [control]="phoneControl" [(model)]="contact.Phone"></input-component>
-				<input-component label="Email:" [control]="emailControl" [(model)]="contact.Email"></input-component>
-				<input-component label="Position:" [control]="positionControl" [(model)]="contact.Position"></input-component>
+				<input-component label="Name:" [control]="nameControl" [model]="contact?.Name"></input-component>
+				<input-component label="Phone:" [control]="phoneControl" [model]="contact?.Phone"></input-component>
+				<input-component label="Email:" [control]="emailControl" [model]="contact?.Email"></input-component>
+				<input-component label="Position:" [control]="positionControl" [model]="contact?.Position"></input-component>
 				<button type="submit" class="btn btn-lg">Save</button>
 			</form>
 		</div>

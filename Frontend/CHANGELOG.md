@@ -1,10 +1,10 @@
 # ChangeLog 
->uses sem-ver 
+>To make sense of all your busy-ness to other developers and please use sem-ver. 
 
 ##unreleased
-<<<<<<< HEAD
 [refactor] Moved static data files for `quote_printout.component` to `quotelines.model`
 [code] Created `notes.component`
+[code] Finished wiring `company.component` to `company.services` and `contact.service`
 
 ##version 0.2.0 - 3/20/2017
 
@@ -17,8 +17,6 @@
 [refactor] removed top navbar and option button from `home.component`
 [code] added POST and GET to `company.service`
 [refactor] made the sidemenu into a `companies.component` and new tab-view
-=======
->>>>>>> a190f6242056e3777d52a871887c3807a6a7fd8e
 
 ##version 0.1.0
 

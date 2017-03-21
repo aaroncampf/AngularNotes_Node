@@ -25,8 +25,6 @@ import {Component} from '@angular/core';
 		<button class="col-xs-1">-</button>
 		<button class="col-xs-1">+</button>
 	</div>
-	<button  class="btn btn-block" [routerLink]="['/' + QUOTE_PRINT]">Test Quote</button>
-
 `
 })
 

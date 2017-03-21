@@ -1,18 +1,20 @@
 import {Component, Input, Output, EventEmitter} from '@angular/core';
 import {FormControl} from '@angular/forms';
+
 @Component({
 	selector: 'input-component',
 	template: `
 	<div class="row">
-		<div class="col-xs-3">
+		<div class="col-xs-2 text-left">
 			<strong>{{label}}</strong>
 		</div>
-		<div class="col-xs-9">
+		<div class="col-xs-10">
 			<input type="text" class="form-control" [(ngModel)]="model" [formControl]="control" />
 		</div>
 	</div>
 `
 })
+
 export class InputComponent {
 	@Input()
 	public label: string;
