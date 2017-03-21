@@ -66,6 +66,7 @@ import {Contact} from "../models/contact.model";
 		</content-area>
 		<hr>
 		<button  class="btn btn-block" [routerLink]="['/' + QUOTE_PRINT]">Test Quote</button>
+		<button  class="btn btn-block" (click)="onClick()">Test modal</button>
 	</div>
 `
 })
@@ -97,16 +98,16 @@ export class HomeComponent implements OnInit {
 		overlay.defaultViewContainer = vcRef;
 	}
 
-	// public onClick() {
-	// 	this.modal.alert()
-	// 		.size('lg')
-	// 		.showClose(true)
-	// 		.title('A simple Alert style modal window')
-	// 		.body(`
-     //            <quotes-printout-component [_Quote]="quote" [_Company]="company" [_QuoteLines]="quoteLines" [_Settings]=""></quotes-printout-component>
-	// 		`)
-	// 		.open();
-	// }
+	public onClick() {
+		this.modal.alert()
+			.size('lg')
+			.showClose(true)
+			.title('A simple Alert style modal window')
+			.body(`
+                <quotes-printout-component></quotes-printout-component>
+			`)
+			.open();
+	}
 
     public ngOnInit(): void {
 		this.route.params.subscribe(params => {
@@ -116,10 +117,6 @@ export class HomeComponent implements OnInit {
 			this.contacts = 'inactive';
 			this[params['tab']] = 'active';
 		});
-		this.companyService.getCompanies()
-			.subscribe(response => {
-				this.companiesData = response;
-			});
 	}
 
 }
