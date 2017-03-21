@@ -18,11 +18,11 @@ import {Contact} from "../models/contact.model";
 		trigger('contentState', [
 			state('active', style({
 				opacity: '1',
-				transform: 'translateX(0%)',
+				transform: 'translateY(0%)',
 			})),
 			state('inactive', style({
 				opacity: '0',
-				transform: 'translateX(-100%)',
+				transform: 'translateY(100%)',
 			})),
 			transition('inactive => active', animate('250ms, ease-in')),
 			//TODO figure out how to outro
@@ -45,6 +45,11 @@ import {Contact} from "../models/contact.model";
 						<tab-heading>Contacts</tab-heading>
 					</a>
 				 </li>
+				 <li [class.active]="tab === NOTES">
+					 <a class="tab" [routerLink]="['/notes']">
+						<tab-heading>Notes</tab-heading>
+					</a>
+				 </li>
 				 <li [class.active]="tab === QUOTES">
 					 <a [routerLink]="['/quotes']">
 						 <tab-heading>Quotes</tab-heading>
@@ -56,7 +61,7 @@ import {Contact} from "../models/contact.model";
 				<contacts-component [@contentState]="contacts" class="tab-pane" role="tabpanel" [class.active]="tab===CONTACTS"></contacts-component>
 				<quotes-component [@contentState]="quotes" class="tab-pane" role="tabpanel" [class.active]="tab===QUOTES"></quotes-component>
 				<quotes-printout-component class="tab-pane" role="tabpanel" [class.active]="tab===QUOTE_PRINT"[_Quote]="quote" [_Company]="company" [_QuoteLines]="quoteLines" [_Settings]="settings" [_Contact]="contact"></quotes-printout-component>
-				
+				<notes-component [@contentState]="notes" class="tab-pane" role="tabpanel" [class.active]="tab===NOTES"></notes-component>
 			</div>
 		</content-area>
 		<hr>
@@ -66,6 +71,9 @@ import {Contact} from "../models/contact.model";
 export class HomeComponent implements OnInit {
 	public get COMPANIES(): string {
 		return 'companies';
+	}
+	public get NOTES(): string {
+		return 'notes';
 	}
 	public get QUOTE_PRINT(): string {
 		return 'quote_print';
@@ -79,6 +87,7 @@ export class HomeComponent implements OnInit {
 	public quotes: string;
 	public companies: string;
 	public contacts: string;
+	public notes: string;
 	public activeCompany: boolean;
 	public tab: string;
 	public companiesData: Company[];
@@ -87,16 +96,16 @@ export class HomeComponent implements OnInit {
 		overlay.defaultViewContainer = vcRef;
 	}
 
-	public onClick() {
-		this.modal.alert()
-			.size('lg')
-			.showClose(true)
-			.title('A simple Alert style modal window')
-			.body(`
-                <quotes-printout-component [_Quote]="quote" [_Company]="company" [_QuoteLines]="quoteLines" [_Settings]=""></quotes-printout-component>
-			`)
-			.open();
-	}
+	// public onClick() {
+	// 	this.modal.alert()
+	// 		.size('lg')
+	// 		.showClose(true)
+	// 		.title('A simple Alert style modal window')
+	// 		.body(`
+     //            <quotes-printout-component [_Quote]="quote" [_Company]="company" [_QuoteLines]="quoteLines" [_Settings]=""></quotes-printout-component>
+	// 		`)
+	// 		.open();
+	// }
 
     public ngOnInit(): void {
 		this.route.params.subscribe(params => {
@@ -112,89 +121,4 @@ export class HomeComponent implements OnInit {
 			});
 	}
 
-	public quote: Quote = {
-            ID : 1,
-            Date : null,
-            Name : "First Quote",
-            Company : null,
-            Lines: null
-        };
-	public company: Company = {
-            ID: 1,
-            Name: "AJP Northwest",
-            Address: "1111 SW Portland",
-            City: "Portland",
-            Zip: "97034",
-            Phone: "555-555-5555",
-            Misc: "aswrfghjkjhgfdc",
-            Contacts:null,
-            Quotes:null
-        };
-
-	public quoteLines: QuoteLine[] = [{
-		ID: 1,
-		Display: 1,
-		UNIT: "Case",
-		COST: "$1.76",
-		DESC: "sfh",
-		IsCentered: false,
-		Quote: null
-	}];
-
-	public contact: Contact = {
-		ID: 1,
-		Name: "Contact_Test",
-		Phone: "503-999-8085",
-		Email: "contact@contact.com",
-		Position: "CEO",
-		Company: void 0,
-		Notes:  void 0,
-	};
-
-	public settings: Setting = {
-	ID: 1,
-	Name: "Aaron Campf",
-	Gmail: "Example@Gmail.com",
-	GmailPassword: "",
-	Email: "Company@Gmail.com",
-	Address: "1600 Amphitheatre Parkway, Mountan View CA",
-	Phone: "503-999-9999",
-	CompanyName: "AJP",
-	CompanyWebsite: "www.ajp.com",
-	CompanyPhone: "503-333-3333",
-	CellPhone: "503-555-5555",
-	CompanyFax: "503-987-9854"
-};
-
-    // }public OpenTestQuote(): void {
-    //     let _Quote: Quote = {
-    //         ID : 1,
-    //         Date : null,
-    //         Name : "Hello World",
-    //         Company : null,
-    //         Lines: null
-    //     };
-    //     let _Company: Company = {
-    //         ID: 1,
-    //         Name: "",
-    //         Address: "",
-    //         City: "",
-    //         Zip: "",
-    //         Phone: "",
-    //         Misc: "",
-    //         Contacts:null,
-    //         Quotes:null
-    //     };
-	//
-    //     let _QuoteLines: QuoteLine[] = [];
-    //     _QuoteLines.push({
-    //         ID: 1,
-    //         Display: 1,
-    //         UNIT: "",
-    //         COST: "",
-    //         DESC: "",
-    //         IsCentered: false,
-    //         Quote: null
-    //     });
-    // }
 }
