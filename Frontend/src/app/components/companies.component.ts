@@ -49,11 +49,14 @@ import {Router, NavigationExtras} from '@angular/router';
 							<td>{{contact.Phone}}</td>
 							<td>{{contact.Email}}</td>
 							<td>{{contact.Position}}</td>
+							<i class="glyphicon glyphicon-remove"></i>
+
 						</tr>	
 					</tbody>
 				</table>
 			</div>
 		</form>
+		<button class="btn btn-block">Add A {{selectedCompany.Name}} Contact</button>
 `
 })
 

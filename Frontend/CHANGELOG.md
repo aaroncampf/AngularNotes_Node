@@ -3,8 +3,12 @@
 ans we uses Semantic Version.
 
 ##unreleased
+
+##version 0.2.0 - 3/20/2017
+
 [code] Created a delete method for `companies.service`
 [code] finished the `companies.service` CRUD
+[code] added a modal library and updated the `contact.services`
 
 ##version 0.1.1 - 3/20/2017
 

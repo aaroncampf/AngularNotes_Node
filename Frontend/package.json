@@ -1,6 +1,6 @@
 {
   "name": "robs-online-resume",
-  "version": "0.1.1",
+  "version": "0.2.0",
   "description": "A simple app to showcase and allow potential employers contact.",
   "scripts": {
     "build": "webpack --display-error-details --progress",
@@ -9,7 +9,7 @@
     "start": "npm run server",
     "dev-build": "webpack-dev-server --content-base build/"
   },
-  "author": "rdev1163@outlook.com",
+  "authors": ["rdev1163@outlook.com","The Dark Lord of the Dot Net Framework, Aaron" ],
   "license": "MIT",
   "dependencies": {
     "@angular/common": "~2.4.10",

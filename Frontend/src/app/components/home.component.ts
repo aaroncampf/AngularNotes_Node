@@ -60,7 +60,6 @@ import {Contact} from "../models/contact.model";
 			</div>
 		</content-area>
 		<hr>
-		<button  class="btn btn-block" [routerLink]="['/' + QUOTE_PRINT]">Test Quote</button>
 	</div>
 `
 })
