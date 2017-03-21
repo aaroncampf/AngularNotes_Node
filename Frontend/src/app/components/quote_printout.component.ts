@@ -3,7 +3,7 @@
  */
 
 
-import {Component} from '@angular/core';
+import {Component, Input} from '@angular/core';
 import {Company} from "../models/company.model";
 import {Quote} from "../models/quote.model";
 import {QuoteLine, QUOTE, COMPANY, QUOTELINES, SETTINGS, CONTACT} from "../models/quotelines.model";
@@ -83,15 +83,14 @@ import {Contact} from '../models/contact.model';
 /**
  * Displays a quote as a motha fuckn beautiful printout
  */
-export class Quotes_Printout  {
+export class Quotes_Printout {
 	//TODO: Consider only using [Quote] and not the others
 	//TODO: Find out how to order _QuoteLines by Display
 	//TODO: Maybe this might help make this less interpolated - http://stackoverflow.com/questions/38996376/generate-pdf-file-from-html-using-angular2-typescript :)
 
 	public _Quote: Quote = QUOTE;
 	public _Company: Company = COMPANY;
-	public  _QuoteLines: QuoteLine[] = QUOTELINES;
+	public _QuoteLines: QuoteLine[] = QUOTELINES;
 	public _Settings: Setting = SETTINGS;
 	public _Contact: Contact = CONTACT;
-
 }

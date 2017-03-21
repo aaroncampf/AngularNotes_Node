@@ -2,11 +2,10 @@
 Imports System.Collections.Generic
 Imports System.Linq
 Imports System.Web.Http
-Imports System.Web.Http.Cors
 
 Public Module WebApiConfig
 	Public Sub Register(ByVal config As HttpConfiguration)
-		config.EnableCors()
+		'config.EnableCors()
 
 
 		' Web API configuration and services
@@ -20,8 +19,7 @@ Public Module WebApiConfig
 		)
 
 
-		'config.EnableCors()
-		Dim Cors = New EnableCorsAttribute("*", "*", "*")
+		Dim Cors = New Cors.EnableCorsAttribute("*", "*", "*")
 		config.EnableCors(Cors)
 	End Sub
 End Module
