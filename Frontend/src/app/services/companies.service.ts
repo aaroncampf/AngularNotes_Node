@@ -29,6 +29,7 @@ export class CompanyService {
 				{
 					Name: formData.nameControl,
 					Address: formData.addressControl,
+					Phone: formData.phoneControl,
 					City: formData.cityControl,
 					Zip: formData.zipControl,
 					Misc: formData.miscControl
@@ -41,6 +42,7 @@ export class CompanyService {
 				ID: id,
 				Name: formData.nameControl,
 				Address: formData.addressControl,
+				Phone: formData.phoneControl,
 				City: formData.cityControl,
 				Zip: formData.zipControl,
 				Misc: formData.miscControl

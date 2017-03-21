@@ -58,11 +58,8 @@ import {Setting} from '../models/setting.model';
 				
 			</div>
 		</content-area>
-
-			<button (click)="onClick()">Modal</button>
-			
-			<br><br><br><br><br>
-			<button  [routerLink]="['/' + QUOTE_PRINT]">Test Quote</button>
+		<hr>
+		<button  class="btn btn-block" [routerLink]="['/' + QUOTE_PRINT]">Test Quote</button>
 	</div>
 `
 })

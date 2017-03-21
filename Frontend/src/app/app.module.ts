@@ -19,7 +19,7 @@ import {Quotes_Printout} from './components/quote_printout.component';
 
 const MAIN_ROUTES: Routes = [
 	{path: '', children: [
-		{path:':tab', component: HomeComponent },
+		{path:':tab', component: HomeComponent},
 		{path:'', redirectTo: 'companies', pathMatch: 'full'}
 	]}];
 
