@@ -25,32 +25,32 @@ export class CompanyService {
 		});
 		const options = new RequestOptions({headers: headers});
 		if (!id) {
-			return this.http.post('http://angularnotes-angularbros.azurewebsites.net/api/companies', JSON.stringify(
-				{
+			return this.http.post('http://angularnotes-angularbros.azurewebsites.net/api/companies',
+				JSON.stringify({
 					Name: formData.nameControl,
 					Address: formData.addressControl,
 					Phone: formData.phoneControl,
 					City: formData.cityControl,
 					Zip: formData.zipControl,
 					Misc: formData.miscControl
-			}), options)
-				.map(res => res)
-				.catch(err => this.handleError(err));
+				}), options)
+					.map(res => res)
+					.catch(err => this.handleError(err));
 		} else {
-		return this.http.put('http://angularnotes-angularbros.azurewebsites.net/api/companies/' + id, JSON.stringify(
-			{
-				ID: id,
-				Name: formData.nameControl,
-				Address: formData.addressControl,
-				Phone: formData.phoneControl,
-				City: formData.cityControl,
-				Zip: formData.zipControl,
-				Misc: formData.miscControl
-		}), options)
-			.map(res => res)
-			.catch(err => this.handleError(err));
+			return this.http.put('http://angularnotes-angularbros.azurewebsites.net/api/companies/' + id, JSON.stringify(
+				{
+					ID: id,
+					Name: formData.nameControl,
+					Address: formData.addressControl,
+					Phone: formData.phoneControl,
+					City: formData.cityControl,
+					Zip: formData.zipControl,
+					Misc: formData.miscControl
+				}), options)
+					.map(res => res)
+					.catch(err => this.handleError(err));
+			}
 		}
-	}
 
 	private handleError(error: Error | any) {
 		let errMsg: string;

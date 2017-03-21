@@ -26,6 +26,15 @@ export class ContactService {
 			.catch(err => err);
 
 	}
+	public getCompanyContacts(id: number): Observable<any> {
+		return this.http.get(`http://angularnotes-angularbros.azurewebsites.net/api/Contact?CompanyID=${id}`)
+			.map(response => {
+				console.log('response', response.json());
+				return response.json();
+			})
+			.catch(err => err);
+
+	}
 	public saveContact(contact: Contact): Observable<any> {
 		const headers = new Headers({
 			'content-type': 'application/json',
