@@ -14,8 +14,7 @@ import {ContactService} from './services/contact.service';
 import {ModalModule} from 'angular2-modal';
 import {BootstrapModalModule} from 'angular2-modal/plugins/bootstrap';
 import {Quotes_Printout} from './components/quote_printout.component';
-
-
+import {NotesComponent} from './components/notes.component';
 
 const MAIN_ROUTES: Routes = [
 	{path: '', children: [
@@ -31,7 +30,8 @@ const MAIN_ROUTES: Routes = [
 		QuotesComponent,
 		Quotes_Printout,
 		InputComponent,
-		CompaniesComponent
+		CompaniesComponent,
+		NotesComponent
 	],
 	imports: [
 		BrowserModule,
