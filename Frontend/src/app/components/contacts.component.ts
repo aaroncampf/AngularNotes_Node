@@ -1,25 +1,23 @@
-import {Component, OnInit} from '@angular/core';
-// import {Company} from '../models/company.model';
+import {Component, Input, OnChanges, OnInit, SimpleChanges} from '@angular/core';
 import {FormControl, FormGroup} from '@angular/forms';
 import {Contact} from '../models/contact.model';
 import {ContactService} from '../services/contact.service';
 import {ActivatedRoute} from '@angular/router';
 import {NotesService} from '../services/notes.service';
 import {Note} from '../models/note.model';
+import {Company} from '../models/company.model';
 
 @Component({
 	selector: 'contacts-component',
 	template: `
 	<div class="row">
-		<form [formGroup]="contactsGroup" (ngSubmit)="saveContact()">
+		<form [formGroup]="contactsGroup">
 			<div class="col-xs-4">
-				<input-component label="Name:" [control]="nameControl" [model]="selectedContact?.Name"></input-component>
-				<input-component label="Phone:" [control]="phoneControl" [model]="selectedContact?.Phone"></input-component>
-				<input-component label="Email:" [control]="emailControl" [model]="selectedContact?.Email"></input-component>
-				<input-component label="Position:" [control]="positionControl" [model]="selectedContact?.Position"></input-component>
-				<button type="submit" class="btn btn-block">Save</button>
+				<input-component label="Name:" [currentModel]="selectedContact" propKey="Name" [apiPath]="notesRESTPath()" [idNumber]="selectedContact.ID" [control]="nameControl" [model]="selectedContact?.Name"></input-component>
+				<input-component label="Phone:" [currentModel]="selectedContact" propKey="Phone" [apiPath]="notesRESTPath()" [idNumber]="selectedContact.ID" [control]="phoneControl" [model]="selectedContact?.Phone"></input-component>
+				<input-component label="Email:" [currentModel]="selectedContact" propKey="Email" [apiPath]="notesRESTPath()" [idNumber]="selectedContact.ID" [control]="emailControl" [model]="selectedContact?.Email"></input-component>
+				<input-component label="Position:" [currentModel]="selectedContact" propKey="Position" [apiPath]="notesRESTPath()" [idNumber]="selectedContact.ID" [control]="positionControl" [model]="selectedContact?.Position"></input-component>
 				<button type="button" class="btn btn-block">New Contact</button>
-				<button type="button" class="btn btn-block" (click)="saveNote(newNote, selectedContact.ID)" [disabled]="" [class.disabled]="!selectedContact">New Note</button>
 			</div>
 		</form>
 		<div class="col-xs-8">
@@ -40,6 +38,7 @@ import {Note} from '../models/note.model';
 	</div>
 	<div class="row">
 		<strong>Contact Notes</strong>
+		<button type="button" class="btn btn-block" (click)="saveNote(newNote, selectedContact.ID)" [disabled]="" [class.disabled]="!selectedContact">New Note</button>
 	</div>
 	<div class="row panel" *ngFor="let note of notes; let i = index;">
 		<button class="btn-danger pull-right" (click)="removeNote(note.ID)"><i class="glyphicon glyphicon-remove"></i></button>
@@ -50,8 +49,10 @@ import {Note} from '../models/note.model';
 `,
 })
 
-export class ContactsComponent implements OnInit {
-	public companyId: number;
+export class ContactsComponent implements OnInit, OnChanges {
+	@Input()
+	public currentCompany: Company = <Company>{};
+	public notesRESTPath: () => string = () => `http://angularnotes-angularbros.azurewebsites.net/api/Contact/`;
 	public notes: Note[] = [];
 	public date: Date = new Date(Date.now());
 	public newNote: Note = {
@@ -61,7 +62,6 @@ export class ContactsComponent implements OnInit {
 	};
 	public selectedContact: Contact = <Contact>{};
 	public contacts: Contact[] = [];
-	// public CompaniesData: Company[];
 	public nameControl: FormControl = new FormControl('', []);
 	public emailControl: FormControl = new FormControl('', []);
 	public titleControl: FormControl = new FormControl('', []);
@@ -78,27 +78,18 @@ export class ContactsComponent implements OnInit {
 				private route: ActivatedRoute,
 				private notesService: NotesService) {}
 
+	public ngOnChanges(changes: SimpleChanges): void {
+		if(this.currentCompany.ID > 0) {
+			this.contactService.getCompanyContacts(this.currentCompany.ID).subscribe(response => {
+				this.contacts = response;
+			}, err => console.log('ngOnChanges getCompanyContacts', err))
+		}
+	}
 	public ngOnInit(): void {
 		this.route.queryParams.subscribe(params => {
-			if (!!params['contactId'] && !!params['companyId']) {
-				this.companyId = params['companyId'];
-				this.contactService.getContacts().subscribe(response => {
-					this.contacts = response;
-				})
+			if (!!params['contactId']) {
+				this.contactService.getContact(params['contactId']).subscribe(contact => this.selectedContact = contact);
 			}
-		});
-	}
-
-	public saveContact(): void {
-		const contact: Contact = {
-			ID: this.selectedContact.ID,
-			Name: this.contactsGroup.value.name,
-			Email: this.contactsGroup.value.email,
-			Phone: this.contactsGroup.value.phone,
-			Position: this.contactsGroup.value.position,
-		};
-		this.contactService.saveContact(contact, this.companyId).subscribe(res => {
-			this.contactService.getContacts().subscribe(contacts => this.contacts = contacts);
 		});
 	}
 
@@ -118,12 +109,8 @@ export class ContactsComponent implements OnInit {
 
 	public removeContact(contactId: number): void {
 		this.contactService.deleteContact(contactId).subscribe(res => {
-			if (!this.companyId) {
-				this.contactService.getCompanyContacts(this.companyId).subscribe(contacts => this.contacts = contacts);
-			} else {
-				this.contactService.getContacts().subscribe(contacts => this.contacts = contacts);
-			}
-			console.log('deleted: ', res)
+			this.contactService.getCompanyContacts(this.currentCompany.ID)
+				.subscribe(contacts => this.contacts = contacts, err => console.log(err));
 		});
 	}
 

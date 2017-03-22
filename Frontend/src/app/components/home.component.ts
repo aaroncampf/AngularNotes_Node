@@ -1,20 +1,9 @@
-import {
-	Component, OnInit, trigger, state, style, transition, animate, ViewContainerRef,
-	AfterViewChecked, AfterViewInit
-} from '@angular/core';
+import {Component, OnInit, trigger, state, style, transition, animate, ViewContainerRef} from '@angular/core';
 import {ActivatedRoute} from '@angular/router';
-import {CompanyService} from '../services/companies.service';
 import {Company} from '../models/company.model';
 import '../styles/main.scss';
 import {Overlay} from 'angular2-modal';
 import { Modal } from 'angular2-modal/plugins/bootstrap';
-import {InputComponent} from './input.component'
-//TODO Testing
-import {Quote} from "../models/quote.model";
-import {QuoteLine} from "../models/quotelines.model";
-import {Setting} from '../models/setting.model';
-import {Contact} from "../models/contact.model";
-
 
 @Component({
     selector: 'home-component',
@@ -35,7 +24,8 @@ import {Contact} from "../models/contact.model";
 	],
     template: `
 		<div class="container">
-			<b>AngularBro's Notes</b>
+			<b>AngularBro's Notes</b> 
+			<span class="pull-right">{{activeCompany.Name || 'No Company Is Selected'}}</span>
 			<input type="search" placeholder="search"/>
 			<content-area>
 				<ul class="nav nav-tabs">
@@ -61,12 +51,38 @@ import {Contact} from "../models/contact.model";
 					</li>
 				</ul>
 				<div class="tab-content">
-					<companies-component [@contentState]="companies" class="tab-pane" role="tabpanel" [class.active]="tab===COMPANIES"></companies-component>
-					<contacts-component [@contentState]="contacts" class="tab-pane" role="tabpanel" [class.active]="tab===CONTACTS"></contacts-component>
-					<quotes-component [@contentState]="quotes" class="tab-pane" role="tabpanel" [class.active]="tab===QUOTES"></quotes-component>
+					<companies-component 
+						[@contentState]="companies"
+					 	(currentCompany)="setCompany($event)" 
+					 	class="tab-pane"
+					 	role="tabpanel" 
+					 	[class.active]="tab===COMPANIES">
+					</companies-component>
+					<contacts-component 
+						[@contentState]="contacts" 
+						[currentCompany]="activeCompany" 
+						class="tab-pane"
+						role="tabpanel" 
+						[class.active]="tab===CONTACTS">
+					</contacts-component>
+					<quotes-component 
+						[@contentState]="quotes"
+						class="tab-pane" 
+						role="tabpanel"
+						[class.active]="tab===QUOTES">
+					</quotes-component>
 					<!--//todo move quote prints to a modal-->
-					<quotes-printout-component class="tab-pane" role="tabpanel" [class.active]="tab===QUOTE_PRINT"></quotes-printout-component>
-					<notes-component [@contentState]="notes" class="tab-pane" role="tabpanel" [class.active]="tab===NOTES"></notes-component>
+					<quotes-printout-component 
+						class="tab-pane" 
+					   	role="tabpanel"
+				   		[class.active]="tab===QUOTE_PRINT">
+					</quotes-printout-component>
+					<notes-component 
+						[@contentState]="notes" 
+					 	class="tab-pane" 
+					 	role="tabpanel"
+					 	[class.active]="tab===NOTES">
+					</notes-component>
 				</div>
 			</content-area>
 			<hr>
@@ -92,12 +108,12 @@ export class HomeComponent implements OnInit {
 	public get CONTACTS(): string {
 		return 'contacts';
 	}
+	public activeCompany: Company = <Company>{};
 	public testModel: string = 'Please show me in the modal';
 	public quotes: string;
 	public companies: string;
 	public contacts: string;
 	public notes: string;
-	public activeCompany: boolean;
 	public tab: string;
 	public companySelected: any;
     constructor(private overlay: Overlay, private vcRef: ViewContainerRef, public modal: Modal, private route: ActivatedRoute) {
@@ -105,7 +121,6 @@ export class HomeComponent implements OnInit {
 	}
 
 	public modalPop() {
-
 		this.modal.prompt()
 			.size('lg')
 			.showClose(true)
@@ -125,6 +140,10 @@ export class HomeComponent implements OnInit {
 			this.contacts = 'inactive';
 			this[params['tab']] = 'active';
 		});
+	}
+
+	public setCompany(event): void {
+    	this.activeCompany = event;
 	}
 
 }

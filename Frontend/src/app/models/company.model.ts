@@ -3,7 +3,7 @@ import {Quote} from "./quote.model";
 
 export interface Company {
 	ID?: number;
-	Name: string;
+	Name?: string;
 	Address: string;
 	City: string;
 	Zip: string;
