@@ -33,17 +33,17 @@ import {Router, NavigationExtras} from '@angular/router';
 		</div>
 		<form [formGroup]="companiesGroup" (ngSubmit)="companySave()">
 			<span class="col-xs-6">
-				<input-component label="Name" [model]="selectedCompany.Name" [control]="nameControl"></input-component>
+				<input-component placeholder="Name" [model]="selectedCompany.Name" [control]="nameControl"></input-component>
 			</span>
 			<span class="col-xs-6">
-				<input-component label="Phone" [model]="selectedCompany.Phone" [control]="phoneControl"></input-component>	
+				<input-component placeholder="Phone" [model]="selectedCompany.Phone" [control]="phoneControl"></input-component>	
 			</span>
-			<input-component label="Address" [model]="selectedCompany.Address" [control]="addressControl"></input-component>
+			<input-component placeholder="Address" [model]="selectedCompany.Address" [control]="addressControl"></input-component>
 			<span class="col-xs-6">
-				<input-component label="City" [model]="selectedCompany.City" [control]="cityControl"></input-component>
+				<input-component placeholder="City" [model]="selectedCompany.City" [control]="cityControl"></input-component>
 			</span>
 			<span class="col-xs-6">
-				<input-component label="ZipCode" [model]="selectedCompany.Zip" [control]="zipControl"></input-component>
+				<input-component placeholder="ZipCode" [model]="selectedCompany.Zip" [control]="zipControl"></input-component>
 			</span>
 			<div class="row">
 				Misc: <textarea [ngModel]="selectedCompany.Misc" class="form-control" [formControl]="miscControl"></textarea>

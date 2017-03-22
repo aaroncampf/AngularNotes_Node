@@ -15,6 +15,7 @@ import {ModalModule} from 'angular2-modal';
 import {BootstrapModalModule} from 'angular2-modal/plugins/bootstrap';
 import {Quotes_Printout} from './components/quote_printout.component';
 import {NotesComponent} from './components/notes.component';
+import {NotesService} from './services/notes.service';
 
 const MAIN_ROUTES: Routes = [
 	{path: '', children: [
@@ -44,7 +45,8 @@ const MAIN_ROUTES: Routes = [
 	],
 	providers: [
 		CompanyService,
-		ContactService
+		ContactService,
+		NotesService
 	],
 	schemas: [
 		CUSTOM_ELEMENTS_SCHEMA
