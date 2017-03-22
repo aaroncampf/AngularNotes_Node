@@ -36,20 +36,23 @@ export class InputComponent {
 	@Input()
 	public propKey: string;
 	@Input()
-	public model: string;
-	@Input()
 	public control: FormControl = new FormControl;
+	@Input()
+	public currentModel: any;
+	@Input()
+	public model: string;
 	@Output()
 	public changeModel: EventEmitter<string> = new EventEmitter<string>();
 	constructor(private http: Http){}
 
-	public update(updateValue: string | number, id: number): Observable<any> {
+	private update(updateValue: string | number, id: number): Observable<any> {
 		const headers = new Headers({
 			'content-type': 'application/json'
 		});
 		const options = new RequestOptions({headers: headers});
-		const updateObject = { id: this.idNumber, [this.propKey]: updateValue};
-		return this.http.put(this.apiPath + id, JSON.stringify(updateObject), options)
+		let updateObj = this.currentModel;
+		updateObj[this.propKey] = this.model;
+		return this.http.put(this.apiPath + id, JSON.stringify(updateObj), options)
 			.map(res => res)
 			.catch(err => this.handleError(err));
 	}
