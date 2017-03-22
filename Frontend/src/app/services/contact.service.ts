@@ -53,6 +53,15 @@ export class ContactService {
 		}
 	}
 
+	public deleteContact(contactId: number): Observable<Contact> {
+		return this.http.delete(`http://angularnotes-angularbros.azurewebsites.net/api/Contact/${contactId}`)
+			.map(response => {
+				console.log('deleteContact response', response.json());
+				return response.json();
+			})
+			.catch(err => err);
+	}
+
 	private handleError(error: Error | any) {
 		let errMsg: string;
 		if (error instanceof Response) {

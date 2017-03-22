@@ -1,7 +1,6 @@
 import {Injectable} from '@angular/core';
 import {Http, RequestOptions, Headers, Response} from '@angular/http';
 import {Observable} from 'rxjs';
-import {Contact} from '../models/contact.model';
 import {Note} from '../models/note.model';
 
 @Injectable()
@@ -10,6 +9,7 @@ export class NotesService {
 	constructor(private http: Http){}
 
 	public saveNote(note: Note, contactId: number): Observable<any> {
+		console.log('saveNote', note);
 		const headers = new Headers({
 			'content-type': 'application/json'
 		});
@@ -23,6 +23,15 @@ export class NotesService {
 		return this.http.get(`http://angularnotes-angularbros.azurewebsites.net/api/Notes`)
 			.map(response => {
 				console.log('getNote response', response.json());
+				return response.json();
+			})
+			.catch(err => err);
+	}
+
+	public deleteNote(noteId: number): Observable<Note> {
+		return this.http.delete(`http://angularnotes-angularbros.azurewebsites.net/api/Notes/${noteId}`)
+			.map(response => {
+				console.log('deleteNote response', response.json());
 				return response.json();
 			})
 			.catch(err => err);
