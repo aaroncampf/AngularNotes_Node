@@ -1,6 +1,6 @@
-import {Component, OnInit, Input, Output, EventEmitter, OnChanges, SimpleChanges} from '@angular/core';
+import {Component, OnInit, Output, EventEmitter} from '@angular/core';
 import {FormControl, Validators, FormGroup} from '@angular/forms';
-import {Company} from '../models/company.model';
+import {Company, CompanyFormData} from '../models/company.model';
 import {CompanyService} from '../services/companies.service';
 import {Contact} from '../models/contact.model';
 import {ContactService} from '../services/contact.service';
@@ -11,14 +11,14 @@ import {Router, NavigationExtras} from '@angular/router';
 		<div class="row">
 			<div class="col-xs-12">
 				<strong>Select a Company:</strong>
-				<table class="table table-striped table-bordered table-hover">
+				<table class="table table-bordered table-hover">
 					<thead>
 						<th>Name</th>
 						<th>Phone</th>
 						<th></th>
 					</thead>
 					<tbody>
-						<tr *ngFor="let company of companies">
+						<tr *ngFor="let company of companies" [class.active]="selectedCompany.Name === company.Name">
 							<td (click)="companyIsSelected(company)">
 								<strong>{{company?.Name}}</strong>
 							</td>
@@ -31,26 +31,24 @@ import {Router, NavigationExtras} from '@angular/router';
 				</table>
 			</div>
 		</div>
+		<div *ngIf="!!selectedCompany"><h4>{{selectedCompany.Name || 'No Company'}} Selected</h4></div>
+		<button class="btn btn-block">Add Company</button>
 		<form [formGroup]="companiesGroup" (ngSubmit)="companySave()">
 			<span class="col-xs-6">
-				<input-component placeholder="Name" [model]="selectedCompany.Name" [control]="nameControl"></input-component>
+				<input-component label="Name" [idNumber]="selectedCompany.ID" [apiPath]="companiesRESTPath()" propKey="Name" [model]="selectedCompany.Name" [control]="nameControl"></input-component>
 			</span>
 			<span class="col-xs-6">
-				<input-component placeholder="Phone" [model]="selectedCompany.Phone" [control]="phoneControl"></input-component>	
+				<input-component label="Phone" [idNumber]="selectedCompany.ID" [apiPath]="companiesRESTPath()" propKey="Phone" [model]="selectedCompany.Phone" [control]="phoneControl"></input-component>	
 			</span>
-			<input-component placeholder="Address" [model]="selectedCompany.Address" [control]="addressControl"></input-component>
+			<input-component label="Address" [idNumber]="selectedCompany.ID" [apiPath]="companiesRESTPath()" propKey="Address" [model]="selectedCompany.Address" [control]="addressControl"></input-component>
 			<span class="col-xs-6">
-				<input-component placeholder="City" [model]="selectedCompany.City" [control]="cityControl"></input-component>
+				<input-component label="City" [idNumber]="selectedCompany.ID" [apiPath]="companiesRESTPath()" propKey="City" [model]="selectedCompany.City" [control]="cityControl"></input-component>
 			</span>
 			<span class="col-xs-6">
-				<input-component placeholder="ZipCode" [model]="selectedCompany.Zip" [control]="zipControl"></input-component>
+				<input-component label="ZipCode" [idNumber]="selectedCompany.ID" [apiPath]="companiesRESTPath()" propKey="Zip" [model]="selectedCompany.Zip" [control]="zipControl"></input-component>
 			</span>
 			<div class="row">
-				Misc: <textarea [ngModel]="selectedCompany.Misc" class="form-control" [formControl]="miscControl"></textarea>
-			</div>
-			<div class="row">
-				<button class="btn btn-lg" type="submit" [disabled]="companiesGroup.invalid" [class.disabled]="companiesGroup.invalid">Save</button>
-				<button class="btn btn-danger" type="button" (click)="removeCompany(selectedCompany.ID)">Remove</button>
+				Misc: <textarea (blur)="companySave(companiesGroup.value, selectedCompany.ID)" [ngModel]="selectedCompany.Misc" class="form-control" [formControl]="miscControl"></textarea>
 			</div>
 			<h4>{{selectedCompany.Name}} Contacts</h4>
 			<div class="row">
@@ -85,8 +83,8 @@ import {Router, NavigationExtras} from '@angular/router';
 })
 
 export class CompaniesComponent implements OnInit {
-	@Output()
-	public companySelected: EventEmitter<boolean> = new EventEmitter<boolean>();
+	public notesRESTPath: () => string = () => 'http://angularnotes-angularbros.azurewebsites.net/api/Notes?ContactID=';
+	public companiesRESTPath: () => string = () => 'http://angularnotes-angularbros.azurewebsites.net/api/companies/';
 	public selectedCompany:Company = <Company>{};
 	public contacts: Contact[] = [];
 	public companies: Company[];
@@ -114,13 +112,20 @@ export class CompaniesComponent implements OnInit {
 
 	public companyIsSelected(company: Company): void {
 		this.selectedCompany = company;
-		this.companySelected.emit(true);
 		this.contactService.getCompanyContacts(company.ID)
 			.subscribe(contacts => this.contacts = contacts, err => console.log('getCompanyContacts Error', err));
 	}
 
-	public companySave(): void {
-		this.companyService.saveCompany(this.companiesGroup.value, this.selectedCompany.ID)
+	public companySave(formData: CompanyFormData): void {
+		const company = {
+			Name: formData.nameControl,
+			Address: formData.addressControl,
+			Phone: formData.phoneControl,
+			City: formData.cityControl,
+			Zip: formData.zipControl,
+			Misc: formData.miscControl
+		};
+		this.companyService.saveCompany(company, this.selectedCompany.ID)
 			.subscribe(res => {
 				console.log(res); //todo toastr
 				this.companyService.getCompanies()
