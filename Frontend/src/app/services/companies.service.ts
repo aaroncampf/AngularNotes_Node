@@ -13,15 +13,17 @@ export class CompanyService {
 			.catch(err => this.handleError(err));
 	}
 
-	public saveCompany(company: Company, id: number): Observable<any> {
+	public saveCompany(company: Company, id: number): Observable<Company> {
 		const headers = new Headers({
 			'content-type': 'application/json',
 		});
 		const options = new RequestOptions({headers: headers});
 		if (!id) {
-			return this.http.post('http://angularnotes-angularbros.azurewebsites.net/api/companies',
-				JSON.stringify(company), options)
-					.map(res => res)
+			return this.http.post('http://angularnotes-angularbros.azurewebsites.net/api/companies', JSON.stringify(company), options)
+					.map(res => {
+						console.log('saveCompany no ID res', res.json());
+						return res.json()
+					})
 					.catch(err => this.handleError(err));
 		} else {
 			company.ID = id;

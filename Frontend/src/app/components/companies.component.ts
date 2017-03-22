@@ -1,10 +1,11 @@
-import {Component, OnInit, Output, EventEmitter} from '@angular/core';
+import {Component, EventEmitter, OnInit, Output} from '@angular/core';
 import {FormControl, Validators, FormGroup} from '@angular/forms';
 import {Company, CompanyFormData} from '../models/company.model';
 import {CompanyService} from '../services/companies.service';
 import {Contact} from '../models/contact.model';
 import {ContactService} from '../services/contact.service';
 import {Router, NavigationExtras} from '@angular/router';
+import {Observable} from 'rxjs';
 @Component({
 	selector: 'companies-component',
 	template: `
@@ -18,13 +19,13 @@ import {Router, NavigationExtras} from '@angular/router';
 						<th></th>
 					</thead>
 					<tbody>
-						<tr *ngFor="let company of companies" [class.active]="selectedCompany.Name === company.Name">
-							<td (click)="companyIsSelected(company)">
+						<tr (click)="companyIsSelected(company)" *ngFor="let company of companies" [class.active]="selectedCompany.ID === company.ID">
+							<td>
 								<strong>{{company?.Name}}</strong>
 							</td>
-							<td (click)="companyIsSelected(company)">{{company.Phone}}</td>
-							<td (click)="removeCompany(company.ID)">
-								<i class="glyphicon glyphicon-remove-circle"></i>
+							<td>{{company.Phone}}</td>
+							<td>
+								<i class="glyphicon glyphicon-remove-circle" (click)="removeCompany(company.ID)"></i>
 							</td>
 						</tr>
 					</tbody>
@@ -32,10 +33,10 @@ import {Router, NavigationExtras} from '@angular/router';
 			</div>
 		</div>
 		<div *ngIf="!!selectedCompany"><h4>{{selectedCompany.Name || 'No Company'}} Selected</h4></div>
-		<button class="btn btn-block">Add Company</button>
+		<button class="btn btn-block" (click)="setNewCompany()">Add Company</button>
 		<form [formGroup]="companiesGroup" (ngSubmit)="companySave()">
 			<span class="col-xs-6">
-				<input-component label="Name" [idNumber]="selectedCompany.ID" [apiPath]="companiesRESTPath()" propKey="Name" [model]="selectedCompany.Name" [control]="nameControl" [currentModel]="selectedCompany"></input-component>
+				<input-component label="Name" [idNumber]="selectedCompany.ID" [apiPath]="companiesRESTPath()" propKey="Name" [(model)]="selectedCompany.Name" [control]="nameControl" [currentModel]="selectedCompany"></input-component>
 			</span>
 			<span class="col-xs-6">
 				<input-component label="Phone" [idNumber]="selectedCompany.ID" [apiPath]="companiesRESTPath()" propKey="Phone" [model]="selectedCompany.Phone" [control]="phoneControl" [currentModel]="selectedCompany"></input-component>	
@@ -71,7 +72,7 @@ import {Router, NavigationExtras} from '@angular/router';
 							<td>{{contact.Email}}</td>
 							<td>{{contact.Position}}</td>
 							<td>
-								<i class="glyphicon glyphicon-list" (click)="selectContact(contact.ID, 0)"></i>
+								<i class="glyphicon glyphicon-list" (click)="selectContact(contact.ID, selectedCompany.ID)"></i>
 							</td>
 						</tr>	
 					</tbody>
@@ -83,9 +84,12 @@ import {Router, NavigationExtras} from '@angular/router';
 })
 
 export class CompaniesComponent implements OnInit {
-	public notesRESTPath: () => string = () => 'http://angularnotes-angularbros.azurewebsites.net/api/Notes?ContactID=';
+	@Output()
+	public currentCompany: EventEmitter<Company> = new EventEmitter<Company>();
+	// public notesRESTPath: () => string = () => 'http://angularnotes-angularbros.azurewebsites.net/api/Notes?ContactID=';
 	public companiesRESTPath: () => string = () => 'http://angularnotes-angularbros.azurewebsites.net/api/companies/';
-	public selectedCompany:Company = <Company>{};
+	public selectedCompany: Company = <Company>{};
+	public newCompany: Company = <Company>{};
 	public contacts: Contact[] = [];
 	public companies: Company[];
 	public nameControl: FormControl = new FormControl('', [Validators.maxLength(255)]);
@@ -112,12 +116,18 @@ export class CompaniesComponent implements OnInit {
 
 	public companyIsSelected(company: Company): void {
 		this.selectedCompany = company;
+		this.currentCompany.emit(company);
 		this.contactService.getCompanyContacts(company.ID)
 			.subscribe(contacts => this.contacts = contacts, err => console.log('getCompanyContacts Error', err));
 	}
 
+	public setNewCompany(): void {
+		this.companySave(this.newCompany);
+	}
+
 	public companySave(formData: CompanyFormData): void {
 		const company = {
+			ID: void 0,
 			Name: formData.nameControl,
 			Address: formData.addressControl,
 			Phone: formData.phoneControl,
@@ -125,13 +135,16 @@ export class CompaniesComponent implements OnInit {
 			Zip: formData.zipControl,
 			Misc: formData.miscControl
 		};
-		this.companyService.saveCompany(company, this.selectedCompany.ID).subscribe(res => {
-				console.log(res); //todo toastr
+		this.companyService.saveCompany(company, this.selectedCompany.ID).subscribe(response => {
+			console.log('saveCompany response', response); //todo toastr
+			this.selectedCompany = response;
 				this.companyService.getCompanies().subscribe(companies => {
-						this.companies = companies;
-					});
-			});
+					this.companies = companies;
+				});
+		});
+
 	}
+
 	public removeCompany(id: number): void {
 		this.companyService.deleteCompany(id).subscribe(res => {
 			console.log(res); //todo toastr
@@ -143,11 +156,10 @@ export class CompaniesComponent implements OnInit {
 			});
 	}
 
-	public selectContact(contactId: number, companyId: number): void {
+	public selectContact(contactId: number): void {
 		let navigationExtras: NavigationExtras = {
 			queryParams: {
 				"contactId": contactId.toString(),
-				"companyId": companyId.toString()
 			}
 		};
 		this.router.navigate(['/contacts'], navigationExtras);
