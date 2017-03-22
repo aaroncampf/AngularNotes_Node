@@ -3,12 +3,12 @@ import {Contact} from "./contact.model";
  * Created by aaron on 3/14/2017.
  */
 export interface Note {
-    ID: number;
+    ID?: number;
 
     /**
      * The date the note was created
      */
-    Date: Date;
+    Date?: string;
 
     /**
      * The note's display title
@@ -23,5 +23,5 @@ export interface Note {
     /**
      * The contact this note was written for
      */
-    Contact: Contact;
+    Contact?: Contact;
 }

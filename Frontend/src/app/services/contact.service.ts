@@ -5,10 +5,9 @@ import {Contact} from '../models/contact.model';
 
 @Injectable()
 export class ContactService {
-
 	constructor(private http: Http){}
 
-	public getContacts(): Observable<any> {
+	public getContacts(): Observable<Contact[]> {
 		return this.http.get('http://angularnotes-angularbros.azurewebsites.net/api/Contact')
 			.map(response => {
 				console.log('response', response.json());
@@ -17,15 +16,16 @@ export class ContactService {
 			.catch(err => err);
 
 	}
-	public getContact(id: number): Observable<any> {
+
+	public getContact(id: number): Observable<Contact> {
 		return this.http.get(`http://angularnotes-angularbros.azurewebsites.net/api/Contact/${id}`)
 			.map(response => {
 				console.log('response', response.json());
 				return response.json();
 			})
 			.catch(err => err);
-
 	}
+
 	public getCompanyContacts(id: number): Observable<any> {
 		return this.http.get(`http://angularnotes-angularbros.azurewebsites.net/api/Contact?CompanyID=${id}`)
 			.map(response => {
@@ -33,16 +33,33 @@ export class ContactService {
 				return response.json();
 			})
 			.catch(err => err);
-
 	}
-	public saveContact(contact: Contact): Observable<any> {
+
+	public saveContact(contact: Contact, companyId?: number): Observable<any> {
 		const headers = new Headers({
 			'content-type': 'application/json',
 		});
 		const options = new RequestOptions({headers: headers});
+		if(!!contact.ID) {
+			console.log('saving with ID');
 			return this.http.put(`http://angularnotes-angularbros.azurewebsites.net/api/Contact/${contact.ID}`, JSON.stringify(contact), options)
 				.map(res => res)
 				.catch(err => this.handleError(err));
+		} else if (!!companyId) {
+			console.log('saving with cID');
+			return this.http.post(`http://angularnotes-angularbros.azurewebsites.net/api/Contact?CompanyID=${companyId}`, JSON.stringify(contact), options)
+				.map(res => res)
+				.catch(err => this.handleError(err));
+		}
+	}
+
+	public deleteContact(contactId: number): Observable<Contact> {
+		return this.http.delete(`http://angularnotes-angularbros.azurewebsites.net/api/Contact/${contactId}`)
+			.map(response => {
+				console.log('deleteContact response', response.json());
+				return response.json();
+			})
+			.catch(err => err);
 	}
 
 	private handleError(error: Error | any) {

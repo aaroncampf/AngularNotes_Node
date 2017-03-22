@@ -1,0 +1,13 @@
+contacts-component {
+  table {
+    display: block;
+    max-height: 500px;
+    min-width: 100%;
+    overflow-y: scroll;
+  }
+  .row.panel {
+    background: rgba(255, 241, 177, 0.6);
+    display: block;
+    height: auto;
+    overflow-y: auto;  }
+}

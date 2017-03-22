@@ -1,6 +1,8 @@
 main {
+  background: lightgray;
 }
 
+@import "./contacts";
 @import "./home";
 @import "./companies";
 @import "./input";
