@@ -35,17 +35,17 @@ import {Router, NavigationExtras} from '@angular/router';
 		<button class="btn btn-block">Add Company</button>
 		<form [formGroup]="companiesGroup" (ngSubmit)="companySave()">
 			<span class="col-xs-6">
-				<input-component label="Name" [idNumber]="selectedCompany.ID" [apiPath]="companiesRESTPath()" propKey="Name" [model]="selectedCompany.Name" [control]="nameControl"></input-component>
+				<input-component label="Name" [idNumber]="selectedCompany.ID" [apiPath]="companiesRESTPath()" propKey="Name" [model]="selectedCompany.Name" [control]="nameControl" [currentModel]="selectedCompany"></input-component>
 			</span>
 			<span class="col-xs-6">
-				<input-component label="Phone" [idNumber]="selectedCompany.ID" [apiPath]="companiesRESTPath()" propKey="Phone" [model]="selectedCompany.Phone" [control]="phoneControl"></input-component>	
+				<input-component label="Phone" [idNumber]="selectedCompany.ID" [apiPath]="companiesRESTPath()" propKey="Phone" [model]="selectedCompany.Phone" [control]="phoneControl" [currentModel]="selectedCompany"></input-component>	
 			</span>
-			<input-component label="Address" [idNumber]="selectedCompany.ID" [apiPath]="companiesRESTPath()" propKey="Address" [model]="selectedCompany.Address" [control]="addressControl"></input-component>
+			<input-component label="Address" [idNumber]="selectedCompany.ID" [apiPath]="companiesRESTPath()" propKey="Address" [model]="selectedCompany.Address" [control]="addressControl" [currentModel]="selectedCompany"></input-component>
 			<span class="col-xs-6">
-				<input-component label="City" [idNumber]="selectedCompany.ID" [apiPath]="companiesRESTPath()" propKey="City" [model]="selectedCompany.City" [control]="cityControl"></input-component>
+				<input-component label="City" [idNumber]="selectedCompany.ID" [apiPath]="companiesRESTPath()" propKey="City" [model]="selectedCompany.City" [control]="cityControl" [currentModel]="selectedCompany"></input-component>
 			</span>
 			<span class="col-xs-6">
-				<input-component label="ZipCode" [idNumber]="selectedCompany.ID" [apiPath]="companiesRESTPath()" propKey="Zip" [model]="selectedCompany.Zip" [control]="zipControl"></input-component>
+				<input-component label="ZipCode" [idNumber]="selectedCompany.ID" [apiPath]="companiesRESTPath()" propKey="Zip" [model]="selectedCompany.Zip" [control]="zipControl" [currentModel]="selectedCompany"></input-component>
 			</span>
 			<div class="row">
 				Misc: <textarea (blur)="companySave(companiesGroup.value, selectedCompany.ID)" [ngModel]="selectedCompany.Misc" class="form-control" [formControl]="miscControl"></textarea>
@@ -125,13 +125,10 @@ export class CompaniesComponent implements OnInit {
 			Zip: formData.zipControl,
 			Misc: formData.miscControl
 		};
-		this.companyService.saveCompany(company, this.selectedCompany.ID)
-			.subscribe(res => {
+		this.companyService.saveCompany(company, this.selectedCompany.ID).subscribe(res => {
 				console.log(res); //todo toastr
-				this.companyService.getCompanies()
-					.subscribe(companies => {
+				this.companyService.getCompanies().subscribe(companies => {
 						this.companies = companies;
-						this.selectedCompany = companies;
 					});
 			});
 	}

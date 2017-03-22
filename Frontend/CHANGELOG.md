@@ -2,10 +2,14 @@
 >To make sense of all your busy-ness to other developers and please use sem-ver. 
 
 ##unreleased
+
+##version 0.3.0
 [refactor] Moved static data files for `quote_printout.component` to `quotelines.model`
 [code] Created `notes.component`
 [code] Finished wiring `company.component` to `company.services` and `contact.service`
 [refactor] added REST API updates inside of `input.component`
+[code] created list and edit-ables in `notes.component`
+[bug-fix] fixed bugs with the input-component and refreshing on updates
 
 ##version 0.2.0 - 3/20/2017
 
