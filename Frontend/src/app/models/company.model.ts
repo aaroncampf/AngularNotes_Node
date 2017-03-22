@@ -2,7 +2,7 @@ import {Contact} from "./contact.model";
 import {Quote} from "./quote.model";
 
 export interface Company {
-	ID: number;
+	ID?: number;
 	Name: string;
 	Address: string;
 	City: string;
@@ -13,12 +13,12 @@ export interface Company {
 	/**
 	 * The contacts inside of the company
 	 */
-	Contacts: Contact[];
+	Contacts?: Contact[];
 
 	/**
 	 * The quotes written for this company
 	 */
-	Quotes: Quote[];
+	Quotes?: Quote[];
 }
 
 export interface CompanyFormData {

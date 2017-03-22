@@ -1,7 +1,7 @@
 import {Injectable} from '@angular/core';
 import {Observable} from 'rxjs';
 import {Http, Response, Headers, RequestOptions} from '@angular/http';
-import {CompanyFormData} from '../models/company.model';
+import {Company} from '../models/company.model';
 
 @Injectable()
 export class CompanyService {
@@ -13,44 +13,30 @@ export class CompanyService {
 			.catch(err => this.handleError(err));
 	}
 
-	public deleteCompany(id: number): Observable<any> {
-		return this.http.delete('http://angularnotes-angularbros.azurewebsites.net/api/companies/' + id)
-			.map(results => results.json())
-			.catch(err => this.handleError(err));
-	}
-
-	public saveCompany(formData: CompanyFormData, id: number): Observable<any> {
+	public saveCompany(company: Company, id: number): Observable<any> {
 		const headers = new Headers({
 			'content-type': 'application/json',
 		});
 		const options = new RequestOptions({headers: headers});
 		if (!id) {
 			return this.http.post('http://angularnotes-angularbros.azurewebsites.net/api/companies',
-				JSON.stringify({
-					Name: formData.nameControl,
-					Address: formData.addressControl,
-					Phone: formData.phoneControl,
-					City: formData.cityControl,
-					Zip: formData.zipControl,
-					Misc: formData.miscControl
-				}), options)
+				JSON.stringify(company), options)
 					.map(res => res)
 					.catch(err => this.handleError(err));
 		} else {
-			return this.http.put('http://angularnotes-angularbros.azurewebsites.net/api/companies/' + id, JSON.stringify(
-				{
-					ID: id,
-					Name: formData.nameControl,
-					Address: formData.addressControl,
-					Phone: formData.phoneControl,
-					City: formData.cityControl,
-					Zip: formData.zipControl,
-					Misc: formData.miscControl
-				}), options)
+			company.ID = id;
+			return this.http.put('http://angularnotes-angularbros.azurewebsites.net/api/companies/' + id,
+				JSON.stringify(company), options)
 					.map(res => res)
 					.catch(err => this.handleError(err));
 			}
 		}
+
+	public deleteCompany(id: number): Observable<any> {
+		return this.http.delete('http://angularnotes-angularbros.azurewebsites.net/api/companies/' + id)
+			.map(results => results.json())
+			.catch(err => this.handleError(err));
+	}
 
 	private handleError(error: Error | any) {
 		let errMsg: string;

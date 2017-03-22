@@ -5,6 +5,7 @@
 [refactor] Moved static data files for `quote_printout.component` to `quotelines.model`
 [code] Created `notes.component`
 [code] Finished wiring `company.component` to `company.services` and `contact.service`
+[refactor] added REST API updates inside of `input.component`
 
 ##version 0.2.0 - 3/20/2017
 

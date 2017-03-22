@@ -14,7 +14,6 @@ export class ContactService {
 				return response.json();
 			})
 			.catch(err => err);
-
 	}
 
 	public getContact(id: number): Observable<Contact> {
