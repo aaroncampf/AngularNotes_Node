@@ -10,43 +10,56 @@ import {Company} from '../models/company.model';
 @Component({
 	selector: 'contacts-component',
 	template: `
-	<div class="row">
-		<form [formGroup]="contactsGroup">
-			<div class="col-xs-4">
-				<input-component label="Name:" [currentModel]="selectedContact" propKey="Name" [apiPath]="notesRESTPath()" [idNumber]="selectedContact.ID" [control]="nameControl" [model]="selectedContact?.Name"></input-component>
-				<input-component label="Phone:" [currentModel]="selectedContact" propKey="Phone" [apiPath]="notesRESTPath()" [idNumber]="selectedContact.ID" [control]="phoneControl" [model]="selectedContact?.Phone"></input-component>
-				<input-component label="Email:" [currentModel]="selectedContact" propKey="Email" [apiPath]="notesRESTPath()" [idNumber]="selectedContact.ID" [control]="emailControl" [model]="selectedContact?.Email"></input-component>
-				<input-component label="Position:" [currentModel]="selectedContact" propKey="Position" [apiPath]="notesRESTPath()" [idNumber]="selectedContact.ID" [control]="positionControl" [model]="selectedContact?.Position"></input-component>
-				<button type="button" class="btn btn-block">New Contact</button>
+		<div class="row">
+			<form [formGroup]="contactsGroup">
+				<div class="col-xs-4">
+					<input-component label="Name:" [currentModel]="selectedContact" propKey="Name"
+									 [apiPath]="notesRESTPath()" [idNumber]="selectedContact?.ID"
+									 [control]="nameControl" [model]="selectedContact?.Name"></input-component>
+					<input-component label="Phone:" [currentModel]="selectedContact" propKey="Phone"
+									 [apiPath]="notesRESTPath()" [idNumber]="selectedContact?.ID"
+									 [control]="phoneControl" [model]="selectedContact?.Phone"></input-component>
+					<input-component label="Email:" [currentModel]="selectedContact" propKey="Email"
+									 [apiPath]="notesRESTPath()" [idNumber]="selectedContact?.ID"
+									 [control]="emailControl" [model]="selectedContact?.Email"></input-component>
+					<input-component label="Position:" [currentModel]="selectedContact" propKey="Position"
+									 [apiPath]="notesRESTPath()" [idNumber]="selectedContact?.ID"
+									 [control]="positionControl" [model]="selectedContact?.Position"></input-component>
+					<button type="button" class="btn btn-block" (click)="createContact(currentCompany.ID)"
+							[disabled]="!currentCompany" [class.disabled]="!currentCompany">New Contact
+					</button>
+				</div>
+			</form>
+			<div class="col-xs-8">
+				<table class="table table-bordered table-striped table-hover">
+					<tr>
+						<th>Name</th>
+						<th>Phone</th>
+						<th>Position</th>
+					</tr>
+					<tr *ngFor="let contact of contacts" (click)="contactSelect(contact)">
+						<td>{{contact.Name}}</td>
+						<td>{{contact.Phone}}</td>
+						<td>{{contact.Position}}</td>
+						<i class="glyphicon glyphicon-remove" (click)="removeContact(contact.ID)"></i>
+					</tr>
+				</table>
 			</div>
-		</form>
-		<div class="col-xs-8">
-			<table class="table table-bordered table-striped table-hover">
-				<tr>
-					<th>Name</th>
-					<th>Phone</th>
-					<th>Position</th>
-				</tr>
-				<tr *ngFor="let contact of contacts" (click)="contactSelect(contact)">
-					<td>{{contact.Name}}</td>
-					<td>{{contact.Phone}}</td>
-					<td>{{contact.Position}}</td>
-					<i class="glyphicon glyphicon-remove" (click)="removeContact(contact.ID)"></i>
-				</tr>
-			</table>
 		</div>
-	</div>
-	<div class="row">
-		<strong>Contact Notes</strong>
-		<button type="button" class="btn btn-block" (click)="saveNote(newNote, selectedContact.ID)" [disabled]="" [class.disabled]="!selectedContact">New Note</button>
-	</div>
-	<div class="row panel" *ngFor="let note of notes; let i = index;">
-		<button class="btn-danger pull-right" (click)="removeNote(note.ID)"><i class="glyphicon glyphicon-remove"></i></button>
-		<strong>Note #{{note.ID}}</strong>
-		<input class="col-xs-8"  (blur)="saveNote(note, selectedContact.ID)" [(ngModel)]="note.Title"/>
-		<textarea (blur)="saveNote(note, selectedContact.ID)" [(ngModel)]="note.Text"></textarea>
-	</div>
-`,
+		<div class="row">
+			<strong>Contact Notes</strong>
+			<button type="button" class="btn btn-block" (click)="saveNote(newNote, selectedContact.ID)"
+					[disabled]="!selectedContact" [class.disabled]="!selectedContact">New Note
+			</button>
+		</div>
+		<div class="row panel" *ngFor="let note of notes; let i = index;">
+			<button class="btn-danger pull-right" (click)="removeNote(note.ID)"><i
+					class="glyphicon glyphicon-remove"></i></button>
+			<strong>Note #{{note.ID}}</strong>
+			<input class="col-xs-8" (blur)="saveNote(note, selectedContact.ID)" [(ngModel)]="note.Title"/>
+			<textarea (blur)="saveNote(note, selectedContact.ID)" [(ngModel)]="note.Text"></textarea>
+		</div>
+	`,
 })
 
 export class ContactsComponent implements OnInit, OnChanges {
@@ -60,6 +73,12 @@ export class ContactsComponent implements OnInit, OnChanges {
 		Title: '',
 		Text: ''
 	};
+	public newContact: Contact = <Contact>{
+		Name: '',
+		Email: '',
+		Phone: ''
+	};
+	@Input()
 	public selectedContact: Contact = <Contact>{};
 	public contacts: Contact[] = [];
 	public nameControl: FormControl = new FormControl('', []);
@@ -79,32 +98,45 @@ export class ContactsComponent implements OnInit, OnChanges {
 				private notesService: NotesService) {}
 
 	public ngOnChanges(changes: SimpleChanges): void {
+		console.log('ngOnChanges', changes);
 		if(this.currentCompany.ID > 0) {
 			this.contactService.getCompanyContacts(this.currentCompany.ID).subscribe(response => {
 				this.contacts = response;
-			}, err => console.log('ngOnChanges getCompanyContacts', err))
+			}, err => console.log('ngOnChanges getCompanyContacts error', err))
 		}
 	}
 	public ngOnInit(): void {
 		this.route.queryParams.subscribe(params => {
-			if (!!params['contactId']) {
-				this.contactService.getContact(params['contactId']).subscribe(contact => this.selectedContact = contact);
+			if (params['contactId'] > 0 ) {
+				this.contactService.getContact(params['contactId']).subscribe(contact => {
+					this.contactSelect(contact.ID);
+				});
 			}
 		});
 	}
 
 	public saveNote(note: Note, contactId: number): void {
 		this.notesService.saveNote(note, contactId).subscribe(res => {
-			console.log('saveNote', res);
-			this.notesService.getContactNotes(contactId).subscribe(notes => this.notes = notes);
+			this.notesService.getContactNotes(this.selectedContact).subscribe(notes => this.notes = notes);
 		});
 	}
 
 	public removeNote(noteId: number): void {
 		this.notesService.deleteNote(noteId).subscribe(res => {
-			this.notesService.getContactNotes(this.selectedContact.ID).subscribe(notes => this.notes = notes);
-			console.log('deleted: ', res)
+			this.notesService.getContactNotes(this.selectedContact).subscribe(notes => this.notes = notes);
 		});
+	}
+
+	public createContact(companyId: number): void {
+		console.log(companyId);
+		this.contactService.saveNewContact(this.newContact, companyId).subscribe(response => {
+
+			this.contactService.getCompanyContacts(this.currentCompany.ID)
+				.subscribe(contacts => {
+					this.contacts = contacts;
+					this.contactSelect(response['_body']);
+				})
+		})
 	}
 
 	public removeContact(contactId: number): void {
@@ -114,10 +146,11 @@ export class ContactsComponent implements OnInit, OnChanges {
 		});
 	}
 
-	public contactSelect(contact: Contact): void {
-		this.selectedContact = contact;
-		this.notesService.getContactNotes(contact.ID).subscribe(notes => {
-			this.notes = notes
-		})
+	public contactSelect(contactId: number): void {
+		this.contactService.getContact(contactId).subscribe(contact => {
+				this.selectedContact = contact;
+				this.notesService.getContactNotes(this.selectedContact)
+					.subscribe(notes => this.notes = notes)
+			});
 	}
 }

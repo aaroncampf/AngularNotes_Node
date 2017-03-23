@@ -5,7 +5,6 @@ import {CompanyService} from '../services/companies.service';
 import {Contact} from '../models/contact.model';
 import {ContactService} from '../services/contact.service';
 import {Router, NavigationExtras} from '@angular/router';
-import {Observable} from 'rxjs';
 @Component({
 	selector: 'companies-component',
 	template: `
@@ -86,7 +85,6 @@ import {Observable} from 'rxjs';
 export class CompaniesComponent implements OnInit {
 	@Output()
 	public currentCompany: EventEmitter<Company> = new EventEmitter<Company>();
-	// public notesRESTPath: () => string = () => 'http://angularnotes-angularbros.azurewebsites.net/api/Notes?ContactID=';
 	public companiesRESTPath: () => string = () => 'http://angularnotes-angularbros.azurewebsites.net/api/companies/';
 	public selectedCompany: Company = <Company>{};
 	public newCompany: Company = <Company>{};
