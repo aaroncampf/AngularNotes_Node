@@ -4,7 +4,7 @@ import {Contact} from '../models/contact.model';
 import {ContactService} from '../services/contact.service';
 import {ActivatedRoute, Router} from '@angular/router';
 import {NotesService} from '../services/notes.service';
-import {Note} from '../models/note.model';
+import {Note, NewNote, newNote} from '../models/note.model';
 import {Company} from '../models/company.model';
 import {CompanyService} from '../services/companies.service';
 
@@ -31,7 +31,8 @@ import {CompanyService} from '../services/companies.service';
 				</table>
 			</div>
 			<div class="col-xs-8">
-				<button type="button" class="btn btn-block" (click)="animateNavigation('/create-contact/' + selectedCompany.ID)" [disabled]="!selectedCompany.ID" [class.disabled]="!selectedCompany.ID">New Contact</button>
+				<button type="button" class="btn btn-block" (click)="animateNavigation('/create-contact/' + selectedCompany.ID)" [disabled]="!selectedCompany.ID" [class.disabled]="!selectedCompany.ID">New Contact
+				</button>
 				<table class="table table-bordered table-hover table-condensed">
 					<tr>
 						<th>Name</th>
@@ -56,22 +57,23 @@ import {CompanyService} from '../services/companies.service';
 		</div>
 		<div class="row">
 			<h4>Contact Notes</h4>
-			<button type="button" class="btn btn-block" (click)="saveNote(newNote, selectedContact.ID)" [disabled]="!selectedContact.ID" [class.disabled]="!selectedContact.ID">New Note</button>
+			<button type="button" class="btn btn-block" (click)="addNote(newNote, selectedContact.ID)" [disabled]="!selectedContact.ID" [class.disabled]="!selectedContact.ID">Add Note</button>
 		</div>
 		<div class="row panel" *ngFor="let note of notes; let i = index;">
 			<button class="btn-danger pull-right" (click)="removeNote(note.ID)">
 				<i class="glyphicon glyphicon-remove"></i>
 			</button>
 			<strong>Note #{{note.ID}}</strong>
-			<input class="col-xs-8" (blur)="saveNote(note, selectedContact.ID)" [(ngModel)]="note.Title"/>
-			<textarea (blur)="saveNote(note, selectedContact.ID)" [(ngModel)]="note.Text"></textarea>
+			<input class="col-xs-8" (blur)="updateNote(note, note.ID)" [(ngModel)]="note.Title"/>
+			<textarea (blur)="updateNote(note, note.ID)" [(ngModel)]="note.Text"></textarea>
 		</div>
 	`,
 })
 
-export class ContactsComponent implements OnInit, OnChanges {
+export class ContactsComponent implements OnInit {
 	@Output()
 	public triggerStateChange: EventEmitter<any> = new EventEmitter<any>();
+	public newNote: NewNote = <NewNote>{};
 	public companies: Company[] = [];
 	public companyId: number;
 	public notes: Note[] = [];
@@ -96,9 +98,6 @@ export class ContactsComponent implements OnInit, OnChanges {
 				private router: Router,
 				private notesService: NotesService) {}
 
-	public ngOnChanges(changes: SimpleChanges): void {
-	}
-
 	public ngOnInit(): void {
 		this.route.queryParams.subscribe(params => {
 			this.companyId = +params['id'];
@@ -112,32 +111,39 @@ export class ContactsComponent implements OnInit, OnChanges {
 	}
 
 	public selected(companyId: number, contactId?: number) {
-		if (contactId){
+		if (contactId) {
 			for(let contact of this.contacts) {
 				if (contact.ID === contactId) {
 					this.selectedContact = contact;
-					this.notesService.getContactNotes(this.selectedContact.ID).subscribe(notes => this.notes);
+					this.notesService.getContactNotes(this.selectedContact.ID)
+						.subscribe(notes => this.notes = notes);
 				}
 			}
 		} else if (companyId === 0) {
 			this.selectedCompany = <Company>{};
-			this.contactService.getContacts().subscribe(contacts => this.contacts = contacts);
+			this.contactService.getContacts()
+				.subscribe(contacts => this.contacts = contacts);
 		} else {
 			for(let company of this.companies){
 				if (company.ID === companyId) {
 					this.selectedCompany = company;
-					this.contactService.getCompanyContacts(this.selectedCompany.ID).subscribe(contacts => {
-						this.contacts = contacts;
-					})
+					this.contactService.getCompanyContacts(this.selectedCompany.ID)
+						.subscribe(contacts => this.contacts = contacts);
 				}
 			}
 		}
 	}
 
-	public saveNote(note: Note, contactId: number): void {
-		this.notesService.saveNote(note, contactId).subscribe(res => {
+	public addNote(note: Note, contactId: number): void {
+		this.notesService.addNote(newNote, contactId).subscribe(res => {
 			this.notesService.getContactNotes(this.selectedContact.ID).subscribe(notes => this.notes = notes);
 		});
+	}
+
+	public updateNote(note: Note, noteId: number): any {
+		this.notesService.updateNote(note, noteId).subscribe(response => {
+			this.notesService.getContactNotes(this.selectedContact.ID).subscribe(notes => this.notes = notes);
+		})
 	}
 
 	public removeNote(noteId: number): void {

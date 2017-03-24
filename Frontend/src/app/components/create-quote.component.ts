@@ -4,33 +4,16 @@ import {ActivatedRoute, Router} from '@angular/router';
 import {Quote} from '../models/quote.model';
 import {QuoteService} from '../services/quotes.service';
 import {CompanyService} from '../services/companies.service';
+import {slideTransitions} from '../animations/transitions.animation';
 
 @Component({
 	selector: 'create-quote-component',
-	animations: [
-		trigger('contentState', [
-			state('in', style({
-				opacity: '1',
-				transform: 'translateY(0%)'
-			})),
-			state('out', style({
-				opacity: '0',
-				transform: 'translateX(200%)'
-			})),
-			transition('void => in', [
-				style({transform: 'translateY(-100%)'}),
-				animate('400ms, ease-out'),
-			]),
-			transition('in => out', [
-				style({transform: 'translateY(-100%)'}),
-				animate('400ms, ease-out'),])
-		])
-	],
-	host: {'[@contentState]': ''},
+	animations: [slideTransitions()],
+	host: {'[@contentState]': 'animateState'},
 	template: `
-		<div class="container" [@contentState]="animateState">
+		<div class="container">
 			<div class="navbar navbar-fixed-top">
-				<button type="reset" class="btn-danger pull-left" [routerLink]="['/quotes/all']">Cancel</button>
+				<button type="reset" class="btn-danger pull-left" (click)="animateNavigation('/quotes/all')">Cancel</button>
 			</div>
 			<h4>Add A Quote for {{company}}</h4>
 			<form [formGroup]="quoteGroup" (ngSubmit)="saveQuote()">
@@ -67,8 +50,7 @@ export class CreateQuoteComponent implements OnInit{
 
 	public saveQuote(): void {
 		this.quoteService.saveNewQuote(this.quote).subscribe(response => {
-			this.animateState = 'out';
-			this.router.navigate(['/companies/', this.companyId]);
+			this.animateNavigation('/companies/' + this.companyId);
 		})
 	}
 
@@ -81,4 +63,10 @@ export class CreateQuoteComponent implements OnInit{
 		})
 	}
 
+	public animateNavigation(path: string): void {
+		this.animateState = 'out';
+		setTimeout(() => {
+			this.router.navigate([path]);
+		}, 500)
+	}
 }

@@ -3,32 +3,16 @@ import {FormControl, FormGroup, Validators} from '@angular/forms';
 import {ActivatedRoute, Router} from '@angular/router';
 import {Company} from '../models/company.model';
 import {CompanyService} from '../services/companies.service';
+import {slideTransitions} from '../animations/transitions.animation';
 
 @Component({
 	selector: 'edit-company-component',
-	animations: [
-		trigger('contentState', [
-			state('in', style({
-				opacity: '1',
-				transform: 'translateY(0%)'
-			})),
-			state('out', style({
-				opacity: '0',
-				transform: 'translateX(200%)'
-			})),
-			transition('void => in', [
-				style({transform: 'translateY(-100%)'}),
-				animate('400ms, ease-out'),
-			]),
-			transition('in => out', [
-				animate('400ms, ease-in'),])
-		])
-	],
+	animations: [slideTransitions()],
 	host: {'[@contentState]': ''},
 	template: `
 		<div class="container" [@contentState]="animateState">
 			<div class="navbar navbar-fixed-top">
-				<button type="reset" class="btn-danger pull-left" [routerLink]="['/companies/main']">Cancel</button>
+				<button type="reset" class="btn-danger pull-left" (click)="animateNavigation('/companies/' + company.ID)">Cancel</button>
 			</div>
 			<h4>Edit Company</h4>
 			<form [formGroup]="companyGroup" (ngSubmit)="saveCompany()">
@@ -68,11 +52,8 @@ export class EditCompanyComponent implements OnInit{
 		console.log('saving', this.company);
 		this.companyService.saveCompany(this.company, +this.company.ID).subscribe(response => {
 			console.log('company was saved: ', response);
-			this.animateState = 'out';
-			setTimeout(() => {
-				this.router.navigate(['/companies', this.company.ID]);
-			}, 500)
-		})
+			this.animateNavigation('/companies' + this.company.ID);
+		});
 	}
 
 	public ngOnInit() {
@@ -81,7 +62,14 @@ export class EditCompanyComponent implements OnInit{
 				console.log('retrieved: ', company);
 				this.company = company;
 			});
-		})
+		});
+	}
+
+	public animateNavigation(path: string): void {
+		this.animateState = 'out';
+		setTimeout(() => {
+			this.router.navigate([path]);
+		}, 500)
 	}
 
 }

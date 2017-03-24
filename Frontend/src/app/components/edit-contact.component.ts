@@ -4,32 +4,16 @@ import {ActivatedRoute, Router} from '@angular/router';
 import {Contact} from '../models/contact.model';
 import {ContactService} from '../services/contact.service';
 import {CompanyService} from '../services/companies.service';
+import {slideTransitions} from '../animations/transitions.animation';
 
 @Component({
 	selector: 'edit-contact-component',
-	animations: [
-		trigger('contentState', [
-			state('in', style({
-				opacity: '1',
-				transform: 'translateY(0%)'
-			})),
-			state('out', style({
-				opacity: '0',
-				transform: 'translateX(200%)'
-			})),
-			transition('void => in', [
-				style({transform: 'translateY(-100%)'}),
-				animate('400ms, ease-out'),
-			]),
-			transition('in => out', [
-				animate('400ms, ease-in'),])
-		])
-	],
+	animations: [slideTransitions()],
 	host: {'[@contentState]': ''},
 	template: `
-		<div class="container" [@contentState]="animateState">
+		<div class="container">
 			<div class="navbar navbar-fixed-top">
-				<button type="reset" class="btn-danger pull-left" [routerLink]="['/companies/main']">Cancel</button>
+				<button type="button" class="btn-danger pull-left" (click)="animateNavigation('/companies/main')">Cancel</button>
 			</div>
 			<h4>Edit Contact</h4>
 			<form [formGroup]="contactGroup" (ngSubmit)="saveContact()">
@@ -66,23 +50,28 @@ export class EditContactComponent implements OnInit{
 	constructor(private contactService: ContactService, private companyService: CompanyService, private router: Router, private route: ActivatedRoute){}
 
 	public saveContact(): void {
-		console.log('saving', this.contact);
 		this.contactService.updateContact(this.contact, +this.contact.ID).subscribe(response => {
-			console.log('company was saved: ', response);
-			this.animateState = 'out';
-			setTimeout(() => {
-				this.router.navigate(['/contacts', this.contact.ID]);
-			}, 500)
+			this.animateNavigation('/contacts/' + this.contact.ID);
 		})
 	}
 
 	public ngOnInit() {
 		this.route.params.subscribe(params => {
+			console.log(params['number']);
+			console.log(params['name']);
 			this.contactService.getContact(params['id']).subscribe(contact => {
 				console.log('retrieved: ', contact);
 				this.contact = contact;
 			});
 		})
+	}
+
+
+	public animateNavigation(path: string): void {
+		this.animateState = 'out';
+		setTimeout(() => {
+			this.router.navigate([path]);
+		}, 500)
 	}
 
 }

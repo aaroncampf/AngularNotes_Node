@@ -24,6 +24,7 @@ plugins: [
   module: {
     loaders: [
       // .ts files for TypeScript
+
       {
         test: /\.ts$/,
         loaders: [

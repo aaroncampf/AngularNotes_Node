@@ -9,7 +9,7 @@ import {Router, NavigationExtras, ActivatedRoute} from '@angular/router';
 	template: `
 	<div class="row">
 		<div class="col-xs-12">
-			<button class="btn btn-block" [routerLink]="['/create-company']">Add Company</button>
+			<button class="btn btn-block" (click)="animateNavigation('/create-company')">Add Company</button>
 			<strong>Select a Company:</strong>
 			<table class="table table-bordered table-hover">
 				<thead>
@@ -30,7 +30,7 @@ import {Router, NavigationExtras, ActivatedRoute} from '@angular/router';
 						<td>{{company.City}}</td>
 						<td>{{company.Zip}}</td>
 						<td>
-							<i class="glyphicon glyphicon-edit" [routerLink]="['/edit-company',  company.ID]"></i>
+							<i class="glyphicon glyphicon-edit" (click)="animateNavigation('/edit-company/' + company.ID)"></i>
 						</td>
 						<td>
 							<i class="glyphicon glyphicon-remove-circle" (click)="removeCompany(company.ID)"></i>
@@ -42,7 +42,7 @@ import {Router, NavigationExtras, ActivatedRoute} from '@angular/router';
 	</div>
 	<div class="row">
 		<div *ngIf="!!selectedCompany"><h4>{{selectedCompany.Name || 'Select A Company First'}}<span *ngIf="companySelected">'s Contacts</span></h4></div>
-		<button class="btn btn-block" [routerLink]="['/create-contact/', selectedCompany.ID]" [disabled]="!companySelected" [class.disabled]="!companySelected">Add A {{selectedCompany.Name}} Contact</button>
+		<button class="btn btn-block" (click)="animateNavigation('/create-contact/' + selectedCompany.ID)" [disabled]="!companySelected" [class.disabled]="!companySelected">Add A {{selectedCompany.Name}} Contact</button>
 		<table class="table table-bordered table-hover">
 			<thead>
 				<tr>
@@ -63,7 +63,7 @@ import {Router, NavigationExtras, ActivatedRoute} from '@angular/router';
 					<td>{{contact.Email}}</td>
 					<td>{{contact.Position}}</td>
 					<td>
-						<i class="glyphicon glyphicon-edit" [routerLink]="['/edit-contact', contact.ID]"></i>
+						<i class="glyphicon glyphicon-edit" (click)="animateNavigation('/edit-contact/' + contact.ID)"></i>
 					</td>
 					<td>
 						<i class="glyphicon glyphicon-remove-circle" (click)="removeContact(contact.ID)"></i>
@@ -76,6 +76,8 @@ import {Router, NavigationExtras, ActivatedRoute} from '@angular/router';
 	})
 
 export class CompaniesComponent implements OnInit {
+	@Output()
+	public triggerStateChange: EventEmitter<any> = new EventEmitter<any>();
 	@Output()
 	public currentCompany: EventEmitter<Company> = new EventEmitter<Company>();
 	public newCompany: Company = <Company>{};
@@ -153,13 +155,20 @@ export class CompaniesComponent implements OnInit {
 		});
 	}
 
-	public selectContact(contactId: number): void {
-		let navigationExtras: NavigationExtras = {
-			queryParams: {
-				"contactId": contactId.toString(),
-			}
-		};
-		this.router.navigate(['/contacts'], navigationExtras);
+	public animateNavigation(path: string): void {
+		this.triggerStateChange.emit('0');
+		setTimeout(() => {
+			this.router.navigate([path]);
+		}, 500)
 	}
+
+	// public selectContact(contactId: number): void {
+	// 	let navigationExtras: NavigationExtras = {
+	// 		queryParams: {
+	// 			"contactId": contactId.toString(),
+	// 		}
+	// 	};
+	// 	this.router.navigate(['/contacts'], navigationExtras);
+	// }
 
 }
