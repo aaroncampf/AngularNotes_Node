@@ -18,11 +18,7 @@ import { Modal } from 'angular2-modal/plugins/bootstrap';
 				transform: 'translateY(200%)',
 			})),
 			transition('out => in', animate('400ms, ease-out')),
-			//TODO figure out how to outro
 			transition('in => out', animate('400ms, ease-in')),
-			// transition('out => in', [
-			// 	animate(200, style({transform: 'translateY(-100%) opacity(0)'}))
-			// ]),
 			transition('void => in', [
 				animate(200, style({transform: 'translateY(-100%) opacity(0)'}))
 			]),
@@ -159,10 +155,10 @@ export class HomeComponent implements OnInit {
 			this[activatingTab + 'State'] = 'in';
 		}
 	}
-
-	public setCompany(event): void {
-    	this.activeCompany = event;
-	}
+	//
+	// public setCompany(event): void {
+    	// this.activeCompany = event;
+	// }
 
 	public navigateTab(path: string) {
     	this.setTransitionStates('0');

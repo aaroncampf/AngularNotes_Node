@@ -7,6 +7,7 @@
 [code] created a quotes listing
 [code] created `edit-company.component`, `create-quotes.component` and `quotes.service`
 [bug-fix] Fixed broken links to components
+[animation] Transitional animations between components implemented
 
 ##version 0.3.0
 [refactor] Moved static data files for `quote_printout.component` to `quotelines.model`
