@@ -1,7 +1,7 @@
 {
-  "name": "robs-online-resume",
-  "version": "0.3.0",
-  "description": "A simple app to showcase and allow potential employers contact.",
+  "name": "angular-bros-notes",
+  "version": "0.3.2",
+  "description": "A CRM Demo for a software development project.",
   "scripts": {
     "build": "webpack --display-error-details --progress",
     "watch": "npm run build -- --watch",
@@ -53,14 +53,14 @@
   },
   "keywords": [
     "Angular2",
-    "robsonlineresume"
+    "AngularBros"
   ],
   "repository": {
     "type": "git",
-    "url": "git+git@gitlab.com:rdev163/robs-online-resume.git"
+    "url": "https://github.com/aaroncampf/AngularNotes_Node.git"
   },
   "bugs": {
-    "url": "git@gitlab.com:rdev163/robs-online-resume.git/issues"
+    "url": "https://github.com/aaroncampf/AngularNotes_Node.git/issues"
   },
-  "homepage": "git@gitlab.com:rdev163/robs-online-resume.git#readme"
+  "homepage": "https://github.com/aaroncampf/AngularNotes_Node.git#readme"
 }

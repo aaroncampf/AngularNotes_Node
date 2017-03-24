@@ -22,6 +22,7 @@ import {EditContactComponent} from './components/edit-contact.component';
 import {QuoteService} from './services/quotes.service';
 import {CreateQuoteComponent} from './components/create-quote.component';
 import {EditCompanyComponent} from './components/edit-company.component';
+import {liftOffTransitions} from './animations/transitions.animation';
 
 const MAIN_ROUTES: Routes = [
 	{path: '', children: [
@@ -49,6 +50,7 @@ const MAIN_ROUTES: Routes = [
 		EditContactComponent,
 		CreateQuoteComponent,
 		EditCompanyComponent,
+
 	],
 	imports: [
 		BrowserModule,

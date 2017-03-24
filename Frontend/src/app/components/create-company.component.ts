@@ -3,6 +3,7 @@ import {FormControl, FormGroup, Validators} from '@angular/forms';
 import {Company} from '../models/company.model';
 import {CompanyService} from '../services/companies.service';
 import {Router} from '@angular/router';
+import {slideTransitions} from '../animations/transitions.animation';
 
 @Component({
 	selector: 'create-company-component',
@@ -24,24 +25,7 @@ import {Router} from '@angular/router';
 			</form>
 		</div>
 	`,
-	animations: [
-		trigger('contentState', [
-			state('in', style({
-				opacity: '1',
-				transform: 'translateY(0%)'
-			})),
-			state('out', style({
-				opacity: '0',
-				transform: 'translatey(100%)'
-			})),
-			transition('void => in', [
-				style({transform: 'translateY(-100%)'}),
-				animate('400ms, ease-out'),
-			]),
-			transition('in => out', [
-				animate('400ms, ease-out'),])
-		])
-	],
+	animations: [slideTransitions()],
 	host: {'[@contentState]': 'animateState'},
 })
 

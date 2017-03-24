@@ -4,32 +4,14 @@ import {ActivatedRoute, Router} from '@angular/router';
 import {Contact} from '../models/contact.model';
 import {ContactService} from '../services/contact.service';
 import {CompanyService} from '../services/companies.service';
+import {slideTransitions} from '../animations/transitions.animation';
 
 @Component({
 	selector: 'create-contact-component',
-	animations: [
-		trigger('contentState', [
-			state('in', style({
-				opacity: '1',
-				transform: 'translateY(0%)'
-			})),
-			state('out', style({
-				opacity: '0',
-				transform: 'translateY(200%)'
-			})),
-			transition('void => in', [
-				style({transform: 'translateY(-100%)'}),
-				animate('400ms, ease-out'),
-			]),
-			transition('in => out', [
-				// style({transform: 'translateY(-200%)'}),
-				animate('400ms, ease-in'),
-			])
-		])
-	],
+animations: [slideTransitions()],
 	host: {'[@contentState]': ''},
 	template: `
-		<div class="container" [@contentState]="animateState">
+		<div class="container">
 			<div class="navbar navbar-fixed-top">
 				<button type="button" class="btn-danger pull-left" (click)="animateNavigation('/companies/main')">Cancel</button>
 			</div>

@@ -4,29 +4,11 @@ import {Company} from '../models/company.model';
 import '../styles/main.scss';
 import {Overlay} from 'angular2-modal';
 import { Modal } from 'angular2-modal/plugins/bootstrap';
+import {liftOffTransitions} from '../animations/transitions.animation';
 
 @Component({
     selector: 'home-component',
-	animations: [
-		trigger('contentState', [
-			state('in', style({
-				opacity: '1',
-				transform: 'translateY(0%) scale(1)',
-			})),
-			state('out', style({
-				opacity: '0',
-				transform: 'translateY(200%)',
-			})),
-			transition('out => in', animate('400ms, ease-out')),
-			transition('in => out', animate('400ms, ease-in')),
-			transition('void => in', [
-				animate(200, style({transform: 'translateY(-100%) opacity(0)'}))
-			]),
-			transition('in => void', [
-				animate(200, style({transform: 'translateX(-100%) scale(0)'}))
-			])
-		])
-	],
+	animations: [liftOffTransitions()],
     template: `
 		<div class="container">
 			<b>AngularBro's Notes - an Angular 2 CRM</b> 
@@ -57,6 +39,7 @@ import { Modal } from 'angular2-modal/plugins/bootstrap';
 				</ul>
 				<div class="tab-content">
 					<companies-component
+						(triggerStateChange)="setTransitionStates($event)"
 						[@contentState]="companiesState"
 					 	class="tab-pane"
 					 	role="tabpanel" 
