@@ -6,28 +6,9 @@ import {Router} from '@angular/router';
 
 @Component({
 	selector: 'create-company-component',
-	animations: [
-		trigger('contentState', [
-			state('*', style({
-				opacity: '1',
-				transform: 'translateY(0%)'
-			})),
-			state('void', style({
-				opacity: '0',
-				transform: 'translateX(200%)'
-			})),
-			transition('void => *', [
-				style({transform: 'translateY(-100%)'}),
-				animate('400ms, ease-out'),
-			]),
-			transition('* => void', [
-				style({transform: 'translateY(-100%)'}),
-				animate('400ms, ease-out'),])
-		])
-	],
-	host: {'[@contentState]': ''},
-	template: `		
+	template: `
 		<div class="container" [@contentState]="animateState">
+			<button type="button" class="btn-danger pull-left" (click)="animateNavigation('/companies/main')">Cancel</button>
 			<h4>Add A Company To Your List</h4>
 			<form [formGroup]="companiesGroup" (ngSubmit)="companySave()">
 				<input-component label="Name" [(model)]="company.Name" [control]="nameControl"></input-component>
@@ -36,14 +17,32 @@ import {Router} from '@angular/router';
 				<input-component label="City" [(model)]="company.City" [control]="cityControl"></input-component>
 				<input-component label="ZipCode" [(model)]="company.Zip" [control]="zipControl"></input-component>
 				<div class="row">
-					<span class="col-lg-3">Misc:</span> 
+					<span class="col-lg-3">Misc:</span>
 					<textarea [(ngModel)]="company.Misc" class="form-control col-xs-9" [formControl]="miscControl"></textarea>
 				</div>
 				<button type="submit" class="btn btn-large pull-right">Save</button>
-				<button type="reset" class="btn btn-large pull-right">Clear</button>
 			</form>
 		</div>
 	`,
+	animations: [
+		trigger('contentState', [
+			state('in', style({
+				opacity: '1',
+				transform: 'translateY(0%)'
+			})),
+			state('out', style({
+				opacity: '0',
+				transform: 'translatey(100%)'
+			})),
+			transition('void => in', [
+				style({transform: 'translateY(-100%)'}),
+				animate('400ms, ease-out'),
+			]),
+			transition('in => out', [
+				animate('400ms, ease-out'),])
+		])
+	],
+	host: {'[@contentState]': 'animateState'},
 })
 
 export class CreateCompanyComponent {
@@ -71,5 +70,12 @@ export class CreateCompanyComponent {
 			this.animateState = 'out';
 			this.router.navigate(['/companies', company.ID]);
 		})
+	}
+
+	public animateNavigation(path: string): void {
+		this.animateState = 'out';
+		setTimeout(() => {
+			this.router.navigate([path]);
+		}, 500)
 	}
 }
