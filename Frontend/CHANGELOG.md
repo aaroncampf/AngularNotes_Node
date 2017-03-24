@@ -5,7 +5,7 @@
 [refactor] Separated edit and create into different components for `companies.component` and `contacts.component`
 [code] created and wired `create-company.component` and `edit-company.component` and `create-contact.compoent`
 [code] created a quotes listing
-[code] created `edit-company.component` and `quotes.service`
+[code] created `edit-company.component`, `create-quotes.component` and `quotes.service`
 [bug-fix] Fixed broken links to components
 
 ##version 0.3.0

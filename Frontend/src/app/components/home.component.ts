@@ -1,5 +1,5 @@
 import {Component, OnInit, trigger, state, style, transition, animate, ViewContainerRef} from '@angular/core';
-import {ActivatedRoute} from '@angular/router';
+import {ActivatedRoute, Router} from '@angular/router';
 import {Company} from '../models/company.model';
 import '../styles/main.scss';
 import {Overlay} from 'angular2-modal';
@@ -11,64 +11,71 @@ import { Modal } from 'angular2-modal/plugins/bootstrap';
 		trigger('contentState', [
 			state('in', style({
 				opacity: '1',
-				transform: 'translateY(0%)',
+				transform: 'translateY(0%) scale(1)',
 			})),
 			state('out', style({
 				opacity: '0',
-				transform: 'translateY(100%)',
+				transform: 'translateY(200%)',
 			})),
 			transition('out => in', animate('400ms, ease-out')),
 			//TODO figure out how to outro
-			transition('in => out', animate('1000ms, ease-in')),
-			transition(':leave', [
+			transition('in => out', animate('400ms, ease-in')),
+			// transition('out => in', [
+			// 	animate(200, style({transform: 'translateY(-100%) opacity(0)'}))
+			// ]),
+			transition('void => in', [
+				animate(200, style({transform: 'translateY(-100%) opacity(0)'}))
+			]),
+			transition('in => void', [
 				animate(200, style({transform: 'translateX(-100%) scale(0)'}))
 			])
 		])
 	],
     template: `
 		<div class="container">
-			<b>AngularBro's Notes</b> 
+			<b>AngularBro's Notes - an Angular 2 CRM</b> 
 			<span class="pull-right">{{activeCompany.Name || 'No Company Is Selected'}}</span>
-			<input type="search" placeholder="search"/>
+			<input type="search" placeholder="search -WIP-"/>
 			<content-area>
 				<ul class="nav nav-tabs">
 					<li [class.active]="tab === COMPANIES">
-						<a class="tab" [routerLink]="['/companies/', this.companyId]">
+						<a class="tab" (click)="navigateTab(COMPANIES)">
 							<tab-heading>Companies</tab-heading>
 						</a>
 					</li>
-					<li  [class.active]="tab === CONTACTS">
-						<a disabled class="tab" [routerLink]="['/contacts', this.companyId]">
+					<li [class.active]="tab === CONTACTS">
+						<a disabled class="tab" (click)="navigateTab(CONTACTS)">
 							<tab-heading>Contacts</tab-heading>
 						</a>
 					</li>
 					<li [class.active]="tab === NOTES">
-						<a class="tab" [routerLink]="['/notes', this.companyId]">
+						<a class="tab" (click)="navigateTab(NOTES)">
 							<tab-heading>Notes</tab-heading>
 						</a>
 					</li>
 					<li [class.active]="tab === QUOTES">
-						<a [routerLink]="['/quotes', this.companyId]">
+						<a class="tab" (click)="navigateTab(QUOTES)">
 							<tab-heading>Quotes</tab-heading>
 						</a>
 					</li>
 				</ul>
 				<div class="tab-content">
-					<companies-component 
-						[@contentState]="companies"
+					<companies-component
+						[@contentState]="companiesState"
 					 	class="tab-pane"
 					 	role="tabpanel" 
 					 	[class.active]="tab===COMPANIES">
 					</companies-component>
 					<contacts-component 
-						[@contentState]="contacts" 
+						(triggerStateChange)="setTransitionStates($event)"
+						[@contentState]="contactsState" 
 						[currentCompany]="activeCompany" 
 						class="tab-pane"
 						role="tabpanel" 
 						[class.active]="tab===CONTACTS">
 					</contacts-component>
 					<quotes-component 
-						[@contentState]="quotes"
+						[@contentState]="quotesState"
 						class="tab-pane" 
 						role="tabpanel"
 						[class.active]="tab===QUOTES">
@@ -80,7 +87,7 @@ import { Modal } from 'angular2-modal/plugins/bootstrap';
 				   		[class.active]="tab===QUOTE_PRINT">
 					</quotes-printout-component>
 					<notes-component 
-						[@contentState]="notes" 
+						[@contentState]="notesState" 
 					 	class="tab-pane" 
 					 	role="tabpanel"
 					 	[class.active]="tab===NOTES">
@@ -111,15 +118,15 @@ export class HomeComponent implements OnInit {
 		return 'contacts';
 	}
 	public activeCompany: Company = <Company>{};
-	public testModel: string = 'Please show me in the modal';
-	public quotes: string;
-	public companies: string;
 	public companyId: string;
-	public contacts: string;
-	public notes: string;
+	public testModel: string = 'Please show me in the modal';
+	public quotesState: string;
+	public companiesState: string;
+	public contactsState: string;
+	public notesState: string;
 	public tab: string;
 	public companySelected: any;
-    constructor(private overlay: Overlay, private vcRef: ViewContainerRef, public modal: Modal, private route: ActivatedRoute) {
+    constructor(private overlay: Overlay, private vcRef: ViewContainerRef, public modal: Modal, private route: ActivatedRoute, private router: Router) {
 		overlay.defaultViewContainer = vcRef;
 	}
 
@@ -139,16 +146,29 @@ export class HomeComponent implements OnInit {
 		this.route.params.subscribe(params => {
 			this.tab = params['tab'];
 			this.companyId = params['id'];
-			this.companies = 'out';
-			this.quotes= 'out';
-			this.contacts = 'out';
-			this.notes = 'out';
-			this[params['tab']] = 'in';
+			this.setTransitionStates(params['tab']);
 		});
+	}
+
+	public setTransitionStates(activatingTab: string){
+		this.companiesState = 'out';
+		this.quotesState = 'out';
+		this.contactsState = 'out';
+		this.notesState = 'out';
+		if (activatingTab !== '0'){
+			this[activatingTab + 'State'] = 'in';
+		}
 	}
 
 	public setCompany(event): void {
     	this.activeCompany = event;
 	}
 
+	public navigateTab(path: string) {
+    	this.setTransitionStates('0');
+    	setTimeout(() => {
+    		this.router.navigate([path, this.companyId])
+		}, 500)
+
+	}
 }
