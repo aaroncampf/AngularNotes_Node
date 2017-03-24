@@ -74,7 +74,7 @@ export class CreateContactComponent implements OnInit{
 
 	public ngOnInit() {
 		this.route.params.subscribe(params => {
-			this.companyId = params['companyId'];
+			this.companyId = params['id'];
 			this.companyService.getCompany(+this.companyId).subscribe(company => {
 				this.company = company.Name;
 			})

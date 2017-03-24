@@ -11,58 +11,50 @@ import {QuoteService} from '../services/quotes.service';
 @Component({
 	selector: 'quotes-component',
 	template: `
-		<div class="row">
-			<h4>Quotes</h4>
-			<div class="col-xs-4">
-				<table class="table table-bordered table-hover">
-					<thead>
-					<tr>
-						<th>Companies</th>
-					</tr>
-					</thead>
-					<tbody>
-					<tr>
-						<td (click)="selected(0)">Select All The Things!</td>
-					</tr>
-					<tr *ngFor="let company of companies">
-						<td [class.active]="selectedCompany.ID === company.ID" (click)="selected(company.ID)">{{company.Name}}</td>
-					</tr>
-					</tbody>
-				</table>
-			</div>
-			<div class="col-xs-8">
-				<button type="button" class="btn btn-block" [routerLink]="['create-quote', selectedCompany.ID]" [disabled]="!selectedCompany.ID" [class.disabled]="!selectedCompany.ID">New Quote</button>
-				<table class="table table-bordered table-hover">
-					<tr>
-						<th>Name</th>
-						<th>Phone</th>
-						<th>Position</th>
-					</tr>
-					<tr *ngFor="let quote of quotes" (click)="quoteSelect(quote.ID)" [class.active]="quote.ID === selectedQuote.ID">
-						<td>{{quote.Phone}}</td>
-						<td>{{quote.Position}}</td>
-						<td>
-							<i class="glyphicon glyphicon-edit" [routerLink]="['/edit-quote', quote.ID]"></i>
-						</td>
-						<td>
-							<i class="glyphicon glyphicon-remove" (click)="removeQuote(quote.ID)"></i>
-						</td>
-					</tr>
-				</table>
-			</div>
+	<div class="row">
+		<h4>Quotes</h4>
+		<div class="col-xs-4">
+			<table class="table table-bordered table-hover">
+				<thead>
+				<tr>
+					<th>Companies</th>
+				</tr>
+				</thead>
+				<tbody>
+				<tr>
+					<td (click)="selected(0)">Select All The Things!</td>
+				</tr>
+				<tr *ngFor="let company of companies">
+					<td [class.active]="selectedCompany.ID === company.ID" (click)="selected(company.ID)">{{company.Name}}</td>
+				</tr>
+				</tbody>
+			</table>
 		</div>
-		<div class="row">
-			<h4>Quote Notes</h4>
-			<button type="button" class="btn btn-block" (click)="saveNote(newNote, selectedQuote.ID)" [disabled]="selectedQuote" [class.disabled]="selectedQuote">New Note</button>
+		<div class="col-xs-8">
+			<button type="button" class="btn btn-block" [routerLink]="['/create-quote', selectedCompany.ID]" [disabled]="!selectedCompany.ID" [class.disabled]="!selectedCompany.ID">New Quote</button>
+			<table class="table table-bordered table-hover">
+				<tr>
+					<th>Name</th>
+					<th>Phone</th>
+					<th>Position</th>
+				</tr>
+				<tr *ngFor="let quote of quotes" (click)="quoteSelect(quote.ID)" [class.active]="quote.ID === selectedQuote.ID">
+					<td>{{quote.Phone}}</td>
+					<td>{{quote.Position}}</td>
+					<td>
+						<i class="glyphicon glyphicon-edit" [routerLink]="['/edit-quote', quote.ID]"></i>
+					</td>
+					<td>
+						<i class="glyphicon glyphicon-remove" (click)="removeQuote(quote.ID)"></i>
+					</td>
+				</tr>
+			</table>
 		</div>
-		<div class="row panel" *ngFor="let note of notes; let i = index;">
-			<button class="btn-danger pull-right" (click)="removeNote(note.ID)">
-				<i class="glyphicon glyphicon-remove"></i>
-			</button>
-			<strong>Note #{{note.ID}}</strong>
-			<input class="col-xs-8" (blur)="saveNote(note, selectedQuote.ID)" [(ngModel)]="note.Title"/>
-			<textarea (blur)="saveNote(note, selectedQuote.ID)" [(ngModel)]="note.Text"></textarea>
-		</div>
+	</div>
+	<div class="row">
+		<h4>Quote Notes</h4>
+		<button type="button" class="btn btn-block" [routerLink]="['/create-quote', companyId]" [disabled]="selectedQuote" [class.disabled]="selectedQuote">View Quote</button>
+	</div>
 	`,
 })
 
@@ -87,11 +79,9 @@ export class QuotesComponent implements OnInit, OnChanges {
 	});
 	constructor(private quoteService: QuoteService,
 				private companyService: CompanyService,
-				private route: ActivatedRoute,
-				private notesService: NotesService) {}
+				private route: ActivatedRoute) {}
 
-	public ngOnChanges(changes: SimpleChanges): void {
-	}
+	public ngOnChanges(changes: SimpleChanges): void {}
 
 	public ngOnInit(): void {
 		this.route.queryParams.subscribe(params => {

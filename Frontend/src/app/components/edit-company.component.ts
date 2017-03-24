@@ -1,12 +1,11 @@
 import {animate, Component, OnInit, state, style, transition, trigger} from '@angular/core';
 import {FormControl, FormGroup, Validators} from '@angular/forms';
 import {ActivatedRoute, Router} from '@angular/router';
-import {Contact} from '../models/contact.model';
-import {ContactService} from '../services/contact.service';
+import {Company} from '../models/company.model';
 import {CompanyService} from '../services/companies.service';
 
 @Component({
-	selector: 'edit-contact-component',
+	selector: 'edit-company-component',
 	animations: [
 		trigger('contentState', [
 			state('in', style({
@@ -31,56 +30,56 @@ import {CompanyService} from '../services/companies.service';
 			<div class="navbar navbar-fixed-top">
 				<button type="reset" class="btn-danger pull-left" [routerLink]="['/companies/main']">Cancel</button>
 			</div>
-			<h4>Edit Contact</h4>
-			<form [formGroup]="contactGroup" (ngSubmit)="saveContact()">
-				<input-component label="Name" [(model)]="contact.Name" [control]="nameControl"></input-component>
-				<input-component label="Phone" [(model)]="contact.Phone" [control]="phoneControl"></input-component>
-				<input-component label="Email" [(model)]="contact.Email" [control]="emailControl"></input-component>
-				<input-component label="Position" [(model)]="contact.Position" [control]="positionControl"></input-component>
+			<h4>Edit Company</h4>
+			<form [formGroup]="companyGroup" (ngSubmit)="saveCompany()">
+				<input-component label="Name" [(model)]="company.Name" [control]="nameControl"></input-component>
+				<input-component label="Phone" [(model)]="company.Phone" [control]="phoneControl"></input-component>
+				<input-component label="Address" [(model)]="company.Address" [control]="addressControl"></input-component>
+				<input-component label="City" [(model)]="company.City" [control]="cityControl"></input-component>
+				<input-component label="Zip" [(model)]="company.Zip" [control]="zipControl"></input-component>
 				<button type="submit" class="btn btn-large pull-right">Save</button>
 			</form>
 		</div>
 	`,
 })
 
-export class EditContactComponent implements OnInit{
+export class EditCompanyComponent implements OnInit{
 	public animateState: string = 'in';
 	public companyId: string;
-	public contactId: string;
-	public company: string;
-	public contact: Contact = <Contact>{};
+	public company: Company = <Company>{};
 	public nameControl: FormControl = new FormControl('', [Validators.required, Validators.maxLength(255)]);
-	public positionControl: FormControl = new FormControl('', []);
-	public emailControl: FormControl = new FormControl('', []);
+	public cityControl: FormControl = new FormControl('', []);
+	public addressControl: FormControl = new FormControl('', []);
 	public zipControl: FormControl = new FormControl('', []);
 	public phoneControl: FormControl = new FormControl('', []);
 	public miscControl: FormControl = new FormControl('', []);
-	public contactGroup: FormGroup = new FormGroup({
+	public companyGroup: FormGroup = new FormGroup({
 		nameControl: this.nameControl,
-		emailControl: this.emailControl,
+		addressControl: this.addressControl,
 		miscControl: this.miscControl,
-		positionControl: this.positionControl,
+		cityControl: this.cityControl,
 		phoneControl: this.phoneControl,
+		zipControl: this.zipControl,
 	});
 
-	constructor(private contactService: ContactService, private companyService: CompanyService, private router: Router, private route: ActivatedRoute){}
+	constructor(private companyService: CompanyService, private router: Router, private route: ActivatedRoute){}
 
-	public saveContact(): void {
-		console.log('saving', this.contact);
-		this.contactService.updateContact(this.contact, +this.contact.ID).subscribe(response => {
+	public saveCompany(): void {
+		console.log('saving', this.company);
+		this.companyService.saveCompany(this.company, +this.company.ID).subscribe(response => {
 			console.log('company was saved: ', response);
 			this.animateState = 'out';
 			setTimeout(() => {
-				this.router.navigate(['/contacts', this.contact.ID]);
+				this.router.navigate(['/companies', this.company.ID]);
 			}, 500)
 		})
 	}
 
 	public ngOnInit() {
 		this.route.params.subscribe(params => {
-			this.contactService.getContact(params['id']).subscribe(contact => {
-				console.log('retrieved: ', contact);
-				this.contact = contact;
+			this.companyService.getCompany(params['id']).subscribe(company => {
+				console.log('retrieved: ', company);
+				this.company = company;
 			});
 		})
 	}

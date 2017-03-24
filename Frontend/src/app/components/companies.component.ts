@@ -7,73 +7,73 @@ import {Router, NavigationExtras, ActivatedRoute} from '@angular/router';
 @Component({
 	selector: 'companies-component',
 	template: `
-		<div class="row">
-			<div class="col-xs-12">
-				<button class="btn btn-block" [routerLink]="['/create-company']">Add Company</button>
-				<strong>Select a Company:</strong>
-				<table class="table table-bordered table-hover">
-					<thead>
-					<th>Name</th>
-						<th>Phone</th>
-						<th>Address</th>
-						<th>City</th>
-						<th>ZipCode</th>
-						<th></th>
-					</thead>
-					<tbody>
-					<tr (click)="companyIsSelected(company)" *ngFor="let company of companies" [class.active]="selectedCompany.ID === company.ID">
-							<td>
-								<strong>{{company.Name}}</strong>
-							</td>
-							<td>{{company.Phone}}</td>
-							<td>{{company.Address}}</td>
-							<td>{{company.City}}</td>
-							<td>{{company.Zip}}</td>
-							<td>
-								<i class="glyphicon glyphicon-edit" (click)="removeCompany(company.ID)"></i>
-							</td>
-							<td>
-								<i class="glyphicon glyphicon-remove-circle" (click)="removeCompany(company.ID)"></i>
-							</td>
-						</tr>
-					</tbody>
-				</table>
-			</div>
-		</div>
-		<div class="row">
-			<div *ngIf="!!selectedCompany"><h4>{{selectedCompany.Name || 'Select A Company First'}}<span *ngIf="companySelected">'s Contacts</span></h4></div>
-			<button class="btn btn-block" [routerLink]="['/create-contact/', this.selectedCompany.ID]" [disabled]="!companySelected" [class.disabled]="!companySelected">Add A {{selectedCompany.Name}} Contact</button>
+	<div class="row">
+		<div class="col-xs-12">
+			<button class="btn btn-block" [routerLink]="['/create-company']">Add Company</button>
+			<strong>Select a Company:</strong>
 			<table class="table table-bordered table-hover">
 				<thead>
-					<tr>
-						<th>ID</th>
-						<th>Name</th>
-						<th>Phone</th>
-						<th>Email</th>
-						<th>Position</th>
-						<th></th>
-						<th></th>
-					</tr>
+				<th>Name</th>
+					<th>Phone</th>
+					<th>Address</th>
+					<th>City</th>
+					<th>ZipCode</th>
+					<th></th>
 				</thead>
-				 <tbody>
-				<tr *ngFor="let contact of contacts" >
-						<td>{{contact.ID}}</td>
-						<td>{{contact.Name}}</td>
-						<td>{{contact.Phone}}</td>
-						<td>{{contact.Email}}</td>
-						<td>{{contact.Position}}</td>
+				<tbody>
+				<tr (click)="companyIsSelected(company)" *ngFor="let company of companies" [class.active]="selectedCompany.ID === company.ID">
 						<td>
-							<i class="glyphicon glyphicon-edit" (click)="selectContact(contact.ID, selectedCompany.ID)"></i>
+							<strong>{{company.Name}}</strong>
+						</td>
+						<td>{{company.Phone}}</td>
+						<td>{{company.Address}}</td>
+						<td>{{company.City}}</td>
+						<td>{{company.Zip}}</td>
+						<td>
+							<i class="glyphicon glyphicon-edit" [routerLink]="['/edit-company',  company.ID]"></i>
 						</td>
 						<td>
-							<i class="glyphicon glyphicon-remove-circle" (click)="selectContact(contact.ID, selectedCompany.ID)"></i>
+							<i class="glyphicon glyphicon-remove-circle" (click)="removeCompany(company.ID)"></i>
 						</td>
 					</tr>
 				</tbody>
-			 </table>
+			</table>
 		</div>
-`
-})
+	</div>
+	<div class="row">
+		<div *ngIf="!!selectedCompany"><h4>{{selectedCompany.Name || 'Select A Company First'}}<span *ngIf="companySelected">'s Contacts</span></h4></div>
+		<button class="btn btn-block" [routerLink]="['/create-contact/', selectedCompany.ID]" [disabled]="!companySelected" [class.disabled]="!companySelected">Add A {{selectedCompany.Name}} Contact</button>
+		<table class="table table-bordered table-hover">
+			<thead>
+				<tr>
+					<th>ID</th>
+					<th>Name</th>
+					<th>Phone</th>
+					<th>Email</th>
+					<th>Position</th>
+					<th></th>
+					<th></th>
+				</tr>
+			</thead>
+			 <tbody>
+			<tr *ngFor="let contact of contacts" >
+					<td>{{contact.ID}}</td>
+					<td>{{contact.Name}}</td>
+					<td>{{contact.Phone}}</td>
+					<td>{{contact.Email}}</td>
+					<td>{{contact.Position}}</td>
+					<td>
+						<i class="glyphicon glyphicon-edit" [routerLink]="['/edit-contact', contact.ID]"></i>
+					</td>
+					<td>
+						<i class="glyphicon glyphicon-remove-circle" (click)="removeContact(contact.ID)"></i>
+					</td>
+				</tr>
+			</tbody>
+		 </table>
+	</div>
+	`
+	})
 
 export class CompaniesComponent implements OnInit {
 	@Output()
@@ -86,24 +86,21 @@ export class CompaniesComponent implements OnInit {
 
 	constructor(private contactService: ContactService, private companyService: CompanyService, private router: Router, private route: ActivatedRoute){};
 
-public ngOnInit(): void {
-	console.log('init hit');
-	this.route.params.subscribe(params => {
-		this.companyService.getCompanies().subscribe(companies => {
-			this.companies = companies;
-			if(params['id'] !== 'main') {
-				for(let company of this.companies) {
-				console.log('hit comparing:', params['id'], company.ID );
-					if (+params['id'] === company.ID) {
-				console.log('hit id');
-						this.companyIsSelected(company);
+	public ngOnInit(): void {
+		console.log('init hit');
+		this.route.params.subscribe(params => {
+			this.companyService.getCompanies().subscribe(companies => {
+				this.companies = companies;
+				if(params['id'] !== 'main') {
+					for(let company of this.companies) {
+						if (+params['id'] === company.ID) {
+							this.companyIsSelected(company);
+						}
 					}
 				}
-			}
+			});
 		});
-	});
-
-}
+	}
 
 	public companyIsSelected(company: Company): void {
 		console.log('isSelected',company);
@@ -135,18 +132,25 @@ public ngOnInit(): void {
 					this.companies = companies;
 				});
 		});
-
 	}
 
 	public removeCompany(id: number): void {
 		this.companyService.deleteCompany(id).subscribe(res => {
 			console.log(res); //todo toastr
-			this.companyService.getCompanies()
-				.subscribe(companies => {
+			this.companyService.getCompanies().subscribe(companies => {
 					this.companies = companies;
 					this.selectedCompany = <Company>{};
 				});
 			});
+	}
+
+	public removeContact(id: number): void {
+		this.contactService.deleteContact(id).subscribe(response => {
+			console.log('contact removed', response);
+			this.contactService.getCompanyContacts(this.selectedCompany.ID).subscribe(contacts => {
+				this.contacts = contacts;
+			})
+		});
 	}
 
 	public selectContact(contactId: number): void {
