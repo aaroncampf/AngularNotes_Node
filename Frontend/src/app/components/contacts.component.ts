@@ -32,15 +32,18 @@ import {CompanyService} from '../services/companies.service';
 			</div>
 			<div class="col-xs-8">
 				<button type="button" class="btn btn-block" [routerLink]="['create-contact', selectedCompany.ID]" [disabled]="!selectedCompany.ID" [class.disabled]="!selectedCompany.ID">New Contact</button>
-				<table class="table table-bordered table-hover">
+				<table class="table table-bordered table-hover table-condensed">
 					<tr>
 						<th>Name</th>
 						<th>Phone</th>
+						<th>Email</th>
 						<th>Position</th>
 					</tr>
-					<tr *ngFor="let contact of contacts" (click)="contactSelect(contact.ID)" [class.active]="contact.ID === selectedContact.ID">
-						<td>{{contact.Phone}}</td>
-						<td>{{contact.Position}}</td>
+					<tr *ngFor="let contact of contacts" [class.active]="contact.ID === selectedContact.ID">
+						<td (click)="selected(selectedCompany.ID, contact.ID)">{{contact.Name}}</td>
+						<td (click)="selected(selectedCompany.ID, contact.ID)">{{contact.Phone}}</td>
+						<td (click)="selected(selectedCompany.ID, contact.ID)">{{contact.Email}}</td>
+						<td (click)="selected(selectedCompany.ID, contact.ID)">{{contact.Position}}</td>
 						<td>
 							<i class="glyphicon glyphicon-edit" [routerLink]="['/edit-contact', contact.ID]"></i>
 						</td>
@@ -144,10 +147,12 @@ export class ContactsComponent implements OnInit, OnChanges {
 
 	}
 
-	public removeContact(contactId: number): void {
-		this.contactService.deleteContact(contactId).subscribe(res => {
-			this.contactService.getCompanyContacts(this.companyId)
-				.subscribe(contacts => this.contacts = contacts, err => console.log(err));
+	public removeContact(id: number): void {
+		this.contactService.deleteContact(id).subscribe(response => {
+			console.log('contact removed', response);
+			this.contactService.getCompanyContacts(this.selectedCompany.ID).subscribe(contacts => {
+				this.contacts = contacts;
+			})
 		});
 	}
 

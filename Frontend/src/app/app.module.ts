@@ -20,13 +20,16 @@ import {CreateCompanyComponent} from './components/create-company.component';
 import {CreateContactComponent} from './components/create-contacts.component';
 import {EditContactComponent} from './components/edit-contact.component';
 import {QuoteService} from './services/quotes.service';
+import {CreateQuoteComponent} from './components/create-quote.component';
+import {EditCompanyComponent} from './components/edit-company.component';
 
 const MAIN_ROUTES: Routes = [
 	{path: '', children: [
 		{path:'create-company', component: CreateCompanyComponent},
-		{path:'create-contact/:companyId', component: CreateContactComponent},
+		{path:'create-contact/:id', component: CreateContactComponent},
 		{path:'edit-contact/:id', component: EditContactComponent},
-		// {path:'edit-company/:id', component: CreateContactComponent},
+		{path:'create-quote/:id', component: CreateQuoteComponent},
+		{path:'edit-company/:id', component: EditCompanyComponent},
 		{path:':tab/:id', component: HomeComponent},
 		{path:'', redirectTo: 'companies/main', pathMatch: 'full'}
 	]}];
@@ -43,7 +46,9 @@ const MAIN_ROUTES: Routes = [
 		NotesComponent,
 		CreateCompanyComponent,
 		CreateContactComponent,
-		EditContactComponent
+		EditContactComponent,
+		CreateQuoteComponent,
+		EditCompanyComponent,
 	],
 	imports: [
 		BrowserModule,

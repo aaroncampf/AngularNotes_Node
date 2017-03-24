@@ -1,12 +1,12 @@
 import {animate, Component, OnInit, state, style, transition, trigger} from '@angular/core';
 import {FormControl, FormGroup, Validators} from '@angular/forms';
 import {ActivatedRoute, Router} from '@angular/router';
-import {Contact} from '../models/contact.model';
-import {ContactService} from '../services/contact.service';
+import {Quote} from '../models/quote.model';
+import {QuoteService} from '../services/quotes.service';
 import {CompanyService} from '../services/companies.service';
 
 @Component({
-	selector: 'edit-contact-component',
+	selector: 'create-quote-component',
 	animations: [
 		trigger('contentState', [
 			state('in', style({
@@ -22,40 +22,40 @@ import {CompanyService} from '../services/companies.service';
 				animate('400ms, ease-out'),
 			]),
 			transition('in => out', [
-				animate('400ms, ease-in'),])
+				style({transform: 'translateY(-100%)'}),
+				animate('400ms, ease-out'),])
 		])
 	],
 	host: {'[@contentState]': ''},
 	template: `
 		<div class="container" [@contentState]="animateState">
 			<div class="navbar navbar-fixed-top">
-				<button type="reset" class="btn-danger pull-left" [routerLink]="['/companies/main']">Cancel</button>
+				<button type="reset" class="btn-danger pull-left" [routerLink]="['/quotes/all']">Cancel</button>
 			</div>
-			<h4>Edit Contact</h4>
-			<form [formGroup]="contactGroup" (ngSubmit)="saveContact()">
-				<input-component label="Name" [(model)]="contact.Name" [control]="nameControl"></input-component>
-				<input-component label="Phone" [(model)]="contact.Phone" [control]="phoneControl"></input-component>
-				<input-component label="Email" [(model)]="contact.Email" [control]="emailControl"></input-component>
-				<input-component label="Position" [(model)]="contact.Position" [control]="positionControl"></input-component>
+			<h4>Add A Quote for {{company}}</h4>
+			<form [formGroup]="quoteGroup" (ngSubmit)="saveQuote()">
+				<input-component label="Name" [(model)]="quote.Name" [control]="nameControl"></input-component>
+				<input-component label="Phone" [(model)]="quote.Phone" [control]="phoneControl"></input-component>
+				<input-component label="Email" [(model)]="quote.Email" [control]="emailControl"></input-component>
+				<input-component label="Position" [(model)]="quote.Position" [control]="positionControl"></input-component>
 				<button type="submit" class="btn btn-large pull-right">Save</button>
 			</form>
 		</div>
 	`,
 })
 
-export class EditContactComponent implements OnInit{
+export class CreateQuoteComponent implements OnInit{
 	public animateState: string = 'in';
 	public companyId: string;
-	public contactId: string;
 	public company: string;
-	public contact: Contact = <Contact>{};
+	public quote: Quote = <Quote>{};
 	public nameControl: FormControl = new FormControl('', [Validators.required, Validators.maxLength(255)]);
 	public positionControl: FormControl = new FormControl('', []);
 	public emailControl: FormControl = new FormControl('', []);
 	public zipControl: FormControl = new FormControl('', []);
 	public phoneControl: FormControl = new FormControl('', []);
 	public miscControl: FormControl = new FormControl('', []);
-	public contactGroup: FormGroup = new FormGroup({
+	public quoteGroup: FormGroup = new FormGroup({
 		nameControl: this.nameControl,
 		emailControl: this.emailControl,
 		miscControl: this.miscControl,
@@ -63,25 +63,21 @@ export class EditContactComponent implements OnInit{
 		phoneControl: this.phoneControl,
 	});
 
-	constructor(private contactService: ContactService, private companyService: CompanyService, private router: Router, private route: ActivatedRoute){}
+	constructor(private quoteService: QuoteService, private companyService: CompanyService, private router: Router, private route: ActivatedRoute){}
 
-	public saveContact(): void {
-		console.log('saving', this.contact);
-		this.contactService.updateContact(this.contact, +this.contact.ID).subscribe(response => {
-			console.log('company was saved: ', response);
+	public saveQuote(): void {
+		this.quoteService.saveNewQuote(this.quote).subscribe(response => {
 			this.animateState = 'out';
-			setTimeout(() => {
-				this.router.navigate(['/contacts', this.contact.ID]);
-			}, 500)
+			this.router.navigate(['/companies/', this.companyId]);
 		})
 	}
 
 	public ngOnInit() {
 		this.route.params.subscribe(params => {
-			this.contactService.getContact(params['id']).subscribe(contact => {
-				console.log('retrieved: ', contact);
-				this.contact = contact;
-			});
+			this.companyId = params['id'];
+			this.companyService.getCompany(+this.companyId).subscribe(company => {
+				this.company = company.Name;
+			})
 		})
 	}
 
