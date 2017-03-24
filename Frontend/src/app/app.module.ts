@@ -16,11 +16,19 @@ import {BootstrapModalModule} from 'angular2-modal/plugins/bootstrap';
 import {Quotes_Printout} from './components/quote_printout.component';
 import {NotesComponent} from './components/notes.component';
 import {NotesService} from './services/notes.service';
+import {CreateCompanyComponent} from './components/create-company.component';
+import {CreateContactComponent} from './components/create-contacts.component';
+import {EditContactComponent} from './components/edit-contact.component';
+import {QuoteService} from './services/quotes.service';
 
 const MAIN_ROUTES: Routes = [
 	{path: '', children: [
-		{path:':tab', component: HomeComponent},
-		{path:'', redirectTo: 'companies', pathMatch: 'full'}
+		{path:'create-company', component: CreateCompanyComponent},
+		{path:'create-contact/:companyId', component: CreateContactComponent},
+		{path:'edit-contact/:id', component: EditContactComponent},
+		// {path:'edit-company/:id', component: CreateContactComponent},
+		{path:':tab/:id', component: HomeComponent},
+		{path:'', redirectTo: 'companies/main', pathMatch: 'full'}
 	]}];
 
 @NgModule({
@@ -32,7 +40,10 @@ const MAIN_ROUTES: Routes = [
 		Quotes_Printout,
 		InputComponent,
 		CompaniesComponent,
-		NotesComponent
+		NotesComponent,
+		CreateCompanyComponent,
+		CreateContactComponent,
+		EditContactComponent
 	],
 	imports: [
 		BrowserModule,
@@ -46,7 +57,8 @@ const MAIN_ROUTES: Routes = [
 	providers: [
 		CompanyService,
 		ContactService,
-		NotesService
+		NotesService,
+		QuoteService
 	],
 	schemas: [
 		CUSTOM_ELEMENTS_SCHEMA

@@ -4,7 +4,6 @@ import {Contact} from "./contact.model";
  */
 export interface Note {
     ID?: number;
-
     /**
      * The date the note was created
      */
@@ -24,4 +23,19 @@ export interface Note {
      * The contact this note was written for
      */
     Contact?: Contact;
+}
+
+export interface _NewNote {
+    Title: string;
+    Text: string;
+}
+
+export interface NewNote extends _NewNote {
+    Date: Date
+}
+
+export const newNote = {
+    Date: new Date(Date.now()).toISOString(),
+    Title: void 0,
+    Text: void 0
 }

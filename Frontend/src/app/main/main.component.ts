@@ -9,4 +9,5 @@ import '../styles/main.scss';
 })
 export class MainComponent {
 
+
 }

@@ -9,17 +9,20 @@ import { Modal } from 'angular2-modal/plugins/bootstrap';
     selector: 'home-component',
 	animations: [
 		trigger('contentState', [
-			state('active', style({
+			state('in', style({
 				opacity: '1',
 				transform: 'translateY(0%)',
 			})),
-			state('inactive', style({
+			state('out', style({
 				opacity: '0',
 				transform: 'translateY(100%)',
 			})),
-			transition('inactive => active', animate('400ms, ease-out')),
+			transition('out => in', animate('400ms, ease-out')),
 			//TODO figure out how to outro
-			// transition('active => inactive', animate('1000ms, ease-in'))
+			transition('in => out', animate('1000ms, ease-in')),
+			transition(':leave', [
+				animate(200, style({transform: 'translateX(-100%) scale(0)'}))
+			])
 		])
 	],
     template: `
@@ -30,22 +33,22 @@ import { Modal } from 'angular2-modal/plugins/bootstrap';
 			<content-area>
 				<ul class="nav nav-tabs">
 					<li [class.active]="tab === COMPANIES">
-						<a class="tab" [routerLink]="['/companies']">
+						<a class="tab" [routerLink]="['/companies/', this.companyId]">
 							<tab-heading>Companies</tab-heading>
 						</a>
 					</li>
-					<li [class.active]="tab === CONTACTS">
-						<a class="tab" [routerLink]="['/contacts']">
+					<li  [class.active]="tab === CONTACTS">
+						<a disabled class="tab" [routerLink]="['/contacts', this.companyId]">
 							<tab-heading>Contacts</tab-heading>
 						</a>
 					</li>
 					<li [class.active]="tab === NOTES">
-						<a class="tab" [routerLink]="['/notes']">
+						<a class="tab" [routerLink]="['/notes', this.companyId]">
 							<tab-heading>Notes</tab-heading>
 						</a>
 					</li>
 					<li [class.active]="tab === QUOTES">
-						<a [routerLink]="['/quotes']">
+						<a [routerLink]="['/quotes', this.companyId]">
 							<tab-heading>Quotes</tab-heading>
 						</a>
 					</li>
@@ -53,7 +56,6 @@ import { Modal } from 'angular2-modal/plugins/bootstrap';
 				<div class="tab-content">
 					<companies-component 
 						[@contentState]="companies"
-					 	(currentCompany)="setCompany($event)" 
 					 	class="tab-pane"
 					 	role="tabpanel" 
 					 	[class.active]="tab===COMPANIES">
@@ -112,6 +114,7 @@ export class HomeComponent implements OnInit {
 	public testModel: string = 'Please show me in the modal';
 	public quotes: string;
 	public companies: string;
+	public companyId: string;
 	public contacts: string;
 	public notes: string;
 	public tab: string;
@@ -135,10 +138,12 @@ export class HomeComponent implements OnInit {
     public ngOnInit(): void {
 		this.route.params.subscribe(params => {
 			this.tab = params['tab'];
-			this.companies = 'inactive';
-			this.quotes= 'inactive';
-			this.contacts = 'inactive';
-			this[params['tab']] = 'active';
+			this.companyId = params['id'];
+			this.companies = 'out';
+			this.quotes= 'out';
+			this.contacts = 'out';
+			this.notes = 'out';
+			this[params['tab']] = 'in';
 		});
 	}
 

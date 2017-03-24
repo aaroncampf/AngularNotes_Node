@@ -1,5 +1,10 @@
 main {
   background: lightgray;
+  min-height: 100vh;
+
+  .container {
+    background: white;
+  }
 }
 
 @import "./home";
@@ -7,3 +12,4 @@ main {
 @import "./companies";
 @import "./input";
 @import "./notes";
+@import "./create-company";

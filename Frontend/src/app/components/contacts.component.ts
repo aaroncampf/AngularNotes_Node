@@ -6,61 +6,72 @@ import {ActivatedRoute} from '@angular/router';
 import {NotesService} from '../services/notes.service';
 import {Note} from '../models/note.model';
 import {Company} from '../models/company.model';
+import {CompanyService} from '../services/companies.service';
 
 @Component({
 	selector: 'contacts-component',
 	template: `
-	<div class="row">
-		<form [formGroup]="contactsGroup">
+		<div class="row">
+			<h4>Contacts</h4>
 			<div class="col-xs-4">
-				<input-component label="Name:" [currentModel]="selectedContact" propKey="Name" [apiPath]="notesRESTPath()" [idNumber]="selectedContact.ID" [control]="nameControl" [model]="selectedContact?.Name"></input-component>
-				<input-component label="Phone:" [currentModel]="selectedContact" propKey="Phone" [apiPath]="notesRESTPath()" [idNumber]="selectedContact.ID" [control]="phoneControl" [model]="selectedContact?.Phone"></input-component>
-				<input-component label="Email:" [currentModel]="selectedContact" propKey="Email" [apiPath]="notesRESTPath()" [idNumber]="selectedContact.ID" [control]="emailControl" [model]="selectedContact?.Email"></input-component>
-				<input-component label="Position:" [currentModel]="selectedContact" propKey="Position" [apiPath]="notesRESTPath()" [idNumber]="selectedContact.ID" [control]="positionControl" [model]="selectedContact?.Position"></input-component>
-				<button type="button" class="btn btn-block">New Contact</button>
+				<table class="table table-bordered table-hover">
+					<thead>
+					<tr>
+						<th>Companies</th>
+					</tr>
+					</thead>
+					<tbody>
+					<tr>
+						<td (click)="selected(0)">Select All The Things!</td>
+					</tr>
+					<tr *ngFor="let company of companies">
+						<td [class.active]="selectedCompany.ID === company.ID" (click)="selected(company.ID)">{{company.Name}}</td>
+					</tr>
+					</tbody>
+				</table>
 			</div>
-		</form>
-		<div class="col-xs-8">
-			<table class="table table-bordered table-striped table-hover">
-				<tr>
-					<th>Name</th>
-					<th>Phone</th>
-					<th>Position</th>
-				</tr>
-				<tr *ngFor="let contact of contacts" (click)="contactSelect(contact)">
-					<td>{{contact.Name}}</td>
-					<td>{{contact.Phone}}</td>
-					<td>{{contact.Position}}</td>
-					<i class="glyphicon glyphicon-remove" (click)="removeContact(contact.ID)"></i>
-				</tr>
-			</table>
+			<div class="col-xs-8">
+				<button type="button" class="btn btn-block" [routerLink]="['create-contact', selectedCompany.ID]" [disabled]="!selectedCompany.ID" [class.disabled]="!selectedCompany.ID">New Contact</button>
+				<table class="table table-bordered table-hover">
+					<tr>
+						<th>Name</th>
+						<th>Phone</th>
+						<th>Position</th>
+					</tr>
+					<tr *ngFor="let contact of contacts" (click)="contactSelect(contact.ID)" [class.active]="contact.ID === selectedContact.ID">
+						<td>{{contact.Phone}}</td>
+						<td>{{contact.Position}}</td>
+						<td>
+							<i class="glyphicon glyphicon-edit" [routerLink]="['/edit-contact', contact.ID]"></i>
+						</td>
+						<td>
+							<i class="glyphicon glyphicon-remove" (click)="removeContact(contact.ID)"></i>
+						</td>
+					</tr>
+				</table>
+			</div>
 		</div>
-	</div>
-	<div class="row">
-		<strong>Contact Notes</strong>
-		<button type="button" class="btn btn-block" (click)="saveNote(newNote, selectedContact.ID)" [disabled]="" [class.disabled]="!selectedContact">New Note</button>
-	</div>
-	<div class="row panel" *ngFor="let note of notes; let i = index;">
-		<button class="btn-danger pull-right" (click)="removeNote(note.ID)"><i class="glyphicon glyphicon-remove"></i></button>
-		<strong>Note #{{note.ID}}</strong>
-		<input class="col-xs-8"  (blur)="saveNote(note, selectedContact.ID)" [(ngModel)]="note.Title"/>
-		<textarea (blur)="saveNote(note, selectedContact.ID)" [(ngModel)]="note.Text"></textarea>
-	</div>
-`,
+		<div class="row">
+			<h4>Contact Notes</h4>
+			<button type="button" class="btn btn-block" (click)="saveNote(newNote, selectedContact.ID)" [disabled]="selectedContact" [class.disabled]="selectedContact">New Note</button>
+		</div>
+		<div class="row panel" *ngFor="let note of notes; let i = index;">
+			<button class="btn-danger pull-right" (click)="removeNote(note.ID)">
+				<i class="glyphicon glyphicon-remove"></i>
+			</button>
+			<strong>Note #{{note.ID}}</strong>
+			<input class="col-xs-8" (blur)="saveNote(note, selectedContact.ID)" [(ngModel)]="note.Title"/>
+			<textarea (blur)="saveNote(note, selectedContact.ID)" [(ngModel)]="note.Text"></textarea>
+		</div>
+	`,
 })
 
 export class ContactsComponent implements OnInit, OnChanges {
-	@Input()
-	public currentCompany: Company = <Company>{};
-	public notesRESTPath: () => string = () => `http://angularnotes-angularbros.azurewebsites.net/api/Contact/`;
+	public companies: Company[] = [];
+	public companyId: number;
 	public notes: Note[] = [];
-	public date: Date = new Date(Date.now());
-	public newNote: Note = {
-		Date: this.date.toISOString(),
-		Title: '',
-		Text: ''
-	};
 	public selectedContact: Contact = <Contact>{};
+	public selectedCompany: Company = <Company>{};
 	public contacts: Contact[] = [];
 	public nameControl: FormControl = new FormControl('', []);
 	public emailControl: FormControl = new FormControl('', []);
@@ -75,49 +86,76 @@ export class ContactsComponent implements OnInit, OnChanges {
 		title: this.titleControl
 	});
 	constructor(private contactService: ContactService,
+				private companyService: CompanyService,
 				private route: ActivatedRoute,
 				private notesService: NotesService) {}
 
 	public ngOnChanges(changes: SimpleChanges): void {
-		if(this.currentCompany.ID > 0) {
-			this.contactService.getCompanyContacts(this.currentCompany.ID).subscribe(response => {
-				this.contacts = response;
-			}, err => console.log('ngOnChanges getCompanyContacts', err))
-		}
 	}
+
 	public ngOnInit(): void {
 		this.route.queryParams.subscribe(params => {
-			if (!!params['contactId']) {
-				this.contactService.getContact(params['contactId']).subscribe(contact => this.selectedContact = contact);
-			}
+			this.companyId = +params['id'];
 		});
+		this.companyService.getCompanies().subscribe(companies => {
+			this.companies = companies;
+		});
+		this.contactService.getContacts().subscribe(contacts => {
+			this.contacts = contacts;
+		});
+	}
+
+	public selected(companyId: number, contactId?: number) {
+		if (contactId){
+			for(let contact of this.contacts) {
+				if (contact.ID === contactId) {
+					this.selectedContact = contact;
+					this.notesService.getContactNotes(this.selectedContact.ID).subscribe(notes => this.notes);
+				}
+			}
+		} else if (companyId === 0) {
+			this.selectedCompany = <Company>{};
+			this.contactService.getContacts().subscribe(contacts => this.contacts = contacts);
+		} else {
+			for(let company of this.companies){
+				if (company.ID === companyId) {
+					this.selectedCompany = company;
+					this.contactService.getCompanyContacts(this.selectedCompany.ID).subscribe(contacts => {
+						this.contacts = contacts;
+					})
+				}
+			}
+		}
 	}
 
 	public saveNote(note: Note, contactId: number): void {
 		this.notesService.saveNote(note, contactId).subscribe(res => {
-			console.log('saveNote', res);
-			this.notesService.getContactNotes(contactId).subscribe(notes => this.notes = notes);
+			this.notesService.getContactNotes(this.selectedContact.ID).subscribe(notes => this.notes = notes);
 		});
 	}
 
 	public removeNote(noteId: number): void {
 		this.notesService.deleteNote(noteId).subscribe(res => {
 			this.notesService.getContactNotes(this.selectedContact.ID).subscribe(notes => this.notes = notes);
-			console.log('deleted: ', res)
 		});
+	}
+
+	public createContact(companyId: number): void {
+
 	}
 
 	public removeContact(contactId: number): void {
 		this.contactService.deleteContact(contactId).subscribe(res => {
-			this.contactService.getCompanyContacts(this.currentCompany.ID)
+			this.contactService.getCompanyContacts(this.companyId)
 				.subscribe(contacts => this.contacts = contacts, err => console.log(err));
 		});
 	}
 
-	public contactSelect(contact: Contact): void {
-		this.selectedContact = contact;
-		this.notesService.getContactNotes(contact.ID).subscribe(notes => {
-			this.notes = notes
-		})
+	public contactSelect(contactId: number): void {
+		this.contactService.getContact(contactId).subscribe(contact => {
+				this.selectedContact = contact;
+				this.notesService.getContactNotes(this.selectedContact.ID)
+					.subscribe(notes => this.notes = notes)
+			});
 	}
 }

@@ -12,8 +12,14 @@ export class CompanyService {
 			.map(results => results.json())
 			.catch(err => this.handleError(err));
 	}
+	public getCompany(id: number): Observable<any> {
+		console.log(id);
+		return this.http.get('http://angularnotes-angularbros.azurewebsites.net/api/companies/' + id)
+			.map(results => results.json())
+			.catch(err => this.handleError(err));
+	}
 
-	public saveCompany(company: Company, id: number): Observable<Company> {
+	public saveCompany(company: Company, id?: number): Observable<Company> {
 		const headers = new Headers({
 			'content-type': 'application/json',
 		});
