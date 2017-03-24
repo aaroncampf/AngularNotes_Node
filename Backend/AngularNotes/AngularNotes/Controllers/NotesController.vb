@@ -19,8 +19,8 @@ Namespace Controllers
 			Return db.Notes
 		End Function
 
-		Function GetNotes(ContactID As Integer) As IQueryable(Of Note)
-			Return db.Contacts(ContactID).Notes
+		Function GetNotes(ContactID As Integer) As ICollection(Of Note)
+			Return db.Contacts.Find(ContactID).Notes
 		End Function
 
 

@@ -37,11 +37,11 @@ Public Class ContactController
 	''' </summary>
 	''' <param name="CompanyID">The ID of the contact's company</param>
 	''' <param name="value"></param>
-	Public Sub PostValue(CompanyID As Integer, <FromBody()> ByVal value As Contact)
+	Public Function PostValue(CompanyID As Integer, <FromBody()> ByVal value As Contact) As Integer
 		db.Companies.Find(CompanyID).Contacts.Add(value)
-		'db.Contacts.Add(value)
 		db.SaveChanges()
-	End Sub
+		Return value.ID
+	End Function
 
 	' PUT api/<controller>/5
 	''' <summary>
