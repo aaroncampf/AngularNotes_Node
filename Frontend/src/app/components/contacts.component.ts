@@ -1,8 +1,8 @@
-import {Component, Input, OnChanges, OnInit, SimpleChanges} from '@angular/core';
+import {Component, EventEmitter, OnChanges, OnInit, Output, SimpleChanges} from '@angular/core';
 import {FormControl, FormGroup} from '@angular/forms';
 import {Contact} from '../models/contact.model';
 import {ContactService} from '../services/contact.service';
-import {ActivatedRoute} from '@angular/router';
+import {ActivatedRoute, Router} from '@angular/router';
 import {NotesService} from '../services/notes.service';
 import {Note} from '../models/note.model';
 import {Company} from '../models/company.model';
@@ -31,7 +31,7 @@ import {CompanyService} from '../services/companies.service';
 				</table>
 			</div>
 			<div class="col-xs-8">
-				<button type="button" class="btn btn-block" [routerLink]="['create-contact', selectedCompany.ID]" [disabled]="!selectedCompany.ID" [class.disabled]="!selectedCompany.ID">New Contact</button>
+				<button type="button" class="btn btn-block" (click)="animateNavigation('/create-contact/' + selectedCompany.ID)" [disabled]="!selectedCompany.ID" [class.disabled]="!selectedCompany.ID">New Contact</button>
 				<table class="table table-bordered table-hover table-condensed">
 					<tr>
 						<th>Name</th>
@@ -56,7 +56,7 @@ import {CompanyService} from '../services/companies.service';
 		</div>
 		<div class="row">
 			<h4>Contact Notes</h4>
-			<button type="button" class="btn btn-block" (click)="saveNote(newNote, selectedContact.ID)" [disabled]="selectedContact" [class.disabled]="selectedContact">New Note</button>
+			<button type="button" class="btn btn-block" (click)="saveNote(newNote, selectedContact.ID)" [disabled]="!selectedContact.ID" [class.disabled]="!selectedContact.ID">New Note</button>
 		</div>
 		<div class="row panel" *ngFor="let note of notes; let i = index;">
 			<button class="btn-danger pull-right" (click)="removeNote(note.ID)">
@@ -70,6 +70,8 @@ import {CompanyService} from '../services/companies.service';
 })
 
 export class ContactsComponent implements OnInit, OnChanges {
+	@Output()
+	public triggerStateChange: EventEmitter<any> = new EventEmitter<any>();
 	public companies: Company[] = [];
 	public companyId: number;
 	public notes: Note[] = [];
@@ -91,6 +93,7 @@ export class ContactsComponent implements OnInit, OnChanges {
 	constructor(private contactService: ContactService,
 				private companyService: CompanyService,
 				private route: ActivatedRoute,
+				private router: Router,
 				private notesService: NotesService) {}
 
 	public ngOnChanges(changes: SimpleChanges): void {
@@ -143,10 +146,6 @@ export class ContactsComponent implements OnInit, OnChanges {
 		});
 	}
 
-	public createContact(companyId: number): void {
-
-	}
-
 	public removeContact(id: number): void {
 		this.contactService.deleteContact(id).subscribe(response => {
 			console.log('contact removed', response);
@@ -156,11 +155,17 @@ export class ContactsComponent implements OnInit, OnChanges {
 		});
 	}
 
-	public contactSelect(contactId: number): void {
-		this.contactService.getContact(contactId).subscribe(contact => {
-				this.selectedContact = contact;
-				this.notesService.getContactNotes(this.selectedContact.ID)
-					.subscribe(notes => this.notes = notes)
-			});
+	public animateNavigation(path: string): void {
+		this.triggerStateChange.emit('0');
+		setTimeout(() => {
+			this.router.navigate([path]);
+		}, 500)
 	}
+	// public contactSelect(contactId: number): void {
+	// 	this.contactService.getContact(contactId).subscribe(contact => {
+	// 			this.selectedContact = contact;
+	// 			this.notesService.getContactNotes(this.selectedContact.ID)
+	// 				.subscribe(notes => this.notes = notes)
+	// 		});
+	// }
 }

@@ -15,22 +15,23 @@ import {CompanyService} from '../services/companies.service';
 			})),
 			state('out', style({
 				opacity: '0',
-				transform: 'translateX(200%)'
+				transform: 'translateY(200%)'
 			})),
 			transition('void => in', [
 				style({transform: 'translateY(-100%)'}),
 				animate('400ms, ease-out'),
 			]),
 			transition('in => out', [
-				style({transform: 'translateY(-100%)'}),
-				animate('400ms, ease-out'),])
+				// style({transform: 'translateY(-200%)'}),
+				animate('400ms, ease-in'),
+			])
 		])
 	],
 	host: {'[@contentState]': ''},
 	template: `
 		<div class="container" [@contentState]="animateState">
 			<div class="navbar navbar-fixed-top">
-				<button type="reset" class="btn-danger pull-left" [routerLink]="['/companies']">Cancel</button>
+				<button type="button" class="btn-danger pull-left" (click)="animateNavigation('/companies/main')">Cancel</button>
 			</div>
 			<h4>Add A Contact for {{company}}</h4>
 			<form [formGroup]="contactGroup" (ngSubmit)="saveContact()">
@@ -67,8 +68,7 @@ export class CreateContactComponent implements OnInit{
 
 	public saveContact(): void {
 		this.contactService.saveNewContact(this.contact, +this.companyId).subscribe(response => {
-			this.animateState = 'out';
-			this.router.navigate(['/companies/', this.companyId]);
+			this.animateNavigation('/companies/' + this.companyId);
 		})
 	}
 
@@ -79,6 +79,13 @@ export class CreateContactComponent implements OnInit{
 				this.company = company.Name;
 			})
 		})
+	}
+
+	public animateNavigation(path: string): void {
+		this.animateState = 'out';
+		setTimeout(() => {
+			this.router.navigate([path]);
+		}, 500)
 	}
 
 }

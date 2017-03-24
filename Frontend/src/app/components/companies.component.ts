@@ -55,7 +55,7 @@ import {Router, NavigationExtras, ActivatedRoute} from '@angular/router';
 					<th></th>
 				</tr>
 			</thead>
-			 <tbody>
+			<tbody>
 			<tr *ngFor="let contact of contacts" >
 					<td>{{contact.ID}}</td>
 					<td>{{contact.Name}}</td>
