@@ -38,9 +38,9 @@ export class NotesService {
 			.catch(err => err);
 	}
 
-	public getContactNotes(contact: Contact): Observable<Note[]> {
-		console.log('getContactNotes', contact);
-			return this.http.get(`http://angularnotes-angularbros.azurewebsites.net/api/Notes?ContactID=${contact.ID}`)
+	public getContactNotes(id: number): Observable<Note[]> {
+		console.log('getContactNotes', id);
+			return this.http.get(`http://angularnotes-angularbros.azurewebsites.net/api/Notes?ContactID=${id}`)
 				.map(response => {
 					console.log('getContactNote response', response.json());
 					return response.json();

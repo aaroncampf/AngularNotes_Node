@@ -14,7 +14,7 @@ export function main() {
 switch (document.readyState) {
 	case 'interactive':
 	case 'complete':
-		// enableProdMode();
+		enableProdMode();
 		main();
 		break;
 	case 'loading':

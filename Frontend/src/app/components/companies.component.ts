@@ -1,28 +1,37 @@
-import {Component, EventEmitter, OnInit, Output} from '@angular/core';
-import {FormControl, Validators, FormGroup} from '@angular/forms';
+import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
 import {Company, CompanyFormData} from '../models/company.model';
 import {CompanyService} from '../services/companies.service';
 import {Contact} from '../models/contact.model';
 import {ContactService} from '../services/contact.service';
-import {Router, NavigationExtras} from '@angular/router';
+import {Router, NavigationExtras, ActivatedRoute} from '@angular/router';
 @Component({
 	selector: 'companies-component',
 	template: `
 		<div class="row">
 			<div class="col-xs-12">
+				<button class="btn btn-block" [routerLink]="['/create-company']">Add Company</button>
 				<strong>Select a Company:</strong>
 				<table class="table table-bordered table-hover">
 					<thead>
-						<th>Name</th>
+					<th>Name</th>
 						<th>Phone</th>
+						<th>Address</th>
+						<th>City</th>
+						<th>ZipCode</th>
 						<th></th>
 					</thead>
 					<tbody>
-						<tr (click)="companyIsSelected(company)" *ngFor="let company of companies" [class.active]="selectedCompany.ID === company.ID">
+					<tr (click)="companyIsSelected(company)" *ngFor="let company of companies" [class.active]="selectedCompany.ID === company.ID">
 							<td>
-								<strong>{{company?.Name}}</strong>
+								<strong>{{company.Name}}</strong>
 							</td>
 							<td>{{company.Phone}}</td>
+							<td>{{company.Address}}</td>
+							<td>{{company.City}}</td>
+							<td>{{company.Zip}}</td>
+							<td>
+								<i class="glyphicon glyphicon-edit" (click)="removeCompany(company.ID)"></i>
+							</td>
 							<td>
 								<i class="glyphicon glyphicon-remove-circle" (click)="removeCompany(company.ID)"></i>
 							</td>
@@ -31,89 +40,75 @@ import {Router, NavigationExtras} from '@angular/router';
 				</table>
 			</div>
 		</div>
-		<div *ngIf="!!selectedCompany"><h4>{{selectedCompany.Name || 'No Company'}} Selected</h4></div>
-		<button class="btn btn-block" (click)="setNewCompany()">Add Company</button>
-		<form [formGroup]="companiesGroup" (ngSubmit)="companySave()">
-			<span class="col-xs-6">
-				<input-component label="Name" [idNumber]="selectedCompany.ID" [apiPath]="companiesRESTPath()" propKey="Name" [(model)]="selectedCompany.Name" [control]="nameControl" [currentModel]="selectedCompany"></input-component>
-			</span>
-			<span class="col-xs-6">
-				<input-component label="Phone" [idNumber]="selectedCompany.ID" [apiPath]="companiesRESTPath()" propKey="Phone" [model]="selectedCompany.Phone" [control]="phoneControl" [currentModel]="selectedCompany"></input-component>	
-			</span>
-			<input-component label="Address" [idNumber]="selectedCompany.ID" [apiPath]="companiesRESTPath()" propKey="Address" [model]="selectedCompany.Address" [control]="addressControl" [currentModel]="selectedCompany"></input-component>
-			<span class="col-xs-6">
-				<input-component label="City" [idNumber]="selectedCompany.ID" [apiPath]="companiesRESTPath()" propKey="City" [model]="selectedCompany.City" [control]="cityControl" [currentModel]="selectedCompany"></input-component>
-			</span>
-			<span class="col-xs-6">
-				<input-component label="ZipCode" [idNumber]="selectedCompany.ID" [apiPath]="companiesRESTPath()" propKey="Zip" [model]="selectedCompany.Zip" [control]="zipControl" [currentModel]="selectedCompany"></input-component>
-			</span>
-			<div class="row">
-				Misc: <textarea (blur)="companySave(companiesGroup.value, selectedCompany.ID)" [ngModel]="selectedCompany.Misc" class="form-control" [formControl]="miscControl"></textarea>
-			</div>
-			<h4>{{selectedCompany.Name}} Contacts</h4>
-			<div class="row">
-				 <table class="table table-bordered table-hover">
-					<thead>
-						<tr>
-							<th>ID</th>
-							<th>Name</th>
-							<th>Phone</th>
-							<th>Email</th>
-							<th>Position</th>
-							<th></th>
-						</tr>	
-					</thead>
-					<tbody>
-						<tr *ngFor="let contact of contacts" >
-							<td>{{contact.ID}}</td> 
-							<td>{{contact.Name}}</td>
-							<td>{{contact.Phone}}</td>
-							<td>{{contact.Email}}</td>
-							<td>{{contact.Position}}</td>
-							<td>
-								<i class="glyphicon glyphicon-list" (click)="selectContact(contact.ID, selectedCompany.ID)"></i>
-							</td>
-						</tr>	
-					</tbody>
-				</table>
-			</div>
-		</form>
-		<button class="btn btn-block" (click)="selectContact(0, selectedCompany.ID)">Add A {{selectedCompany.Name}} Contact</button>
+		<div class="row">
+			<div *ngIf="!!selectedCompany"><h4>{{selectedCompany.Name || 'Select A Company First'}}<span *ngIf="companySelected">'s Contacts</span></h4></div>
+			<button class="btn btn-block" [routerLink]="['/create-contact/', this.selectedCompany.ID]" [disabled]="!companySelected" [class.disabled]="!companySelected">Add A {{selectedCompany.Name}} Contact</button>
+			<table class="table table-bordered table-hover">
+				<thead>
+					<tr>
+						<th>ID</th>
+						<th>Name</th>
+						<th>Phone</th>
+						<th>Email</th>
+						<th>Position</th>
+						<th></th>
+						<th></th>
+					</tr>
+				</thead>
+				 <tbody>
+				<tr *ngFor="let contact of contacts" >
+						<td>{{contact.ID}}</td>
+						<td>{{contact.Name}}</td>
+						<td>{{contact.Phone}}</td>
+						<td>{{contact.Email}}</td>
+						<td>{{contact.Position}}</td>
+						<td>
+							<i class="glyphicon glyphicon-edit" (click)="selectContact(contact.ID, selectedCompany.ID)"></i>
+						</td>
+						<td>
+							<i class="glyphicon glyphicon-remove-circle" (click)="selectContact(contact.ID, selectedCompany.ID)"></i>
+						</td>
+					</tr>
+				</tbody>
+			 </table>
+		</div>
 `
 })
 
 export class CompaniesComponent implements OnInit {
 	@Output()
 	public currentCompany: EventEmitter<Company> = new EventEmitter<Company>();
-	public companiesRESTPath: () => string = () => 'http://angularnotes-angularbros.azurewebsites.net/api/companies/';
-	public selectedCompany: Company = <Company>{};
 	public newCompany: Company = <Company>{};
+	public selectedCompany: Company = <Company>{};
+	public companySelected: boolean = false;
 	public contacts: Contact[] = [];
 	public companies: Company[];
-	public nameControl: FormControl = new FormControl('', [Validators.maxLength(255)]);
-	public addressControl: FormControl = new FormControl('', []);
-	public cityControl: FormControl = new FormControl('', []);
-	public zipControl: FormControl = new FormControl('', []);
-	public phoneControl: FormControl = new FormControl('', []);
-	public miscControl: FormControl = new FormControl('', []);
-	public companiesGroup: FormGroup = new FormGroup({
-		nameControl: this.nameControl,
-		addressControl: this.addressControl,
-		miscControl: this.miscControl,
-		cityControl: this.cityControl,
-		zipControl: this.zipControl,
-		phoneControl: this.phoneControl,
-	});
-	constructor(private contactService: ContactService, private companyService: CompanyService, private router: Router){};
 
-	public ngOnInit(): void {
+	constructor(private contactService: ContactService, private companyService: CompanyService, private router: Router, private route: ActivatedRoute){};
+
+public ngOnInit(): void {
+	console.log('init hit');
+	this.route.params.subscribe(params => {
 		this.companyService.getCompanies().subscribe(companies => {
 			this.companies = companies;
+			if(params['id'] !== 'main') {
+				for(let company of this.companies) {
+				console.log('hit comparing:', params['id'], company.ID );
+					if (+params['id'] === company.ID) {
+				console.log('hit id');
+						this.companyIsSelected(company);
+					}
+				}
+			}
 		});
-	}
+	});
+
+}
 
 	public companyIsSelected(company: Company): void {
+		console.log('isSelected',company);
 		this.selectedCompany = company;
+		this.companySelected = true;
 		this.currentCompany.emit(company);
 		this.contactService.getCompanyContacts(company.ID)
 			.subscribe(contacts => this.contacts = contacts, err => console.log('getCompanyContacts Error', err));
