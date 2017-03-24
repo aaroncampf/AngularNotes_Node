@@ -14,13 +14,17 @@ Namespace Controllers
 
         Private db As New Database
 
-        ' GET: api/Quotes
-        Function GetQuotes() As IQueryable(Of Quote)
-            Return db.Quotes
-        End Function
+		' GET: api/Quotes
+		Function GetQuotes() As IQueryable(Of Quote)
+			Return db.Quotes
+		End Function
 
-        ' GET: api/Quotes/5
-        <ResponseType(GetType(Quote))>
+		Function GetQuoteLines(CompanyID As Integer) As ICollection(Of Quote)
+			Return db.Companies.Find(CompanyID).Quotes
+		End Function
+
+		' GET: api/Quotes/5
+		<ResponseType(GetType(Quote))>
         Function GetQuote(ByVal id As Integer) As IHttpActionResult
             Dim quote As Quote = db.Quotes.Find(id)
             If IsNothing(quote) Then
