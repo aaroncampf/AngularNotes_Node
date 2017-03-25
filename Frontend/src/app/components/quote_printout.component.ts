@@ -3,15 +3,12 @@
  */
 
 
-import {Component, Input} from '@angular/core';
+import {Component} from '@angular/core';
 import {Company} from "../models/company.model";
 import {Quote} from "../models/quote.model";
 import {QuoteLine, QUOTE, COMPANY, QUOTELINES, SETTINGS, CONTACT} from "../models/quotelines.model";
 import {Setting} from "../models/setting.model";
 import {Contact} from '../models/contact.model';
-
-
-
 
 /**
  * Displays a quote as a beautiful printout

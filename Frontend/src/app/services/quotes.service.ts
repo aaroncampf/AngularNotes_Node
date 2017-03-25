@@ -32,29 +32,29 @@ export class QuoteService {
 			.catch(err => err);
 	}
 
-	public saveNewQuote(quote: Quote): Observable<any> {
-		const headers = new Headers({
-			'content-type': 'application/json',
-		});
-		const options = new RequestOptions({headers: headers});
-		return this.http.post(`http://angularnotes-angularbros.azurewebsites.net/api/Quotes`, JSON.stringify(quote), options)
-			.map(res => {
-				return res;
-			})
-			.catch(err => this.handleError(err));
-	}
-
-	// public saveNewQuote(quote: Quote, companyId?: number): Observable<any> {
+	// public saveNewQuote(quote: Quote): Observable<any> {
 	// 	const headers = new Headers({
 	// 		'content-type': 'application/json',
 	// 	});
 	// 	const options = new RequestOptions({headers: headers});
-	// 	return this.http.post(`http://angularnotes-angularbros.azurewebsites.net/api/Quotes?CompanyID=${companyId}`, JSON.stringify(quote), options)
+	// 	return this.http.post(`http://angularnotes-angularbros.azurewebsites.net/api/Quotes`, JSON.stringify(quote), options)
 	// 		.map(res => {
 	// 			return res;
 	// 		})
 	// 		.catch(err => this.handleError(err));
 	// }
+
+	public saveNewQuote(quote: Quote, companyId?: number): Observable<any> {
+		const headers = new Headers({
+			'content-type': 'application/json',
+		});
+		const options = new RequestOptions({headers: headers});
+		return this.http.post(`http://angularnotes-angularbros.azurewebsites.net/api/Quotes?CompanyID=${companyId}`, JSON.stringify(quote), options)
+			.map(res => {
+				return res;
+			})
+			.catch(err => this.handleError(err));
+	}
 
 	public updateQuote(quote: Quote, id: number): Observable<any> {
 		const headers = new Headers({

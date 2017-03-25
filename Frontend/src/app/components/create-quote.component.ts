@@ -1,7 +1,7 @@
 import {Component, OnInit} from '@angular/core';
 import {FormControl, FormGroup, Validators} from '@angular/forms';
 import {ActivatedRoute, Router} from '@angular/router';
-import {Quote} from '../models/quote.model';
+import {newQuote, Quote} from '../models/quote.model';
 import {QuoteService} from '../services/quotes.service';
 import {CompanyService} from '../services/companies.service';
 
@@ -12,12 +12,9 @@ import {CompanyService} from '../services/companies.service';
 			<div class="navbar navbar-fixed-top">
 				<button type="reset" class="btn-danger pull-left" [routerLink]="['/quotes/main']">Cancel</button>
 			</div>
-			<h4>Add A Quote for {{company}}</h4>
-			<form [formGroup]="quoteGroup" (ngSubmit)="saveQuote()">
+			<h4>Start A Quote for {{company}}</h4>
+			<form [formGroup]="quoteGroup" (ngSubmit)="saveQuote(quote)">
 				<input-component label="Name" [(model)]="quote.Name" [control]="nameControl"></input-component>
-				<input-component label="Phone" [(model)]="quote.Phone" [control]="phoneControl"></input-component>
-				<input-component label="Email" [(model)]="quote.Email" [control]="emailControl"></input-component>
-				<input-component label="Position" [(model)]="quote.Position" [control]="positionControl"></input-component>
 				<button type="submit" class="btn btn-large pull-right">Save</button>
 			</form>
 		</div>
@@ -30,23 +27,16 @@ export class CreateQuoteComponent implements OnInit{
 	public company: string;
 	public quote: Quote = <Quote>{};
 	public nameControl: FormControl = new FormControl('', [Validators.required, Validators.maxLength(255)]);
-	public positionControl: FormControl = new FormControl('', []);
-	public emailControl: FormControl = new FormControl('', []);
-	public zipControl: FormControl = new FormControl('', []);
-	public phoneControl: FormControl = new FormControl('', []);
-	public miscControl: FormControl = new FormControl('', []);
 	public quoteGroup: FormGroup = new FormGroup({
 		nameControl: this.nameControl,
-		emailControl: this.emailControl,
-		miscControl: this.miscControl,
-		positionControl: this.positionControl,
-		phoneControl: this.phoneControl,
 	});
 
 	constructor(private quoteService: QuoteService, private companyService: CompanyService, private router: Router, private route: ActivatedRoute){}
 
-	public saveQuote(): void {
-		this.quoteService.saveNewQuote(this.quote).subscribe(response => {
+	public saveQuote(quote: Quote): void {
+	 	quote = newQuote(quote);
+		this.quoteService.saveNewQuote(this.quote, +this.companyId).subscribe(response => {
+			this.router.navigate(['/quotes', +this.companyId])
 		})
 	}
 

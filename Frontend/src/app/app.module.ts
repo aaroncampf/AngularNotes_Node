@@ -11,8 +11,6 @@ import {InputComponent} from './components/input.component';
 import {CompanyService} from './services/companies.service';
 import {CompaniesComponent} from './components/companies.component';
 import {ContactService} from './services/contact.service';
-import {ModalModule} from 'angular2-modal';
-import {BootstrapModalModule} from 'angular2-modal/plugins/bootstrap';
 import {Quotes_Printout} from './components/quote_printout.component';
 import {NotesComponent} from './components/notes.component';
 import {NotesService} from './services/notes.service';
@@ -22,14 +20,16 @@ import {EditContactComponent} from './components/edit-contact.component';
 import {QuoteService} from './services/quotes.service';
 import {CreateQuoteComponent} from './components/create-quote.component';
 import {EditCompanyComponent} from './components/edit-company.component';
-import {liftOffTransitions} from './animations/transitions.animation';
+import {EditQuoteComponent} from './components/edit-quote.component';
 
 const MAIN_ROUTES: Routes = [
 	{path: '', children: [
 		{path:'create-company', component: CreateCompanyComponent},
+		{path:'quote-print/:id', component: Quotes_Printout},
 		{path:'create-contact/:id', component: CreateContactComponent},
 		{path:'edit-contact/:id', component: EditContactComponent},
 		{path:'create-quote/:id', component: CreateQuoteComponent},
+		{path:'edit-quote/:id', component: EditQuoteComponent},
 		{path:'edit-company/:id', component: EditCompanyComponent},
 		{path:':tab/:id', component: HomeComponent},
 		{path:'', redirectTo: 'companies/main', pathMatch: 'full'}
@@ -50,6 +50,7 @@ const MAIN_ROUTES: Routes = [
 		EditContactComponent,
 		CreateQuoteComponent,
 		EditCompanyComponent,
+		EditQuoteComponent
 
 	],
 	imports: [
@@ -57,15 +58,14 @@ const MAIN_ROUTES: Routes = [
 		FormsModule,
 		ReactiveFormsModule,
 		HttpModule,
-		ModalModule.forRoot(),
-		BootstrapModalModule,
-		RouterModule.forRoot(MAIN_ROUTES)
+		RouterModule.forRoot(MAIN_ROUTES),
 	],
 	providers: [
 		CompanyService,
 		ContactService,
 		NotesService,
-		QuoteService
+		QuoteService,
+
 	],
 	schemas: [
 		CUSTOM_ELEMENTS_SCHEMA
