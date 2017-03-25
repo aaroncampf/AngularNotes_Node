@@ -3,6 +3,11 @@
 
 ##unreleased
 
+##version 0.4.0
+[refactor] removed Angular 2 modal
+[code] Wired up `quotes.service` to `quotes.component`
+[animation] - removed all for wanting to upgrade to Angular 4.0
+
 ##version 0.3.2
 [refactor] Separated edit and create into different components for `companies.component` and `contacts.component`
 [code] created and wired `create-company.component` and `edit-company.component` and `create-contact.compoent`
