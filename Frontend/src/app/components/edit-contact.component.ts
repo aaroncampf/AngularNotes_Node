@@ -1,19 +1,16 @@
-import {animate, Component, OnInit, state, style, transition, trigger} from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 import {FormControl, FormGroup, Validators} from '@angular/forms';
 import {ActivatedRoute, Router} from '@angular/router';
 import {Contact} from '../models/contact.model';
 import {ContactService} from '../services/contact.service';
 import {CompanyService} from '../services/companies.service';
-import {slideTransitions} from '../animations/transitions.animation';
 
 @Component({
 	selector: 'edit-contact-component',
-	animations: [slideTransitions()],
-	host: {'[@contentState]': ''},
 	template: `
 		<div class="container">
 			<div class="navbar navbar-fixed-top">
-				<button type="button" class="btn-danger pull-left" (click)="animateNavigation('/companies/main')">Cancel</button>
+				<button type="button" class="btn-danger pull-left" [routerLink]="['/companies/main']">Cancel</button>
 			</div>
 			<h4>Edit Contact</h4>
 			<form [formGroup]="contactGroup" (ngSubmit)="saveContact()">
@@ -29,8 +26,6 @@ import {slideTransitions} from '../animations/transitions.animation';
 
 export class EditContactComponent implements OnInit{
 	public animateState: string = 'in';
-	public companyId: string;
-	public contactId: string;
 	public company: string;
 	public contact: Contact = <Contact>{};
 	public nameControl: FormControl = new FormControl('', [Validators.required, Validators.maxLength(255)]);
@@ -51,7 +46,7 @@ export class EditContactComponent implements OnInit{
 
 	public saveContact(): void {
 		this.contactService.updateContact(this.contact, +this.contact.ID).subscribe(response => {
-			this.animateNavigation('/contacts/' + this.contact.ID);
+			this.router.navigate(['/contacts', this.contact.ID]);
 		})
 	}
 
@@ -64,14 +59,6 @@ export class EditContactComponent implements OnInit{
 				this.contact = contact;
 			});
 		})
-	}
-
-
-	public animateNavigation(path: string): void {
-		this.animateState = 'out';
-		setTimeout(() => {
-			this.router.navigate([path]);
-		}, 500)
 	}
 
 }

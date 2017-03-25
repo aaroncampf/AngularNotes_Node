@@ -8,9 +8,9 @@ export class NotesService {
 
 	constructor(private http: Http){}
 
-	public addNote(note: NewNote, contactId: number): Observable<any> {
+	public newNote(note: NewNote, contactId: number): Observable<any> {
 
-		console.log('addNote', note);
+		console.log('newNote', note);
 		const headers = new Headers({
 			'content-type': 'application/json'
 		});
@@ -20,13 +20,13 @@ export class NotesService {
 				.catch(err => this.handleError(err));
 		}
 
-	public updateNote(note: Note, noteId: number): Observable<any> {
-	console.log('addNote', note);
+	public updateNote(note: Note): Observable<any> {
+	console.log('updateNote', note);
 	const headers = new Headers({
 		'content-type': 'application/json'
 	});
 	const options = new RequestOptions({headers: headers});
-		return this.http.put(`http://angularnotes-angularbros.azurewebsites.net/api/Notes/${noteId}`, JSON.stringify(note), options)
+		return this.http.put(`http://angularnotes-angularbros.azurewebsites.net/api/Notes/${note.ID}`, JSON.stringify(note), options)
 			.map(res => res)
 			.catch(err => this.handleError(err));
 	}

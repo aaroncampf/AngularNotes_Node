@@ -25,16 +25,13 @@ export interface Note {
     Contact: Contact;
 }
 
-export interface _NewNote {
-    Date: string
+export interface NewNote {
+    Date: string;
 }
 
-export interface NewNote extends _NewNote {
-    Date: string
-}
-
-export const newNote = {
-    Date: new Date(Date.now()).toISOString(),
-    Title: void 0,
-    Text: void 0
+export function newNote(): NewNote {
+    let date = new Date().toISOString();
+    let note: NewNote = <NewNote>{};
+    note.Date = date;
+    return note;
 }

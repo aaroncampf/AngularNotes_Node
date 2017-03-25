@@ -1,19 +1,16 @@
-import {animate, Component, OnInit, state, style, transition, trigger} from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 import {FormControl, FormGroup, Validators} from '@angular/forms';
 import {ActivatedRoute, Router} from '@angular/router';
 import {Quote} from '../models/quote.model';
 import {QuoteService} from '../services/quotes.service';
 import {CompanyService} from '../services/companies.service';
-import {slideTransitions} from '../animations/transitions.animation';
 
 @Component({
 	selector: 'create-quote-component',
-	animations: [slideTransitions()],
-	host: {'[@contentState]': 'animateState'},
 	template: `
 		<div class="container">
 			<div class="navbar navbar-fixed-top">
-				<button type="reset" class="btn-danger pull-left" (click)="animateNavigation('/quotes/all')">Cancel</button>
+				<button type="reset" class="btn-danger pull-left" [routerLink]="['/quotes/main']">Cancel</button>
 			</div>
 			<h4>Add A Quote for {{company}}</h4>
 			<form [formGroup]="quoteGroup" (ngSubmit)="saveQuote()">
@@ -50,7 +47,6 @@ export class CreateQuoteComponent implements OnInit{
 
 	public saveQuote(): void {
 		this.quoteService.saveNewQuote(this.quote).subscribe(response => {
-			this.animateNavigation('/companies/' + this.companyId);
 		})
 	}
 
@@ -61,12 +57,5 @@ export class CreateQuoteComponent implements OnInit{
 				this.company = company.Name;
 			})
 		})
-	}
-
-	public animateNavigation(path: string): void {
-		this.animateState = 'out';
-		setTimeout(() => {
-			this.router.navigate([path]);
-		}, 500)
 	}
 }

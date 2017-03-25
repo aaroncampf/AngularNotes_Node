@@ -16,7 +16,7 @@ export interface Contact {
     Company?: Company;
 
     /**
-     * All notes written for this contact
+     * All notesCollection written for this contact
      */
     Notes?: Note[];
 }
