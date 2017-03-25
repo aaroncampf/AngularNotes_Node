@@ -2,8 +2,6 @@ import {Component, OnInit, ViewContainerRef} from '@angular/core';
 import {ActivatedRoute, Router} from '@angular/router';
 import {Company} from '../models/company.model';
 import '../styles/main.scss';
-import {Overlay} from 'angular2-modal';
-import { Modal } from 'angular2-modal/plugins/bootstrap';
 
 @Component({
     selector: 'home-component',
@@ -64,9 +62,7 @@ import { Modal } from 'angular2-modal/plugins/bootstrap';
 				</div>
 			</content-area>
 			<hr>
-			<button class="btn btn-block" [routerLink]="['/' + QUOTE_PRINT]">Test Quote</button>
-			<button class="btn btn-block" (click)="modalPop()">Test modal</button>
-			{{testModel}}
+			<button class="btn btn-block" [routerLink]="['/' + QUOTE_PRINT, 0]">Test Quote</button>
 		</div>
 	`
 })
@@ -88,23 +84,9 @@ export class HomeComponent implements OnInit {
 	}
 	public activeCompany: Company = <Company>{};
 	public companyId: string;
-	public testModel: string = 'Please show me in the modal';
 	public tab: string;
 	public companySelected: any;
-    constructor(private overlay: Overlay, private vcRef: ViewContainerRef, public modal: Modal, private route: ActivatedRoute, private router: Router) {
-		overlay.defaultViewContainer = vcRef;
-	}
-
-	public modalPop() {
-		this.modal.prompt()
-			.size('lg')
-			.showClose(true)
-			.title('Rx Leetness')
-			.body(`
-			<h1>Modal!</h1>
-			<input-component label="Test" [(model)]="testModel"></input-component>
-			`)
-			.open();
+    constructor(private route: ActivatedRoute, private router: Router) {
 	}
 
     public ngOnInit(): void {
@@ -113,19 +95,4 @@ export class HomeComponent implements OnInit {
 			this.companyId = params['id'];
 		});
 	}
-	//
-	// public setTransitionStates(activatingTab: string){
-	// 	this.companiesState = 'out';
-	// 	this.quotesState = 'out';
-	// 	this.contactsState = 'out';
-	// 	this.notesState = 'out';
-	// 	if (activatingTab !== '0'){
-	// 		this[activatingTab + 'State'] = 'in';
-	// 	}
-	// }
-	//
-	// public setCompany(event): void {
-    	// this.activeCompany = event;
-	// }
-
 }

@@ -9,7 +9,7 @@ export interface Quote {
     /**
      * The date the quote was created
      */
-    Date: Date;
+    Date: string;
 
     /**
      * The display name of the quotes
@@ -25,5 +25,10 @@ export interface Quote {
      * The individual lines of the quote document
      */
     Lines: QuoteLine[];
+}
 
+export function newQuote(quote: Quote): Quote {
+    let date = new Date().toISOString();
+    quote.Date = date;
+    return quote;
 }

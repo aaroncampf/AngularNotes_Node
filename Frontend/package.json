@@ -1,6 +1,6 @@
 {
   "name": "angular-bros-notes",
-  "version": "0.3.2",
+  "version": "0.4.0",
   "description": "A CRM Demo for a software development project.",
   "scripts": {
     "build": "webpack --display-error-details --progress",
@@ -23,7 +23,6 @@
     "@angular/platform-server": "~2.4.10",
     "@angular/router": "~3.4.10",
     "@angular/upgrade": "~2.4.10",
-    "angular2-modal": "^2.0.3",
     "bootstrap": "^3.3.7",
     "bootstrap-material-design": "^0.5.10",
     "core-js": "^2.4.1",
