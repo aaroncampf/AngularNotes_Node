@@ -1,15 +1,15 @@
 import {Injectable} from '@angular/core';
 import {Http, RequestOptions, Headers, Response} from '@angular/http';
 import {Observable} from 'rxjs';
-import {Note} from '../models/note.model';
-import {Contact} from '../models/contact.model';
+import {NewNote, Note} from '../models/note.model';
 
 @Injectable()
 export class NotesService {
 
 	constructor(private http: Http){}
 
-	public addNote(note: Note, contactId: number): Observable<any> {
+	public addNote(note: NewNote, contactId: number): Observable<any> {
+
 		console.log('addNote', note);
 		const headers = new Headers({
 			'content-type': 'application/json'
@@ -57,7 +57,7 @@ export class NotesService {
 					return response.json();
 				})
 				.catch(err => err);
-		}
+	}
 
 	private handleError(error: Error | any) {
 		let errMsg: string;

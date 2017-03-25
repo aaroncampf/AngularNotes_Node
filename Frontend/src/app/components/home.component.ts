@@ -1,4 +1,4 @@
-import {Component, OnInit, trigger, state, style, transition, animate, ViewContainerRef} from '@angular/core';
+import {Component, OnInit, ViewContainerRef} from '@angular/core';
 import {ActivatedRoute, Router} from '@angular/router';
 import {Company} from '../models/company.model';
 import '../styles/main.scss';
@@ -12,7 +12,6 @@ import {liftOffTransitions} from '../animations/transitions.animation';
     template: `
 		<div class="container">
 			<b>AngularBro's Notes - an Angular 2 CRM</b> 
-			<span class="pull-right">{{activeCompany.Name || 'No Company Is Selected'}}</span>
 			<input type="search" placeholder="search -WIP-"/>
 			<content-area>
 				<ul class="nav nav-tabs">

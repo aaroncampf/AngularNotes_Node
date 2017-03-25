@@ -1,4 +1,4 @@
-import {Component, EventEmitter, OnChanges, OnInit, Output, SimpleChanges} from '@angular/core';
+import {Component, EventEmitter, OnInit, Output} from '@angular/core';
 import {FormControl, FormGroup} from '@angular/forms';
 import {Contact} from '../models/contact.model';
 import {ContactService} from '../services/contact.service';
@@ -16,23 +16,22 @@ import {CompanyService} from '../services/companies.service';
 			<div class="col-xs-4">
 				<table class="table table-bordered table-hover">
 					<thead>
-					<tr>
-						<th>Companies</th>
-					</tr>
+						<tr>
+							<th>Companies</th>
+						</tr>
 					</thead>
 					<tbody>
-					<tr>
-						<td (click)="selected(0)">Select All The Things!</td>
-					</tr>
-					<tr *ngFor="let company of companies">
-						<td [class.active]="selectedCompany.ID === company.ID" (click)="selected(company.ID)">{{company.Name}}</td>
-					</tr>
+						<tr>
+							<td (click)="selected(0)">Select All The Things!</td>
+						</tr>
+						<tr *ngFor="let company of companies">
+							<td [class.active]="selectedCompany.ID === company.ID" (click)="selected(company.ID)">{{company.Name}}</td>
+						</tr>
 					</tbody>
 				</table>
 			</div>
 			<div class="col-xs-8">
-				<button type="button" class="btn btn-block" (click)="animateNavigation('/create-contact/' + selectedCompany.ID)" [disabled]="!selectedCompany.ID" [class.disabled]="!selectedCompany.ID">New Contact
-				</button>
+				<button type="button" class="btn btn-block" (click)="animateNavigation('/create-contact/' + selectedCompany.ID)" [disabled]="!selectedCompany.ID" [class.disabled]="!selectedCompany.ID">New Contact</button>
 				<table class="table table-bordered table-hover table-condensed">
 					<tr>
 						<th>Name</th>
@@ -134,8 +133,8 @@ export class ContactsComponent implements OnInit {
 		}
 	}
 
-	public addNote(note: Note, contactId: number): void {
-		this.notesService.addNote(newNote, contactId).subscribe(res => {
+	public addNote(note: NewNote, contactId: number): void {
+		this.notesService.addNote(note, contactId).subscribe(res => {
 			this.notesService.getContactNotes(this.selectedContact.ID).subscribe(notes => this.notes = notes);
 		});
 	}
