@@ -1,4 +1,4 @@
-import {animate, Component, OnInit, state, style, transition, trigger} from '@angular/core';
+import {Component} from '@angular/core';
 import {FormControl, FormGroup, Validators} from '@angular/forms';
 import {Company} from '../models/company.model';
 import {CompanyService} from '../services/companies.service';

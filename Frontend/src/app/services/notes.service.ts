@@ -1,16 +1,16 @@
 import {Injectable} from '@angular/core';
 import {Http, RequestOptions, Headers, Response} from '@angular/http';
 import {Observable} from 'rxjs';
-import {Note} from '../models/note.model';
-import {Contact} from '../models/contact.model';
+import {NewNote, Note} from '../models/note.model';
 
 @Injectable()
 export class NotesService {
 
 	constructor(private http: Http){}
 
-	public addNote(note: Note, contactId: number): Observable<any> {
-		console.log('addNote', note);
+	public newNote(note: NewNote, contactId: number): Observable<any> {
+
+		console.log('newNote', note);
 		const headers = new Headers({
 			'content-type': 'application/json'
 		});
@@ -20,13 +20,13 @@ export class NotesService {
 				.catch(err => this.handleError(err));
 		}
 
-	public updateNote(note: Note, noteId: number): Observable<any> {
-	console.log('addNote', note);
+	public updateNote(note: Note): Observable<any> {
+	console.log('updateNote', note);
 	const headers = new Headers({
 		'content-type': 'application/json'
 	});
 	const options = new RequestOptions({headers: headers});
-		return this.http.put(`http://angularnotes-angularbros.azurewebsites.net/api/Notes/${noteId}`, JSON.stringify(note), options)
+		return this.http.put(`http://angularnotes-angularbros.azurewebsites.net/api/Notes/${note.ID}`, JSON.stringify(note), options)
 			.map(res => res)
 			.catch(err => this.handleError(err));
 	}
@@ -57,7 +57,7 @@ export class NotesService {
 					return response.json();
 				})
 				.catch(err => err);
-		}
+	}
 
 	private handleError(error: Error | any) {
 		let errMsg: string;

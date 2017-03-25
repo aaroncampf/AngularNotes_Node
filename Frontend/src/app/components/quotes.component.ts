@@ -1,7 +1,6 @@
 import {Component, OnChanges, OnInit, SimpleChanges} from '@angular/core';
 import {FormControl, FormGroup} from '@angular/forms';
 import {ActivatedRoute} from '@angular/router';
-import {NotesService} from '../services/notes.service';
 import {Note} from '../models/note.model';
 import {Company} from '../models/company.model';
 import {CompanyService} from '../services/companies.service';
