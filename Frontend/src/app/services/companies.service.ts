@@ -19,26 +19,39 @@ export class CompanyService {
 			.catch(err => this.handleError(err));
 	}
 
-	public saveCompany(company: Company, id?: number): Observable<Company> {
+	public updateCompany(company: Company): Observable<Company> {
 		const headers = new Headers({
 			'content-type': 'application/json',
 		});
 		const options = new RequestOptions({headers: headers});
-		if (!id) {
-			return this.http.post('http://angularnotes-angularbros.azurewebsites.net/api/companies', JSON.stringify(company), options)
+		console.log('updating with',company);
+			return this.http.put(`http://angularnotes-angularbros.azurewebsites.net/api/companies/${company.ID}`, JSON.stringify(company), options)
 					.map(res => {
-						console.log('saveCompany no ID res', res.json());
+						console.log('update', res.json());
 						return res.json()
 					})
 					.catch(err => this.handleError(err));
-		} else {
-			company.ID = id;
-			return this.http.put('http://angularnotes-angularbros.azurewebsites.net/api/companies/' + id,
-				JSON.stringify(company), options)
-					.map(res => res)
-					.catch(err => this.handleError(err));
-			}
 		}
+
+// public saveCompany(company: Company): Observable<Company> {
+// 		const headers = new Headers({
+// 			'content-type': 'application/json',
+// 		});
+// 		const options = new RequestOptions({headers: headers});
+// 		if (!company.ID) {
+// 			return this.http.post('http://angularnotes-angularbros.azurewebsites.net/api/companies', JSON.stringify(company), options)
+// 					.map(res => {
+// 						console.log('saveCompany no ID res', res.json());
+// 						return res.json()
+// 					})
+// 					.catch(err => this.handleError(err));
+// 		} else {
+// 			return this.http.put('http://angularnotes-angularbros.azurewebsites.net/api/companies/' + company.ID,
+// 				JSON.stringify(company), options)
+// 					.map(res => res)
+// 					.catch(err => this.handleError(err));
+// 		}
+// 	}
 
 	public deleteCompany(id: number): Observable<any> {
 		return this.http.delete('http://angularnotes-angularbros.azurewebsites.net/api/companies/' + id)

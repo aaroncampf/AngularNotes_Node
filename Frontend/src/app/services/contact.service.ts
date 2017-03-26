@@ -10,7 +10,6 @@ export class ContactService {
 	public getContacts(): Observable<Contact[]> {
 		return this.http.get('http://angularnotes-angularbros.azurewebsites.net/api/Contact')
 			.map(response => {
-				console.log('response', response.json());
 				return response.json();
 			})
 			.catch(err => err);

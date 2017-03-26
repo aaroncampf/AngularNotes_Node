@@ -3,6 +3,12 @@
 
 ##unreleased
 
+##version 0.5.0
+[refactor] restructured view routes and layout
+[refactor] moved and reduced component logic into `*-details.component`
+[code] added ng2-toastr
+[upgrade] upgraded and updated all dependencies and we are now at Angular 4.0.0
+
 ##version 0.4.0
 [refactor] removed Angular 2 modal
 [code] Wired up `quotes.service` to `quotes.component`

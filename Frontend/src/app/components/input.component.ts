@@ -9,10 +9,10 @@ import {FormControl} from '@angular/forms';
 				<strong>{{label}}</strong>
 			</div>
 			<div *ngIf="!!label" class="col-xs-10">
-				<input type="text" class="form-control" [ngModel]="model" (ngModelChange)="modelChange.emit($event)" [formControl]="control" [placeholder]="placeholder"/>
+				<input type="text" class="form-control" [ngModel]="model" (blur)="modelChange.emit($event.target.value)" [formControl]="control" [placeholder]="placeholder"/>
 			</div>
 			<div *ngIf="!label" class="col-xs-12">
-				<input type="text" class="form-control" [ngModel]="model" (ngModelChange)="modelChange.emit($event)" [formControl]="control" [placeholder]="placeholder"/>
+				 <input type="text" class="form-control" [ngModel]="model" (blur)="modelChange.emit($event.target.value)" [formControl]="control" [placeholder]="placeholder"/>
 			</div>
 		</div>
 	`
@@ -20,13 +20,13 @@ import {FormControl} from '@angular/forms';
 
 export class InputComponent {
 	@Input()
+	public model: string;
+	@Input()
 	public placeholder: string = '';
 	@Input()
 	public label: string;
 	@Input()
 	public control: FormControl = new FormControl;
-	@Input()
-	public model: string;
 	@Output()
-	public modelChange: EventEmitter<string> = new EventEmitter<string>();
+	public modelChange: EventEmitter<any> = new EventEmitter<any>();
 }

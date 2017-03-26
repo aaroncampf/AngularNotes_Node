@@ -19,6 +19,7 @@ import {CompanyService} from '../services/companies.service';
 			</form>
 		</div>
 	`,
+
 })
 
 export class CreateQuoteComponent implements OnInit{
