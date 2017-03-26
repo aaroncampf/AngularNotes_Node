@@ -6,25 +6,23 @@ import {ContactService} from '../services/contact.service';
 import {CompanyService} from '../services/companies.service';
 
 @Component({
-	selector: 'edit-contact-component',
+	selector: 'contact-details-component',
 	template: `
 		<div class="container">
 			<div class="navbar navbar-fixed-top">
-				<button type="button" class="btn-danger pull-left" [routerLink]="['/companies/main']">Cancel</button>
 			</div>
-			<h4>Edit Contact</h4>
+			<h4>Contact Details</h4>
 			<form [formGroup]="contactGroup" (ngSubmit)="saveContact()">
-				<input-component label="Name" [(model)]="contact.Name" [control]="nameControl"></input-component>
-				<input-component label="Phone" [(model)]="contact.Phone" [control]="phoneControl"></input-component>
-				<input-component label="Email" [(model)]="contact.Email" [control]="emailControl"></input-component>
-				<input-component label="Position" [(model)]="contact.Position" [control]="positionControl"></input-component>
-				<button type="submit" class="btn btn-large pull-right">Save</button>
+				<input-component (blurChange)="saveContact()" label="Name" [(model)]="contact.Name" [control]="nameControl"></input-component>
+				<input-component (blurChange)="saveContact()" label="Phone" [(model)]="contact.Phone" [control]="phoneControl"></input-component>
+				<input-component (blurChange)="saveContact()" label="Email" [(model)]="contact.Email" [control]="emailControl"></input-component>
+				<input-component (blurChange)="saveContact()" label="Position" [(model)]="contact.Position" [control]="positionControl"></input-component>
 			</form>
 		</div>
 	`,
 })
 
-export class EditContactComponent implements OnInit{
+export class ContactDetailsComponent implements OnInit{
 	public animateState: string = 'in';
 	public company: string;
 	public contact: Contact = <Contact>{};
@@ -51,14 +49,6 @@ export class EditContactComponent implements OnInit{
 	}
 
 	public ngOnInit() {
-		this.route.params.subscribe(params => {
-			console.log(params['number']);
-			console.log(params['name']);
-			this.contactService.getContact(params['id']).subscribe(contact => {
-				console.log('retrieved: ', contact);
-				this.contact = contact;
-			});
-		})
 	}
 
 }

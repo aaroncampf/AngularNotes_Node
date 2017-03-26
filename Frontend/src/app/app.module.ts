@@ -4,53 +4,40 @@ import {BrowserModule} from '@angular/platform-browser';
 import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 import {HttpModule} from '@angular/http';
 import {MainComponent} from './main/main.component';
-import {HomeComponent} from './components/home.component';
-import {ContactsComponent} from './components/contacts.component';
 import {QuotesComponent} from './components/quotes.component';
 import {InputComponent} from './components/input.component';
 import {CompanyService} from './services/companies.service';
-import {CompaniesComponent} from './components/companies.component';
 import {ContactService} from './services/contact.service';
 import {Quotes_Printout} from './components/quote_printout.component';
 import {NotesComponent} from './components/notes.component';
 import {NotesService} from './services/notes.service';
-import {CreateCompanyComponent} from './components/create-company.component';
-import {CreateContactComponent} from './components/create-contacts.component';
-import {EditContactComponent} from './components/edit-contact.component';
+import {ContactDetailsComponent} from './components/contact-details.component';
 import {QuoteService} from './services/quotes.service';
-import {CreateQuoteComponent} from './components/create-quote.component';
-import {EditCompanyComponent} from './components/edit-company.component';
-import {EditQuoteComponent} from './components/edit-quote.component';
+import {CompanyDetailsComponent} from './components/company-details.component';
+import {SidePanelCompoennt} from './components/side-panel.component';
+import {SelectionService} from './services/selection.service';
 
 const MAIN_ROUTES: Routes = [
 	{path: '', children: [
-		{path:'create-company', component: CreateCompanyComponent},
-		{path:'quote-print/:id', component: Quotes_Printout},
-		{path:'create-contact/:id', component: CreateContactComponent},
-		{path:'edit-contact/:id', component: EditContactComponent},
-		{path:'create-quote/:id', component: CreateQuoteComponent},
-		{path:'edit-quote/:id', component: EditQuoteComponent},
-		{path:'edit-company/:id', component: EditCompanyComponent},
-		{path:':tab/:id', component: HomeComponent},
-		{path:'', redirectTo: 'companies/main', pathMatch: 'full'}
-	]}];
+		{path:'company', component: CompanyDetailsComponent},
+		{path:'contact', component: ContactDetailsComponent},
+		{path:'quotes', component: QuotesComponent},
+		{path:'notes', component: NotesComponent},
+		{path:'', redirectTo: '/company', pathMatch: 'full'}
+	]},
+	// {path:'', redirectTo: 'angular-bros', pathMatch: 'full'}
+	];
 
 @NgModule({
 	declarations: [
 		MainComponent,
-		HomeComponent,
-		ContactsComponent,
+		SidePanelCompoennt,
+		ContactDetailsComponent,
 		QuotesComponent,
 		Quotes_Printout,
 		InputComponent,
-		CompaniesComponent,
 		NotesComponent,
-		CreateCompanyComponent,
-		CreateContactComponent,
-		EditContactComponent,
-		CreateQuoteComponent,
-		EditCompanyComponent,
-		EditQuoteComponent
+		CompanyDetailsComponent,
 
 	],
 	imports: [
@@ -65,7 +52,7 @@ const MAIN_ROUTES: Routes = [
 		ContactService,
 		NotesService,
 		QuoteService,
-
+		SelectionService
 	],
 	schemas: [
 		CUSTOM_ELEMENTS_SCHEMA
