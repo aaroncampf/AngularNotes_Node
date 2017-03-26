@@ -1,8 +1,9 @@
-import {Component, OnChanges, OnInit, SimpleChanges, ViewChild} from '@angular/core';
+import {Component, OnChanges, OnInit, SimpleChanges, ViewChild, ViewContainerRef} from '@angular/core';
 import {Router} from '@angular/router';
 import {Company} from '../models/company.model';
 import {Contact} from '../models/contact.model';
 import {SelectionService} from '../services/selection.service';
+import {ToastsManager} from 'ng2-toastr/ng2-toastr';
 import '../styles/main.scss';
 
 @Component({
@@ -39,6 +40,7 @@ import '../styles/main.scss';
 						</li>
 					</ul>
 				</div>
+				<button class="btn" (click)="testPop()">Test Pop</button>
 				<router-outlet></router-outlet>
 			</div>
 		</div>
@@ -54,7 +56,10 @@ export class MainComponent implements OnInit, OnChanges {
 	public tab: string;
 	public selectedCompany: Company = <Company>{};
 	public selectedContact: Contact = <Contact>{};
-	constructor(private router: Router, private selectionService: SelectionService){}
+	constructor(public toastr: ToastsManager, vcr: ViewContainerRef, private router: Router,
+				private selectionService: SelectionService ){
+		this.toastr.setRootViewContainerRef(vcr);
+	}
 
 	public ngOnChanges(changes: SimpleChanges) {
 		console.log(changes);
@@ -71,5 +76,9 @@ export class MainComponent implements OnInit, OnChanges {
 		this.selectionService.sendCompany(company);
 		console.log('updated', company);
 		this.selectedCompany = company;
+	}
+
+	public testPop(): void {
+		this.toastr.error('Yippie Kieh Yea Mother Fucker!');
 	}
 }

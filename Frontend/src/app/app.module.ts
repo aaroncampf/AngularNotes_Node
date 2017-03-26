@@ -16,6 +16,8 @@ import {QuoteService} from './services/quotes.service';
 import {CompanyDetailsComponent} from './components/company-details.component';
 import {SidePanelCompoennt} from './components/side-panel.component';
 import {SelectionService} from './services/selection.service';
+import {ToastModule} from 'ng2-toastr';
+import {BrowserAnimationsModule, NoopAnimationsModule} from '@angular/platform-browser/animations';
 
 const MAIN_ROUTES: Routes = [
 	{path: '', children: [
@@ -41,6 +43,9 @@ const MAIN_ROUTES: Routes = [
 
 	],
 	imports: [
+		NoopAnimationsModule,
+		BrowserAnimationsModule,
+		ToastModule.forRoot(),
 		BrowserModule,
 		FormsModule,
 		ReactiveFormsModule,
@@ -52,7 +57,7 @@ const MAIN_ROUTES: Routes = [
 		ContactService,
 		NotesService,
 		QuoteService,
-		SelectionService
+		SelectionService,
 	],
 	schemas: [
 		CUSTOM_ELEMENTS_SCHEMA
