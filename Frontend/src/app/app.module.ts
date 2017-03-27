@@ -27,8 +27,7 @@ const MAIN_ROUTES: Routes = [
 		{path:'notes', component: NotesComponent},
 		{path:'', redirectTo: '/company', pathMatch: 'full'}
 	]},
-	// {path:'', redirectTo: 'angular-bros', pathMatch: 'full'}
-	];
+];
 
 @NgModule({
 	declarations: [
@@ -40,7 +39,6 @@ const MAIN_ROUTES: Routes = [
 		InputComponent,
 		NotesComponent,
 		CompanyDetailsComponent,
-
 	],
 	imports: [
 		NoopAnimationsModule,
@@ -57,7 +55,7 @@ const MAIN_ROUTES: Routes = [
 		ContactService,
 		NotesService,
 		QuoteService,
-		DataShareService,
+		DataShareService
 	],
 	schemas: [
 		CUSTOM_ELEMENTS_SCHEMA

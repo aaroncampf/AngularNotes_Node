@@ -1,10 +1,11 @@
 # ChangeLog 
->To make sense of all your busy-ness to other developers and please use sem-ver. 
+>To make sense of all your busy-ness to other developers please log changes and use sem-ver. 
 
 ##unreleased
 [refactor] finalized views
 [code] added view navigation to side-panel lists and mobile view responsive layouts
 [code] Add dropdown logic to lists in `side-panel.component`
+[code] patched up corner cases for `side-panel.component` Contact Dropdowns and a few minor bugs 
 
 ##version 0.5.0
 [refactor] restructured view routes and layout
@@ -22,7 +23,7 @@
 [code] created and wired `create-company.component` and `edit-company.component` and `create-contact.compoent`
 [code] created a quotes listing
 [code] created `edit-company.component`, `create-quotes.component` and `quotes.service`
-[bug-fix] Fixed broken links to components
+[bug-fix] Fixed brokgiten links to components
 [animation] Transitional animations between components implemented
 [code] Finished notes in `contact.component`, notes almost list in `notes.component` there is a problem maybe with the model
 

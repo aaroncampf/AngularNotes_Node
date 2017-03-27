@@ -25,13 +25,9 @@ export interface Note {
     Contact: Contact;
 }
 
-export interface NewNote {
-    Date: string;
-}
-
-export function newNote(): NewNote {
+export function newNote(): Note {
     let date = new Date().toISOString();
-    let note: NewNote = <NewNote>{};
+    let note: Note = <Note>{};
     note.Date = date;
     return note;
 }

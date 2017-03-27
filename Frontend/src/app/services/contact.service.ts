@@ -31,12 +31,12 @@ export class ContactService {
 			.catch(err => err);
 	}
 
-	public saveNewContact(contact: Contact, companyId?: number): Observable<any> {
+	public saveNewContact(companyId: number): Observable<any> {
 		const headers = new Headers({
 			'content-type': 'application/json',
 		});
 		const options = new RequestOptions({headers: headers});
-		return this.http.post(`http://angularnotes-angularbros.azurewebsites.net/api/Contact?CompanyID=${companyId}`, JSON.stringify(contact), options)
+		return this.http.post(`http://angularnotes-angularbros.azurewebsites.net/api/Contact?CompanyID=${companyId}`, <Contact>{}, options)
 			.map(res => {
 				return res;
 			})

@@ -1,16 +1,14 @@
 import {Injectable} from '@angular/core';
 import {Http, RequestOptions, Headers, Response} from '@angular/http';
 import {Observable} from 'rxjs';
-import {NewNote, Note} from '../models/note.model';
+import {Note} from '../models/note.model';
 
 @Injectable()
 export class NotesService {
 
 	constructor(private http: Http){}
 
-	public newNote(note: NewNote, contactId: number): Observable<any> {
-
-		console.log('newNote', note);
+	public newNote(note: Note, contactId: number): Observable<any> {
 		const headers = new Headers({
 			'content-type': 'application/json'
 		});
@@ -21,7 +19,6 @@ export class NotesService {
 		}
 
 	public updateNote(note: Note): Observable<any> {
-	console.log('updateNote', note);
 	const headers = new Headers({
 		'content-type': 'application/json'
 	});
@@ -50,7 +47,6 @@ export class NotesService {
 	}
 
 	public getContactNotes(id: number): Observable<Note[]> {
-		console.log('getContactNotes', id);
 			return this.http.get(`http://angularnotes-angularbros.azurewebsites.net/api/Notes?ContactID=${id}`)
 				.map(response => {
 					console.log('getContactNote response', response.json());
