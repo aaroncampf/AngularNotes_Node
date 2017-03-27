@@ -4,7 +4,6 @@ import {CompanyService} from '../services/companies.service';
 import {ContactService} from '../services/contact.service';
 import {ToastsManager} from 'ng2-toastr/ng2-toastr';
 import {Contact} from '../models/contact.model';
-import {error} from 'util';
 import {Router} from '@angular/router';
 
 @Component({
@@ -52,6 +51,8 @@ import {Router} from '@angular/router';
 })
 
 export class SidePanelCompoennt implements OnInit{
+	public contactCollection: Contact[];
+	public companyCollection: Company[];
 	public companies: Company[];
 	public contacts: Contact[];
 	public currentContact: Contact = <Contact>{};
@@ -75,20 +76,43 @@ export class SidePanelCompoennt implements OnInit{
 	}
 
 	public onSelectCompany(company: Company): void {
-		this.router.navigate(['/company']).then(() => {
+		if (this.currentCompany.ID) {
+			this.currentCompany = <Company>{};
+			this.currentCompanyChange.emit(<Company>{});
+			this.companyService.getCompanies().subscribe(companies => this.companies = companies);
+			this.currentContact = <Contact>{};
+			this.currentCompanyChange.emit(<Company>{});
+			this.contactService.getContacts().subscribe(contacts => this.contacts = contacts);
+		} else {
+			this.currentContact = <Contact>{};
+			this.currentContactChange.emit(<Contact>{});
 			this.currentCompany = company;
 			this.currentCompanyChange.emit(company);
-			this.contactService.getCompanyContacts(company.ID).subscribe(contacts => {
-				this.contacts = contacts;
-			})
-		})
+			this.contactService.getCompanyContacts(company.ID).subscribe(contacts => this.contacts = contacts);
+			this.collapseCompany()
+		}
 	}
 
 	public onSelectContact(contact: Contact): void{
-		this.router.navigate(['/contact']).then(() => {
+		if (this.currentContact.ID) {
+			this.currentContact = <Contact>{}
+			this.currentContactChange.emit(<Contact>{});
+			this.contactService.getCompanyContacts(this.currentCompany.ID).subscribe(contacts => this.contacts = contacts);
+		} else {
 			this.currentContact = contact;
 			this.currentContactChange.emit(contact);
-		});
+			this.collapseContacts()
+		}
+	}
+
+	public collapseContacts(): void {
+		this.contacts = [];
+		this.contacts.push(this.currentContact);
+	}
+
+	public collapseCompany(): void {
+		this.companies = [];
+		this.companies.push(this.currentCompany);
 	}
 
 	public removeContact(contact: Contact): void{

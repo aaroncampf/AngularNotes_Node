@@ -4,6 +4,7 @@ import {Contact} from '../models/contact.model';
 import {ContactService} from '../services/contact.service';
 import {CompanyService} from '../services/companies.service';
 import {DataShareService} from '../services/data-share.service';
+import {ToastsManager} from 'ng2-toastr/ng2-toastr'
 
 @Component({
 	selector: 'contact-details-component',
@@ -12,12 +13,10 @@ import {DataShareService} from '../services/data-share.service';
 			<div class="navbar navbar-fixed-top">
 			</div>
 			<h4>Contact Details</h4>
-			<form [formGroup]="contactGroup" (ngSubmit)="saveContact()">
-				<input-component (modelChange)="saveContact($event, 'Name')" label="Name" [model]="contact.Name" [control]="nameControl"></input-component>
-				<input-component (modelChange)="saveContact($event, 'Phone')" label="Phone" [model]="contact.Phone" [control]="phoneControl"></input-component>
-				<input-component (modelChange)="saveContact($event, 'Email')"label="Email" [model]="contact.Email" [control]="emailControl"></input-component>
-				<input-component (modelChange)="saveContact($event, 'Position')"label="Position" [model]="contact.Position" [control]="positionControl"></input-component>
-			</form>
+			<input-component (modelChange)="saveContact($event, 'Name')" label="Name" [model]="contact.Name" [control]="nameControl"></input-component>
+			<input-component (modelChange)="saveContact($event, 'Phone')" label="Phone" [model]="contact.Phone" [control]="phoneControl"></input-component>
+			<input-component (modelChange)="saveContact($event, 'Email')"label="Email" [model]="contact.Email" [control]="emailControl"></input-component>
+			<input-component (modelChange)="saveContact($event, 'Position')"label="Position" [model]="contact.Position" [control]="positionControl"></input-component>
 		</div>
 	`,
 })
@@ -39,12 +38,15 @@ export class ContactDetailsComponent implements OnInit{
 		phoneControl: this.phoneControl,
 	});
 
-	constructor(private contactService: ContactService, private dataShareService: DataShareService){}
+	constructor(private contactService: ContactService, private dataShareService: DataShareService, private toastr: ToastsManager){}
 
 	public saveContact(value: string, prop: string): void {
-		this.contact[prop] = value;
-		this.contactService.updateContact(this.contact, +this.contact.ID).subscribe(response => {
-		})
+		if(!this.nameControl.invalid) {
+			this.contact[prop] = value;
+			this.contactService.updateContact(this.contact, +this.contact.ID).subscribe(() => {})
+		} else {
+			this.toastr.error('Please provide a name', 'Can\'t Save');
+		}
 	}
 
 	public ngOnInit() {

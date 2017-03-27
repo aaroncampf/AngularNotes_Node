@@ -4,6 +4,7 @@
 ##unreleased
 [refactor] finalized views
 [code] added view navigation to side-panel lists and mobile view responsive layouts
+[code] Add dropdown logic to lists in `side-panel.component`
 
 ##version 0.5.0
 [refactor] restructured view routes and layout

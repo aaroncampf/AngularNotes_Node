@@ -12,10 +12,10 @@ import '../styles/main.scss';
 		<div class='container'>
 			<h4><b>AngularBro's Notes</b><small> an Angular 2 CRM</small></h4>
 			<input type="search" placeholder="search -WIP-"/>
-			<div class="col-md-4 col-sm-12">
+			<div class="col-sm-4 col-xs-12">
 				<side-panel (currentCompanyChange)="updateSelectedCompany($event)" (currentContactChange)="updateSelectedContact($event)"></side-panel>
 			</div>
-			<div class="col-md-8 col-sm-12">
+			<div class="col-sm-8 col-xs-12">
 				<div class="row">
 					<ul class="nav nav-tabs">
 						<li [class.active]="tab === COMPANY">
@@ -25,7 +25,7 @@ import '../styles/main.scss';
 						</li>
 						<li [class.active]="tab === CONTACT">
 							<a class="tab" [routerLink]="[CONTACT]">
-								<tab-heading>Contacts</tab-heading>
+								<tab-heading>Contact</tab-heading>
 							</a>
 						</li>
 						<li [class.active]="tab === NOTES">
