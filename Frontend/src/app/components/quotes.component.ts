@@ -12,23 +12,6 @@ import {QuoteService} from '../services/quotes.service';
 	template: `
 	<div class="row">
 		<h4>Quotes</h4>
-		<div class="col-xs-4">
-			<table class="table table-bordered table-hover">
-				<thead>
-				<tr>
-					<th>Companies</th>
-				</tr>
-				</thead>
-				<tbody>
-				<tr>
-					<td (click)="selected(0)">Select All The Things!</td>
-				</tr>
-				<tr *ngFor="let company of companies">
-					<td [class.active]="selectedCompany.ID === company.ID" (click)="selected(company.ID)">{{company.Name}}</td>
-				</tr>
-				</tbody>
-			</table>
-		</div>
 		<div class="col-xs-8">
 			<button type="button" class="btn btn-block" [routerLink]="['/create-quote', selectedCompany.ID]" [disabled]="!selectedCompany.ID" [class.disabled]="!selectedCompany.ID">New Quote</button>
 			<table class="table table-bordered table-hover">
@@ -48,10 +31,6 @@ import {QuoteService} from '../services/quotes.service';
 				</tr>
 			</table>
 		</div>
-	</div>
-	<div class="row">
-		<h4>Quote Notes</h4>
-		<button type="button" class="btn btn-block" [routerLink]="['/quote-print', selectedQuote.ID]" [disabled]="!selectedQuote.Name" [class.disabled]="!selectedQuote.Name">View Quote</button>
 	</div>
 	`,
 })

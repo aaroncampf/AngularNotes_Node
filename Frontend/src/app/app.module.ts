@@ -3,21 +3,21 @@ import {RouterModule, Routes} from '@angular/router';
 import {BrowserModule} from '@angular/platform-browser';
 import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 import {HttpModule} from '@angular/http';
-import {MainComponent} from './main/main.component';
-import {QuotesComponent} from './components/quotes.component';
-import {InputComponent} from './components/input.component';
+import {BrowserAnimationsModule, NoopAnimationsModule} from '@angular/platform-browser/animations';
+import {DataShareService} from './services/data-share.service';
+import {QuoteService} from './services/quotes.service';
 import {CompanyService} from './services/companies.service';
 import {ContactService} from './services/contact.service';
+import {NotesService} from './services/notes.service';
+import {InputComponent} from './components/input.component';
+import {MainComponent} from './main/main.component';
+import {SidePanelCompoennt} from './components/side-panel.component';
+import {QuotesComponent} from './components/quotes.component';
 import {Quotes_Printout} from './components/quote_printout.component';
 import {NotesComponent} from './components/notes.component';
-import {NotesService} from './services/notes.service';
 import {ContactDetailsComponent} from './components/contact-details.component';
-import {QuoteService} from './services/quotes.service';
 import {CompanyDetailsComponent} from './components/company-details.component';
-import {SidePanelCompoennt} from './components/side-panel.component';
-import {SelectionService} from './services/selection.service';
 import {ToastModule} from 'ng2-toastr';
-import {BrowserAnimationsModule, NoopAnimationsModule} from '@angular/platform-browser/animations';
 
 const MAIN_ROUTES: Routes = [
 	{path: '', children: [
@@ -57,7 +57,7 @@ const MAIN_ROUTES: Routes = [
 		ContactService,
 		NotesService,
 		QuoteService,
-		SelectionService,
+		DataShareService,
 	],
 	schemas: [
 		CUSTOM_ELEMENTS_SCHEMA

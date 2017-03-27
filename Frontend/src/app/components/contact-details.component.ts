@@ -1,9 +1,9 @@
 import {Component, OnInit} from '@angular/core';
 import {FormControl, FormGroup, Validators} from '@angular/forms';
-import {ActivatedRoute, Router} from '@angular/router';
 import {Contact} from '../models/contact.model';
 import {ContactService} from '../services/contact.service';
 import {CompanyService} from '../services/companies.service';
+import {DataShareService} from '../services/data-share.service';
 
 @Component({
 	selector: 'contact-details-component',
@@ -13,17 +13,16 @@ import {CompanyService} from '../services/companies.service';
 			</div>
 			<h4>Contact Details</h4>
 			<form [formGroup]="contactGroup" (ngSubmit)="saveContact()">
-				<input-component (blurChange)="saveContact()" label="Name" [(model)]="contact.Name" [control]="nameControl"></input-component>
-				<input-component (blurChange)="saveContact()" label="Phone" [(model)]="contact.Phone" [control]="phoneControl"></input-component>
-				<input-component (blurChange)="saveContact()" label="Email" [(model)]="contact.Email" [control]="emailControl"></input-component>
-				<input-component (blurChange)="saveContact()" label="Position" [(model)]="contact.Position" [control]="positionControl"></input-component>
+				<input-component (modelChange)="saveContact($event, 'Name')" label="Name" [model]="contact.Name" [control]="nameControl"></input-component>
+				<input-component (modelChange)="saveContact($event, 'Phone')" label="Phone" [model]="contact.Phone" [control]="phoneControl"></input-component>
+				<input-component (modelChange)="saveContact($event, 'Email')"label="Email" [model]="contact.Email" [control]="emailControl"></input-component>
+				<input-component (modelChange)="saveContact($event, 'Position')"label="Position" [model]="contact.Position" [control]="positionControl"></input-component>
 			</form>
 		</div>
 	`,
 })
 
 export class ContactDetailsComponent implements OnInit{
-	public animateState: string = 'in';
 	public company: string;
 	public contact: Contact = <Contact>{};
 	public nameControl: FormControl = new FormControl('', [Validators.required, Validators.maxLength(255)]);
@@ -40,15 +39,16 @@ export class ContactDetailsComponent implements OnInit{
 		phoneControl: this.phoneControl,
 	});
 
-	constructor(private contactService: ContactService, private companyService: CompanyService, private router: Router, private route: ActivatedRoute){}
+	constructor(private contactService: ContactService, private dataShareService: DataShareService){}
 
-	public saveContact(): void {
+	public saveContact(value: string, prop: string): void {
+		this.contact[prop] = value;
 		this.contactService.updateContact(this.contact, +this.contact.ID).subscribe(response => {
-			this.router.navigate(['/contacts', this.contact.ID]);
 		})
 	}
 
 	public ngOnInit() {
+		this.dataShareService.contactSelected$.subscribe(contact => this.contact = contact);
 	}
 
 }

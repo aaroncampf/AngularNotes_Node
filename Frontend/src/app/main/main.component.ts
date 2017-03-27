@@ -1,8 +1,8 @@
-import {Component, OnChanges, OnInit, SimpleChanges, ViewChild, ViewContainerRef} from '@angular/core';
-import {Router} from '@angular/router';
+import {Component, OnInit, ViewContainerRef} from '@angular/core';
+import {ActivatedRoute, Router} from '@angular/router';
 import {Company} from '../models/company.model';
 import {Contact} from '../models/contact.model';
-import {SelectionService} from '../services/selection.service';
+import {DataShareService} from '../services/data-share.service';
 import {ToastsManager} from 'ng2-toastr/ng2-toastr';
 import '../styles/main.scss';
 
@@ -10,12 +10,12 @@ import '../styles/main.scss';
 	selector: 'main',
 	template: `
 		<div class='container'>
-			<h4><b>AngularBro's Notes</b><small>- an Angular 2 CRM</small></h4>
+			<h4><b>AngularBro's Notes</b><small> an Angular 2 CRM</small></h4>
 			<input type="search" placeholder="search -WIP-"/>
-			<div class="col-xs-4">
-				<side-panel (currentCompanyChange)="updateSelectedCompany($event)"></side-panel>
+			<div class="col-md-4 col-sm-12">
+				<side-panel (currentCompanyChange)="updateSelectedCompany($event)" (currentContactChange)="updateSelectedContact($event)"></side-panel>
 			</div>
-			<div class="col-xs-offset-1 col-xs-7">
+			<div class="col-md-8 col-sm-12">
 				<div class="row">
 					<ul class="nav nav-tabs">
 						<li [class.active]="tab === COMPANY">
@@ -29,7 +29,7 @@ import '../styles/main.scss';
 							</a>
 						</li>
 						<li [class.active]="tab === NOTES">
-							<a class="tab" [routerLink]="[NOTES]">
+							<a class="tab" [class.disabled]="!selectedContact" [routerLink]="[NOTES]">
 								<tab-heading>Notes</tab-heading>
 							</a>
 						</li>
@@ -40,15 +40,13 @@ import '../styles/main.scss';
 						</li>
 					</ul>
 				</div>
-				<button class="btn" (click)="testPop()">Test Pop</button>
 				<router-outlet></router-outlet>
 			</div>
 		</div>
-
 	`,
 	})
 
-export class MainComponent implements OnInit, OnChanges {
+export class MainComponent implements OnInit {
 	public CONTACT: string = 'contact';
 	public COMPANY: string = 'company';
 	public NOTES: string = 'notes';
@@ -56,29 +54,27 @@ export class MainComponent implements OnInit, OnChanges {
 	public tab: string;
 	public selectedCompany: Company = <Company>{};
 	public selectedContact: Contact = <Contact>{};
-	constructor(public toastr: ToastsManager, vcr: ViewContainerRef, private router: Router,
-				private selectionService: SelectionService ){
+	constructor(public toastr: ToastsManager,
+				public vcr: ViewContainerRef,
+				private router: Router,
+				private route: ActivatedRoute,
+				private dataShareService: DataShareService
+	){
 		this.toastr.setRootViewContainerRef(vcr);
 	}
 
-	public ngOnChanges(changes: SimpleChanges) {
-		console.log(changes);
-	}
-
 	public ngOnInit(): void {
-		this.selectionService.sendCompany(this.selectedCompany);
-
+		this.route.params.subscribe(params => this.tab = params['tab']);
+		this.dataShareService.sendCompany(this.selectedCompany);
 	}
+
 	public updateSelectedContact(contact: Contact): void {
-
+		this.dataShareService.sendContact(contact);
+		this.selectedContact = contact;
 	}
+
 	public updateSelectedCompany(company: Company): void {
-		this.selectionService.sendCompany(company);
-		console.log('updated', company);
+		this.dataShareService.sendCompany(company);
 		this.selectedCompany = company;
-	}
-
-	public testPop(): void {
-		this.toastr.error('Yippie Kieh Yea Mother Fucker!');
 	}
 }

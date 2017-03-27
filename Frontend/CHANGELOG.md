@@ -2,6 +2,8 @@
 >To make sense of all your busy-ness to other developers and please use sem-ver. 
 
 ##unreleased
+[refactor] finalized views
+[code] added view navigation to side-panel lists and mobile view responsive layouts
 
 ##version 0.5.0
 [refactor] restructured view routes and layout

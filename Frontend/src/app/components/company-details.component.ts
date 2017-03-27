@@ -2,7 +2,7 @@ import {Component, OnInit} from '@angular/core';
 import {FormControl, FormGroup, Validators} from '@angular/forms';
 import {Company} from '../models/company.model';
 import {CompanyService} from '../services/companies.service';
-import {SelectionService} from '../services/selection.service';
+import {DataShareService} from '../services/data-share.service';
 import {Subscription} from 'rxjs';
 
 @Component({
@@ -40,7 +40,7 @@ export class CompanyDetailsComponent implements OnInit {
 	public subscription: Subscription;
 
 	constructor(private companyService: CompanyService,
-				private selectService: SelectionService){}
+				private selectService: DataShareService){}
 
 	public saveCompany(event: string, key: string): void {
 		console.log(event, key);
