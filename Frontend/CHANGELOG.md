@@ -1,10 +1,11 @@
 # ChangeLog 
->To make sense of all your busy-ness to other developers and please use sem-ver. 
+>To make sense of all your busy-ness to other developers please log changes and use sem-ver. 
 
 ##unreleased
 [refactor] finalized views
 [code] added view navigation to side-panel lists and mobile view responsive layouts
 [code] Add dropdown logic to lists in `side-panel.component`
+[code] patched up corner cases for `side-panel.component` Contact Dropdowns and a few minor bugs 
 
 ##version 0.5.0
 [refactor] restructured view routes and layout
