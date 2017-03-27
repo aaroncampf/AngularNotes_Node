@@ -13,7 +13,6 @@ export class DataShareService {
 	public contactSelected$ = this.activeContactSource.asObservable();
 
 	public sendCompany(company: Company): void {
-		console.log('retrieving', company);
 		this.activeCompanySource.next(company);
 	}
 
