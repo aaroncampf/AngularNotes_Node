@@ -23,7 +23,7 @@
 [code] created and wired `create-company.component` and `edit-company.component` and `create-contact.compoent`
 [code] created a quotes listing
 [code] created `edit-company.component`, `create-quotes.component` and `quotes.service`
-[bug-fix] Fixed broken links to components
+[bug-fix] Fixed brokgiten links to components
 [animation] Transitional animations between components implemented
 [code] Finished notes in `contact.component`, notes almost list in `notes.component` there is a problem maybe with the model
 
