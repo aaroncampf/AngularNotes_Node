@@ -10,7 +10,7 @@ import {Router} from '@angular/router';
 	selector: 'side-panel',
 	template: `
 		<div class="row">
-			<button class="btn btn-block">Add Company</button>
+			<button class="btn btn-block"(click)="createNewContact()">Add Company</button>
 			<table class="table table-bordered table-hover drop-down">
 				<thead>
 					<tr>
@@ -29,7 +29,7 @@ import {Router} from '@angular/router';
 			</table>
 		</div>
 		<div class="row">
-			<button class="btn btn-block">Add Contact</button>
+			<button class="btn btn-block" [disabled]="!currentCompany.ID" [class.disabled]="!currentCompany.ID" (click)="createNewContact(currentCompany.ID)">Add Contact</button>
 			<table class="table table-bordered table-hover">
 				<thead>
 				<tr>
@@ -51,8 +51,6 @@ import {Router} from '@angular/router';
 })
 
 export class SidePanelCompoennt implements OnInit{
-	public contactCollection: Contact[];
-	public companyCollection: Company[];
 	public companies: Company[];
 	public contacts: Contact[];
 	public currentContact: Contact = <Contact>{};
@@ -62,9 +60,9 @@ export class SidePanelCompoennt implements OnInit{
 	@Output()
 	public currentCompanyChange: EventEmitter<Company> = new EventEmitter<Company>();
 	constructor(public toastr: ToastsManager,
+				private router: Router,
 				private companyService: CompanyService,
-				private contactService: ContactService,
-				private router: Router) {}
+				private contactService: ContactService) {}
 
 	public ngOnInit(): void{
 		this.companyService.getCompanies().subscribe(companies => {
@@ -73,6 +71,17 @@ export class SidePanelCompoennt implements OnInit{
 		this.contactService.getContacts().subscribe(contacts => {
 			this.contacts = contacts;
 		})
+	}
+
+	public createNewContact(companyId): void {
+		this.contactService.saveNewContact(companyId).subscribe(response => {
+			console.log('created', response._body);
+			this.toastr.success('Please provide a name for your new contact', 'Contact Created!');
+			this.router.navigate(['/contact']);
+			console.log('current', this.currentContact);
+			this.currentContact = <Contact>{};
+			this.onSelectContact(<Contact>{ID: response._body});
+		},() => this.toastr.error('Could not create Contact', 'Uh-oh!'));
 	}
 
 	public onSelectCompany(company: Company): void {
@@ -84,6 +93,7 @@ export class SidePanelCompoennt implements OnInit{
 			this.currentCompanyChange.emit(<Company>{});
 			this.contactService.getContacts().subscribe(contacts => this.contacts = contacts);
 		} else {
+			this.router.navigate(['/company']);
 			this.currentContact = <Contact>{};
 			this.currentContactChange.emit(<Contact>{});
 			this.currentCompany = company;
@@ -95,10 +105,16 @@ export class SidePanelCompoennt implements OnInit{
 
 	public onSelectContact(contact: Contact): void{
 		if (this.currentContact.ID) {
-			this.currentContact = <Contact>{}
+			this.router.navigate(['/company']);
+			this.currentContact = <Contact>{};
 			this.currentContactChange.emit(<Contact>{});
-			this.contactService.getCompanyContacts(this.currentCompany.ID).subscribe(contacts => this.contacts = contacts);
+			if (this.currentCompany.ID){
+				this.contactService.getCompanyContacts(this.currentCompany.ID).subscribe(contacts => this.contacts = contacts);
+			} else {
+				this.contactService.getContacts().subscribe(contacts => this.contacts = contacts);
+			}
 		} else {
+			this.router.navigate(['/contact']);
 			this.currentContact = contact;
 			this.currentContactChange.emit(contact);
 			this.collapseContacts()
@@ -116,12 +132,16 @@ export class SidePanelCompoennt implements OnInit{
 	}
 
 	public removeContact(contact: Contact): void{
+		if (!this.currentContact.ID){
+			this.onSelectContact(contact);
+		}
 		this.contactService.deleteContact(contact.ID).subscribe(() => {
 			this.toastr.warning('Removed ' + contact.Name);
-			this.contactService.getCompanyContacts(contact.Company.ID).subscribe(contacts => {
-				this.contacts = contacts;
-			})
-		}, error => this.toastr.error('Oh no! Something went wrong with removing ' + contact.Name + ' please try again later.'));
+			this.onSelectContact(contact);
+			// this.contactService.getCompanyContacts(contact.Company.ID).subscribe(contacts => {
+			// 	this.contacts = contacts;
+			// })
+		}, error => this.toastr.error('There Are Notes Related to ' + contact.Name + 'Please delete them first.' ));
 	}
 
 	public removeCompany(company): void{

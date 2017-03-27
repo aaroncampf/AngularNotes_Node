@@ -8,16 +8,12 @@ import {Subscription} from 'rxjs';
 @Component({
 	selector: 'company-details-component',
 	template: `
-		<div class="container">
-			<div class="navbar navbar-fixed-top">
-			</div>
-			<h4>Company Details</h4>
-				<input-component (modelChange)="saveCompany($event, 'Name')" [model]="company.Name" label="Name" [control]="nameControl"></input-component>
-				<input-component (modelChange)="saveCompany($event, 'Phone')" [model]="company.Phone" label="Phone" [control]="phoneControl"></input-component>
-				<input-component (modelChange)="saveCompany($event, 'Address')" [model]="company.Address" label="Address" [control]="addressControl"></input-component>
-				<input-component (modelChange)="saveCompany($event, 'City')" [model]="company.City" label="City" [control]="cityControl"></input-component>
-				<input-component (modelChange)="saveCompany($event, 'Zip')" [model]="company.Zip" label="Zip" [control]="zipControl"></input-component>
-		</div>
+	<h4>Company Details</h4>
+	<input-component (modelChange)="saveCompany($event, 'Name')" [model]="company.Name" label="Name" [control]="nameControl"></input-component>
+	<input-component (modelChange)="saveCompany($event, 'Phone')" [model]="company.Phone" label="Phone" [control]="phoneControl"></input-component>
+	<input-component (modelChange)="saveCompany($event, 'Address')" [model]="company.Address" label="Address" [control]="addressControl"></input-component>
+	<input-component (modelChange)="saveCompany($event, 'City')" [model]="company.City" label="City" [control]="cityControl"></input-component>
+	<input-component (modelChange)="saveCompany($event, 'Zip')" [model]="company.Zip" label="Zip" [control]="zipControl"></input-component>
 	`,
 })
 
