@@ -31,7 +31,7 @@ export class NotesComponent implements OnInit, OnChanges {
 
 	public ngOnInit(): void {
 		this.route.params.subscribe(params => {
-			this.noteService.getContactNotes(params['id']).subscribe(notes => {
+			this.noteService.getNotes().subscribe(notes => {
 				this.notesCollection = notes;
 			})
 		})
