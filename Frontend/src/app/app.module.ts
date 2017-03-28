@@ -11,7 +11,7 @@ import {ContactService} from './services/contact.service';
 import {NotesService} from './services/notes.service';
 import {InputComponent} from './components/input.component';
 import {MainComponent} from './main/main.component';
-import {SidePanelCompoennt} from './components/side-panel.component';
+import {SidePanelComponent} from './components/side-panel.component';
 import {QuotesComponent} from './components/quotes.component';
 import {Quotes_Printout} from './components/quote_printout.component';
 import {NotesComponent} from './components/notes.component';
@@ -32,7 +32,7 @@ const MAIN_ROUTES: Routes = [
 @NgModule({
 	declarations: [
 		MainComponent,
-		SidePanelCompoennt,
+		SidePanelComponent,
 		ContactDetailsComponent,
 		QuotesComponent,
 		Quotes_Printout,

@@ -4,16 +4,23 @@ import {Company} from '../models/company.model';
 import {CompanyService} from '../services/companies.service';
 import {DataShareService} from '../services/data-share.service';
 import {Subscription} from 'rxjs';
+import {ToastsManager} from 'ng2-toastr/ng2-toastr'
 
 @Component({
 	selector: 'company-details-component',
 	template: `
-	<h4>Company Details</h4>
-	<input-component (modelChange)="saveCompany($event, 'Name')" [model]="company.Name" label="Name" [control]="nameControl"></input-component>
-	<input-component (modelChange)="saveCompany($event, 'Phone')" [model]="company.Phone" label="Phone" [control]="phoneControl"></input-component>
-	<input-component (modelChange)="saveCompany($event, 'Address')" [model]="company.Address" label="Address" [control]="addressControl"></input-component>
-	<input-component (modelChange)="saveCompany($event, 'City')" [model]="company.City" label="City" [control]="cityControl"></input-component>
-	<input-component (modelChange)="saveCompany($event, 'Zip')" [model]="company.Zip" label="Zip" [control]="zipControl"></input-component>
+	<div *ngIf="company.ID">
+		<h4>Company Details</h4>
+		<input-component (modelChange)="saveCompany($event, 'Name')" [model]="company.Name" label="Name" [control]="nameControl"></input-component>
+		<input-component (modelChange)="saveCompany($event, 'Phone')" [model]="company.Phone" label="Phone" [control]="phoneControl"></input-component>
+		<input-component (modelChange)="saveCompany($event, 'Address')" [model]="company.Address" label="Address" [control]="addressControl"></input-component>
+		<input-component (modelChange)="saveCompany($event, 'City')" [model]="company.City" label="City" [control]="cityControl"></input-component>
+		<input-component (modelChange)="saveCompany($event, 'Zip')" [model]="company.Zip" label="Zip" [control]="zipControl"></input-component>
+	</div>
+	<div *ngIf="!company.ID">
+		<h1>Welcome to Angular Notes<small> By the AngularBros</small></h1>
+		<p>Please select a Company or Contact to your left and explore their details using the tabs above. Thanks! ;)</p>
+	</div>	
 	`,
 })
 
@@ -36,13 +43,18 @@ export class CompanyDetailsComponent implements OnInit {
 	public subscription: Subscription;
 
 	constructor(private companyService: CompanyService,
-				private selectService: DataShareService){}
+				private selectService: DataShareService,
+				public toastr: ToastsManager){}
 
 	public saveCompany(event: string, key: string): void {
-		console.log(event, key);
-		this.company[key] = event;
-		this.companyService.updateCompany(this.company).subscribe(res => console.log(res));
-		console.log('saving', this.company);
+		if (this.nameControl.invalid){
+			this.toastr.error('To save please provide a name', 'Oh no!')
+		} else {
+			console.log(event, key);
+			this.company[key] = event;
+			this.companyService.updateCompany(this.company).subscribe(res => console.log(res));
+			console.log('saving', this.company);
+		}
 	}
 
 	public ngOnInit() {

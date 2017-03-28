@@ -1,16 +1,16 @@
-import {Component, EventEmitter, OnInit, Output} from '@angular/core';
+import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
 import {Company} from '../models/company.model';
 import {CompanyService} from '../services/companies.service';
 import {ContactService} from '../services/contact.service';
 import {ToastsManager} from 'ng2-toastr/ng2-toastr';
 import {Contact} from '../models/contact.model';
-import {Router} from '@angular/router';
+import {ActivatedRoute, Router} from '@angular/router';
 
 @Component({
 	selector: 'side-panel',
 	template: `
 		<div class="row">
-			<button class="btn btn-block"(click)="createNewContact()">Add Company</button>
+			<button class="btn btn-block"(click)="createNewCompany()">Add Company</button>
 			<table class="table table-bordered table-hover drop-down">
 				<thead>
 					<tr>
@@ -50,11 +50,15 @@ import {Router} from '@angular/router';
 	`
 })
 
-export class SidePanelCompoennt implements OnInit{
+export class SidePanelComponent implements OnInit{
 	public companies: Company[];
 	public contacts: Contact[];
 	public currentContact: Contact = <Contact>{};
 	public currentCompany: Company = <Company>{};
+	@Input()
+	public currentTab: string;
+	@Output()
+	public currentTabChange: EventEmitter<string> = new EventEmitter<string>();
 	@Output()
 	public currentContactChange: EventEmitter<Contact> = new EventEmitter<Contact>();
 	@Output()
@@ -73,12 +77,19 @@ export class SidePanelCompoennt implements OnInit{
 		})
 	}
 
+	public createNewCompany(): void {
+		this.companyService.createCompany().subscribe(response => {
+			console.log('create response', response);
+			this.toastr.success('Please provide a name for your new company.', 'Company Created!');
+			this.currentCompany = <Company>{};
+			this.onSelectCompany(<Company>{ID: response.ID})
+		})
+	}
+
 	public createNewContact(companyId): void {
 		this.contactService.saveNewContact(companyId).subscribe(response => {
-			console.log('created', response._body);
-			this.toastr.success('Please provide a name for your new contact', 'Contact Created!');
+			this.toastr.success('Please provide a name for your new contact.', 'Contact Created!');
 			this.router.navigate(['/contact']);
-			console.log('current', this.currentContact);
 			this.currentContact = <Contact>{};
 			this.onSelectContact(<Contact>{ID: response._body});
 		},() => this.toastr.error('Could not create Contact', 'Uh-oh!'));
@@ -93,7 +104,11 @@ export class SidePanelCompoennt implements OnInit{
 			this.currentCompanyChange.emit(<Company>{});
 			this.contactService.getContacts().subscribe(contacts => this.contacts = contacts);
 		} else {
-			this.router.navigate(['/company']);
+			console.log(this.currentTab);
+			if(this.currentTab === 'contact' || this.currentTab === 'notes') {
+				this.router.navigate(['/company']);
+				this.currentTabChange.emit('company');
+			}
 			this.currentContact = <Contact>{};
 			this.currentContactChange.emit(<Contact>{});
 			this.currentCompany = company;
@@ -105,7 +120,10 @@ export class SidePanelCompoennt implements OnInit{
 
 	public onSelectContact(contact: Contact): void{
 		if (this.currentContact.ID) {
-			this.router.navigate(['/company']);
+			if (this.currentTab === 'contact') {
+				this.router.navigate(['/company']);
+				this.currentTabChange.emit('company');
+			}
 			this.currentContact = <Contact>{};
 			this.currentContactChange.emit(<Contact>{});
 			if (this.currentCompany.ID){
@@ -114,7 +132,10 @@ export class SidePanelCompoennt implements OnInit{
 				this.contactService.getContacts().subscribe(contacts => this.contacts = contacts);
 			}
 		} else {
-			this.router.navigate(['/contact']);
+			if(this.currentTab === 'company' || this.currentTab === 'quotes') {
+				this.router.navigate(['/contact']);
+				this.currentTabChange.emit('contact');
+			}
 			this.currentContact = contact;
 			this.currentContactChange.emit(contact);
 			this.collapseContacts()

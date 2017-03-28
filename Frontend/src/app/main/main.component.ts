@@ -13,28 +13,28 @@ import '../styles/main.scss';
 			<h4><b>AngularBro's Notes</b><small> an Angular 4 CRM</small></h4>
 			<input type="search" placeholder="search -WIP-"/>
 			<div class="col-sm-4 col-xs-12">
-				<side-panel (currentCompanyChange)="updateSelectedCompany($event)" (currentContactChange)="updateSelectedContact($event)"></side-panel>
+				<side-panel [(currentTab)]="tab" (currentCompanyChange)="updateSelectedCompany($event)" (currentContactChange)="updateSelectedContact($event)"></side-panel>
 			</div>
 			<div class="col-sm-8 col-xs-12">
 				<div class="row">
 					<ul class="nav nav-tabs">
 						<li [class.active]="tab === COMPANY">
-							<a class="tab" [routerLink]="[COMPANY]">
+							<a class="tab" (click)="routeTo(COMPANY)">
 								<tab-heading>Company</tab-heading>
 							</a>
 						</li>
 						<li [class.active]="tab === CONTACT">
-							<a class="tab" [routerLink]="[CONTACT]">
+							<a class="tab" (click)="routeTo(CONTACT)">
 								<tab-heading>Contact</tab-heading>
 							</a>
 						</li>
 						<li [class.active]="tab === NOTES">
-							<a class="tab" [class.disabled]="!selectedContact" [routerLink]="[NOTES]">
+							<a class="tab" (click)="routeTo(NOTES)">
 								<tab-heading>Notes</tab-heading>
 							</a>
 						</li>
 						<li [class.active]="tab === QUOTES">
-							<a class="tab" [routerLink]="[QUOTES]">
+							<a class="tab" (click)="routeTo(QUOTES)">
 								<tab-heading>Quotes</tab-heading>
 							</a>
 						</li>
@@ -57,14 +57,23 @@ export class MainComponent implements OnInit {
 	constructor(public toastr: ToastsManager,
 				public vcr: ViewContainerRef,
 				private router: Router,
-				private route: ActivatedRoute,
 				private dataShareService: DataShareService
 	){
 		this.toastr.setRootViewContainerRef(vcr);
 	}
 
+	public routeTo(tab: string): void {
+		if (tab === 'contact' && !this.selectedContact.ID){
+			this.toastr.error('Please chose a contact for their details.');
+		} else {
+			this.router.navigate(['/' + tab]);
+			this.tab = tab;
+		}
+	}
+
 	public ngOnInit(): void {
-		this.route.params.subscribe(params => this.tab = params['tab']);
+		this.tab = this.COMPANY;
+		this.router.navigate([this.COMPANY]);
 		this.dataShareService.sendCompany(this.selectedCompany);
 	}
 
