@@ -4,7 +4,7 @@
 
 A contact and note organizer that generates specialized quote reports for clients and companies. A work in progress, please stand by. 
 
-# FrontEnd by Rex [rdev0rigin@gmail.com](mailto:rdev0rigin@gmail.com)
+# FrontEnd by (R)Dev [rdev0rigin@gmail.com](mailto:rdev0rigin@gmail.com)
 
 ## Dev/Demo Deployment
 >pre-req's npm and git
