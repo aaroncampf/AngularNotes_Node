@@ -7,19 +7,17 @@ export interface QuoteLine {
     /**
      * The order each item should be displayed in (smallest to greatest)
      */
-    Display: number;
-
+    Display?: number;
     /**
      * The unit of measure for the item in the quote
      */
     UNIT: string;
     COST: string;
     DESC: string;
-
     /**
      * If True then the item should be centered in the quote
      */
-    IsCentered: Boolean;
+    IsCentered?: Boolean;
 
     /**
      * The quote that this line is inside
