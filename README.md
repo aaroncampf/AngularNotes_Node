@@ -14,4 +14,4 @@ npm i
 npm start
 ```
 
-Then navigate in your browser to `http://localhost:3000` or click (here)[http://localhost:3000]
+Then navigate in your browser to `http://localhost:3000` or click [here](http://localhost:3000)
