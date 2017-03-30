@@ -13,7 +13,7 @@ import '../styles/main.scss';
 			<h4><b>AngularBro's Notes</b><small> an Angular 4 CRM</small></h4>
 			<input type="search" placeholder="search -WIP-"/>
 			<div class="col-sm-4 col-xs-12">
-				<side-panel [(currentTab)]="tab" (currentCompanyChange)="updateSelectedCompany($event)" (currentContactChange)="updateSelectedContact($event)"></side-panel>
+				<side-panel (currentCompanyChange)="updateSelectedCompany($event)" (currentContactChange)="updateSelectedContact($event)"></side-panel>
 			</div>
 			<div class="col-sm-8 col-xs-12">
 				<div class="row">
