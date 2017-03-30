@@ -31,7 +31,7 @@ export class ContactService {
 			.catch(err => err);
 	}
 
-	public saveNewContact(companyId: number): Observable<any> {
+	public createContact(companyId: number): Observable<any> {
 		const headers = new Headers({
 			'content-type': 'application/json',
 		});

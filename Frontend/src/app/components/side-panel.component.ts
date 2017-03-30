@@ -38,10 +38,6 @@ export class SidePanelComponent implements OnInit{
 	public contacts: Contact[];
 	public currentContact: Contact = <Contact>{};
 	public currentCompany: Company = <Company>{};
-	@Input()
-	public currentTab: string;
-	@Output()
-	public currentTabChange: EventEmitter<string> = new EventEmitter<string>();
 	@Output()
 	public currentContactChange: EventEmitter<Contact> = new EventEmitter<Contact>();
 	@Output()
@@ -61,70 +57,49 @@ export class SidePanelComponent implements OnInit{
 	}
 
 	public createNewCompany(): void {
+		this.router.navigate(['/company']);
 		this.companyService.createCompany().subscribe(company => {
-			this.companyService.getCompanies().subscribe(companies => {
-				this.companies = companies
-				console.log('create response', company);
-				this.toastr.success('Please provide a name for your new company.', 'Company Created!');
-				this.currentCompany = <Company>{};
-				this.currentCompanyChange.emit(<Company>{});
-				console.log(company);
-				this.router.navigate(['/company']);
-				this.onSelectCompany(<Company>{ID: company.ID})
-			});
+			console.log('created Company', company);
+			this.currentCompany = company;
+			this.currentCompanyChange.emit(company);
+			this.companies.push(this.currentCompany);
+			this.contacts = [];
 		})
 	}
 
 	public createNewContact(companyId): void {
-		this.contactService.saveNewContact(companyId).subscribe(response => {
-			this.toastr.success('Please provide a name for your new contact.', 'Contact Created!');
+		this.contactService.createContact(companyId).subscribe(contactID => {
+			this.currentContact = <Contact>{ID: contactID._body};
+			console.log('create current', this.currentContact);
+			this.currentContactChange.emit(this.currentContact);
+			this.contacts = [];
+			this.contacts.push(this.currentContact);
 			this.router.navigate(['/contact']);
-			this.currentContact = <Contact>{};
-			this.onSelectContact(<Contact>{ID: response._body});
-		},() => this.toastr.error('Could not create Contact', 'Uh-oh!'));
+		})
 	}
 
 	public onSelectCompany(company: Company): void {
-		if (this.currentCompany.ID) {
-			this.currentCompany = <Company>{};
-			this.currentCompanyChange.emit(<Company>{});
-			// this.companyService.getCompanies().subscribe(companies => this.companies = companies);
-			this.currentContact = <Contact>{};
-			this.currentContactChange.emit(<Contact>{});
-			this.contactService.getContacts().subscribe(contacts => this.contacts = contacts);
-		} else {
-			console.log(this.currentTab);
-			if(this.currentTab === 'contact' || this.currentTab === 'notes') {
-				this.router.navigate(['/company']);
-				this.currentTabChange.emit('company');
-			}
+		if (!this.currentCompany.ID){
 			this.currentCompany = company;
 			this.currentCompanyChange.emit(company);
-			this.currentContact = <Contact>{};
-			this.currentContactChange.emit(<Contact>{});
 			this.contactService.getCompanyContacts(company.ID).subscribe(contacts => this.contacts = contacts);
+		} else {
+			this.currentCompany = <Company>{};
+			this.currentCompanyChange.emit(<Company>{});
+			this.onSelectContact(<Contact>{});
+			this.contactService.getContacts().subscribe(contacts => this.contacts = contacts);
 		}
 	}
 
 	public onSelectContact(contact: Contact): void{
-		if (this.currentContact.ID) {
-			if (this.currentTab === 'contact') {
-				this.router.navigate(['/company']);
-				this.currentTabChange.emit('company');
-			}
-			this.currentContact = <Contact>{};
-			this.currentContactChange.emit(<Contact>{});
-			// if (this.currentCompany.ID){
-			// } else {
-			// 	this.contactService.getContacts().subscribe(contacts => this.contacts = contacts);
-			// }
-		} else {
-			if(this.currentTab === 'company' || this.currentTab === 'quotes') {
-				this.router.navigate(['/contact']);
-				this.currentTabChange.emit('contact');
-			}
+		if (!this.currentContact.ID) {
+			console.log('selected contact', contact);
 			this.currentContact = contact;
 			this.currentContactChange.emit(contact);
+		} else {
+			console.log('unselected contact', contact);
+			this.currentContact = <Contact>{};
+			this.currentContactChange.emit(<Contact>{});
 		}
 	}
 
@@ -133,7 +108,6 @@ export class SidePanelComponent implements OnInit{
 			this.currentContactChange.emit(<Contact>{});
 			this.contactService.deleteContact(contact.ID).subscribe(() => {
 			this.toastr.warning('Removed ' + contact.Name);
-			//this.onSelectContact(contact);
 			this.contactService.getContacts().subscribe(contacts => {
 				this.contacts = contacts;
 			})

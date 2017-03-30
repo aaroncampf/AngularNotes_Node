@@ -3,7 +3,6 @@ import {FormControl, FormGroup, Validators} from '@angular/forms';
 import {Company} from '../models/company.model';
 import {CompanyService} from '../services/companies.service';
 import {DataShareService} from '../services/data-share.service';
-import {Subscription} from 'rxjs';
 import {ToastsManager} from 'ng2-toastr/ng2-toastr'
 
 @Component({
@@ -19,7 +18,7 @@ import {ToastsManager} from 'ng2-toastr/ng2-toastr'
 			<quotes-component></quotes-component>
 		</div>
 		<div *ngIf="!company.ID">
-			<h4>Please select a Company or Contact</h4>
+			<h4>Please select a Company for it's details.</h4>
 		</div>
 	`,
 })
