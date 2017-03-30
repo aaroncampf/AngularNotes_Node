@@ -4,7 +4,7 @@ import {CompanyService} from '../services/companies.service';
 import {ContactService} from '../services/contact.service';
 import {ToastsManager} from 'ng2-toastr/ng2-toastr';
 import {Contact} from '../models/contact.model';
-import {Router} from '@angular/router';
+import {ActivatedRoute, Router} from '@angular/router';
 
 @Component({
 	selector: 'side-panel',
@@ -88,9 +88,9 @@ export class SidePanelComponent implements OnInit{
 		if (this.currentCompany.ID) {
 			this.currentCompany = <Company>{};
 			this.currentCompanyChange.emit(<Company>{});
-			// this.companyService.getCompanies().subscribe(companies => this.companies = companies);
+			this.companyService.getCompanies().subscribe(companies => this.companies = companies);
 			this.currentContact = <Contact>{};
-			this.currentContactChange.emit(<Contact>{});
+			this.currentCompanyChange.emit(<Company>{});
 			this.contactService.getContacts().subscribe(contacts => this.contacts = contacts);
 		} else {
 			console.log(this.currentTab);
@@ -103,6 +103,7 @@ export class SidePanelComponent implements OnInit{
 			this.currentContact = <Contact>{};
 			this.currentContactChange.emit(<Contact>{});
 			this.contactService.getCompanyContacts(company.ID).subscribe(contacts => this.contacts = contacts);
+			//this.collapseCompany()
 		}
 	}
 
@@ -114,10 +115,11 @@ export class SidePanelComponent implements OnInit{
 			}
 			this.currentContact = <Contact>{};
 			this.currentContactChange.emit(<Contact>{});
-			// if (this.currentCompany.ID){
-			// } else {
-			// 	this.contactService.getContacts().subscribe(contacts => this.contacts = contacts);
-			// }
+			if (this.currentCompany.ID){
+				this.contactService.getCompanyContacts(this.currentCompany.ID).subscribe(contacts => this.contacts = contacts);
+			} else {
+				this.contactService.getContacts().subscribe(contacts => this.contacts = contacts);
+			}
 		} else {
 			if(this.currentTab === 'company' || this.currentTab === 'quotes') {
 				this.router.navigate(['/contact']);
@@ -125,7 +127,18 @@ export class SidePanelComponent implements OnInit{
 			}
 			this.currentContact = contact;
 			this.currentContactChange.emit(contact);
+			//this.collapseContacts()
 		}
+	}
+
+	public collapseContacts(): void {
+		this.contacts = [];
+		this.contacts.push(this.currentContact);
+	}
+
+	public collapseCompany(): void {
+		this.companies = [];
+		this.companies.push(this.currentCompany);
 	}
 
 	public removeContact(contact: Contact): void{
