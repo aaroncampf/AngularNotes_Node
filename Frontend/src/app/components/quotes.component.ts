@@ -4,7 +4,7 @@ import {Company} from '../models/company.model';
 import {Quote} from '../models/quote.model';
 import {QuoteService} from '../services/quotes.service';
 import {DataShareService} from '../services/data-share.service';
-import {Toast, ToastsManager} from 'ng2-toastr/ng2-toastr';
+import {ToastsManager} from 'ng2-toastr/ng2-toastr';
 import {QuoteLine} from '../models/quotelines.model';
 import {Router} from '@angular/router';
 
@@ -15,12 +15,12 @@ import {Router} from '@angular/router';
 		<div class="col-xs-12">
 			<button type="button" class="btn btn-block" [routerLink]="['/create-quote', selectedCompany.ID]" [disabled]="!selectedCompany.ID" [class.disabled]="!selectedCompany.ID">New Quote</button>
 			<div *ngFor="let quote of quotes" class="card" (click)="onSelectQuote(quote)">
-				<div class="row card-">
+				<div class="row card-header">
 					<span class="col-xs-2"><b>QID:</b> {{quote.ID}}</span>
 					<span class="col-xs-4"><b>Date:</b> {{quote.Date | date: 'MM/dd/yyyy'}}</span>
 					<span class="col-xs-6"><b>Name:</b> {{quote.Name}}</span>
 				</div>
-				<div class="row">
+				<div class="row card-body">
 					<div class="col-xs-12"><hr></div>
 					<span class="col-xs-1 text-left">IID</span>
 					<span class="col-xs-2 text-left">Unit</span>
@@ -29,7 +29,7 @@ import {Router} from '@angular/router';
 					<span class="col-xs-1 text-left"></span>
 				</div>
 				<div *ngIf="selectedCompany.ID">
-				<div class="row" *ngFor="let line of quote.Lines">
+				<div class="row card-footer" *ngFor="let line of quote.Lines">
 					<span class="col-xs-1">{{line.ID}}</span>
 					<span class="col-xs-2">{{line.UNIT}}</span>
 					<span class="col-xs-2">{{line.COST}}</span>
@@ -125,7 +125,6 @@ export class QuotesComponent implements OnInit, OnChanges {
 	}
 	public onSelect(companyId: number, quoteId?: number) {
 
-		this.quoteService
 		// if (quoteId){
 		// 	for(let quote of this.quotes) {
 		// 		if (quote.ID === quoteId) {

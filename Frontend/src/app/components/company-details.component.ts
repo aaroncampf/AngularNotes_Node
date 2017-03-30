@@ -40,7 +40,6 @@ export class CompanyDetailsComponent implements OnInit {
 		phoneControl: this.phoneControl,
 		zipControl: this.zipControl,
 	});
-	public subscription: Subscription;
 
 	constructor(private companyService: CompanyService,
 				private selectService: DataShareService,
