@@ -15,13 +15,13 @@ import {Router} from '@angular/router';
 		<div class="col-xs-12">
 			<button type="button" class="btn btn-block" [routerLink]="['/create-quote', selectedCompany.ID]" [disabled]="!selectedCompany.ID" [class.disabled]="!selectedCompany.ID">New Quote</button>
 			<div *ngFor="let quote of quotes" class="card" (click)="onSelectQuote(quote)">
-				<div class="row">
+				<div class="row card-">
 					<span class="col-xs-2"><b>QID:</b> {{quote.ID}}</span>
 					<span class="col-xs-4"><b>Date:</b> {{quote.Date | date: 'MM/dd/yyyy'}}</span>
 					<span class="col-xs-6"><b>Name:</b> {{quote.Name}}</span>
 				</div>
 				<div class="row">
-					<div class="col-xs-12"><h4>Quoted Values</h4></div>
+					<div class="col-xs-12"><hr></div>
 					<span class="col-xs-1 text-left">IID</span>
 					<span class="col-xs-2 text-left">Unit</span>
 					<span class="col-xs-2 text-left">Cost</span>

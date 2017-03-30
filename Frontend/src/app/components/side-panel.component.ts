@@ -11,38 +11,27 @@ import {ActivatedRoute, Router} from '@angular/router';
 	template: `
 		<div class="row">
 			<button class="btn btn-block"(click)="createNewCompany()">Add Company</button>
-			<table class="table table-bordered table-hover drop-down">
-				<div class="col-xs-12">
-						<th>Companies</th>
+			<div class="col-xs-12">
+					<th>Companies</th>
+			</div>
+			<div class="col-xs-12 selection-row" [class.active]="currentCompany.ID === company.ID" [class.collapsed]="currentCompany.ID && currentCompany.ID !== company.ID" *ngFor="let company of companies" (click)="onSelectCompany(company)">
+				<div class="col-xs-10 pull-left">{{company.Name}}</div>
+				<div class="col-xs-2 text-right">
+					<i class="glyphicon glyphicon-remove" (click)="removeCompany(company)"></i>
 				</div>
-				<tbody>
-					<div class="row card" [class.active]="currentCompany.ID === company.ID" [class.collapse]="currentCompany.ID && currentCompany.ID !== company.ID" *ngFor="let company of companies">
-						<div class="col-xs-11" (click)="onSelectCompany(company)">{{company.Name}}</div>
-						<div class="col-xs-1">
-							<i class="glyphicon glyphicon-remove" (click)="removeCompany(company)"></i>
-						</div>
-					</div>
-				</tbody>
-			</table>
+			</div>
 		</div>
 		<div class="row">
-			<button class="btn btn-block" [disabled]="!currentCompany.ID" [class.disabled]="!currentCompany.ID" (click)="createNewContact(currentCompany.ID)">Add Contact</button>
-			<table class="table table-bordered table-hover">
-				<thead>
-				<tr>
-					<th>Contacts</th>
-					<th></th>
-				</tr>
-				</thead>
-				<tbody>
-				<tr [class.active]="currentContact.ID === contact.ID" *ngFor="let contact of contacts">
-					<td (click)="onSelectContact(contact)">{{contact.Name}}</td>
-					<td>
-						<i class="glyphicon glyphicon-remove" (click)="removeContact(contact)"></i>
-					</td>
-				</tr>
-				</tbody>
-			</table>
+		<button class="btn btn-block" [disabled]="!currentCompany.ID" [class.disabled]="!currentCompany.ID" (click)="createNewContact(currentCompany.ID)">Add Contact</button>
+			<div class="col-xs-12">
+				<h6>Contacts</h6>
+			</div>
+			<div class="selection-row" [class.active]="currentContact.ID === contact.ID" [class.collapsed]="currentContact.ID && currentContact.ID !== contact.ID" *ngFor="let contact of contacts">
+				<div class="col-xs-10" (click)="onSelectContact(contact)">{{contact.Name}}</div>
+				<div class="col-xs-2">
+					<i class="glyphicon glyphicon-remove" (click)="removeContact(contact)"></i>
+				</div>
+			</div>
 		</div>
 	`
 })
@@ -98,8 +87,8 @@ export class SidePanelComponent implements OnInit{
 			this.currentCompanyChange.emit(<Company>{});
 			// this.companyService.getCompanies().subscribe(companies => this.companies = companies);
 			this.currentContact = <Contact>{};
-			this.currentCompanyChange.emit(<Company>{});
-			// this.contactService.getContacts().subscribe(contacts => this.contacts = contacts);
+			this.currentContactChange.emit(<Contact>{});
+			this.contactService.getContacts().subscribe(contacts => this.contacts = contacts);
 		} else {
 			console.log(this.currentTab);
 			if(this.currentTab === 'contact' || this.currentTab === 'notes') {
@@ -110,7 +99,7 @@ export class SidePanelComponent implements OnInit{
 			this.currentContactChange.emit(<Contact>{});
 			this.currentCompany = company;
 			this.currentCompanyChange.emit(company);
-			// this.contactService.getCompanyContacts(company.ID).subscribe(contacts => this.contacts = contacts);
+			this.contactService.getCompanyContacts(company.ID).subscribe(contacts => this.contacts = contacts);
 		}
 	}
 
