@@ -18,12 +18,15 @@ import {NotesComponent} from './components/notes.component';
 import {ContactDetailsComponent} from './components/contact-details.component';
 import {CompanyDetailsComponent} from './components/company-details.component';
 import {ToastModule} from 'ng2-toastr';
+import {QuoteDetailsComponent} from './components/quote-details.component';
 
 const MAIN_ROUTES: Routes = [
 	{path: '', children: [
 		{path:'company', component: CompanyDetailsComponent},
 		{path:'contact', component: ContactDetailsComponent},
 		{path:'quotes', component: QuotesComponent},
+		{path:'quote-print', component: Quotes_Printout},
+		{path:'quote-details', component: QuoteDetailsComponent},
 		{path:'notes', component: NotesComponent},
 		{path:'', redirectTo: '/company', pathMatch: 'full'}
 	]},
@@ -32,6 +35,7 @@ const MAIN_ROUTES: Routes = [
 @NgModule({
 	declarations: [
 		MainComponent,
+		QuoteDetailsComponent,
 		SidePanelComponent,
 		ContactDetailsComponent,
 		QuotesComponent,

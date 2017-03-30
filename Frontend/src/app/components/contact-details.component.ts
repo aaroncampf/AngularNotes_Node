@@ -13,6 +13,7 @@ import {ToastsManager} from 'ng2-toastr/ng2-toastr'
 	<input-component (modelChange)="saveContact($event, 'Phone')" label="Phone" [model]="contact.Phone" [control]="phoneControl"></input-component>
 	<input-component (modelChange)="saveContact($event, 'Email')"label="Email" [model]="contact.Email" [control]="emailControl"></input-component>
 	<input-component (modelChange)="saveContact($event, 'Position')"label="Position" [model]="contact.Position" [control]="positionControl"></input-component>
+	<notes-component></notes-component>
 	`,
 })
 

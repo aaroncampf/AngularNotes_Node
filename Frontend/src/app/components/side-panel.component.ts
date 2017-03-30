@@ -12,19 +12,16 @@ import {ActivatedRoute, Router} from '@angular/router';
 		<div class="row">
 			<button class="btn btn-block"(click)="createNewCompany()">Add Company</button>
 			<table class="table table-bordered table-hover drop-down">
-				<thead>
-					<tr>
+				<div class="col-xs-12">
 						<th>Companies</th>
-						<th></th>
-					</tr>
-				</thead>
+				</div>
 				<tbody>
-					<tr [class.active]="currentCompany.ID === company.ID" *ngFor="let company of companies">
-						<td (click)="onSelectCompany(company)">{{company.Name}}</td>
-						<td>
+					<div class="row card" [class.active]="currentCompany.ID === company.ID" [class.collapse]="currentCompany.ID && currentCompany.ID !== company.ID" *ngFor="let company of companies">
+						<div class="col-xs-11" (click)="onSelectCompany(company)">{{company.Name}}</div>
+						<div class="col-xs-1">
 							<i class="glyphicon glyphicon-remove" (click)="removeCompany(company)"></i>
-						</td>
-					</tr>
+						</div>
+					</div>
 				</tbody>
 			</table>
 		</div>
@@ -99,10 +96,10 @@ export class SidePanelComponent implements OnInit{
 		if (this.currentCompany.ID) {
 			this.currentCompany = <Company>{};
 			this.currentCompanyChange.emit(<Company>{});
-			this.companyService.getCompanies().subscribe(companies => this.companies = companies);
+			// this.companyService.getCompanies().subscribe(companies => this.companies = companies);
 			this.currentContact = <Contact>{};
 			this.currentCompanyChange.emit(<Company>{});
-			this.contactService.getContacts().subscribe(contacts => this.contacts = contacts);
+			// this.contactService.getContacts().subscribe(contacts => this.contacts = contacts);
 		} else {
 			console.log(this.currentTab);
 			if(this.currentTab === 'contact' || this.currentTab === 'notes') {
@@ -113,8 +110,7 @@ export class SidePanelComponent implements OnInit{
 			this.currentContactChange.emit(<Contact>{});
 			this.currentCompany = company;
 			this.currentCompanyChange.emit(company);
-			this.contactService.getCompanyContacts(company.ID).subscribe(contacts => this.contacts = contacts);
-			this.collapseCompany()
+			// this.contactService.getCompanyContacts(company.ID).subscribe(contacts => this.contacts = contacts);
 		}
 	}
 
@@ -126,11 +122,10 @@ export class SidePanelComponent implements OnInit{
 			}
 			this.currentContact = <Contact>{};
 			this.currentContactChange.emit(<Contact>{});
-			if (this.currentCompany.ID){
-				this.contactService.getCompanyContacts(this.currentCompany.ID).subscribe(contacts => this.contacts = contacts);
-			} else {
-				this.contactService.getContacts().subscribe(contacts => this.contacts = contacts);
-			}
+			// if (this.currentCompany.ID){
+			// } else {
+			// 	this.contactService.getContacts().subscribe(contacts => this.contacts = contacts);
+			// }
 		} else {
 			if(this.currentTab === 'company' || this.currentTab === 'quotes') {
 				this.router.navigate(['/contact']);
@@ -138,18 +133,7 @@ export class SidePanelComponent implements OnInit{
 			}
 			this.currentContact = contact;
 			this.currentContactChange.emit(contact);
-			this.collapseContacts()
 		}
-	}
-
-	public collapseContacts(): void {
-		this.contacts = [];
-		this.contacts.push(this.currentContact);
-	}
-
-	public collapseCompany(): void {
-		this.companies = [];
-		this.companies.push(this.currentCompany);
 	}
 
 	public removeContact(contact: Contact): void{

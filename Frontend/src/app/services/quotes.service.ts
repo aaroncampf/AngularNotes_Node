@@ -2,9 +2,13 @@ import {Injectable} from '@angular/core';
 import {Http, Headers, RequestOptions, Response} from '@angular/http';
 import {Observable} from 'rxjs';
 import {Quote} from '../models/quote.model';
+import {QuoteLine} from '../models/quotelines.model';
 
 @Injectable()
 export class QuoteService {
+	private Headers = new Headers({
+		'content-type': 'application/json'
+	});
 	constructor(private http: Http){}
 
 	public getQuotes(): Observable<Quote[]> {
@@ -32,19 +36,7 @@ export class QuoteService {
 			.catch(err => err);
 	}
 
-	// public saveNewQuote(quote: Quote): Observable<any> {
-	// 	const headers = new Headers({
-	// 		'content-type': 'application/json',
-	// 	});
-	// 	const options = new RequestOptions({headers: headers});
-	// 	return this.http.post(`http://angularnotes-angularbros.azurewebsites.net/api/Quotes`, JSON.stringify(quote), options)
-	// 		.map(res => {
-	// 			return res;
-	// 		})
-	// 		.catch(err => this.handleError(err));
-	// }
-
-	public saveNewQuote(quote: Quote, companyId?: number): Observable<any> {
+	public createQuote(quote: Quote, companyId?: number): Observable<any> {
 		const headers = new Headers({
 			'content-type': 'application/json',
 		});
@@ -56,12 +48,36 @@ export class QuoteService {
 			.catch(err => this.handleError(err));
 	}
 
-	public updateQuote(quote: Quote, id: number): Observable<any> {
+	public createQuoteLine(quote: Quote, quoteLine: QuoteLine): Observable<any> {
 		const headers = new Headers({
 			'content-type': 'application/json',
 		});
 		const options = new RequestOptions({headers: headers});
-		return this.http.put(`http://angularnotes-angularbros.azurewebsites.net/api/Quotes/${id}`, JSON.stringify(quote), options)
+		return this.http.put(`http://angularnotes-angularbros.azurewebsites.net/api/QuoteLines/${quote.ID}`, JSON.stringify(quoteLine), options)
+			.map(res => {
+				return res;
+			})
+			.catch(err => this.handleError(err));
+	}
+
+	public updateQuote(quote: Quote): Observable<any> {
+		const headers = new Headers({
+			'content-type': 'application/json',
+		});
+		const options = new RequestOptions({headers: headers});
+		return this.http.put(`http://angularnotes-angularbros.azurewebsites.net/api/Quotes/${quote.ID}`, JSON.stringify(quote), options)
+			.map(res => {
+				return res;
+			})
+			.catch(err => this.handleError(err));
+	}
+
+	public updateQuoteLine(quote: Quote, id: number): Observable<any> {
+		const headers = new Headers({
+			'content-type': 'application/json',
+		});
+		const options = new RequestOptions({headers: headers});
+		return this.http.put(`http://angularnotes-angularbros.azurewebsites.net/api/QutoeLines/${id}`, JSON.stringify(quote), options)
 			.map(res => {
 				return res;
 			})
@@ -70,6 +86,14 @@ export class QuoteService {
 
 	public deleteQuote(quoteId: number): Observable<Quote> {
 		return this.http.delete(`http://angularnotes-angularbros.azurewebsites.net/api/Quotes/${quoteId}`)
+			.map(response => {
+				return response.json();
+			})
+			.catch(err => err);
+	}
+
+	public deleteQuoteLine(quoteLine: QuoteLine): Observable<Quote> {
+		return this.http.delete(`http://angularnotes-angularbros.azurewebsites.net/api/Quotes/${quoteLine.ID}`)
 			.map(response => {
 				return response.json();
 			})
