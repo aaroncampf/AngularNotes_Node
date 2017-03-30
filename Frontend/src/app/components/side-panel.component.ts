@@ -11,42 +11,25 @@ import {ActivatedRoute, Router} from '@angular/router';
 	template: `
 		<div class="row">
 			<button class="btn btn-block"(click)="createNewCompany()">Add Company</button>
-			<table class="table table-bordered table-hover drop-down">
-				<thead>
-					<tr>
-						<th>Companies</th>
-						<th></th>
-					</tr>
-				</thead>
-				<tbody>
-					<tr [class.active]="currentCompany.ID === company.ID" *ngFor="let company of companies">
-						<td (click)="onSelectCompany(company)">{{company.Name}}</td>
-						<td>
-							<i class="glyphicon glyphicon-remove" (click)="removeCompany(company)"></i>
-						</td>
-					</tr>
-				</tbody>
-			</table>
+			<div class="col-xs-12">
+			<h6>Company Select</h6>
+			</div>
+			<div class="selection-row" [class.active]="currentCompany.ID === company.ID" [class.collapsed]="currentCompany.ID && currentCompany.ID !== company.ID" *ngFor="let company of companies">
+				<div (click)="onSelectCompany(company)" class="col-xs-10" >{{company.Name}}</div>
+				<i class="glyphicon glyphicon-remove pull-right col-xs-2" (click)="removeCompany(company)"></i>
+			</div>
 		</div>
 		<div class="row">
-			<button class="btn btn-block" [disabled]="!currentCompany.ID" [class.disabled]="!currentCompany.ID" (click)="createNewContact(currentCompany.ID)">Add Contact</button>
-			<table class="table table-bordered table-hover">
-				<thead>
-				<tr>
-					<th>Contacts</th>
-					<th></th>
-				</tr>
-				</thead>
-				<tbody>
-				<tr [class.active]="currentContact.ID === contact.ID" *ngFor="let contact of contacts">
-					<td (click)="onSelectContact(contact)">{{contact.Name}}</td>
-					<td>
-						<i class="glyphicon glyphicon-remove" (click)="removeContact(contact)"></i>
-					</td>
-				</tr>
-				</tbody>
-			</table>
+		<button class="btn btn-block" [disabled]="!currentCompany.ID" [class.disabled]="!currentCompany.ID" (click)="createNewContact(currentCompany.ID)">Add Contact</button>
+			<div class="col-xs-12">
+				<h6>Contact Select</h6>
+			</div>
+			<div class="selection-row" [class.active]="currentContact.ID === contact.ID" [class.collapsed]="currentContact.ID && currentContact.ID !== contact.ID" *ngFor="let contact of contacts">
+				<div class="col-xs-10" (click)="onSelectContact(contact)">{{contact.Name}}</div>
+				<i class="glyphicon glyphicon-remove col-xs-2" (click)="removeContact(contact)"></i>
+			</div>
 		</div>
+		
 	`
 })
 
@@ -78,11 +61,17 @@ export class SidePanelComponent implements OnInit{
 	}
 
 	public createNewCompany(): void {
-		this.companyService.createCompany().subscribe(response => {
-			console.log('create response', response);
-			this.toastr.success('Please provide a name for your new company.', 'Company Created!');
-			this.currentCompany = <Company>{};
-			this.onSelectCompany(<Company>{ID: response.ID})
+		this.companyService.createCompany().subscribe(company => {
+			this.companyService.getCompanies().subscribe(companies => {
+				this.companies = companies
+				console.log('create response', company);
+				this.toastr.success('Please provide a name for your new company.', 'Company Created!');
+				this.currentCompany = <Company>{};
+				this.currentCompanyChange.emit(<Company>{});
+				console.log(company);
+				this.router.navigate(['/company']);
+				this.onSelectCompany(<Company>{ID: company.ID})
+			});
 		})
 	}
 
@@ -109,10 +98,10 @@ export class SidePanelComponent implements OnInit{
 				this.router.navigate(['/company']);
 				this.currentTabChange.emit('company');
 			}
-			this.currentContact = <Contact>{};
-			this.currentContactChange.emit(<Contact>{});
 			this.currentCompany = company;
 			this.currentCompanyChange.emit(company);
+			this.currentContact = <Contact>{};
+			this.currentContactChange.emit(<Contact>{});
 			this.contactService.getCompanyContacts(company.ID).subscribe(contacts => this.contacts = contacts);
 			this.collapseCompany()
 		}
@@ -153,24 +142,22 @@ export class SidePanelComponent implements OnInit{
 	}
 
 	public removeContact(contact: Contact): void{
-		if (!this.currentContact.ID){
-			this.onSelectContact(contact);
-		}
-		this.contactService.deleteContact(contact.ID).subscribe(() => {
+			this.currentContact = <Contact>{};
+			this.currentContactChange.emit(<Contact>{});
+			this.contactService.deleteContact(contact.ID).subscribe(() => {
 			this.toastr.warning('Removed ' + contact.Name);
-			this.onSelectContact(contact);
-			// this.contactService.getCompanyContacts(contact.Company.ID).subscribe(contacts => {
-			// 	this.contacts = contacts;
-			// })
+			//this.onSelectContact(contact);
+			this.contactService.getContacts().subscribe(contacts => {
+				this.contacts = contacts;
+			})
 		}, error => this.toastr.error('There Are Notes Related to ' + contact.Name + 'Please delete them first.' ));
 	}
 
 	public removeCompany(company): void{
 		this.companyService.deleteCompany(company.ID).subscribe(() => {
 			this.toastr.warning('Removed ' + company.Name);
-			this.companyService.getCompanies().subscribe(companies => {
-				this.companies = companies;
-			})
+			this.currentCompany = <Company>{};
+			this.companyService.getCompanies().subscribe(companies => this.companies = companies);
 		}, error => this.toastr.error('Oh no! Something went wrong with removing ' + company.Name + ' please try again later.'));
 	}
 

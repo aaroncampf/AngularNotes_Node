@@ -38,8 +38,34 @@ export const QUOTE: Quote = {
     Date : null,
     Name : "First Quote",
     Company : null,
-    Lines: null
-};
+    Lines: [{
+		ID: 1,
+		Display: 1,
+		UNIT: "Case",
+		COST: "$1.76",
+		DESC: "sfh",
+		IsCentered: false,
+		// Quote: null
+	},
+	{
+		ID: 1,
+		Display: 2,
+		UNIT: "Case",
+		COST: "$1.76",
+		DESC: "sfh",
+		IsCentered: false,
+		// Quote: null
+	},
+	{
+		ID: 1,
+		Display: 3,
+		UNIT: "Case",
+		COST: "$1.76",
+		DESC: "sfh",
+		IsCentered: false,
+		// Quote: null
+	}
+]};
 
 export const COMPANY: Company = {
     ID: 1,
