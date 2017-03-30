@@ -5,10 +5,10 @@
 A contact and note organizer that generates specialized quote reports for clients and companies. A work in progress, please stand by. 
 
 # FrontEnd Deployment
-
+>req's npm
 after downloading step into the project directory
 
-```ssh
+```shell
 cd FRONTEND
 npm i
 npm start
