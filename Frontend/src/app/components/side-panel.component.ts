@@ -1,60 +1,50 @@
-import {Component, EventEmitter, OnInit, Output} from '@angular/core';
+import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
 import {Company} from '../models/company.model';
 import {CompanyService} from '../services/companies.service';
 import {ContactService} from '../services/contact.service';
 import {ToastsManager} from 'ng2-toastr/ng2-toastr';
 import {Contact} from '../models/contact.model';
-import {Router} from '@angular/router';
+import {ActivatedRoute, Router} from '@angular/router';
 
 @Component({
 	selector: 'side-panel',
 	template: `
 		<div class="row">
-			<button class="btn btn-block"(click)="createNewContact()">Add Company</button>
-			<table class="table table-bordered table-hover drop-down">
-				<thead>
-					<tr>
-						<th>Companies</th>
-						<th></th>
-					</tr>
-				</thead>
-				<tbody>
-					<tr [class.active]="currentCompany.ID === company.ID" *ngFor="let company of companies">
-						<td (click)="onSelectCompany(company)">{{company.Name}}</td>
-						<td>
-							<i class="glyphicon glyphicon-remove" (click)="removeCompany(company)"></i>
-						</td>
-					</tr>
-				</tbody>
-			</table>
+			<button class="btn btn-block"(click)="createNewCompany()">Add Company</button>
+			<div class="col-xs-12">
+					<th>Companies</th>
+			</div>
+			<div class="col-xs-12 selection-row" [class.active]="currentCompany.ID === company.ID" [class.collapsed]="currentCompany.ID && currentCompany.ID !== company.ID" *ngFor="let company of companies" (click)="onSelectCompany(company)">
+				<div class="col-xs-10 pull-left">{{company.Name}}</div>
+				<div class="col-xs-2 text-right">
+					<i class="glyphicon glyphicon-remove" (click)="removeCompany(company)"></i>
+				</div>
+			</div>
 		</div>
 		<div class="row">
-			<button class="btn btn-block" [disabled]="!currentCompany.ID" [class.disabled]="!currentCompany.ID" (click)="createNewContact(currentCompany.ID)">Add Contact</button>
-			<table class="table table-bordered table-hover">
-				<thead>
-				<tr>
-					<th>Contacts</th>
-					<th></th>
-				</tr>
-				</thead>
-				<tbody>
-				<tr [class.active]="currentContact.ID === contact.ID" *ngFor="let contact of contacts">
-					<td (click)="onSelectContact(contact)">{{contact.Name}}</td>
-					<td>
-						<i class="glyphicon glyphicon-remove" (click)="removeContact(contact)"></i>
-					</td>
-				</tr>
-				</tbody>
-			</table>
+		<button class="btn btn-block" [disabled]="!currentCompany.ID" [class.disabled]="!currentCompany.ID" (click)="createNewContact(currentCompany.ID)">Add Contact</button>
+			<div class="col-xs-12">
+				<h6>Contacts</h6>
+			</div>
+			<div class="selection-row" [class.active]="currentContact.ID === contact.ID" [class.collapsed]="currentContact.ID && currentContact.ID !== contact.ID" *ngFor="let contact of contacts">
+				<div class="col-xs-10" (click)="onSelectContact(contact)">{{contact.Name}}</div>
+				<div class="col-xs-2">
+					<i class="glyphicon glyphicon-remove" (click)="removeContact(contact)"></i>
+				</div>
+			</div>
 		</div>
 	`
 })
 
-export class SidePanelCompoennt implements OnInit{
+export class SidePanelComponent implements OnInit{
 	public companies: Company[];
 	public contacts: Contact[];
 	public currentContact: Contact = <Contact>{};
 	public currentCompany: Company = <Company>{};
+	@Input()
+	public currentTab: string;
+	@Output()
+	public currentTabChange: EventEmitter<string> = new EventEmitter<string>();
 	@Output()
 	public currentContactChange: EventEmitter<Contact> = new EventEmitter<Contact>();
 	@Output()
@@ -73,12 +63,19 @@ export class SidePanelCompoennt implements OnInit{
 		})
 	}
 
+	public createNewCompany(): void {
+		this.companyService.createCompany().subscribe(response => {
+			console.log('create response', response);
+			this.toastr.success('Please provide a name for your new company.', 'Company Created!');
+			this.currentCompany = <Company>{};
+			this.onSelectCompany(<Company>{ID: response.ID})
+		})
+	}
+
 	public createNewContact(companyId): void {
 		this.contactService.saveNewContact(companyId).subscribe(response => {
-			console.log('created', response._body);
-			this.toastr.success('Please provide a name for your new contact', 'Contact Created!');
+			this.toastr.success('Please provide a name for your new contact.', 'Contact Created!');
 			this.router.navigate(['/contact']);
-			console.log('current', this.currentContact);
 			this.currentContact = <Contact>{};
 			this.onSelectContact(<Contact>{ID: response._body});
 		},() => this.toastr.error('Could not create Contact', 'Uh-oh!'));
@@ -88,47 +85,44 @@ export class SidePanelCompoennt implements OnInit{
 		if (this.currentCompany.ID) {
 			this.currentCompany = <Company>{};
 			this.currentCompanyChange.emit(<Company>{});
-			this.companyService.getCompanies().subscribe(companies => this.companies = companies);
+			// this.companyService.getCompanies().subscribe(companies => this.companies = companies);
 			this.currentContact = <Contact>{};
-			this.currentCompanyChange.emit(<Company>{});
+			this.currentContactChange.emit(<Contact>{});
 			this.contactService.getContacts().subscribe(contacts => this.contacts = contacts);
 		} else {
-			this.router.navigate(['/company']);
+			console.log(this.currentTab);
+			if(this.currentTab === 'contact' || this.currentTab === 'notes') {
+				this.router.navigate(['/company']);
+				this.currentTabChange.emit('company');
+			}
 			this.currentContact = <Contact>{};
 			this.currentContactChange.emit(<Contact>{});
 			this.currentCompany = company;
 			this.currentCompanyChange.emit(company);
 			this.contactService.getCompanyContacts(company.ID).subscribe(contacts => this.contacts = contacts);
-			this.collapseCompany()
 		}
 	}
 
 	public onSelectContact(contact: Contact): void{
 		if (this.currentContact.ID) {
-			this.router.navigate(['/company']);
+			if (this.currentTab === 'contact') {
+				this.router.navigate(['/company']);
+				this.currentTabChange.emit('company');
+			}
 			this.currentContact = <Contact>{};
 			this.currentContactChange.emit(<Contact>{});
-			if (this.currentCompany.ID){
-				this.contactService.getCompanyContacts(this.currentCompany.ID).subscribe(contacts => this.contacts = contacts);
-			} else {
-				this.contactService.getContacts().subscribe(contacts => this.contacts = contacts);
-			}
+			// if (this.currentCompany.ID){
+			// } else {
+			// 	this.contactService.getContacts().subscribe(contacts => this.contacts = contacts);
+			// }
 		} else {
-			this.router.navigate(['/contact']);
+			if(this.currentTab === 'company' || this.currentTab === 'quotes') {
+				this.router.navigate(['/contact']);
+				this.currentTabChange.emit('contact');
+			}
 			this.currentContact = contact;
 			this.currentContactChange.emit(contact);
-			this.collapseContacts()
 		}
-	}
-
-	public collapseContacts(): void {
-		this.contacts = [];
-		this.contacts.push(this.currentContact);
-	}
-
-	public collapseCompany(): void {
-		this.companies = [];
-		this.companies.push(this.currentCompany);
 	}
 
 	public removeContact(contact: Contact): void{

@@ -24,7 +24,6 @@ export class CompanyService {
 			'content-type': 'application/json',
 		});
 		const options = new RequestOptions({headers: headers});
-		console.log('updating with',company);
 			return this.http.put(`http://angularnotes-angularbros.azurewebsites.net/api/companies/${company.ID}`, JSON.stringify(company), options)
 					.map(res => {
 						console.log('update', res.json());
@@ -33,25 +32,17 @@ export class CompanyService {
 					.catch(err => this.handleError(err));
 		}
 
-// public saveCompany(company: Company): Observable<Company> {
-// 		const headers = new Headers({
-// 			'content-type': 'application/json',
-// 		});
-// 		const options = new RequestOptions({headers: headers});
-// 		if (!company.ID) {
-// 			return this.http.post('http://angularnotes-angularbros.azurewebsites.net/api/companies', JSON.stringify(company), options)
-// 					.map(res => {
-// 						console.log('saveCompany no ID res', res.json());
-// 						return res.json()
-// 					})
-// 					.catch(err => this.handleError(err));
-// 		} else {
-// 			return this.http.put('http://angularnotes-angularbros.azurewebsites.net/api/companies/' + company.ID,
-// 				JSON.stringify(company), options)
-// 					.map(res => res)
-// 					.catch(err => this.handleError(err));
-// 		}
-// 	}
+	public createCompany(): Observable<Company> {
+		const headers = new Headers({
+			'content-type': 'application/json',
+		});
+		const options = new RequestOptions({headers: headers});
+		return this.http.post('http://angularnotes-angularbros.azurewebsites.net/api/companies', JSON.stringify(<Company>{}), options)
+				.map(res => {
+					return res.json()
+				})
+				.catch(err => this.handleError(err));
+	}
 
 	public deleteCompany(id: number): Observable<any> {
 		return this.http.delete('http://angularnotes-angularbros.azurewebsites.net/api/companies/' + id)

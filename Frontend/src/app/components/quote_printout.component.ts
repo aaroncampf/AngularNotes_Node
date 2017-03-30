@@ -6,9 +6,10 @@
 import {Component} from '@angular/core';
 import {Company} from "../models/company.model";
 import {Quote} from "../models/quote.model";
-import {QuoteLine, QUOTE, COMPANY, QUOTELINES, SETTINGS, CONTACT} from "../models/quotelines.model";
+import {QuoteLine} from "../models/quotelines.model";
 import {Setting} from "../models/setting.model";
 import {Contact} from '../models/contact.model';
+import {COMPANY, CONTACT, QUOTE, QUOTELINES, SETTINGS} from '../models/quote-line.fixture';
 
 /**
  * Displays a quote as a beautiful printout
@@ -19,7 +20,6 @@ import {Contact} from '../models/contact.model';
     <h1 style="text-align: center;">{{_Settings.CompanyName}}</h1>
     <p style="text-align: center;">{{_Settings.Address}}</p>
     <p style="text-align: center;">{{_Settings.CompanyWebsite}}</p>
-    
     <table>
           <tr>
             <td style="text-align: center;">Cell: {{_Settings.CellPhone}}</td>
@@ -27,14 +27,13 @@ import {Contact} from '../models/contact.model';
             <td style="text-align: center;">Fax: {{_Settings.CompanyFax}}</td>
           </tr>
     </table>
-        
     <table>
         <tr>
             <td>
                 <p>
-                    <b>TO:</b> {{_Company.Name}} <br>
+                    <b>TO:</b> {{_Company.Name}}<br>
                     {{_Contact.Name}}<br>
-                    {{_Company.Address}}  <br>
+                    {{_Company.Address}}<br>
                     {{_Company.Phone}}
                 </p>
             </td>
@@ -52,7 +51,6 @@ import {Contact} from '../models/contact.model';
             </td>
         </tr>
     </table>  
-    
     <br>
     <table class="table table-striped">
         <caption style="text-align: center;">{{_Quote.Name}}</caption>
