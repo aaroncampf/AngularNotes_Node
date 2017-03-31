@@ -15,7 +15,7 @@ import {ToastsManager} from 'ng2-toastr';
 			</div>
 			<div class="quote-header">
 				<div class="row">
-				<button type="button" class="btn-danger pull-right" (click)="removeQuote(quote.ID)">Delete</button>
+					<button type="button" class="btn-danger pull-right" (click)="removeQuote(quote.ID)">Delete</button>
 					<div class="col-xs-6">ID: {{quote.ID}}</div>
 				</div>
 				<div class="row">
@@ -54,46 +54,56 @@ export class QuoteDetailsComponent implements OnInit {
 				private dataShareService: DataShareService){}
 
 	public ngOnInit(): void {
-		this.dataShareService.quoteSelected$.subscribe(quote => {
-			console.log('quote shared', quote);
-			this.quote = quote;
+		this.dataShareService.quoteSelected$
+			.subscribe(quote => {
+				console.log('quote shared', quote);
+				this.quote = quote;
 		});
-		this.quoteService.getQuoteLines(this.quote.ID).subscribe(quoteLines => {
-			console.log('quoteLines', quoteLines);
-			this.quoteLines = quoteLines
+		this.quoteService.getQuoteLines(this.quote.ID)
+			.subscribe(quoteLines => {
+				console.log('quoteLines', quoteLines);
+				this.quoteLines = quoteLines
 		});
 	}
 
 	public removeLine(lineId: number): void {
-		this.quoteService.deleteQuoteLine(lineId).subscribe(response => {
-			this.toastr.warning('Quote line Removed');
-			this.quoteService.getQuoteLines(this.quote.ID).subscribe(quoteLines => this.quoteLines = quoteLines);
+		this.quoteService.deleteQuoteLine(lineId)
+			.subscribe(() => {
+				this.toastr.warning('Quote line Removed');
+				this.quoteService.getQuoteLines(this.quote.ID)
+					.subscribe(quoteLines => this.quoteLines = quoteLines);
 		});
 
 	}
+
 	public addLine(quoteLine: QuoteLine): void {
-		this.quoteService.createQuoteLine(quoteLine, this.quote).subscribe(response => {
-			console.log(response);
-			this.newQuoteLine = <QuoteLine>{};
-			this.quoteService.getQuoteLines(this.quote.ID).subscribe(quoteLines => this.quoteLines = quoteLines);
+		this.quoteService.createQuoteLine(quoteLine, this.quote)
+			.subscribe(() => {
+				this.newQuoteLine = <QuoteLine>{};
+				this.quoteService.getQuoteLines(this.quote.ID)
+					.subscribe(quoteLines => this.quoteLines = quoteLines);
 		});
 	}
 
 	public removeQuote(quoteID: number): void {
-		this.quoteService.deleteQuote(quoteID).subscribe(() => {
-			this.toastr.warning('Quote Deleted');
-			this.router.navigate(['/quotes'])
+		this.quoteService.deleteQuote(quoteID)
+			.subscribe(() => {
+				this.toastr.warning('Quote Deleted');
+				this.router.navigate(['/quotes'])
 		});
 	}
 
 	public updateQuote(value: string, key: string, quote: Quote){
 		quote[key] = value;
-		this.quoteService.updateQuote(quote).subscribe(res => {
-			console.log('update quote', res);
+		this.quoteService.updateQuote(quote)
+			.subscribe(res => {
+				console.log('update quote', res);
 		});
 	}
+
 	public updateQuoteLine(value: string, prop: string, quoteLine: QuoteLine): void {
 		quoteLine[prop] = value;
-		this.quoteService.updateQuoteLine(quoteLine).subscribe(() => {});
+		this.quoteService.updateQuoteLine(quoteLine)
+			.subscribe(() => {});
 	}
 }

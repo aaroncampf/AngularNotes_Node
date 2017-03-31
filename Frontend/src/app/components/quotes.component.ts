@@ -1,4 +1,4 @@
-import {Component, OnChanges, OnInit, SimpleChanges} from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 import {FormControl, FormGroup} from '@angular/forms';
 import {Company} from '../models/company.model';
 import {newQuote, Quote} from '../models/quote.model';
@@ -28,10 +28,8 @@ import {Router} from '@angular/router';
 export class QuotesComponent implements OnInit {
 	public newQuote: Quote = <Quote>newQuote(<Quote>{});
 	public companies: Company[] = [];
-	public selectedQuote: Quote = <Quote>{};
 	public selectedCompany: Company = <Company>{};
 	public quotes: Quote[] = [];
-	public quoteLine: QuoteLine = <QuoteLine>{};
 	public quoteLines: QuoteLine[];
 	public unitControl: FormControl = new FormControl('', []);
 	public costControl: FormControl = new FormControl('', []);
@@ -41,7 +39,6 @@ export class QuotesComponent implements OnInit {
 		costControl: this.costControl,
 		descControl: this.descControl,
 	});
-
 	public nameControl: FormControl = new FormControl('', []);
 	public emailControl: FormControl = new FormControl('', []);
 	public titleControl: FormControl = new FormControl('', []);
@@ -66,23 +63,20 @@ export class QuotesComponent implements OnInit {
 				this.selectedCompany = company;
 				if(this.selectedCompany.ID){
 					this.quoteService.getCompanyQuotes(this.selectedCompany.ID)
-						.subscribe(quotes => {
-							console.log('quotes component', quotes);
-							this.quotes = quotes
-						});
+						.subscribe(quotes => this.quotes = quotes);
 				} else {
 					this.quoteService.getQuotes()
 						.subscribe(quotes => this.quotes = quotes);
 				}
-			});
+		});
 	}
 
 	public addLine(quote: Quote): void {
 		this.quoteService.updateQuote(quote)
-			.subscribe(quoteLine => {
-				console.log('res', quoteLine);
-				this.quoteService.getQuotes().subscribe(quotes => this.quotes);
-			})
+			.subscribe(() => {
+				this.quoteService.getQuotes()
+					.subscribe(quotes => this.quotes);
+		});
 	}
 
 	public onSelectQuote(quote: Quote): void {
@@ -91,10 +85,10 @@ export class QuotesComponent implements OnInit {
 	}
 
 	public addNewQuote(): void {
-		this.quoteService.createQuote(this.newQuote, this.selectedCompany.ID).subscribe(response => {
-			this.dataShareService.sendQuote(response);
-			console.log('shared', response);
-			this.router.navigate(['/quote-details']);
+		this.quoteService.createQuote(this.newQuote, this.selectedCompany.ID)
+			.subscribe(response => {
+				this.dataShareService.sendQuote(response);
+				this.router.navigate(['/quote-details']);
 		})
 	}
 

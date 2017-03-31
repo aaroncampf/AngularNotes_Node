@@ -1,8 +1,6 @@
 /**
  * Created by aaron on 3/17/2017.
  */
-
-
 import {Component, OnInit} from '@angular/core';
 import {Company} from "../models/company.model";
 import {Quote} from "../models/quote.model";
