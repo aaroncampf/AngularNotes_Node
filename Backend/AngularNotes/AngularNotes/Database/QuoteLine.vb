@@ -19,6 +19,7 @@ Partial Public Class QuoteLine
     Public Property DESC As String
     Public Property IsCentered As Boolean
 
-    Public Overridable Property Quote As Quote
+	<Newtonsoft.Json.JsonIgnore>
+	Public Overridable Property Quote As Quote
 
 End Class

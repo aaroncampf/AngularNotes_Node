@@ -17,6 +17,7 @@ Partial Public Class Note
 	Public Property Title As String
 	Public Property Text As String
 
+	<Newtonsoft.Json.JsonIgnore>
 	Public Overridable Property Contact As Contact
 
 End Class

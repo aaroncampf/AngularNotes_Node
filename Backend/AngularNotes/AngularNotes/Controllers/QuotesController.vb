@@ -19,7 +19,7 @@ Namespace Controllers
 			Return db.Quotes
 		End Function
 
-		Function GetQuoteLines(CompanyID As Integer) As ICollection(Of Quote)
+		Function GetQuotes(CompanyID As Integer) As ICollection(Of Quote)
 			Return db.Companies.Find(CompanyID).Quotes
 		End Function
 
@@ -60,21 +60,21 @@ Namespace Controllers
             Return StatusCode(HttpStatusCode.NoContent)
         End Function
 
-        ' POST: api/Quotes
-        <ResponseType(GetType(Quote))>
-        Function PostQuote(ByVal quote As Quote) As IHttpActionResult
-            If Not ModelState.IsValid Then
-                Return BadRequest(ModelState)
-            End If
+		' POST: api/Quotes
+		<ResponseType(GetType(Quote))>
+		Function PostQuote(ByVal CompanyID As Integer, <FromBody()> ByVal quote As Quote) As IHttpActionResult
+			If Not ModelState.IsValid Then
+				Return BadRequest(ModelState)
+			End If
 
-            db.Quotes.Add(quote)
-            db.SaveChanges()
+			db.Companies.Find(CompanyID).Quotes.Add(quote)
+			db.SaveChanges()
 
-            Return CreatedAtRoute("DefaultApi", New With {.id = quote.ID}, quote)
-        End Function
+			Return CreatedAtRoute("DefaultApi", New With {.id = quote.ID}, quote)
+		End Function
 
-        ' DELETE: api/Quotes/5
-        <ResponseType(GetType(Quote))>
+		' DELETE: api/Quotes/5
+		<ResponseType(GetType(Quote))>
         Function DeleteQuote(ByVal id As Integer) As IHttpActionResult
             Dim quote As Quote = db.Quotes.Find(id)
             If IsNothing(quote) Then

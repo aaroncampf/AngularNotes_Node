@@ -60,21 +60,21 @@ Namespace Controllers
             Return StatusCode(HttpStatusCode.NoContent)
         End Function
 
-        ' POST: api/QuoteLines
-        <ResponseType(GetType(QuoteLine))>
-        Function PostQuoteLine(ByVal quoteLine As QuoteLine) As IHttpActionResult
-            If Not ModelState.IsValid Then
-                Return BadRequest(ModelState)
-            End If
+		' POST: api/QuoteLines
+		<ResponseType(GetType(QuoteLine))>
+		Function PostQuoteLine(QuoteID As Integer, quoteLine As QuoteLine) As IHttpActionResult
+			If Not ModelState.IsValid Then
+				Return BadRequest(ModelState)
+			End If
 
-            db.QuoteLines.Add(quoteLine)
-            db.SaveChanges()
+			db.Quotes.Find(QuoteID).Lines.Add(quoteLine)
+			db.SaveChanges()
 
-            Return CreatedAtRoute("DefaultApi", New With {.id = quoteLine.ID}, quoteLine)
-        End Function
+			Return CreatedAtRoute("DefaultApi", New With {.id = quoteLine.ID}, quoteLine)
+		End Function
 
-        ' DELETE: api/QuoteLines/5
-        <ResponseType(GetType(QuoteLine))>
+		' DELETE: api/QuoteLines/5
+		<ResponseType(GetType(QuoteLine))>
         Function DeleteQuoteLine(ByVal id As Integer) As IHttpActionResult
             Dim quoteLine As QuoteLine = db.QuoteLines.Find(id)
             If IsNothing(quoteLine) Then

@@ -16,7 +16,9 @@ Partial Public Class Quote
 	Public Property [Date] As Date
 	Public Property Name As String
 
+	<Newtonsoft.Json.JsonIgnore>
 	Public Overridable Property Company As Company
+	<Newtonsoft.Json.JsonIgnore>
 	Public Overridable Property Lines As ICollection(Of QuoteLine) = New HashSet(Of QuoteLine)
 
 End Class
