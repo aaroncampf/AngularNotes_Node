@@ -26,11 +26,11 @@ import {ToastsManager} from 'ng2-toastr/ng2-toastr'
 export class CompanyDetailsComponent implements OnInit {
 	public company: Company = <Company>{};
 	public nameControl: FormControl = new FormControl('', [Validators.required, Validators.maxLength(255)]);
-	public cityControl: FormControl = new FormControl('', []);
-	public addressControl: FormControl = new FormControl('', []);
-	public zipControl: FormControl = new FormControl('', []);
-	public phoneControl: FormControl = new FormControl('', []);
-	public miscControl: FormControl = new FormControl('', []);
+	public cityControl: FormControl = new FormControl('', [Validators.maxLength(255)]);
+	public addressControl: FormControl = new FormControl('', [Validators.maxLength(255)]);
+	public zipControl: FormControl = new FormControl('', [Validators.maxLength(5)]);
+	public phoneControl: FormControl = new FormControl('', [Validators.maxLength(14)]);
+	public miscControl: FormControl = new FormControl('', [Validators.maxLength(255)]);
 	public companyGroup: FormGroup = new FormGroup({
 		nameControl: this.nameControl,
 		addressControl: this.addressControl,
@@ -45,8 +45,8 @@ export class CompanyDetailsComponent implements OnInit {
 				public toastr: ToastsManager){}
 
 	public saveCompany(event: string, key: string): void {
-		if (this.nameControl.invalid){
-			this.toastr.error('To save please provide a name', 'Oh no!')
+		if (this.companyGroup.invalid){
+			this.toastr.error('To save please provide a name', 'Oh no! ')
 		} else {
 			console.log(event, key);
 			this.company[key] = event;

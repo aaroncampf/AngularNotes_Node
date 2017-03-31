@@ -8,17 +8,21 @@ quote-details-component {
     border-radius: 5px;
   }
   .quote-header {
-    background: lightgrey;
+    background: #f8ece6;
   }
 
   .quote-item {
     display: inline-block;
-    background: lightgrey;
-    border: grey 1px solid;
+    background: #f9fff8;
+    border: #dedede 1px solid;
     padding: 2px;
   }
   .quote-item-add {
-    background: lightblue;
+    background: #e3f7ff;
     border: grey 3px solid;
+  }
+
+  .glyphicon-remove:before {
+    color: red;
   }
 }

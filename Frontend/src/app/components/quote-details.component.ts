@@ -10,22 +10,28 @@ import {ToastsManager} from 'ng2-toastr';
 	template: `
 	<div class="row">
 		<div class="card">
-			<button type="button" class="btn pull-left" [routerLink]="['/quotes']">Back</button>
-			<button type="button" class="btn-danger pull-right" (click)="removeQuote(quote.ID)">Delete</button>
+			<div class="row">
+				<button type="button" class="btn pull-left" [routerLink]="['/quotes']">Back</button>
+			</div>
 			<div class="quote-header">
 				<div class="row">
-					<div class="col-xs-12 pull-right">ID: {{quote.ID}}</div>
+				<button type="button" class="btn-danger pull-right" (click)="removeQuote(quote.ID)">Delete</button>
+					<div class="col-xs-6">ID: {{quote.ID}}</div>
 				</div>
 				<div class="row">
-					<div class="col-xs-12 pull-right">Date: {{quote.Date | date: 'MM/dd/yyyy'}}</div>
+					<div class="col-xs-6">Date: {{quote.Date | date: 'MM/dd/yyyy'}}</div>
 				</div>
 				<input-component label="Name" [model]="quote.Name" (modelChange)="updateQuote($event, 'Name', quote)"></input-component>
 			</div>
 			<div *ngFor="let line of quoteLines" class="quote-item">
-				<i class="glyphicon glyphicon-remove pull-right" (click)="removeLine(line.ID)"></i>
-				<input-component class="col-xs-6" label="Unit" [model]="line.UNIT" (modelChange)="updateQuoteLine($event, 'UNIT', line)"></input-component>
-				<input-component class="col-xs-6" label="Cost" [model]="line.COST" (modelChange)="updateQuoteLine($event,'COST', line)"></input-component>
-				<input-component class="col-xs-12" label="Desc." [model]="line.DESC" (modelChange)="updateQuoteLine($event, 'DESC', line)"></input-component>
+				<div class="row">
+					<i class="glyphicon glyphicon-remove pull-right" (click)="removeLine(line.ID)"></i>
+				</div>
+				<div class="row">
+					<input-component class="col-xs-4" label="Unit" [model]="line.UNIT" (modelChange)="updateQuoteLine($event, 'UNIT', line)"></input-component>
+					<input-component class="col-xs-4" label="Cost" [model]="line.COST" (modelChange)="updateQuoteLine($event,'COST', line)"></input-component>
+					<input-component class="col-xs-4" label="Desc." [model]="line.DESC" (modelChange)="updateQuoteLine($event, 'DESC', line)"></input-component>
+				</div>
 			</div>
 			<div class="quote-item-add">
 				<input-component class="col-xs-12" [(model)]="newQuoteLine.UNIT" label="Unit"></input-component>	

@@ -10,14 +10,16 @@ import '../styles/main.scss';
 	selector: 'main',
 	template: `
 		<div class='container'>
-			<h4><b>AngularBro's Notes</b><small> an Angular 4 CRM</small></h4>
-			<i [routerLink]="['/settings']" class="glyphicon glyphicon-cog pull-right"></i>
-			<input type="search" placeholder="search -WIP-"/>
-			<div class="col-sm-4 col-xs-12">
-				<side-panel (currentCompanyChange)="updateSelectedCompany($event)" (currentContactChange)="updateSelectedContact($event)"></side-panel>
+			<div *ngIf="!!navVisible">
+				<h4><b>AngularBro's Notes</b><small> an Angular 4 CRM</small></h4>
+				<i [routerLink]="['/settings']" class="glyphicon glyphicon-cog pull-right"></i>
+				<input type="search" placeholder="search -WIP-"/>
+				<div class="col-sm-4 col-xs-12">
+					<side-panel (currentCompanyChange)="updateSelectedCompany($event)" (currentContactChange)="updateSelectedContact($event)"></side-panel>
+				</div>
 			</div>
-			<div class="col-sm-8 col-xs-12">
-				<div class="row">
+			<div [class.col-sm-8]="!!navVisible" class="col-xs-12">
+				<div *ngIf="!!navVisible" class="row">
 					<ul class="nav nav-tabs">
 						<li [class.active]="tab === COMPANY">
 							<a class="tab" (click)="routeTo(COMPANY)">
@@ -48,6 +50,7 @@ import '../styles/main.scss';
 	})
 
 export class MainComponent implements OnInit {
+	public navVisible: boolean = true;
 	public CONTACT: string = 'contact';
 	public COMPANY: string = 'company';
 	public NOTES: string = 'notes';
@@ -73,6 +76,7 @@ export class MainComponent implements OnInit {
 	}
 
 	public ngOnInit(): void {
+		this.dataShareService.navVisible$.subscribe(state => this.navVisible = state);
 		this.tab = this.COMPANY;
 		this.router.navigate([this.COMPANY]);
 		this.dataShareService.sendCompany(this.selectedCompany);

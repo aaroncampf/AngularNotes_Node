@@ -1,6 +1,6 @@
 {
   "name": "angular-bros-notes",
-  "version": "0.6.0",
+  "version": "0.7.0",
   "description": "A CRM Demo for a software development portfolio.",
   "scripts": {
     "build": "webpack --display-error-details --progress",

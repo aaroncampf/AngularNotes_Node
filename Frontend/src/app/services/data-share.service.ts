@@ -3,16 +3,19 @@ import {BehaviorSubject} from 'rxjs';
 import {Company} from '../models/company.model';
 import {Contact} from '../models/contact.model';
 import {Quote} from '../models/quote.model';
+import {isBoolean} from 'util';
 
 @Injectable()
 export class DataShareService {
 	private activeCompanySource = new BehaviorSubject<Company>(<Company>{});
 	private activeContactSource = new BehaviorSubject<Contact>(<Contact>{});
 	private activeQuoteSource = new BehaviorSubject<Quote>(<Quote>{});
+	private activeNavVisibleSource = new BehaviorSubject<boolean>(true);
 
 	public companySelected$ = this.activeCompanySource.asObservable();
 	public contactSelected$ = this.activeContactSource.asObservable();
 	public quoteSelected$ = this.activeQuoteSource.asObservable();
+	public navVisible$ = this.activeNavVisibleSource.asObservable();
 
 	public sendCompany(company: Company): void {
 		this.activeCompanySource.next(company);
@@ -24,5 +27,9 @@ export class DataShareService {
 
 	public sendQuote(quote: Quote): void {
 		this.activeQuoteSource.next(quote);
+	}
+
+	public isNavVisible(state: boolean): void {
+		this.activeNavVisibleSource.next(state);
 	}
 }
