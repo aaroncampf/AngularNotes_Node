@@ -8,10 +8,11 @@ A contact and note organizer that generates specialized quote reports for client
 
 # FrontEnd by (R)Dev [rdev0rigin@gmail.com](mailto:rdev0rigin@gmail.com)
 >Live demo found [here!](http://52.55.177.110) ;)
+
 ## Dev/Demo Deployment
 >pre-req's npm and git
 
-launch your terminal or prefered cmd prompt.
+launch your terminal or preferred cmd prompt.
 
 ```shell
 git clone https://github.com/aaroncampf/AngularNotes_Node.git
