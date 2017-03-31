@@ -6,9 +6,6 @@ import {QuoteLine} from '../models/quotelines.model';
 
 @Injectable()
 export class QuoteService {
-	private Headers = new Headers({
-		'content-type': 'application/json'
-	});
 	constructor(private http: Http){}
 
 	public getQuotes(): Observable<Quote[]> {
@@ -40,10 +37,6 @@ export class QuoteService {
 	}
 
 	public getQuoteLines(quoteId: number): Observable<any> {
-		const headers = new Headers({
-			'content-type': 'application/json',
-		});
-		const options = new RequestOptions({headers: headers});
 		return this.http.get(`http://angularnotes-angularbros.azurewebsites.net/api/QuoteLines?QuoteID=${quoteId}`)
 			.map(response => {
 				console.log('getQuoteLines', response.json());

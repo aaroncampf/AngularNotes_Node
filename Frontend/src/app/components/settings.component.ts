@@ -53,7 +53,8 @@ export class SettingsComponent implements OnInit, OnDestroy {
 	constructor(private user: UserService, private dataShareService: DataShareService){}
 
 	public ngOnInit(): void {
-		this.user.getSettings(1).subscribe(settings => this.settings = settings);
+		this.user.getSettings(1)
+			.subscribe(settings => this.settings = settings);
 		this.dataShareService.isNavVisible(false);
 	}
 

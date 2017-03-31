@@ -15,13 +15,13 @@ export class ContactService {
 			.catch(err => err);
 	}
 
-	public getContact(id: number): Observable<Contact> {
-		return this.http.get(`http://angularnotes-angularbros.azurewebsites.net/api/Contact/${id}`)
-			.map(response => {
-				return response.json();
-			})
-			.catch(err => err);
-	}
+	// public getContact(id: number): Observable<Contact> {
+	// 	return this.http.get(`http://angularnotes-angularbros.azurewebsites.net/api/Contact/${id}`)
+	// 		.map(response => {
+	// 			return response.json();
+	// 		})
+	// 		.catch(err => err);
+	// }
 
 	public getCompanyContacts(id: any): Observable<any> {
 		return this.http.get(`http://angularnotes-angularbros.azurewebsites.net/api/Contact?CompanyID=${id}`)
@@ -42,6 +42,7 @@ export class ContactService {
 			})
 			.catch(err => this.handleError(err));
 	}
+
 	public updateContact(contact: Contact, id: number): Observable<any> {
 		const headers = new Headers({
 			'content-type': 'application/json',

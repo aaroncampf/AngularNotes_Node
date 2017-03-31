@@ -3,7 +3,6 @@ import {BehaviorSubject} from 'rxjs';
 import {Company} from '../models/company.model';
 import {Contact} from '../models/contact.model';
 import {Quote} from '../models/quote.model';
-import {isBoolean} from 'util';
 
 @Injectable()
 export class DataShareService {
@@ -11,7 +10,6 @@ export class DataShareService {
 	private activeContactSource = new BehaviorSubject<Contact>(<Contact>{});
 	private activeQuoteSource = new BehaviorSubject<Quote>(<Quote>{});
 	private activeNavVisibleSource = new BehaviorSubject<boolean>(true);
-
 	public companySelected$ = this.activeCompanySource.asObservable();
 	public contactSelected$ = this.activeContactSource.asObservable();
 	public quoteSelected$ = this.activeQuoteSource.asObservable();

@@ -9,43 +9,43 @@ import '../styles/main.scss';
 @Component({
 	selector: 'main',
 	template: `
-		<div class='container'>
-			<div *ngIf="!!navVisible">
-				<h4><b>AngularBro's Notes</b><small> an Angular 4 CRM</small></h4>
-				<i [routerLink]="['/settings']" class="glyphicon glyphicon-cog pull-right"></i>
-				<input type="search" placeholder="search -WIP-"/>
-				<div class="col-sm-4 col-xs-12">
-					<side-panel (currentCompanyChange)="updateSelectedCompany($event)" (currentContactChange)="updateSelectedContact($event)"></side-panel>
-				</div>
-			</div>
-			<div [class.col-sm-8]="!!navVisible" class="col-xs-12">
-				<div *ngIf="!!navVisible" class="row">
-					<ul class="nav nav-tabs">
-						<li [class.active]="tab === COMPANY">
-							<a class="tab" (click)="routeTo(COMPANY)">
-								<tab-heading>Company</tab-heading>
-							</a>
-						</li>
-						<li [class.active]="tab === CONTACT">
-							<a class="tab" (click)="routeTo(CONTACT)">
-								<tab-heading>Contact</tab-heading>
-							</a>
-						</li>
-						<li [class.active]="tab === NOTES">
-							<a class="tab" (click)="routeTo(NOTES)">
-								<tab-heading>Notes</tab-heading>
-							</a>
-						</li>
-						<li [class.active]="tab === QUOTES">
-							<a class="tab" (click)="routeTo(QUOTES)">
-								<tab-heading>Quotes</tab-heading>
-							</a>
-						</li>
-					</ul>
-				</div>
-				<router-outlet></router-outlet>
+	<div class='container'>
+		<div *ngIf="!!navVisible">
+			<h4><b>AngularBro's Notes</b><small> with Angular</small></h4>
+			<input type="search" placeholder="search -WIP-"/>
+			<div class="col-sm-4 col-xs-12">
+				<side-panel (currentCompanyChange)="updateSelectedCompany($event)" (currentContactChange)="updateSelectedContact($event)"></side-panel>
 			</div>
 		</div>
+		<div [class.col-sm-8]="!!navVisible" class="col-xs-12">
+			<div *ngIf="!!navVisible" class="row">
+				<ul class="nav nav-tabs">
+					<li [class.active]="tab === COMPANY">
+						<a class="tab" (click)="routeTo(COMPANY)">
+							<tab-heading>Company</tab-heading>
+						</a>
+					</li>
+					<li [class.active]="tab === CONTACT">
+						<a class="tab" (click)="routeTo(CONTACT)">
+							<tab-heading>Contact</tab-heading>
+						</a>
+					</li>
+					<li [class.active]="tab === NOTES">
+						<a class="tab" (click)="routeTo(NOTES)">
+							<tab-heading>Notes</tab-heading>
+						</a>
+					</li>
+					<li [class.active]="tab === QUOTES">
+						<a class="tab" (click)="routeTo(QUOTES)">
+							<tab-heading>Quotes</tab-heading>
+						</a>
+					</li>
+				</ul>
+			</div>
+			<router-outlet></router-outlet>
+		</div>
+		<i [routerLink]="['/settings']" class="glyphicon glyphicon-cog pull-right"></i>
+	</div>
 	`,
 	})
 
@@ -76,7 +76,8 @@ export class MainComponent implements OnInit {
 	}
 
 	public ngOnInit(): void {
-		this.dataShareService.navVisible$.subscribe(state => this.navVisible = state);
+		this.dataShareService.navVisible$
+			.subscribe(state => this.navVisible = state);
 		this.tab = this.COMPANY;
 		this.router.navigate([this.COMPANY]);
 		this.dataShareService.sendCompany(this.selectedCompany);

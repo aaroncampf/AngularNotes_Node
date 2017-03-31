@@ -12,24 +12,23 @@ export class CompanyService {
 			.map(results => results.json())
 			.catch(err => this.handleError(err));
 	}
-	public getCompany(id: number): Observable<any> {
-		console.log(id);
-		return this.http.get('http://angularnotes-angularbros.azurewebsites.net/api/companies/' + id)
-			.map(results => results.json())
-			.catch(err => this.handleError(err));
-	}
+	// public getCompany(id: number): Observable<any> {
+	// 	return this.http.get('http://angularnotes-angularbros.azurewebsites.net/api/companies/' + id)
+	// 		.map(results => results.json())
+	// 		.catch(err => this.handleError(err));
+	// }
 
 	public updateCompany(company: Company): Observable<Company> {
 		const headers = new Headers({
 			'content-type': 'application/json',
 		});
 		const options = new RequestOptions({headers: headers});
-			return this.http.put(`http://angularnotes-angularbros.azurewebsites.net/api/companies/${company.ID}`, JSON.stringify(company), options)
-					.map(res => {
-						console.log('update', res.json());
-						return res.json()
-					})
-					.catch(err => this.handleError(err));
+		return this.http.put(`http://angularnotes-angularbros.azurewebsites.net/api/companies/${company.ID}`, JSON.stringify(company), options)
+			.map(res => {
+				console.log('update', res.json());
+				return res.json()
+			})
+			.catch(err => this.handleError(err));
 		}
 
 	public createCompany(): Observable<Company> {
