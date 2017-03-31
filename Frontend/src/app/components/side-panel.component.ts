@@ -116,9 +116,7 @@ export class SidePanelComponent implements OnInit{
 				.subscribe(() => {
 					this.toastr.warning('Removed ' + contact.Name);
 					this.contactService.getContacts()
-						.subscribe(contacts => {
-							this.contacts = contacts;
-					})
+						.subscribe(contacts => this.contacts = contacts)
 			}, error => this.toastr.error('There Are Notes Related to ' + contact.Name + 'Please delete them first.' ));
 	}
 
