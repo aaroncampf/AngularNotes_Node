@@ -4,7 +4,6 @@ import {Quote} from '../models/quote.model';
 import {DataShareService} from '../services/data-share.service';
 import {QuoteLine} from '../models/quotelines.model';
 import {Router} from '@angular/router';
-import {runInThisContext} from 'vm';
 import {ToastsManager} from 'ng2-toastr';
 @Component({
 	selector: 'quote-details-component',

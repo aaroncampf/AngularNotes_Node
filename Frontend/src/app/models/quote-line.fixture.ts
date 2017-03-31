@@ -1,7 +1,7 @@
 import {Quote} from './quote.model';
 import {Company} from './company.model';
 import {Contact} from './contact.model';
-import {Setting} from './setting.model';
+import {Settings} from './setting.model';
 import {QuoteLine} from './quotelines.model';
 export const QUOTELINES: QuoteLine[] = [
 	{
@@ -89,7 +89,7 @@ export const CONTACT: Contact = {
     Notes:  void 0,
 };
 
-export const SETTINGS: Setting = {
+export const SETTINGS: Settings = {
     ID: 1,
     Name: "Aaron Campf",
     Gmail: "Example@Gmail.com",

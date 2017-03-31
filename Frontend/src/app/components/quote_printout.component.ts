@@ -7,7 +7,7 @@ import {Component} from '@angular/core';
 import {Company} from "../models/company.model";
 import {Quote} from "../models/quote.model";
 import {QuoteLine} from "../models/quotelines.model";
-import {Setting} from "../models/setting.model";
+import {Settings} from "../models/setting.model";
 import {Contact} from '../models/contact.model';
 import {COMPANY, CONTACT, QUOTE, QUOTELINES, SETTINGS} from '../models/quote-line.fixture';
 
@@ -86,6 +86,6 @@ export class Quotes_Printout {
 	public _Quote: Quote = QUOTE;
 	public _Company: Company = COMPANY;
 	public _QuoteLines: QuoteLine[] = QUOTELINES;
-	public _Settings: Setting = SETTINGS;
+	public _Settings: Settings = SETTINGS;
 	public _Contact: Contact = CONTACT;
 }

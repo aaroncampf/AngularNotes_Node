@@ -5,7 +5,7 @@
 /**
  * Created by aaron on 3/14/2017.
  */
-export interface Setting {
+export interface Settings {
     ID: number;
     /**
      * Name of the current user

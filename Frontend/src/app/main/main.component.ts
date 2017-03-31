@@ -11,6 +11,7 @@ import '../styles/main.scss';
 	template: `
 		<div class='container'>
 			<h4><b>AngularBro's Notes</b><small> an Angular 4 CRM</small></h4>
+			<i [routerLink]="['/settings']" class="glyphicon glyphicon-cog pull-right"></i>
 			<input type="search" placeholder="search -WIP-"/>
 			<div class="col-sm-4 col-xs-12">
 				<side-panel (currentCompanyChange)="updateSelectedCompany($event)" (currentContactChange)="updateSelectedContact($event)"></side-panel>
