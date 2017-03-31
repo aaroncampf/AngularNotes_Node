@@ -88,6 +88,6 @@ export class QuoteDetailsComponent implements OnInit {
 	}
 	public updateQuoteLine(value: string, prop: string, quoteLine: QuoteLine): void {
 		quoteLine[prop] = value;
-		this.quoteService.updateQuoteLine(quoteLine).subscribe(quoteLine => this.quoteLines.push(quoteLine));
+		this.quoteService.updateQuoteLine(quoteLine).subscribe(() => {});
 	}
 }

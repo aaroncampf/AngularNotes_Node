@@ -65,7 +65,7 @@ export class MainComponent implements OnInit {
 
 	public routeTo(tab: string): void {
 		if (tab === 'contact' && !this.selectedContact.ID){
-			this.toastr.error('Please chose a contact for their details.');
+			this.toastr.warning('Please chose a contact for their details.');
 		} else {
 			this.router.navigate(['/' + tab]);
 			this.tab = tab;
