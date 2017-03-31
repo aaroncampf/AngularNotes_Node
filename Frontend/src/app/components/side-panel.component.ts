@@ -50,15 +50,18 @@ export class SidePanelComponent implements OnInit{
 	public ngOnInit(): void{
 		this.companyService.getCompanies().subscribe(companies => {
 			this.companies = companies;
+			this.companies.sort();
 		});
 		this.contactService.getContacts().subscribe(contacts => {
 			this.contacts = contacts;
+			this.contacts.sort();
 		})
 	}
 
 	public createNewCompany(): void {
 		this.router.navigate(['/company']);
 		this.companyService.createCompany().subscribe(company => {
+			this.toastr.success('Company Successfully Created! Please provide a name.');
 			console.log('created Company', company);
 			this.currentCompany = company;
 			this.currentCompanyChange.emit(company);
@@ -69,6 +72,7 @@ export class SidePanelComponent implements OnInit{
 
 	public createNewContact(companyId): void {
 		this.contactService.createContact(companyId).subscribe(contactID => {
+			this.toastr.success('Contact Successfully Created! Please provide a name.');
 			this.currentContact = <Contact>{ID: contactID._body};
 			console.log('create current', this.currentContact);
 			this.currentContactChange.emit(this.currentContact);

@@ -46,7 +46,7 @@ export class CompanyDetailsComponent implements OnInit {
 
 	public saveCompany(event: string, key: string): void {
 		if (this.nameControl.invalid){
-			this.toastr.error('To save please provide a name', 'Oh no!')
+			this.toastr.error('To save please provide a name', 'Oh no! ')
 		} else {
 			console.log(event, key);
 			this.company[key] = event;

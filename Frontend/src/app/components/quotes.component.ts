@@ -13,13 +13,13 @@ import {Router} from '@angular/router';
 	template: `
 	<h4>{{ selectedCompany.Name || 'All' }} Quotes</h4>
 		<button type="button" class="btn btn-block" (click)="addNewQuote()" [disabled]="!selectedCompany.ID" [class.disabled]="!selectedCompany.ID">New Quote</button>
-		<div *ngFor="let quote of quotes" class="card" (click)="onSelectQuote(quote)">
+		<div *ngFor="let quote of quotes" (click)="onSelectQuote(quote)">
 			<div class="row">
 				<span class="col-xs-2"><b>QID:</b> {{quote.ID}}</span>
 				<span class="col-xs-4"><b>Date:</b> {{quote.Date | date: 'MM/dd/yyyy'}}</span>
 				<span class="col-xs-6"><b>Name:</b> {{quote.Name}}</span>
-				<i class="glyphicon glyphicon-print pull-right" [routerLink]="['/quote-print']"></i>
-				
+				<quote-list-component [quoteID]="quote.ID"></quote-list-component>
+				<i class="glyphicon glyphicon-print pull-right" (click)="navigateToPrint(quote)"></i>
 			</div>
 		</div>
 	`,
@@ -33,7 +33,6 @@ export class QuotesComponent implements OnInit {
 	public quotes: Quote[] = [];
 	public quoteLine: QuoteLine = <QuoteLine>{};
 	public quoteLines: QuoteLine[];
-	public idControl: FormControl = new FormControl('', []);
 	public unitControl: FormControl = new FormControl('', []);
 	public costControl: FormControl = new FormControl('', []);
 	public descControl: FormControl = new FormControl('', []);
@@ -61,24 +60,29 @@ export class QuotesComponent implements OnInit {
 				public toastr: ToastsManager) {}
 
 	public ngOnInit(): void {
-		this.dataShareService.companySelected$.subscribe(company => {
-			this.selectedCompany = company;
-			if(this.selectedCompany.ID){
-				this.quoteService.getCompanyQuotes(this.selectedCompany.ID).subscribe(quotes => {
-					console.log('quotes component', quotes);
-					this.quotes = quotes
-				});
-			} else {
-				this.quoteService.getQuotes().subscribe(quotes => this.quotes = quotes);
-			}
-		});
+		this.dataShareService.isNavVisible(true);
+		this.dataShareService.companySelected$
+			.subscribe(company => {
+				this.selectedCompany = company;
+				if(this.selectedCompany.ID){
+					this.quoteService.getCompanyQuotes(this.selectedCompany.ID)
+						.subscribe(quotes => {
+							console.log('quotes component', quotes);
+							this.quotes = quotes
+						});
+				} else {
+					this.quoteService.getQuotes()
+						.subscribe(quotes => this.quotes = quotes);
+				}
+			});
 	}
 
 	public addLine(quote: Quote): void {
-		this.quoteService.updateQuote(quote).subscribe(quoteLine => {
-			console.log('res', quoteLine);
-			this.quoteService.getQuotes().subscribe(quotes => this.quotes);
-		})
+		this.quoteService.updateQuote(quote)
+			.subscribe(quoteLine => {
+				console.log('res', quoteLine);
+				this.quoteService.getQuotes().subscribe(quotes => this.quotes);
+			})
 	}
 
 	public onSelectQuote(quote: Quote): void {
@@ -93,42 +97,14 @@ export class QuotesComponent implements OnInit {
 			this.router.navigate(['/quote-details']);
 		})
 	}
-	// public onSelect(companyId: number, quoteId?: number) {
 
-		// if (quoteId){
-		// 	for(let quote of this.quotes) {
-		// 		if (quote.ID === quoteId) {
-		// 			this.selectedQuote = quote;
-		// 			console.log('onSelect', this.selectedQuote)
-		// 		}
-		// 	}
-		// } else if (companyId === 0) {
-		// 	this.selectedCompany = <Company>{};
-		// 	this.quoteService.getQuotes().subscribe(quotes => this.quotes = quotes);
-		// } else {
-		// 	for(let company of this.companies){
-		// 		if (company.ID === companyId) {
-		// 			this.selectedCompany = company;
-		// 			this.quoteService.getCompanyQuotes(this.selectedCompany.ID).subscribe(quotes => {
-		// 				this.quotes = quotes;
-		// 			})
-		// 		}
-		// 	}
-		// }
-	// }
-
-
-	// public removeQuote(quoteId: number): void {
-	// 	this.quoteService.deleteQuote(quoteId).subscribe(res => {
-	// 		console.log('delete quote', res);
-	// 		this.quoteService.getCompanyQuotes(this.selectedCompany.ID)
-	// 			.subscribe(quotes => this.quotes = quotes, err => console.log(err));
-	// 	});
-	// }
-	//
-	// public quoteSelect(quoteId: number): void {
-	// 	this.quoteService.getQuote(quoteId).subscribe(quote => {
-	// 		this.selectedQuote = quote;
-	// 	})
-	// }
+	public navigateToPrint(quote: Quote): void {
+		if (!!this.selectedCompany) {
+			this.dataShareService.sendQuote(quote);
+			this.dataShareService.isNavVisible(false);
+			this.router.navigate(['/quote-print'])
+		} else {
+			this.toastr.warning('Please select a company.')
+		}
+	}
 }

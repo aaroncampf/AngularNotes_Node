@@ -21,6 +21,7 @@ import {ToastModule} from 'ng2-toastr';
 import {QuoteDetailsComponent} from './components/quote-details.component';
 import {SettingsComponent} from './components/settings.component';
 import {UserService} from './services/user.service';
+import {QuoteListComponent} from './components/quote-lines-list.component';
 
 const MAIN_ROUTES: Routes = [
 	{path: '', children: [
@@ -46,7 +47,8 @@ const MAIN_ROUTES: Routes = [
 		InputComponent,
 		NotesComponent,
 		CompanyDetailsComponent,
-		SettingsComponent
+		SettingsComponent,
+		QuoteListComponent
 	],
 	imports: [
 		NoopAnimationsModule,

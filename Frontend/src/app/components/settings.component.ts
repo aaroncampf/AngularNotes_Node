@@ -1,13 +1,15 @@
-import {Component, OnInit} from '@angular/core';
+import {Component, OnDestroy, OnInit} from '@angular/core';
 import {
 	Settings} from '../models/setting.model';
 import {FormControl, FormGroup} from '@angular/forms';
 import {UserService} from '../services/user.service';
+import {DataShareService} from '../services/data-share.service';
 @Component({
 	selector: 'settings-component',
 	template: `
-	<h4>User Settings</h4>
-	User ID: {{number}}
+		<button class="btn btn-default" [routerLink]="['../']">Back</button>
+		<h4>User Settings</h4>
+		User ID: {{number}}
 		<input-component label="Name" [(model)]="settings.Name" [control]="nameControl"></input-component>
 		<input-component label="Gmail" [(model)]="settings.Gmail" [control]="gmailControl"></input-component>
 		<input-component label="Gmail Password" [(model)]="settings.GmailPassword" [control]="gmailPasswordControl"></input-component>
@@ -22,7 +24,7 @@ import {UserService} from '../services/user.service';
 	`
 })
 
-export class SettingsComponent implements OnInit {
+export class SettingsComponent implements OnInit, OnDestroy {
 	public settings: Settings = <Settings>{};
 	public nameControl: FormControl = new FormControl('', []);
 	public gmailControl: FormControl = new FormControl('', []);
@@ -48,10 +50,15 @@ export class SettingsComponent implements OnInit {
 		cellPhoneControl: this.cellPhoneControl,
 		companyFaxControl: this.companyFaxControl
 	});
-	constructor(private user: UserService){}
+	constructor(private user: UserService, private dataShareService: DataShareService){}
 
 	public ngOnInit(): void {
 		this.user.getSettings(1).subscribe(settings => this.settings = settings);
+		this.dataShareService.isNavVisible(false);
+	}
+
+	public ngOnDestroy(): void {
+		this.dataShareService.isNavVisible(true);
 	}
 
 }

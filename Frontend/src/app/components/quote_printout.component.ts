@@ -3,13 +3,15 @@
  */
 
 
-import {Component} from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 import {Company} from "../models/company.model";
 import {Quote} from "../models/quote.model";
 import {QuoteLine} from "../models/quotelines.model";
 import {Settings} from "../models/setting.model";
 import {Contact} from '../models/contact.model';
 import {COMPANY, CONTACT, QUOTE, QUOTELINES, SETTINGS} from '../models/quote-line.fixture';
+import {DataShareService} from '../services/data-share.service';
+import {QuoteService} from '../services/quotes.service';
 
 /**
  * Displays a quote as a beautiful printout
@@ -76,16 +78,28 @@ import {COMPANY, CONTACT, QUOTE, QUOTELINES, SETTINGS} from '../models/quote-lin
 `
 })
 /**
- * Displays a quote as a motha fuckn beautiful printout
+ * Displays a quote as a mutha $!@#!@# beautiful printout
  */
-export class Quotes_Printout {
+export class Quotes_Printout implements OnInit {
 	//TODO: Consider only using [Quote] and not the others
 	//TODO: Find out how to order _QuoteLines by Display
-	//TODO: Maybe this might help make this less interpolated - http://stackoverflow.com/questions/38996376/generate-pdf-file-from-html-using-angular2-typescript :)
 
 	public _Quote: Quote = QUOTE;
 	public _Company: Company = COMPANY;
 	public _QuoteLines: QuoteLine[] = QUOTELINES;
 	public _Settings: Settings = SETTINGS;
 	public _Contact: Contact = CONTACT;
+    constructor(private dataShareService: DataShareService,
+                private quoteService: QuoteService){}
+
+    public ngOnInit(): void {
+        this.dataShareService.companySelected$
+            .subscribe(company => this._Company = company);
+        this.dataShareService.quoteSelected$
+            .subscribe(quote => {
+            this._Quote = quote;
+            this.quoteService.getQuoteLines(quote.ID)
+                .subscribe(quoteLines => this._QuoteLines = quoteLines);
+        });
+    }
 }
