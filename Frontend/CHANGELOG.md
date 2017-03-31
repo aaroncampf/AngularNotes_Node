@@ -2,9 +2,13 @@
 >To make sense of all your busy-ness to other developers please log changes and use sem-ver. 
 
 ##unreleased
-[styled] toastr styled
 
-##version 0.6.0
+## version 0.7.0 03/31/2017
+[styled] toastr styled
+[code] wired `quote-print.component`
+[styled] `quote-details.component`, `quote.component`, and `notes.component`
+
+## version 0.6.0
 [styled] Some of `quotes.component` and `side-panel`
 [code] Wired up `quotes.component`and `quote-details.component`.
 [refactor] finalized views
@@ -14,18 +18,18 @@
 [refactor] reduced code for drop downs
 [animation] added css3 transitions for dropdown menus
 
-##version 0.5.0
+## version 0.5.0
 [refactor] restructured view routes and layout
 [refactor] moved and reduced component logic into `*-details.component`
 [code] added ng2-toastr
 [upgrade] upgraded and updated all dependencies and we are now at Angular 4.0.0
 
-##version 0.4.0
+## version 0.4.0
 [refactor] removed Angular 2 modal
 [code] Wired up `quotes.service` to `quotes.component`
 [animation] - removed all for wanting to upgrade to Angular 4.0
 
-##version 0.3.2
+## version 0.3.2
 [refactor] Separated edit and create into different components for `companies.component` and `contacts.component`
 [code] created and wired `create-company.component` and `edit-company.component` and `create-contact.compoent`
 [code] created a quotes listing
@@ -34,7 +38,7 @@
 [animation] Transitional animations between components implemented
 [code] Finished notes in `contact.component`, notes almost list in `notes.component` there is a problem maybe with the model
 
-##version 0.3.0
+## version 0.3.0
 [refactor] Moved static data files for `quote_printout.component` to `quotelines.model`
 [code] Created `notes.component`
 [code] Finished wiring `company.component` to `company.services` and `contact.service`
@@ -42,19 +46,19 @@
 [code] created list and edit-ables in `notes.component`
 [bug-fix] fixed bugs with the input-component and refreshing on updates
 
-##version 0.2.0 - 3/20/2017
+## version 0.2.0 - 3/20/2017
 
 [code] Created a delete method for `companies.service`
 [code] finished the `companies.service` CRUD
 [code] added a modal library and updated the `contact.services`
 
-##version 0.1.1 - 3/20/2017
+## version 0.1.1 - 3/20/2017
 
 [refactor] removed top navbar and option button from `home.component`
 [code] added POST and GET to `company.service`
 [refactor] made the sidemenu into a `companies.component` and new tab-view
 
-##version 0.1.0
+## version 0.1.0
 
 [init] base code modified from template seed
 [code] created `resume.component`
