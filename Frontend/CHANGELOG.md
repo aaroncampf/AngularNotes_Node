@@ -2,6 +2,7 @@
 >To make sense of all your busy-ness to other developers please log changes and use sem-ver. 
 
 ##unreleased
+[styled] toastr styled
 
 ##version 0.6.0
 [styled] Some of `quotes.component` and `side-panel`

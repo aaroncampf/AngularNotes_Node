@@ -5,6 +5,34 @@ main {
   .container {
     background: white;
   }
+
+  .glyphicon-cog:before {
+    font-size: 58px;
+    position: absolute;
+    right: 1px;
+    top: -48px;
+  }
+}
+
+toast-container div#toast-container {
+  bottom: inherit;
+  top: 0 !important;
+}
+
+.toast {
+
+}
+
+.toast-error {
+  background: #f51616;
+}
+
+.toast-warning {
+  background: #f58e00;
+}
+
+.toast-success{
+  background: #27f500;
 }
 
 @import './side-panel';

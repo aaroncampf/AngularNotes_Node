@@ -19,9 +19,12 @@ import {ContactDetailsComponent} from './components/contact-details.component';
 import {CompanyDetailsComponent} from './components/company-details.component';
 import {ToastModule} from 'ng2-toastr';
 import {QuoteDetailsComponent} from './components/quote-details.component';
+import {SettingsComponent} from './components/settings.component';
+import {UserService} from './services/user.service';
 
 const MAIN_ROUTES: Routes = [
 	{path: '', children: [
+		{path:'settings', component: SettingsComponent},
 		{path:'company', component: CompanyDetailsComponent},
 		{path:'contact', component: ContactDetailsComponent},
 		{path:'quotes', component: QuotesComponent},
@@ -43,6 +46,7 @@ const MAIN_ROUTES: Routes = [
 		InputComponent,
 		NotesComponent,
 		CompanyDetailsComponent,
+		SettingsComponent
 	],
 	imports: [
 		NoopAnimationsModule,
@@ -59,7 +63,8 @@ const MAIN_ROUTES: Routes = [
 		ContactService,
 		NotesService,
 		QuoteService,
-		DataShareService
+		DataShareService,
+		UserService
 	],
 	schemas: [
 		CUSTOM_ELEMENTS_SCHEMA
