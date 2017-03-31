@@ -2,7 +2,11 @@ side-panel {
   -webkit-transition: all 500ms linear;
   transition: all 500ms linear;
 
-  .selection-row:hover, .selection-row:active, .selection-row:focus {
+  .glyphicon-remove:before {
+    color: red;
+  }
+
+  .selection-row:hover, .selection-row:active, .selection-row:focus, .selection-row.active {
     background: #f8ece6;
     -webkit-transition: all 500ms linear;
     transition: all 500ms linear;

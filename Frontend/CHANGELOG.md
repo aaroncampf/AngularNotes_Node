@@ -2,6 +2,10 @@
 >To make sense of all your busy-ness to other developers please log changes and use sem-ver. 
 
 ##unreleased
+
+##version 0.6.0
+[styled] Some of `quotes.component` and `side-panel`
+[code] Wired up `quotes.component`and `quote-details.component`.
 [refactor] finalized views
 [code] added view navigation to side-panel lists and mobile view responsive layouts
 [code] Add dropdown logic to lists in `side-panel.component`

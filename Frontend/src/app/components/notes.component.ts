@@ -10,8 +10,8 @@ import {ToastsManager} from 'ng2-toastr/ng2-toastr'
 	template: `
 		<h4>Contact Notes</h4>
 		<button type="button" class="btn btn-block" (click)="addNote(selectedContact)" [disabled]="!selectedContact.ID" [class.disabled]="!selectedContact.ID">Add Note</button>
-		<div class="row panel" *ngFor="let note of notesCollection; let i = index;">
-				<i class="glyphicon glyphicon-remove pull-right" (click)="removeNote(note.ID)"></i>
+		<div class="card-panel" *ngFor="let note of notesCollection; let i = index;">
+			<i class="glyphicon glyphicon-remove pull-right" (click)="removeNote(note.ID)"></i>
 			<strong>Note #{{note.ID}}</strong> - <strong>{{note.Date | date: 'MM/dd/yyyy' }}</strong>
 			<input class="col-xs-8" (blur)="updateNote(note, note.ID)" [(ngModel)]="note.Title"/>
 			<textarea (blur)="updateNote(note, note.ID)" [(ngModel)]="note.Text"></textarea>

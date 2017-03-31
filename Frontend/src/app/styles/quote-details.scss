@@ -1,0 +1,24 @@
+quote-details-component {
+  .btn-danger {
+    height: 39px;
+    color: #fff;
+    background-color: #d9534f;
+    border-color: #d43f3a;
+    width: 100px;
+    border-radius: 5px;
+  }
+  .quote-header {
+    background: lightgrey;
+  }
+
+  .quote-item {
+    display: inline-block;
+    background: lightgrey;
+    border: grey 1px solid;
+    padding: 2px;
+  }
+  .quote-item-add {
+    background: lightblue;
+    border: grey 3px solid;
+  }
+}

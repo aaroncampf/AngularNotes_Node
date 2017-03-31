@@ -1,7 +1,7 @@
 import {Component, OnChanges, OnInit, SimpleChanges} from '@angular/core';
 import {FormControl, FormGroup} from '@angular/forms';
 import {Company} from '../models/company.model';
-import {Quote} from '../models/quote.model';
+import {newQuote, Quote} from '../models/quote.model';
 import {QuoteService} from '../services/quotes.service';
 import {DataShareService} from '../services/data-share.service';
 import {ToastsManager} from 'ng2-toastr/ng2-toastr';
@@ -11,59 +11,22 @@ import {Router} from '@angular/router';
 @Component({
 	selector: 'quotes-component',
 	template: `
-		<h4>{{ selectedCompany.Name || 'All' }} Quotes</h4>
-		<div class="col-xs-12">
-			<button type="button" class="btn btn-block" [routerLink]="['/create-quote', selectedCompany.ID]" [disabled]="!selectedCompany.ID" [class.disabled]="!selectedCompany.ID">New Quote</button>
-			<div *ngFor="let quote of quotes" class="card" (click)="onSelectQuote(quote)">
-				<div class="row card-header">
-					<span class="col-xs-2"><b>QID:</b> {{quote.ID}}</span>
-					<span class="col-xs-4"><b>Date:</b> {{quote.Date | date: 'MM/dd/yyyy'}}</span>
-					<span class="col-xs-6"><b>Name:</b> {{quote.Name}}</span>
-				</div>
-				<div class="row card-body">
-					<div class="col-xs-12"><hr></div>
-					<span class="col-xs-1 text-left">IID</span>
-					<span class="col-xs-2 text-left">Unit</span>
-					<span class="col-xs-2 text-left">Cost</span>
-					<span class="col-xs-6 text-left">Desc.</span>
-					<span class="col-xs-1 text-left"></span>
-				</div>
-				<div *ngIf="selectedCompany.ID">
-				<div class="row card-footer" *ngFor="let line of quote.Lines">
-					<span class="col-xs-1">{{line.ID}}</span>
-					<span class="col-xs-2">{{line.UNIT}}</span>
-					<span class="col-xs-2">{{line.COST}}</span>
-					<span class="col-xs-6">{{line.DESC}}</span>
-					<span class="col-xs-1">
-						<i class="glyphicon glyphicon-minus-sign"></i>
-					</span>
-				</div>
-				<div class="row">
-					<span class="col-xs-1">#</span>
-					<span class="col-xs-2">
-						<input-component [(model)]="quoteLine.UNIT" [control]="unitControl"></input-component>
-					</span>
-					<span class="col-xs-2">
-						<input-component [(model)]="quoteLine.COST" [control]="costControl"></input-component>
-					</span>
-					<span class="col-xs-6">
-						<input-component [(model)]="quoteLine.DESC" [control]="descControl"></input-component>
-					</span>
-					<span class="col-xs-1">
-						<i class="glyphicon glyphicon-plus-sign" (click)="addLine(quote, quote.Lines)"></i>
-					</span>
-				</div>
-				<div class="row">
-					<button class="btn btn-block" [routerLink]="['/quote-print']">View / Print / Download</button>
-				</div>
+	<h4>{{ selectedCompany.Name || 'All' }} Quotes</h4>
+		<button type="button" class="btn btn-block" (click)="addNewQuote()" [disabled]="!selectedCompany.ID" [class.disabled]="!selectedCompany.ID">New Quote</button>
+		<div *ngFor="let quote of quotes" class="card" (click)="onSelectQuote(quote)">
+			<div class="row">
+				<span class="col-xs-2"><b>QID:</b> {{quote.ID}}</span>
+				<span class="col-xs-4"><b>Date:</b> {{quote.Date | date: 'MM/dd/yyyy'}}</span>
+				<span class="col-xs-6"><b>Name:</b> {{quote.Name}}</span>
+				<i class="glyphicon glyphicon-print pull-right" [routerLink]="['/quote-print']"></i>
+				
 			</div>
-					
-				</div>
 		</div>
 	`,
 })
 
-export class QuotesComponent implements OnInit, OnChanges {
+export class QuotesComponent implements OnInit {
+	public newQuote: Quote = <Quote>newQuote(<Quote>{});
 	public companies: Company[] = [];
 	public selectedQuote: Quote = <Quote>{};
 	public selectedCompany: Company = <Company>{};
@@ -97,15 +60,14 @@ export class QuotesComponent implements OnInit, OnChanges {
 				private router: Router,
 				public toastr: ToastsManager) {}
 
-	public ngOnChanges(changes: SimpleChanges): void {
-		console.log('quotes change hit');
-	}
-
 	public ngOnInit(): void {
-		this.dataShareService.companySelected$.subscribe(company=> {
+		this.dataShareService.companySelected$.subscribe(company => {
 			this.selectedCompany = company;
 			if(this.selectedCompany.ID){
-				this.quoteService.getCompanyQuotes(this.selectedCompany.ID).subscribe(quotes => this.quotes = quotes);
+				this.quoteService.getCompanyQuotes(this.selectedCompany.ID).subscribe(quotes => {
+					console.log('quotes component', quotes);
+					this.quotes = quotes
+				});
 			} else {
 				this.quoteService.getQuotes().subscribe(quotes => this.quotes = quotes);
 			}
@@ -121,9 +83,17 @@ export class QuotesComponent implements OnInit, OnChanges {
 
 	public onSelectQuote(quote: Quote): void {
 		this.dataShareService.sendQuote(quote);
-		this.router.navigate(['/quote-details'])
+		this.router.navigate(['/quote-details']);
 	}
-	public onSelect(companyId: number, quoteId?: number) {
+
+	public addNewQuote(): void {
+		this.quoteService.createQuote(this.newQuote, this.selectedCompany.ID).subscribe(response => {
+			this.dataShareService.sendQuote(response);
+			console.log('shared', response);
+			this.router.navigate(['/quote-details']);
+		})
+	}
+	// public onSelect(companyId: number, quoteId?: number) {
 
 		// if (quoteId){
 		// 	for(let quote of this.quotes) {
@@ -145,19 +115,20 @@ export class QuotesComponent implements OnInit, OnChanges {
 		// 		}
 		// 	}
 		// }
-	}
+	// }
 
-	public removeQuote(quoteId: number): void {
-		this.quoteService.deleteQuote(quoteId).subscribe(res => {
-			console.log('delete quote', res);
-			this.quoteService.getCompanyQuotes(this.selectedCompany.ID)
-				.subscribe(quotes => this.quotes = quotes, err => console.log(err));
-		});
-	}
 
-	public quoteSelect(quoteId: number): void {
-		this.quoteService.getQuote(quoteId).subscribe(quote => {
-			this.selectedQuote = quote;
-		})
-	}
+	// public removeQuote(quoteId: number): void {
+	// 	this.quoteService.deleteQuote(quoteId).subscribe(res => {
+	// 		console.log('delete quote', res);
+	// 		this.quoteService.getCompanyQuotes(this.selectedCompany.ID)
+	// 			.subscribe(quotes => this.quotes = quotes, err => console.log(err));
+	// 	});
+	// }
+	//
+	// public quoteSelect(quoteId: number): void {
+	// 	this.quoteService.getQuote(quoteId).subscribe(quote => {
+	// 		this.selectedQuote = quote;
+	// 	})
+	// }
 }
