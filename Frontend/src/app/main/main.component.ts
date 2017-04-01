@@ -84,6 +84,7 @@ export class MainComponent implements OnInit {
 	}
 
 	public updateSelectedContact(contact: Contact): void {
+		this.tab = this.CONTACT;
 		this.dataShareService.sendContact(contact);
 		this.selectedContact = contact;
 	}

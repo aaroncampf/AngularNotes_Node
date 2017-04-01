@@ -11,9 +11,6 @@ import {Router} from '@angular/router';
 	template: `
 	<div class="row">
 		<button class="btn btn-block"(click)="createNewCompany()">Add Company</button>
-		<div class="col-xs-12">
-			<h6>Company Select</h6>
-		</div>
 		<div class="selection-row" [class.active]="currentCompany.ID === company.ID" [class.collapsed]="currentCompany.ID && currentCompany.ID !== company.ID" *ngFor="let company of companies">
 			<div (click)="onSelectCompany(company)" class="col-xs-10" >{{company.Name}}</div>
 			<i class="glyphicon glyphicon-remove pull-right col-xs-2" (click)="removeCompany(company)"></i>
@@ -21,9 +18,6 @@ import {Router} from '@angular/router';
 	</div>
 	<div class="row">
 		<button class="btn btn-block" [disabled]="!currentCompany.ID" [class.disabled]="!currentCompany.ID" (click)="createNewContact(currentCompany.ID)">Add Contact</button>
-		<div class="col-xs-12">
-			<h6>Contact Select</h6>
-		</div>
 		<div class="selection-row" [class.active]="currentContact.ID === contact.ID" [class.collapsed]="currentContact.ID && currentContact.ID !== contact.ID" *ngFor="let contact of contacts">
 			<div class="col-xs-10" (click)="onSelectContact(contact)">{{contact.Name}}</div>
 			<i class="glyphicon glyphicon-remove col-xs-2" (click)="removeContact(contact)"></i>
@@ -78,9 +72,13 @@ export class SidePanelComponent implements OnInit{
 				this.toastr.success('Contact Successfully Created! Please provide a name.');
 				this.currentContact = <Contact>{ID: contactID._body};console.log('create current', this.currentContact);
 				this.currentContactChange.emit(this.currentContact);
+				let temp = this.contacts;
 				this.contacts = [];
 				this.contacts.push(this.currentContact);
-				this.router.navigate(['/contact']);
+				temp.push(this.currentContact);
+				this.contacts = temp;
+				this.router.navigate(['/contact'])
+
 		})
 	}
 

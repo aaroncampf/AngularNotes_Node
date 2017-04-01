@@ -9,18 +9,19 @@ import {DataShareService} from '../services/data-share.service';
 	template: `
 		<button class="btn btn-default" [routerLink]="['../']">Back</button>
 		<h4>User Settings</h4>
-		User ID: {{number}}
-		<input-component label="Name" [(model)]="settings.Name" [control]="nameControl"></input-component>
-		<input-component label="Gmail" [(model)]="settings.Gmail" [control]="gmailControl"></input-component>
-		<input-component label="Gmail Password" [(model)]="settings.GmailPassword" [control]="gmailPasswordControl"></input-component>
-		<input-component label="Email" [(model)]="settings.Email" [control]="emailControl"></input-component>
-		<input-component label="Address" [(model)]="settings.Address" [control]="addressControl"></input-component>
-		<input-component label="Phone" [(model)]="settings.Phone" [control]="phoneControl"></input-component>
-		<input-component label="Company Name" [(model)]="settings.CompanyName" [control]="companyNameControl"></input-component>
-		<input-component label="Company Website" [(model)]="settings.CompanyWebsite" [control]="companyWebsiteControl"></input-component>
-		<input-component label="Company Phone" [(model)]="settings.CompanyPhone" [control]="companyPhoneControl"></input-component>
-		<input-component label="Cell Phone" [(model)]="settings.CellPhone" [control]="cellPhoneControl"></input-component>
-		<input-component label="Company Fax" [(model)]="settings.CompanyFax" [control]="companyFaxControl"></input-component>
+		<div class="col-xs-2">User ID: {{number}}</div>
+		<div class="col-xs-10"></div> 
+		<input-component class="col-xs-6" label="Name" [(model)]="settings.Name" [control]="nameControl"></input-component>
+		<input-component class="col-xs-6" label="Gmail" [(model)]="settings.Gmail" [control]="gmailControl"></input-component>
+		<input-component class="col-xs-6" label="Gmail Password" [(model)]="settings.GmailPassword" [control]="gmailPasswordControl"></input-component>
+		<input-component class="col-xs-6" label="Email" [(model)]="settings.Email" [control]="emailControl"></input-component>
+		<input-component class="col-xs-6" label="Address" [(model)]="settings.Address" [control]="addressControl"></input-component>
+		<input-component class="col-xs-6" label="Phone" [(model)]="settings.Phone" [control]="phoneControl"></input-component>
+		<input-component class="col-xs-6" label="Company Name" [(model)]="settings.CompanyName" [control]="companyNameControl"></input-component>
+		<input-component class="col-xs-6" label="Company Website" [(model)]="settings.CompanyWebsite" [control]="companyWebsiteControl"></input-component>
+		<input-component class="col-xs-6" label="Company Phone" [(model)]="settings.CompanyPhone" [control]="companyPhoneControl"></input-component>
+		<input-component class="col-xs-6" label="Cell Phone" [(model)]="settings.CellPhone" [control]="cellPhoneControl"></input-component>
+		<input-component class="col-xs-6" label="Company Fax" [(model)]="settings.CompanyFax" [control]="companyFaxControl"></input-component>
 	`
 })
 
