@@ -2,6 +2,8 @@
 >To make sense of all your busy-ness to other developers please log changes and use sem-ver. 
 
 ##unreleased
+[socket] created `socket.service` and installed `socket.io`
+[refactor] service for `settings.component`
 
 ## version 0.7.0 03/31/2017
 [styled] toastr styled
