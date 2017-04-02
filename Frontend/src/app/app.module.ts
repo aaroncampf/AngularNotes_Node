@@ -4,6 +4,7 @@ import {BrowserModule} from '@angular/platform-browser';
 import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 import {HttpModule} from '@angular/http';
 import {BrowserAnimationsModule, NoopAnimationsModule} from '@angular/platform-browser/animations';
+import {ToastModule} from 'ng2-toastr';
 import {DataShareService} from './services/data-share.service';
 import {QuoteService} from './services/quotes.service';
 import {CompanyService} from './services/companies.service';
@@ -17,11 +18,11 @@ import {Quotes_Printout} from './components/quote_printout.component';
 import {NotesComponent} from './components/notes.component';
 import {ContactDetailsComponent} from './components/contact-details.component';
 import {CompanyDetailsComponent} from './components/company-details.component';
-import {ToastModule} from 'ng2-toastr';
 import {QuoteDetailsComponent} from './components/quote-details.component';
 import {SettingsComponent} from './components/settings.component';
 import {UserService} from './services/user.service';
 import {QuoteListComponent} from './components/quote-lines-list.component';
+import {SocketService} from './services/socket.service';
 
 const MAIN_ROUTES: Routes = [
 	{path: '', children: [
@@ -66,7 +67,8 @@ const MAIN_ROUTES: Routes = [
 		NotesService,
 		QuoteService,
 		DataShareService,
-		UserService
+		UserService,
+		SocketService
 	],
 	schemas: [
 		CUSTOM_ELEMENTS_SCHEMA

@@ -69,7 +69,7 @@ export class SidePanelComponent implements OnInit{
 	public createNewContact(companyId): void {
 		this.contactService.createContact(companyId)
 			.subscribe(contactID => {
-				this.toastr.success('Contact Successfully Created! Please provide a name.');
+				this.toastr.success('Success! Please provide a name.');
 				this.currentContact = <Contact>{ID: contactID._body};console.log('create current', this.currentContact);
 				this.currentContactChange.emit(this.currentContact);
 				let temp = this.contacts;

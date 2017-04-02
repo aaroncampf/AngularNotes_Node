@@ -4,24 +4,23 @@
 
 /**
  * Created by aaron on 3/14/2017.
+ * edited by Rdev1163@outlook.com
  */
+//todo - Perhaps Refactor this into a user model?
+//todo - Why do we have gmail and gmail password?
 export interface Settings {
-    ID: number;
-    /**
-     * Name of the current user
-     */
-    Name : string
-    /**
-     * The Gmail used to send quotes
-     */
-    Gmail : string
-    GmailPassword : string
-    Email : string
-    Address : string
-    Phone : string
-    CompanyName: string
-    CompanyWebsite: string
-    CompanyPhone: string
-    CellPhone: string
-    CompanyFax: string
+	id: string;
+	name: string;
+	email: string;
+	address: string;
+	companyFax: string;
+	companyName: string;
+	companyPhone: string;
+	companyWeb: string;
+	passHash: string;
+	phone: string;
+	role: string;
+	// updated_at: string | Date;
+	// created_at: string | Date;
+	// deleted_at?: string | Date;
 }

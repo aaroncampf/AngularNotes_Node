@@ -1,7 +1,6 @@
 import {Quote} from './quote.model';
 import {Company} from './company.model';
 import {Contact} from './contact.model';
-import {Settings} from './setting.model';
 import {QuoteLine} from './quotelines.model';
 export const QUOTELINES: QuoteLine[] = [
 	{
@@ -89,17 +88,17 @@ export const CONTACT: Contact = {
     Notes:  void 0,
 };
 
-export const SETTINGS: Settings = {
-    ID: 1,
-    Name: "Aaron Campf",
-    Gmail: "Example@Gmail.com",
-    GmailPassword: "",
-    Email: "Company@Gmail.com",
-    Address: "1600 Amphitheatre Parkway, Mountan View CA",
-    Phone: "503-999-9999",
-    CompanyName: "AJP",
-    CompanyWebsite: "www.ajp.com",
-    CompanyPhone: "503-333-3333",
-    CellPhone: "503-555-5555",
-    CompanyFax: "503-987-9854"
-};
+// export const SETTINGS: Settings = {
+//     ID: 'ff615834-1533-48f4-b38f-316108606e87',
+//     Name: "Aaron Campf",
+//     Gmail: "Example@Gmail.com",
+//     GmailPassword: "",
+//     Email: "Company@Gmail.com",
+//     Address: "1600 Amphitheatre Parkway, Mountan View CA",
+//     Phone: "503-999-9999",
+//     CompanyName: "AJP",
+//     CompanyWebsite: "www.ajp.com",
+//     CompanyPhone: "503-333-3333",
+//     CellPhone: "503-555-5555",
+//     CompanyFax: "503-987-9854"
+// };
