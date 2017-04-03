@@ -5,10 +5,10 @@ import {FormControl} from '@angular/forms';
 	selector: 'input-component',
 	template: `
 	<div class="row">
-		<div *ngIf="!!label" class="col-xs-2 pull-left">
+		<div *ngIf="!!label" class="col-xs-3">
 			<strong>{{label}}</strong>
 		</div>
-		<div *ngIf="!!label" class="col-xs-10">
+		<div *ngIf="!!label" class="col-xs-9">
 			<input type="text"  class="form-control" [ngModel]="model" (blur)="modelChange.emit($event.target.value)" [formControl]="control" [placeholder]="placeholder"/>
 		</div>
 		<div *ngIf="!label" class="col-xs-12">

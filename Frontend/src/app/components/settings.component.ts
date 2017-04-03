@@ -12,20 +12,21 @@ import {FIXTURE_USER_ID} from '../models/FIXTURE_ID';
 	template: `
 		<button class="btn btn-default" [routerLink]="['../']">Back</button>
 		<h4>User Settings</h4>
-		<div class="col-xs-2">User ID: {{number}}</div>
-		<div class="col-xs-10"></div> 
-		<input-component class="col-xs-6" label="Name" [model]="settings.name" (modelChange)="update('name', $event)" [control]="nameControl"></input-component>
-		<input-component class="col-xs-6" label="Email" [model]="settings.email" (modelChange)="update('email', $event)" [control]="emailControl"></input-component>
-		<input-component class="col-xs-6" label="Address" [model]="settings.address" (modelChange)="update('address', $event)" [control]="addressControl"></input-component>
-		<input-component class="col-xs-6" label="Phone" [model]="settings.phone" (modelChange)="update('phone', $event)" [control]="phoneControl"></input-component>
-		<input-component class="col-xs-6" label="Company Name" [model]="settings.companyName" (modelChange)="update('companyName', $event)" [control]="companyNameControl"></input-component>
-		<input-component class="col-xs-6" label="Company Website" [model]="settings.companyWeb" (modelChange)="update('companyWeb',$event)" [control]="companyWebsiteControl"></input-component>
-		<input-component class="col-xs-6" label="Company Phone" [model]="settings.companyPhone" (modelChange)="update('companyPhone', $event)" [control]="companyPhoneControl"></input-component>
-		<input-component class="col-xs-6" label="Company Fax" [model]="settings.companyFax" (modelChange)="update('companyFax', $event)" [control]="companyFaxControl"></input-component>
+		<div class="col-xs-11">
+			<input-component class="" label="Name" [model]="settings.name" (modelChange)="update('name', $event)" [control]="nameControl"></input-component>
+			<input-component class="" label="Email" [model]="settings.email" (modelChange)="update('email', $event)" [control]="emailControl"></input-component>
+			<input-component class="" label="Address" [model]="settings.address" (modelChange)="update('address', $event)" [control]="addressControl"></input-component>
+			<input-component class="" label="Phone" [model]="settings.phone" (modelChange)="update('phone', $event)" [control]="phoneControl"></input-component>
+			<input-component class="" label="Company Name" [model]="settings.companyName" (modelChange)="update('companyName', $event)" [control]="companyNameControl"></input-component>
+			<input-component class="" label="Company Website" [model]="settings.companyWeb" (modelChange)="update('companyWeb',$event)" [control]="companyWebsiteControl"></input-component>
+			<input-component class="" label="Company Phone" [model]="settings.companyPhone" (modelChange)="update('companyPhone', $event)" [control]="companyPhoneControl"></input-component>
+			<input-component class="" label="Company Fax" [model]="settings.companyFax" (modelChange)="update('companyFax', $event)" [control]="companyFaxControl"></input-component>
+		</div> 
 	`
 })
 
 export class SettingsComponent implements OnInit, OnDestroy {
+	public userID: string = FIXTURE_USER_ID;
 	public settings: Settings = <Settings>{};
 	public nameControl: FormControl = new FormControl('', []);
 	public emailControl: FormControl = new FormControl('', []);
@@ -70,7 +71,6 @@ export class SettingsComponent implements OnInit, OnDestroy {
 				phone: user.phone,
 				role: user.role
 			};
-			console.log('this.setting 72', this.settings);
 		}, error => console.log('error', error));
 		this.dataShareService.isNavVisible(false);
 	};
