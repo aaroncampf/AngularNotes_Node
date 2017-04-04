@@ -3,7 +3,7 @@ import * as IO from 'socket.io-client';
 
 @Injectable()
 export class SocketService {
-	public io = IO.connect('localhost:1729');
+	public io = IO.connect('52.55.177.110:1729');
 	public socketCouple(path: string, body: {}): Promise<{}> {
 		console.log('hit');
 		return new Promise((res) => {
