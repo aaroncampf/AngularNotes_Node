@@ -76,7 +76,8 @@ export class SettingsComponent implements OnInit, OnDestroy {
 	};
 
 	public update(key, value): void {
-		this.socketService.socketCouple(this.savePath, {id: this.settings.id, [key]: value})
+		console.log('value', value);
+		this.socketService.socketCouple(this.savePath, {id: this.settings.id, attributes: {[key]: value}})
 			.then(response => {
 			console.log(response);
 		});
