@@ -95,8 +95,8 @@ export class Quotes_Printout implements OnInit {
 
     public ngOnInit(): void {
     	console.log('hit');
-    	this.socketService.socketCouple('get.userById', {id: FIXTURE_USER_ID})
-			.then(response => {
+    	this.socketService.hotSocketCouple('get.userById', {id: FIXTURE_USER_ID}, 'localhost:1729')
+			.subscribe(response => {
 				console.log('print response', response);
 				this.settings = <Settings>response
 			});

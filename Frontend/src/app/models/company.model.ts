@@ -9,6 +9,8 @@ export interface Company {
 	Zip: string;
 	Phone: string;
 	Misc: string;
+	Fax: string;
+	Web: string;
 
 	/**
 	 * The contacts inside of the company

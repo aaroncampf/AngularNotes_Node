@@ -23,9 +23,11 @@ import {SettingsComponent} from './components/settings.component';
 import {UserService} from './services/user.service';
 import {QuoteListComponent} from './components/quote-lines-list.component';
 import {SocketService} from './services/socket.service';
+import {RegistrationComponent} from './login/registration.component';
 
 const MAIN_ROUTES: Routes = [
 	{path: '', children: [
+		{path:'registration', component: SettingsComponent},
 		{path:'settings', component: SettingsComponent},
 		{path:'company', component: CompanyDetailsComponent},
 		{path:'contact', component: ContactDetailsComponent},
@@ -33,13 +35,15 @@ const MAIN_ROUTES: Routes = [
 		{path:'quote-print', component: Quotes_Printout},
 		{path:'quote-details', component: QuoteDetailsComponent},
 		{path:'notes', component: NotesComponent},
-		{path:'', redirectTo: '/company', pathMatch: 'full'}
+		{path:'', redirectTo: '/registration', pathMatch: 'full'},
+		{path: '**', component: RegistrationComponent}
 	]},
 ];
 
 @NgModule({
 	declarations: [
 		MainComponent,
+		RegistrationComponent,
 		QuoteDetailsComponent,
 		SidePanelComponent,
 		ContactDetailsComponent,
@@ -73,7 +77,7 @@ const MAIN_ROUTES: Routes = [
 	schemas: [
 		CUSTOM_ELEMENTS_SCHEMA
 	],
-	bootstrap: [ MainComponent ]
+	bootstrap: [ MainComponent ],
 })
 
 export class AppModule {}

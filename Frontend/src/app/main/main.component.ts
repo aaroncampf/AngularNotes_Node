@@ -20,12 +20,14 @@ import '../styles/main.scss';
 		<div [class.col-sm-8]="!!navVisible" class="col-xs-12">
 			<div *ngIf="!!navVisible" class="row">
 				<ul class="nav nav-tabs">
-					<li [class.active]="tab === COMPANY">
-						<a class="tab" (click)="routeTo(COMPANY)">
+					<!--<li [class.active]="tab === COMPANY">-->
+					<li >
+						<a class="tab" routerLinkActive="active" (click)="routeTo(COMPANY)">
 							<tab-heading>Company</tab-heading>
 						</a>
 					</li>
-					<li [class.active]="tab === CONTACT">
+					<!--<li [class.active]="tab === CONTACT">-->
+					<li routerLinkActive="active">
 						<a class="tab" (click)="routeTo(CONTACT)">
 							<tab-heading>Contact</tab-heading>
 						</a>
@@ -78,8 +80,8 @@ export class MainComponent implements OnInit {
 	public ngOnInit(): void {
 		this.dataShareService.navVisible$
 			.subscribe(state => this.navVisible = state);
-		this.tab = this.COMPANY;
-		this.router.navigate([this.COMPANY]);
+		//this.tab = this.COMPANY;
+		//this.router.navigate([this.COMPANY]);
 		this.dataShareService.sendCompany(this.selectedCompany);
 	}
 

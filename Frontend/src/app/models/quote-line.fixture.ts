@@ -69,11 +69,13 @@ export const QUOTE: Quote = {
 export const COMPANY: Company = {
     ID: 1,
     Name: "AJP Northwest",
+    Web: "AJP Northwest".trim() + '.com',
     Address: "1111 SW Portland",
     City: "Portland",
     Zip: "97034",
     Phone: "555-555-5555",
-    Misc: "aswrfghjkjhgfdc",
+    Fax: "555-555-5555",
+    Misc: "This is only some space",
     Contacts:null,
     Quotes:null
 };

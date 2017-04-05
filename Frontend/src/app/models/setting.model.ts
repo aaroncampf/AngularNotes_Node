@@ -13,13 +13,7 @@ export interface Settings {
 	name: string;
 	email: string;
 	address: string;
-	companyFax: string;
-	companyName: string;
-	companyPhone: string;
-	companyWeb: string;
-	passHash: string;
 	phone: string;
-	role: string;
 	// updated_at: string | Date;
 	// created_at: string | Date;
 	// deleted_at?: string | Date;

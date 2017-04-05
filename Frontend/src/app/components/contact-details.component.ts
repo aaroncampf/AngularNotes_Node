@@ -4,6 +4,7 @@ import {Contact} from '../models/contact.model';
 import {ContactService} from '../services/contact.service';
 import {DataShareService} from '../services/data-share.service';
 import {ToastsManager} from 'ng2-toastr/ng2-toastr'
+import {EmailRegEx} from '../regex/email.regex';
 
 @Component({
 	selector: 'contact-details-component',
@@ -12,8 +13,8 @@ import {ToastsManager} from 'ng2-toastr/ng2-toastr'
 		<h4>Contact Details</h4>
 		<input-component (modelChange)="saveContact($event, 'Name')" label="Name" [model]="contact.Name" [control]="nameControl"></input-component>
 		<input-component (modelChange)="saveContact($event, 'Phone')" label="Phone" [model]="contact.Phone" [control]="phoneControl"></input-component>
-		<input-component (modelChange)="saveContact($event, 'Email')"label="Email" [model]="contact.Email" [control]="emailControl"></input-component>
-		<input-component (modelChange)="saveContact($event, 'Position')"label="Position" [model]="contact.Position" [control]="positionControl"></input-component>
+		<input-component (modelChange)="saveContact($event, 'Email')" label="Email" [model]="contact.Email" [control]="emailControl"></input-component>
+		<input-component (modelChange)="saveContact($event, 'Position')" label="Position" [model]="contact.Position" [control]="positionControl"></input-component>
 		<notes-component></notes-component>
 	</div>
 	<div *ngIf="!contact.ID">
@@ -27,7 +28,7 @@ export class ContactDetailsComponent implements OnInit{
 	public contact: Contact = <Contact>{};
 	public nameControl: FormControl = new FormControl('', [Validators.required, Validators.maxLength(255)]);
 	public positionControl: FormControl = new FormControl('', []);
-	public emailControl: FormControl = new FormControl('', [Validators.pattern(/^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/)]);
+	public emailControl: FormControl = new FormControl('', [Validators.pattern(EmailRegEx)]);
 	public zipControl: FormControl = new FormControl('', []);
 	public phoneControl: FormControl = new FormControl('', []);
 	public miscControl: FormControl = new FormControl('', []);
