@@ -10,7 +10,6 @@
     "test": "tsc  && mocha --require ./mocha-test-shim.js ./dist/src/test/*.test.js ",
     "test:watch": "concurrently \"tsc -w\" \"mocha --require ./mocha-test-shim.js -w\"",
     "clean": "rm -rf dist/",
-    "dev-build": "webpack-dev-server --content-base build/"
   },
   "authors": [
     "rdev1163@outlook.com",
