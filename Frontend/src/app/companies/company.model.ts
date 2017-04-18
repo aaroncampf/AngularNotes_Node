@@ -1,5 +1,5 @@
-import {Contact} from "./contact.model";
-import {Quote} from "./quote.model";
+import {Contact} from "../contacts/contact.model";
+import {Quote} from "../quotes/quote.model";
 
 export interface Company {
 	ID: number;

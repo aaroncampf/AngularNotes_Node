@@ -1,12 +1,12 @@
 import {Component, OnDestroy, OnInit} from '@angular/core';
-import {Settings} from '../models/setting.model';
+import {Settings} from '../common/models/setting.model';
 import {FormControl, FormGroup} from '@angular/forms';
 import {UserService} from './user.service';
-import {DataShareService} from '../global/data-share.service';
-import {SocketService} from '../global/socket.service';
-import {FIXTURE_USER_ID} from '../models/FIXTURE_ID';
-import {User} from '../models/user.model';
-import {SERVER_MAP} from '../models/servers.map';
+import {DataShareService} from '../common/services/data-share.service';
+import {SocketService} from '../common/services/socket.service';
+import {FIXTURE_USER_ID} from '../common/models/FIXTURE_ID';
+import {User} from '../common/models/user.model';
+import {SERVER_MAP} from '../common/models/servers.map';
 
 @Component({
 	selector: 'settings-component',
@@ -54,7 +54,7 @@ export class SettingsComponent implements OnInit, OnDestroy {
 	}
 
 	public ngOnInit(): void {
-		this.socketService.responseSocket(this.getPath, {id: FIXTURE_USER_ID}, 'localhost:1729')
+		this.socketService.responseSocket(this.getPath, {id: FIXTURE_USER_ID})
 			.subscribe((user: Settings) => {
 				console.log('USER', user);
 				this.userData = <User>{
@@ -71,7 +71,7 @@ export class SettingsComponent implements OnInit, OnDestroy {
 	public update(key, value): void {
 		console.log('value', value);
 		// todo refoactor modulePort
-		this.socketService.responseSocket(this.savePath, {id: this.userData.id, attributes: {[key]: value}}, 'localhost:1729')
+		this.socketService.responseSocket(this.savePath, {id: this.userData.id, attributes: {[key]: value}})
 			.subscribe(response => {
 				console.log(response);
 			});

@@ -1,7 +1,7 @@
 import {Injectable} from '@angular/core';
 import {Http, RequestOptions, Headers, Response} from '@angular/http';
 import {Observable} from 'rxjs';
-import {Note} from '../models/note.model';
+import {Note} from '../common/models/note.model';
 
 @Injectable()
 export class NotesService {

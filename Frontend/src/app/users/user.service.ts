@@ -1,8 +1,8 @@
 import {Injectable} from '@angular/core';
 import {Observable} from 'rxjs';
-import {Settings} from '../models/setting.model';
+import {Settings} from '../common/models/setting.model';
 import * as io from 'socket.io-client';
-import {User} from '../models/user.model';
+import {User} from '../common/models/user.model';
 
 export const MOCK_USER :User = {
 	id: '1',

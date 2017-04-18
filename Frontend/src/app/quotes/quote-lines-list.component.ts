@@ -1,6 +1,6 @@
 import {Component, Input, OnInit} from '@angular/core';
 import {QuotesService} from './quotes.service';
-import {QuoteLine} from '../models/quotelines.model';
+import {QuoteLine} from './quotelines.model';
 @Component({
 	selector: 'quote-list-component',
 	template: `

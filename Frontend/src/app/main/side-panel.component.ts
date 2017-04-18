@@ -1,9 +1,9 @@
 import {Component, EventEmitter, OnInit, Output} from '@angular/core';
-import {Company} from '../models/company.model';
+import {Company} from '../companies/company.model';
 import {CompanyService} from '../companies/companies.service';
 import {ContactsService} from '../contacts/contacts.service';
 import {ToastsManager} from 'ng2-toastr/ng2-toastr';
-import {Contact} from '../models/contact.model';
+import {Contact} from '../contacts/contact.model';
 import {Router} from '@angular/router';
 
 @Component({
@@ -70,7 +70,7 @@ export class SidePanelComponent implements OnInit{
 		this.contactService.createContact(companyId)
 			.subscribe(contactID => {
 				this.toastr.success('Success! Please provide a name.');
-				this.currentContact = <Contact>{ID: contactID._body};console.log('create current', this.currentContact);
+				this.currentContact = <Contact>{ID: contactID._body};
 				this.currentContactChange.emit(this.currentContact);
 				let temp = this.contacts;
 				this.contacts = [];
@@ -78,7 +78,6 @@ export class SidePanelComponent implements OnInit{
 				temp.push(this.currentContact);
 				this.contacts = temp;
 				this.router.navigate(['/contact'])
-
 		})
 	}
 

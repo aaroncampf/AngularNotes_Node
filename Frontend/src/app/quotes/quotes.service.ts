@@ -1,8 +1,8 @@
 import {Injectable} from '@angular/core';
 import {Http, Headers, RequestOptions, Response} from '@angular/http';
 import {Observable} from 'rxjs';
-import {Quote} from '../models/quote.model';
-import {QuoteLine} from '../models/quotelines.model';
+import {Quote} from './quote.model';
+import {QuoteLine} from './quotelines.model';
 
 @Injectable()
 export class QuotesService {

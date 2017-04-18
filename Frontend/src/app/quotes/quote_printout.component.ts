@@ -2,16 +2,16 @@
  * Created by aaron on 3/17/2017.
  */
 import {Component, OnInit} from '@angular/core';
-import {Company} from "../models/company.model";
-import {Quote} from "../models/quote.model";
-import {QuoteLine} from "../models/quotelines.model";
-import {Settings} from "../models/setting.model";
-import {Contact} from '../models/contact.model';
-import {COMPANY, CONTACT, QUOTE, QUOTE_LINES} from '../models/quote-line.fixture';
-import {DataShareService} from '../global/data-share.service';
+import {Company} from "../companies/company.model";
+import {Quote} from "./quote.model";
+import {QuoteLine} from "./quotelines.model";
+import {Settings} from "../common/models/setting.model";
+import {Contact} from '../contacts/contact.model';
+import {COMPANY, CONTACT, QUOTE, QUOTE_LINES} from './quote-line.fixture';
+import {DataShareService} from '../common/services/data-share.service';
 import {QuotesService} from './quotes.service';
-import {SocketService} from '../global/socket.service';
-import {FIXTURE_USER_ID} from '../models/FIXTURE_ID';
+import {SocketService} from '../common/services/socket.service';
+import {FIXTURE_USER_ID} from '../common/models/FIXTURE_ID';
 
 /**
  * Displays a quote as a beautiful printout
@@ -95,7 +95,7 @@ export class Quotes_Printout implements OnInit {
 
     public ngOnInit(): void {
     	console.log('hit');
-    	this.socketService.responseSocket('get.userById', {id: FIXTURE_USER_ID}, 'localhost:1729')
+    	this.socketService.responseSocket('get.userById', {id: FIXTURE_USER_ID})
 			.subscribe(response => {
 				console.log('print response', response);
 				this.settings = <Settings>response

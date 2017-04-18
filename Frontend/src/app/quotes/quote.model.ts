@@ -1,5 +1,5 @@
 import {QuoteLine} from "./quotelines.model";
-import {Company} from "./company.model";
+import {Company} from "../companies/company.model";
 /**
  * Created by aaron on 3/14/2017.
  */

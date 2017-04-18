@@ -1,4 +1,4 @@
-import {Contact} from "./contact.model";
+import {Contact} from "../../contacts/contact.model";
 /**
  * Created by aaron on 3/14/2017.
  */

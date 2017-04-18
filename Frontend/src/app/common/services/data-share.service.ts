@@ -1,8 +1,8 @@
 import {Injectable} from '@angular/core';
 import {BehaviorSubject, Observable} from 'rxjs';
-import {Company} from '../models/company.model';
-import {Contact} from '../models/contact.model';
-import {Quote} from '../models/quote.model';
+import {Company} from '../../companies/company.model';
+import {Contact} from '../../contacts/contact.model';
+import {Quote} from '../../quotes/quote.model';
 import get = Reflect.get;
 
 @Injectable()

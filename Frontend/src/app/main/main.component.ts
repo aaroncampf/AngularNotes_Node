@@ -1,63 +1,48 @@
-import {Component, OnInit, ViewContainerRef} from '@angular/core';
-import {Router} from '@angular/router';
-import {Company} from '../models/company.model';
-import {Contact} from '../models/contact.model';
-import {DataShareService} from '../global/data-share.service';
+import {Component, NgZone, OnInit, ViewContainerRef} from '@angular/core';
 import {ToastsManager} from 'ng2-toastr/ng2-toastr';
 import '../styles/main.scss';
 
 @Component({
 	selector: 'main',
 	template: `
-	<div class='container'>
-		<router-outlet></router-outlet>
-		<i [routerLink]="['/settings']" class="glyphicon glyphicon-cog pull-right"></i>
-	</div>
+		<div class="container">
+			<div *ngIf="!!MOBILE">
+				<h1>Mobile dashboard</h1>
+				<navigation-component></navigation-component>				
+			</div>
+			<div *ngIf="!MOBILE">
+				<h1>Wide dashboard</h1>
+				<h1>nav</h1>
+				<h1 class="pull-left">side-panel</h1>
+			</div>
+			<router-outlet></router-outlet>
+		</div>
 	`,
 	})
 
 export class MainComponent implements OnInit {
-	public navVisible: boolean = true;
-	public CONTACT: string = 'contact';
-	public COMPANY: string = 'company';
-	public NOTES: string = 'notes';
-	public QUOTES: string = 'quotes';
-	public tab: string;
-	public selectedCompany: Company = <Company>{};
-	public selectedContact: Contact = <Contact>{};
+	private windowWidth: number;
+	public get MOBILE(): boolean {
+		return this.windowWidth < 768;
+	}
 	constructor(public toastr: ToastsManager,
 				public vcr: ViewContainerRef,
-				private router: Router,
-				private dataShareService: DataShareService
+				public ngZone: NgZone
 	){
 		this.toastr.setRootViewContainerRef(vcr);
 	}
 
-	public routeTo(tab: string): void {
-		if (tab === 'contact' && !this.selectedContact.ID){
-			this.toastr.warning('Please chose a contact for their details.');
-		} else {
-			this.router.navigate(['/' + tab]);
-			this.tab = tab;
-		}
-	}
-
 	public ngOnInit(): void {
-		this.dataShareService.navVisible$
-			.subscribe(state => this.navVisible = state);
-		//this.tab = this.COMPANY;
-		//this.router.navigate([this.COMPANY]);
-		this.dataShareService.sendCompany(this.selectedCompany);
+		this.detectWindowSize();
 	}
 
-	public updateSelectedContact(contact: Contact): void {
-		this.tab = this.CONTACT;
-		this.dataShareService.sendContact(contact);
-		this.selectedContact = contact;
-	}
+	private detectWindowSize(): void {
+		window.onresize = () => {
+			this.ngZone.run(() => {
+				this.windowWidth = window.innerWidth;
+			})
+		};
 
-	public updateSelectedCompany(company: Company): void {
-		this.dataShareService.sendCompany(company);
-		this.selectedCompany = company;
-	}
+}
+
 }

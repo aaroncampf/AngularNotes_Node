@@ -1,6 +1,6 @@
 import {Quote} from './quote.model';
-import {Company} from './company.model';
-import {Contact} from './contact.model';
+import {Company} from '../companies/company.model';
+import {Contact} from '../contacts/contact.model';
 import {QuoteLine} from './quotelines.model';
 export const QUOTE_LINES: QuoteLine[] = [
 	{

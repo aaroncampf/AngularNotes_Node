@@ -1,5 +1,5 @@
-import {Company} from "./company.model";
-import {Note} from "./note.model";
+import {Company} from "../companies/company.model";
+import {Note} from "../common/models/note.model";
 /**
  * Created by aaron on 3/14/2017.
  */

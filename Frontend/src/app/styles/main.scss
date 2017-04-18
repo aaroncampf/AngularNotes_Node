@@ -1,4 +1,22 @@
 main {
+  @media (max-width: 736px) {
+    mobile-screen {
+      display: block;
+    }
+    wide-screen {
+      display: none;
+    }
+  }
+
+  @media (min-width: 737px) {
+    mobile-screen {
+      display: none;
+    }
+    wide-screen {
+      display: block;
+    }
+  }
+
   background: lightgray;
   min-height: 100vh;
 
@@ -32,8 +50,9 @@ toast-container div#toast-container {
   background: #16d11c;
 }
 
-@import './side-panel';
-@import './quote-details';
-@import './quote';
-@import "./input";
-@import "./notes";
+@import 'side-panel';
+@import 'quote-details';
+@import 'quote';
+@import 'input';
+@import 'notes';
+@import '../common/common.styles';
