@@ -1,22 +1,24 @@
-import {Company} from "../companies/company.model";
-import {Note} from "../common/models/note.model";
 /**
  * Created by aaron on 3/14/2017.
+ * edited by RD on 4/17/2017
  */
 export interface Contact {
-    ID: number;
-    Name: string;
-    Phone: string;
-    Email: string;
-    Position: string;
+	id?: string;
+	companyId: string;
+	name: string;
+	phone: string;
+	email: string;
+	position: string;
+	update_at?: string;
+	created_at?: string;
 
-    /**
-     * The company that this contact belongs to
-     */
-    Company?: Company;
+	/**
+	 * The company that this contact belongs to
+	 */
+	// Company?: Company;
 
-    /**
-     * All notesCollection written for this contact
-     */
-    Notes?: Note[];
+	/**
+	 * All notesCollection written for this contact
+	 */
+	// Notes?: Note[];
 }

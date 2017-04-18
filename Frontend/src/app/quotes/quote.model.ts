@@ -1,34 +1,25 @@
-import {QuoteLine} from "./quotelines.model";
 import {Company} from "../companies/company.model";
 /**
  * Created by aaron on 3/14/2017.
+ * edited by Rd on 4/17/2017
  */
-export interface Quote {
-    ID: number;
 
-    /**
-     * The date the quote was created
-     */
-    Date: string;
-
-    /**
-     * The display name of the quotes
-     */
-    Name: string;
-
-    /**
-     * The company this write was written for
-     */
-    Company: Company;
-
-    /**
-     * The individual lines of the quote document
-     */
-    Lines: QuoteLine[];
+export interface QuoteLine {
+    id?: string;
+    quoteId: string;
+    weight?: number;
+    isCentered?: Boolean;
+    unit: string;
+    cost: string;
+    desc: string;
 }
 
-export function newQuote(quote: Quote): Quote {
-    let date = new Date().toISOString();
-    quote.Date = date;
-    return quote;
+export interface Quote {
+    id?: string;
+    companyId: string;
+    date: string;
+    name: string;
+    quoteLines: QuoteLine[];
+    updated_at?: string;
+    created_at?: string;
 }

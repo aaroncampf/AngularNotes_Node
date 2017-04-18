@@ -63,7 +63,7 @@ var NotesComponent = (function () {
 NotesComponent = __decorate([
     core_1.Component({
         selector: 'notes-component',
-        template: "\n\t<h4>Contact Notes</h4>\n\t<button type=\"button\" class=\"btn btn-block\" (click)=\"addNote(selectedContact)\" [disabled]=\"!selectedContact.ID\" [class.disabled]=\"!selectedContact.ID\">Add Note</button>\n\t<div class=\"card-panel\" *ngFor=\"let note of notesCollection; let i = index;\">\n\t\t<i class=\"glyphicon glyphicon-remove pull-right\" (click)=\"removeNote(note.ID)\"></i>\n\t\t<strong>Note #{{note.ID}}</strong> - <strong>{{note.Date | date: 'MM/dd/yyyy' }}</strong>\n\t\t<input class=\"col-xs-8\" (blur)=\"updateNote(note, note.ID)\" [(ngModel)]=\"note.Title\"/>\n\t\t<textarea (blur)=\"updateNote(note, note.ID)\" [(ngModel)]=\"note.Text\"></textarea>\n\t</div>\n\t"
+        template: "\n\t<h4>contact Notes</h4>\n\t<button type=\"button\" class=\"btn btn-block\" (click)=\"addNote(selectedContact)\" [disabled]=\"!selectedContact.id\" [class.disabled]=\"!selectedContact.id\">Add Note</button>\n\t<div class=\"card-panel\" *ngFor=\"let note of notesCollection; let i = index;\">\n\t\t<i class=\"glyphicon glyphicon-remove pull-right\" (click)=\"removeNote(note.id)\"></i>\n\t\t<strong>Note #{{note.id}}</strong> - <strong>{{note.date | date: 'MM/dd/yyyy' }}</strong>\n\t\t<input class=\"col-xs-8\" (blur)=\"updateNote(note, note.id)\" [(ngModel)]=\"note.title\"/>\n\t\t<textarea (blur)=\"updateNote(note, note.id)\" [(ngModel)]=\"note.text\"></textarea>\n\t</div>\n\t"
     }),
     __metadata("design:paramtypes", [notes_service_1.NotesService,
         data_share_service_1.DataShareService,

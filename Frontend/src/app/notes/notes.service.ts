@@ -1,7 +1,7 @@
 import {Injectable} from '@angular/core';
 import {Http, RequestOptions, Headers, Response} from '@angular/http';
 import {Observable} from 'rxjs';
-import {Note} from '../common/models/note.model';
+import {Note} from './note.model';
 
 @Injectable()
 export class NotesService {
@@ -23,7 +23,7 @@ export class NotesService {
 			'content-type': 'application/json'
 		});
 		const options = new RequestOptions({headers: headers});
-		return this.http.put(`http://angularnotes-angularbros.azurewebsites.net/api/Notes/${note.ID}`, JSON.stringify(note), options)
+		return this.http.put(`http://angularnotes-angularbros.azurewebsites.net/api/Notes/${note.id}`, JSON.stringify(note), options)
 			.map(res => res)
 			.catch(err => this.handleError(err));
 	}

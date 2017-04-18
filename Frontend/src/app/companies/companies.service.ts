@@ -18,7 +18,7 @@ export class CompanyService {
 			'content-type': 'application/json',
 		});
 		const options = new RequestOptions({headers: headers});
-		return this.http.put(`http://angularnotes-angularbros.azurewebsites.net/api/companies/${company.ID}`, JSON.stringify(company), options)
+		return this.http.put(`http://angularnotes-angularbros.azurewebsites.net/api/companies/${company.id}`, JSON.stringify(company), options)
 			.map(res => {
 				console.log('update', res.json());
 				return res.json()

@@ -80,7 +80,7 @@ exports.CONTACT = {
     Notes: void 0,
 };
 // export const SETTINGS: Settings = {
-//     ID: 'ff615834-1533-48f4-b38f-316108606e87',
+//     id: 'ff615834-1533-48f4-b38f-316108606e87',
 //     Name: "Aaron Campf",
 //     Gmail: "Example@Gmail.com",
 //     GmailPassword: "",

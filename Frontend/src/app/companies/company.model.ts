@@ -1,24 +1,23 @@
-import {Contact} from "../contacts/contact.model";
-import {Quote} from "../quotes/quote.model";
+export interface _Company {
+	id?: number;
+	name: string;
+	address1: string;
+	address2: string;
+	city: string;
+	zip: string;
+	phone: string;
+	email: string;
+	web: string;
+	misc: string;
+	fax: string;
+}
 
-export interface Company {
-	ID: number;
-	Name: string;
-	Address: string;
-	City: string;
-	Zip: string;
-	Phone: string;
-	Misc: string;
-	Fax: string;
-	Web: string;
+export interface Company extends _Company {
+	updated_at: string;
+	create_at: string;
+}
 
-	/**
-	 * The contacts inside of the company
-	 */
-	Contacts?: Contact[];
-
-	/**
-	 * The quotes written for this company
-	 */
-	Quotes?: Quote[];
+export function newCompany(response): Company {
+	let COMPANY: Company = <Company>response;
+	return COMPANY;
 }

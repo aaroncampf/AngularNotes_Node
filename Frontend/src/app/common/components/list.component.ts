@@ -1,26 +1,30 @@
 import {Component, EventEmitter, Input, Output} from '@angular/core';
 
-export interface ListItem {
-	prefix: string;
-	content: string;
-}
-
 export interface ListData {
 	title: string;
-	items: ListItem[];
+	headers: string[];
+	items: string[][];
 	footer: string;
 }
+
 @Component({
 	selector: 'list-component',
-	template: `
-	<list-header class="col-xs-12">{{title}}</list-header>
-	<list-body class="row">
-		<list-item class="col-xs-12" *ngFor="let item of items" (click)="onClick(item.content)">
-			<list-prefix class="col-xs-3" *ngIf="item.prefix">{{item.prefix}}</list-prefix>
-			<list-content [class.col-xs-9]="">{{item.content}}</list-content>
-		</list-item>
-	</list-body>
-	<list-footer *ngIf="item.footer" class="row">{{item.footer}}</list-footer>
+	template: `		
+	<table class="table table-bordered table-hover">
+	<thead>
+		<tr>
+			<th *ngFor="let headerValue of listData.headers" >{{headerValue}}</th>
+		</tr>
+	</thead>
+	<tbody>
+		<tr *ngFor="let item of listData.items">
+			<td *ngFor="let value of item" (click)="onClick(value)">{{value}}</td>
+		</tr>
+	</tbody>
+		<tfoot>
+			<span *ngIf="listData.footer">{{listData.footer}}</span>
+		</tfoot>
+	</table>
 	`
 })
 
@@ -28,9 +32,7 @@ export class ListComponent {
 	@Output()
 	public onSelect: EventEmitter<string> = new EventEmitter<string>();
 	@Input()
-	public items: ListItem[];
-	@Input()
-	public title: string;
+	public listData: ListData;
 
 	public onClick(content): void {
 		this.onSelect.emit(content);

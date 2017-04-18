@@ -3864,7 +3864,7 @@ var PLATFORM_INITIALIZER = new InjectionToken('Platform Initializer');
  * A token that indicates an opaque platform id.
  * \@experimental
  */
-var PLATFORM_ID = new InjectionToken('Platform ID');
+var PLATFORM_ID = new InjectionToken('Platform id');
 /**
  * All callbacks provided via this token will be called for every component that is bootstrapped.
  * Signature of the callback:
@@ -6509,7 +6509,7 @@ function registerModuleFactory(id, factory) {
 function getModuleFactory(id) {
     var /** @type {?} */ factory = moduleFactories.get(id);
     if (!factory)
-        throw new Error("No module with ID " + id + " loaded");
+        throw new Error("No module with id " + id + " loaded");
     return factory;
 }
 /**
@@ -16660,7 +16660,7 @@ var FREEZE = !__webpack_require__(7)(function(){
 });
 var setMeta = function(it){
   setDesc(it, META, {value: {
-    i: 'O' + ++id, // object ID
+    i: 'O' + ++id, // object id
     w: {}          // weak collections IDs
   }});
 };
@@ -16674,7 +16674,7 @@ var fastKey = function(it, create){
     if(!create)return 'E';
     // add missing metadata
     setMeta(it);
-  // return object ID
+  // return object id
   } return it[META].i;
 };
 var getWeak = function(it, create){
@@ -34116,7 +34116,7 @@ var Router = (function () {
         var _this = this;
         if (id !== this.navigationId) {
             this.location.go(this.urlSerializer.serialize(this.currentUrlTree));
-            this.routerEvents.next(new NavigationCancel(id, this.serializeUrl(url), "Navigation ID " + id + " is not equal to the current navigation id " + this.navigationId));
+            this.routerEvents.next(new NavigationCancel(id, this.serializeUrl(url), "Navigation id " + id + " is not equal to the current navigation id " + this.navigationId));
             return Promise.resolve(false);
         }
         return new Promise(function (resolvePromise, rejectPromise) {
@@ -38025,7 +38025,7 @@ var AsyncScheduler = (function (_super) {
          */
         this.active = false;
         /**
-         * An internal ID used to track the latest asynchronous task such as those
+         * An internal id used to track the latest asynchronous task such as those
          * coming from `setTimeout`, `setInterval`, `requestAnimationFrame`, and
          * others.
          * @type {any}
@@ -41731,10 +41731,10 @@ var DatePipe = (function () {
         else if (typeof value === 'string' && /^(\d{4}-\d{1,2}-\d{1,2})$/.test(value)) {
             /**
             * For ISO Strings without time the day, month and year must be extracted from the ISO String
-            * before Date creation to avoid time offset and errors in the new Date.
+            * before date creation to avoid time offset and errors in the new date.
             * If we only replace '-' with ',' in the ISO String ("2015,01,01"), and try to create a new
-            * date, some browsers (e.g. IE 9) will throw an invalid Date error
-            * If we leave the '-' ("2015-01-01") and try to create a new Date("2015-01-01") the timeoffset
+            * date, some browsers (e.g. IE 9) will throw an invalid date error
+            * If we leave the '-' ("2015-01-01") and try to create a new date("2015-01-01") the timeoffset
             * is applied
             * Note: ISO months are 0 for January, 1 for February, ...
             */
@@ -43394,13 +43394,13 @@ var ContactService = (function () {
         this.http = http;
     }
     ContactService.prototype.getContacts = function () {
-        return this.http.get('http://angularnotes-angularbros.azurewebsites.net/api/Contact')
+        return this.http.get('http://angularnotes-angularbros.azurewebsites.net/api/contact')
             .map(function (response) {
             return response.json();
         })
             .catch(function (err) { return err; });
     };
-    // public getContact(id: number): Observable<Contact> {
+    // public getContact(id: number): Observable<contact> {
     // 	return this.http.get(`http://angularnotes-angularbros.azurewebsites.net/api/Contact/${id}`)
     // 		.map(response => {
     // 			return response.json();
@@ -43408,7 +43408,7 @@ var ContactService = (function () {
     // 		.catch(err => err);
     // }
     ContactService.prototype.getCompanyContacts = function (id) {
-        return this.http.get("http://angularnotes-angularbros.azurewebsites.net/api/Contact?CompanyID=" + id)
+        return this.http.get("http://angularnotes-angularbros.azurewebsites.net/api/contact?CompanyID=" + id)
             .map(function (response) {
             return response.json();
         })
@@ -43420,7 +43420,7 @@ var ContactService = (function () {
             'content-type': 'application/json',
         });
         var options = new http_1.RequestOptions({ headers: headers });
-        return this.http.post("http://angularnotes-angularbros.azurewebsites.net/api/Contact?CompanyID=" + companyId, {}, options)
+        return this.http.post("http://angularnotes-angularbros.azurewebsites.net/api/contact?CompanyID=" + companyId, {}, options)
             .map(function (res) {
             return res;
         })
@@ -43432,14 +43432,14 @@ var ContactService = (function () {
             'content-type': 'application/json',
         });
         var options = new http_1.RequestOptions({ headers: headers });
-        return this.http.put("http://angularnotes-angularbros.azurewebsites.net/api/Contact/" + id, JSON.stringify(contact), options)
+        return this.http.put("http://angularnotes-angularbros.azurewebsites.net/api/contact/" + id, JSON.stringify(contact), options)
             .map(function (res) {
             return res;
         })
             .catch(function (err) { return _this.handleError(err); });
     };
     ContactService.prototype.deleteContact = function (contactId) {
-        return this.http.delete("http://angularnotes-angularbros.azurewebsites.net/api/Contact/" + contactId)
+        return this.http.delete("http://angularnotes-angularbros.azurewebsites.net/api/contact/" + contactId)
             .map(function (response) {
             return response.json();
         })
@@ -47628,7 +47628,7 @@ var NotesService = (function () {
             'content-type': 'application/json'
         });
         var options = new http_1.RequestOptions({ headers: headers });
-        return this.http.put("http://angularnotes-angularbros.azurewebsites.net/api/Notes/" + note.ID, JSON.stringify(note), options)
+        return this.http.put("http://angularnotes-angularbros.azurewebsites.net/api/Notes/" + note.id, JSON.stringify(note), options)
             .map(function (res) { return res; })
             .catch(function (err) { return _this.handleError(err); });
     };
@@ -57571,7 +57571,7 @@ function supportsWebAnimations() {
 /* unused harmony export ERROR_COLLECTOR_TOKEN */
 /* unused harmony export CompileMetadataResolver */
 /* unused harmony export componentModuleUrl */
-/* unused harmony export Text */
+/* unused harmony export text */
 /* unused harmony export Expansion */
 /* unused harmony export ExpansionCase */
 /* unused harmony export Attribute */
@@ -83070,7 +83070,7 @@ var MessageBundle = (function () {
     MessageBundle.prototype.write = function (serializer) {
         var /** @type {?} */ messages = {};
         var /** @type {?} */ mapperVisitor = new MapPlaceholderNames();
-        // Deduplicate messages based on their ID
+        // Deduplicate messages based on their id
         this._messages.forEach(function (message) {
             var /** @type {?} */ id = serializer.digest(message);
             if (!messages.hasOwnProperty(id)) {
@@ -84375,7 +84375,7 @@ var CompanyDetailsComponent = (function () {
 CompanyDetailsComponent = __decorate([
     core_1.Component({
         selector: 'company-component',
-        template: "\n\t\t<div *ngIf=\"company.ID\">\n\t\t\t<h4>Company Details</h4>\n\t\t\t<input-component (modelChange)=\"saveCompany($event, 'Name')\" [model]=\"company.Name\" label=\"Name\" [control]=\"nameControl\"></input-component>\n\t\t\t<input-component (modelChange)=\"saveCompany($event, 'Phone')\" [model]=\"company.Phone\" label=\"Phone\" [control]=\"phoneControl\"></input-component>\n\t\t\t<input-component (modelChange)=\"saveCompany($event, 'Address')\" [model]=\"company.Address\" label=\"Address\" [control]=\"addressControl\"></input-component>\n\t\t\t<input-component (modelChange)=\"saveCompany($event, 'City')\" [model]=\"company.City\" label=\"City\" [control]=\"cityControl\"></input-component>\n\t\t\t<input-component (modelChange)=\"saveCompany($event, 'Zip')\" [model]=\"company.Zip\" label=\"Zip\" [control]=\"zipControl\"></input-component>\n\t\t\t<quotes-component></quotes-component>\n\t\t</div>\n\t\t<div *ngIf=\"!company.ID\">\n\t\t\t<h4>Please select a Company for it's details.</h4>\n\t\t</div>\n\t",
+        template: "\n\t\t<div *ngIf=\"company.id\">\n\t\t\t<h4>Company Details</h4>\n\t\t\t<input-component (modelChange)=\"saveCompany($event, 'Name')\" [model]=\"company.Name\" label=\"Name\" [control]=\"nameControl\"></input-component>\n\t\t\t<input-component (modelChange)=\"saveCompany($event, 'Phone')\" [model]=\"company.Phone\" label=\"Phone\" [control]=\"phoneControl\"></input-component>\n\t\t\t<input-component (modelChange)=\"saveCompany($event, 'Address')\" [model]=\"company.Address\" label=\"Address\" [control]=\"addressControl\"></input-component>\n\t\t\t<input-component (modelChange)=\"saveCompany($event, 'City')\" [model]=\"company.City\" label=\"City\" [control]=\"cityControl\"></input-component>\n\t\t\t<input-component (modelChange)=\"saveCompany($event, 'Zip')\" [model]=\"company.Zip\" label=\"Zip\" [control]=\"zipControl\"></input-component>\n\t\t\t<quotes-component></quotes-component>\n\t\t</div>\n\t\t<div *ngIf=\"!company.id\">\n\t\t\t<h4>Please select a Company for it's details.</h4>\n\t\t</div>\n\t",
     }),
     __metadata("design:paramtypes", [companies_service_1.CompanyService,
         data_share_service_1.DataShareService,
@@ -84446,7 +84446,7 @@ var ContactDetailsComponent = (function () {
 ContactDetailsComponent = __decorate([
     core_1.Component({
         selector: 'contact-details-component',
-        template: "\n\t<div *ngIf=\"contact.ID\">\n\t\t<h4>Contact Details</h4>\n\t\t<input-component (modelChange)=\"saveContact($event, 'Name')\" label=\"Name\" [model]=\"contact.Name\" [control]=\"nameControl\"></input-component>\n\t\t<input-component (modelChange)=\"saveContact($event, 'Phone')\" label=\"Phone\" [model]=\"contact.Phone\" [control]=\"phoneControl\"></input-component>\n\t\t<input-component (modelChange)=\"saveContact($event, 'Email')\" label=\"Email\" [model]=\"contact.Email\" [control]=\"emailControl\"></input-component>\n\t\t<input-component (modelChange)=\"saveContact($event, 'Position')\" label=\"Position\" [model]=\"contact.Position\" [control]=\"positionControl\"></input-component>\n\t\t<notes-component></notes-component>\n\t</div>\n\t<div *ngIf=\"!contact.ID\">\n\t\t<h4>Please Select a contact for their details and notes.</h4>\n\t</div>\n\t",
+        template: "\n\t<div *ngIf=\"contact.id\">\n\t\t<h4>contact Details</h4>\n\t\t<input-component (modelChange)=\"saveContact($event, 'Name')\" label=\"Name\" [model]=\"contact.Name\" [control]=\"nameControl\"></input-component>\n\t\t<input-component (modelChange)=\"saveContact($event, 'Phone')\" label=\"Phone\" [model]=\"contact.Phone\" [control]=\"phoneControl\"></input-component>\n\t\t<input-component (modelChange)=\"saveContact($event, 'Email')\" label=\"Email\" [model]=\"contact.Email\" [control]=\"emailControl\"></input-component>\n\t\t<input-component (modelChange)=\"saveContact($event, 'Position')\" label=\"Position\" [model]=\"contact.Position\" [control]=\"positionControl\"></input-component>\n\t\t<notes-component></notes-component>\n\t</div>\n\t<div *ngIf=\"!contact.id\">\n\t\t<h4>Please Select a contact for their details and notes.</h4>\n\t</div>\n\t",
     }),
     __metadata("design:paramtypes", [contact_service_1.ContactService,
         data_share_service_1.DataShareService,
@@ -84584,7 +84584,7 @@ var NotesComponent = (function () {
 NotesComponent = __decorate([
     core_1.Component({
         selector: 'notes-component',
-        template: "\n\t<h4>Contact Notes</h4>\n\t<button type=\"button\" class=\"btn btn-block\" (click)=\"addNote(selectedContact)\" [disabled]=\"!selectedContact.ID\" [class.disabled]=\"!selectedContact.ID\">Add Note</button>\n\t<div class=\"card-panel\" *ngFor=\"let note of notesCollection; let i = index;\">\n\t\t<i class=\"glyphicon glyphicon-remove pull-right\" (click)=\"removeNote(note.ID)\"></i>\n\t\t<strong>Note #{{note.ID}}</strong> - <strong>{{note.Date | date: 'MM/dd/yyyy' }}</strong>\n\t\t<input class=\"col-xs-8\" (blur)=\"updateNote(note, note.ID)\" [(ngModel)]=\"note.Title\"/>\n\t\t<textarea (blur)=\"updateNote(note, note.ID)\" [(ngModel)]=\"note.Text\"></textarea>\n\t</div>\n\t"
+        template: "\n\t<h4>contact Notes</h4>\n\t<button type=\"button\" class=\"btn btn-block\" (click)=\"addNote(selectedContact)\" [disabled]=\"!selectedContact.id\" [class.disabled]=\"!selectedContact.id\">Add Note</button>\n\t<div class=\"card-panel\" *ngFor=\"let note of notesCollection; let i = index;\">\n\t\t<i class=\"glyphicon glyphicon-remove pull-right\" (click)=\"removeNote(note.id)\"></i>\n\t\t<strong>Note #{{note.id}}</strong> - <strong>{{note.date | date: 'MM/dd/yyyy' }}</strong>\n\t\t<input class=\"col-xs-8\" (blur)=\"updateNote(note, note.id)\" [(ngModel)]=\"note.title\"/>\n\t\t<textarea (blur)=\"updateNote(note, note.id)\" [(ngModel)]=\"note.text\"></textarea>\n\t</div>\n\t"
     }),
     __metadata("design:paramtypes", [notes_service_1.NotesService,
         data_share_service_1.DataShareService,
@@ -84680,7 +84680,7 @@ var QuoteDetailsComponent = (function () {
 QuoteDetailsComponent = __decorate([
     core_1.Component({
         selector: 'quote-details-component',
-        template: "\n\t<div class=\"row\">\n\t\t<div class=\"card\">\n\t\t\t<div class=\"row\">\n\t\t\t\t<button type=\"button\" class=\"btn pull-left\" [routerLink]=\"['/quotes']\">Back</button>\n\t\t\t</div>\n\t\t\t<div class=\"quote-header\">\n\t\t\t\t<div class=\"row\">\n\t\t\t\t\t<button type=\"button\" class=\"btn-danger pull-right\" (click)=\"removeQuote(quote.ID)\">Delete</button>\n\t\t\t\t\t<div class=\"col-xs-6\">ID: {{quote.ID}}</div>\n\t\t\t\t</div>\n\t\t\t\t<div class=\"row\">\n\t\t\t\t\t<div class=\"col-xs-6\">Date: {{quote.Date | date: 'MM/dd/yyyy'}}</div>\n\t\t\t\t</div>\n\t\t\t\t<input-component label=\"Name\" [model]=\"quote.Name\" (modelChange)=\"updateQuote($event, 'Name', quote)\"></input-component>\n\t\t\t</div>\n\t\t\t<div *ngFor=\"let line of quoteLines\" class=\"quote-item\">\n\t\t\t\t<div class=\"row\">\n\t\t\t\t\t<i class=\"glyphicon glyphicon-remove pull-right\" (click)=\"removeLine(line.ID)\"></i>\n\t\t\t\t</div>\n\t\t\t\t<div class=\"row\">\n\t\t\t\t\t<input-component class=\"col-xs-4\" label=\"Unit\" [model]=\"line.UNIT\" (modelChange)=\"updateQuoteLine($event, 'UNIT', line)\"></input-component>\n\t\t\t\t\t<input-component class=\"col-xs-4\" label=\"Cost\" [model]=\"line.COST\" (modelChange)=\"updateQuoteLine($event,'COST', line)\"></input-component>\n\t\t\t\t\t<input-component class=\"col-xs-4\" label=\"Desc.\" [model]=\"line.DESC\" (modelChange)=\"updateQuoteLine($event, 'DESC', line)\"></input-component>\n\t\t\t\t</div>\n\t\t\t</div>\n\t\t\t<div class=\"quote-item-add\">\n\t\t\t\t<input-component class=\"col-xs-12\" [(model)]=\"newQuoteLine.UNIT\" label=\"Unit\"></input-component>\t\n\t\t\t\t<input-component class=\"col-xs-12\" [(model)]=\"newQuoteLine.COST\" label=\"Cost\"></input-component>\t\n\t\t\t\t<input-component class=\"col-xs-12\" [(model)]=\"newQuoteLine.DESC\" label=\"Desc.\"></input-component>\n\t\t\t\t<button class=\"btn btn-block\" (click)=\"addLine(newQuoteLine)\">ADD LINE</button>\n\t\t\t</div>\n\t\t</div>\n\t</div>\n\t"
+        template: "\n\t<div class=\"row\">\n\t\t<div class=\"card\">\n\t\t\t<div class=\"row\">\n\t\t\t\t<button type=\"button\" class=\"btn pull-left\" [routerLink]=\"['/quotes']\">Back</button>\n\t\t\t</div>\n\t\t\t<div class=\"quote-header\">\n\t\t\t\t<div class=\"row\">\n\t\t\t\t\t<button type=\"button\" class=\"btn-danger pull-right\" (click)=\"removeQuote(quote.id)\">Delete</button>\n\t\t\t\t\t<div class=\"col-xs-6\">id: {{quote.id}}</div>\n\t\t\t\t</div>\n\t\t\t\t<div class=\"row\">\n\t\t\t\t\t<div class=\"col-xs-6\">date: {{quote.date | date: 'MM/dd/yyyy'}}</div>\n\t\t\t\t</div>\n\t\t\t\t<input-component label=\"Name\" [model]=\"quote.Name\" (modelChange)=\"updateQuote($event, 'Name', quote)\"></input-component>\n\t\t\t</div>\n\t\t\t<div *ngFor=\"let line of quoteLines\" class=\"quote-item\">\n\t\t\t\t<div class=\"row\">\n\t\t\t\t\t<i class=\"glyphicon glyphicon-remove pull-right\" (click)=\"removeLine(line.id)\"></i>\n\t\t\t\t</div>\n\t\t\t\t<div class=\"row\">\n\t\t\t\t\t<input-component class=\"col-xs-4\" label=\"Unit\" [model]=\"line.UNIT\" (modelChange)=\"updateQuoteLine($event, 'UNIT', line)\"></input-component>\n\t\t\t\t\t<input-component class=\"col-xs-4\" label=\"Cost\" [model]=\"line.COST\" (modelChange)=\"updateQuoteLine($event,'COST', line)\"></input-component>\n\t\t\t\t\t<input-component class=\"col-xs-4\" label=\"Desc.\" [model]=\"line.DESC\" (modelChange)=\"updateQuoteLine($event, 'DESC', line)\"></input-component>\n\t\t\t\t</div>\n\t\t\t</div>\n\t\t\t<div class=\"quote-item-add\">\n\t\t\t\t<input-component class=\"col-xs-12\" [(model)]=\"newQuoteLine.UNIT\" label=\"Unit\"></input-component>\t\n\t\t\t\t<input-component class=\"col-xs-12\" [(model)]=\"newQuoteLine.COST\" label=\"Cost\"></input-component>\t\n\t\t\t\t<input-component class=\"col-xs-12\" [(model)]=\"newQuoteLine.DESC\" label=\"Desc.\"></input-component>\n\t\t\t\t<button class=\"btn btn-block\" (click)=\"addLine(newQuoteLine)\">ADD LINE</button>\n\t\t\t</div>\n\t\t</div>\n\t</div>\n\t"
     }),
     __metadata("design:paramtypes", [ng2_toastr_1.ToastsManager,
         router_1.Router,
@@ -84726,7 +84726,7 @@ __decorate([
 QuoteListComponent = __decorate([
     core_1.Component({
         selector: 'quote-list-component',
-        template: "\n\t<table class=\"table table-bordered table-striped\">\n\t\t<thead>\n\t\t\t<tr>\n\t\t\t\t<th>ID</th>\n\t\t\t\t<th>UNIT</th>\n\t\t\t\t<th>COST</th>\n\t\t\t</tr>\n\t\t</thead>\n\t\t<tbody>\n\t\t\t<tr *ngFor=\"let line of quoteLines\">\n\t\t\t\t<td class=\"col-xs-4\">{{line.ID}}</td>\n\t\t\t\t<td class=\"col-xs-4\">{{line.UNIT}}</td>\n\t\t\t\t<td class=\"col-xs-4\">{{line.COST | currency:'USD':true:'2.2' }}</td>\n\t\t\t</tr>\n\t\t</tbody>\n\t</table>\n\t"
+        template: "\n\t<table class=\"table table-bordered table-striped\">\n\t\t<thead>\n\t\t\t<tr>\n\t\t\t\t<th>id</th>\n\t\t\t\t<th>UNIT</th>\n\t\t\t\t<th>COST</th>\n\t\t\t</tr>\n\t\t</thead>\n\t\t<tbody>\n\t\t\t<tr *ngFor=\"let line of quoteLines\">\n\t\t\t\t<td class=\"col-xs-4\">{{line.id}}</td>\n\t\t\t\t<td class=\"col-xs-4\">{{line.UNIT}}</td>\n\t\t\t\t<td class=\"col-xs-4\">{{line.COST | currency:'USD':true:'2.2' }}</td>\n\t\t\t</tr>\n\t\t</tbody>\n\t</table>\n\t"
     }),
     __metadata("design:paramtypes", [quotes_service_1.QuoteService])
 ], QuoteListComponent);
@@ -84914,7 +84914,7 @@ var QuotesComponent = (function () {
 QuotesComponent = __decorate([
     core_1.Component({
         selector: 'quotes-component',
-        template: "\n\t<h4>{{ selectedCompany.Name || 'All' }} Quotes</h4>\n\t\t<button type=\"button\" class=\"btn btn-block\" (click)=\"addNewQuote()\" [disabled]=\"!selectedCompany.ID\" [class.disabled]=\"!selectedCompany.ID\">New Quote</button>\n\t\t<div *ngFor=\"let quote of quotes\" (click)=\"onSelectQuote(quote)\">\n\t\t\t<div class=\"row\">\n\t\t\t\t<span class=\"col-xs-2\"><b>QID:</b> {{quote.ID}}</span>\n\t\t\t\t<span class=\"col-xs-4\"><b>Date:</b> {{quote.Date | date: 'MM/dd/yyyy'}}</span>\n\t\t\t\t<span class=\"col-xs-6\"><b>Name:</b> {{quote.Name}}</span>\n\t\t\t\t<quote-list-component [quoteID]=\"quote.ID\"></quote-list-component>\n\t\t\t\t<i class=\"glyphicon glyphicon-print pull-right\" (click)=\"navigateToPrint(quote)\"></i>\n\t\t\t</div>\n\t\t</div>\n\t",
+        template: "\n\t<h4>{{ selectedCompany.Name || 'All' }} Quotes</h4>\n\t\t<button type=\"button\" class=\"btn btn-block\" (click)=\"addNewQuote()\" [disabled]=\"!selectedCompany.id\" [class.disabled]=\"!selectedCompany.id\">New Quote</button>\n\t\t<div *ngFor=\"let quote of quotes\" (click)=\"onSelectQuote(quote)\">\n\t\t\t<div class=\"row\">\n\t\t\t\t<span class=\"col-xs-2\"><b>QID:</b> {{quote.id}}</span>\n\t\t\t\t<span class=\"col-xs-4\"><b>date:</b> {{quote.date | date: 'MM/dd/yyyy'}}</span>\n\t\t\t\t<span class=\"col-xs-6\"><b>Name:</b> {{quote.Name}}</span>\n\t\t\t\t<quote-list-component [quoteID]=\"quote.id\"></quote-list-component>\n\t\t\t\t<i class=\"glyphicon glyphicon-print pull-right\" (click)=\"navigateToPrint(quote)\"></i>\n\t\t\t</div>\n\t\t</div>\n\t",
     }),
     __metadata("design:paramtypes", [quotes_service_1.QuoteService,
         data_share_service_1.DataShareService,
@@ -85151,7 +85151,7 @@ __decorate([
 SidePanelComponent = __decorate([
     core_1.Component({
         selector: 'side-panel',
-        template: "\n\t<div class=\"row\">\n\t\t<button class=\"btn btn-block\"(click)=\"createNewCompany()\">Add Company</button>\n\t\t<div class=\"selection-row\" [class.active]=\"currentCompany.ID === company.ID\" [class.collapsed]=\"currentCompany.ID && currentCompany.ID !== company.ID\" *ngFor=\"let company of companies\">\n\t\t\t<div (click)=\"onSelectCompany(company)\" class=\"col-xs-10\" >{{company.Name}}</div>\n\t\t\t<i class=\"glyphicon glyphicon-remove pull-right col-xs-2\" (click)=\"removeCompany(company)\"></i>\n\t\t</div>\n\t</div>\n\t<div class=\"row\">\n\t\t<button class=\"btn btn-block\" [disabled]=\"!currentCompany.ID\" [class.disabled]=\"!currentCompany.ID\" (click)=\"createNewContact(currentCompany.ID)\">Add Contact</button>\n\t\t<div class=\"selection-row\" [class.active]=\"currentContact.ID === contact.ID\" [class.collapsed]=\"currentContact.ID && currentContact.ID !== contact.ID\" *ngFor=\"let contact of contacts\">\n\t\t\t<div class=\"col-xs-10\" (click)=\"onSelectContact(contact)\">{{contact.Name}}</div>\n\t\t\t<i class=\"glyphicon glyphicon-remove col-xs-2\" (click)=\"removeContact(contact)\"></i>\n\t\t</div>\n\t</div>\n\t\n\t"
+        template: "\n\t<div class=\"row\">\n\t\t<button class=\"btn btn-block\"(click)=\"createNewCompany()\">Add Company</button>\n\t\t<div class=\"selection-row\" [class.active]=\"currentCompany.id === company.id\" [class.collapsed]=\"currentCompany.id && currentCompany.id !== company.id\" *ngFor=\"let company of companies\">\n\t\t\t<div (click)=\"onSelectCompany(company)\" class=\"col-xs-10\" >{{company.Name}}</div>\n\t\t\t<i class=\"glyphicon glyphicon-remove pull-right col-xs-2\" (click)=\"removeCompany(company)\"></i>\n\t\t</div>\n\t</div>\n\t<div class=\"row\">\n\t\t<button class=\"btn btn-block\" [disabled]=\"!currentCompany.id\" [class.disabled]=\"!currentCompany.id\" (click)=\"createNewContact(currentCompany.id)\">Add contact</button>\n\t\t<div class=\"selection-row\" [class.active]=\"currentContact.id === contact.id\" [class.collapsed]=\"currentContact.id && currentContact.id !== contact.id\" *ngFor=\"let contact of contacts\">\n\t\t\t<div class=\"col-xs-10\" (click)=\"onSelectContact(contact)\">{{contact.Name}}</div>\n\t\t\t<i class=\"glyphicon glyphicon-remove col-xs-2\" (click)=\"removeContact(contact)\"></i>\n\t\t</div>\n\t</div>\n\t\n\t"
     }),
     __metadata("design:paramtypes", [ng2_toastr_1.ToastsManager,
         router_1.Router,
@@ -85298,7 +85298,7 @@ var MainComponent = (function () {
 MainComponent = __decorate([
     core_1.Component({
         selector: 'main',
-        template: "\n\t<div class='container'>\n\t\t<div *ngIf=\"!!navVisible\">\n\t\t\t<h4><b>AngularBro's Notes</b><small> with Angular</small></h4>\n\t\t\t<input type=\"search\" placeholder=\"search -WIP-\"/>\n\t\t\t<div class=\"col-sm-4 col-xs-12\">\n\t\t\t\t<side-panel (currentCompanyChange)=\"updateSelectedCompany($event)\" (currentContactChange)=\"updateSelectedContact($event)\"></side-panel>\n\t\t\t</div>\n\t\t</div>\n\t\t<div [class.col-sm-8]=\"!!navVisible\" class=\"col-xs-12\">\n\t\t\t<div *ngIf=\"!!navVisible\" class=\"row\">\n\t\t\t\t<ul class=\"nav nav-tabs\">\n\t\t\t\t\t<!--<li [class.active]=\"tab === COMPANY\">-->\n\t\t\t\t\t<li >\n\t\t\t\t\t\t<a class=\"tab\" routerLinkActive=\"active\" (click)=\"routeTo(COMPANY)\">\n\t\t\t\t\t\t\t<tab-heading>Company</tab-heading>\n\t\t\t\t\t\t</a>\n\t\t\t\t\t</li>\n\t\t\t\t\t<!--<li [class.active]=\"tab === CONTACT\">-->\n\t\t\t\t\t<li routerLinkActive=\"active\">\n\t\t\t\t\t\t<a class=\"tab\" (click)=\"routeTo(CONTACT)\">\n\t\t\t\t\t\t\t<tab-heading>Contact</tab-heading>\n\t\t\t\t\t\t</a>\n\t\t\t\t\t</li>\n\t\t\t\t\t<li [class.active]=\"tab === NOTES\">\n\t\t\t\t\t\t<a class=\"tab\" (click)=\"routeTo(NOTES)\">\n\t\t\t\t\t\t\t<tab-heading>Notes</tab-heading>\n\t\t\t\t\t\t</a>\n\t\t\t\t\t</li>\n\t\t\t\t\t<li [class.active]=\"tab === QUOTES\">\n\t\t\t\t\t\t<a class=\"tab\" (click)=\"routeTo(QUOTES)\">\n\t\t\t\t\t\t\t<tab-heading>Quotes</tab-heading>\n\t\t\t\t\t\t</a>\n\t\t\t\t\t</li>\n\t\t\t\t</ul>\n\t\t\t</div>\n\t\t\t<router-outlet></router-outlet>\n\t\t</div>\n\t\t<i [routerLink]=\"['/settings']\" class=\"glyphicon glyphicon-cog pull-right\"></i>\n\t</div>\n\t",
+        template: "\n\t<div class='container'>\n\t\t<div *ngIf=\"!!navVisible\">\n\t\t\t<h4><b>AngularBro's Notes</b><small> with Angular</small></h4>\n\t\t\t<input type=\"search\" placeholder=\"search -WIP-\"/>\n\t\t\t<div class=\"col-sm-4 col-xs-12\">\n\t\t\t\t<side-panel (currentCompanyChange)=\"updateSelectedCompany($event)\" (currentContactChange)=\"updateSelectedContact($event)\"></side-panel>\n\t\t\t</div>\n\t\t</div>\n\t\t<div [class.col-sm-8]=\"!!navVisible\" class=\"col-xs-12\">\n\t\t\t<div *ngIf=\"!!navVisible\" class=\"row\">\n\t\t\t\t<ul class=\"nav nav-tabs\">\n\t\t\t\t\t<!--<li [class.active]=\"tab === COMPANY\">-->\n\t\t\t\t\t<li >\n\t\t\t\t\t\t<a class=\"tab\" routerLinkActive=\"active\" (click)=\"routeTo(COMPANY)\">\n\t\t\t\t\t\t\t<tab-heading>Company</tab-heading>\n\t\t\t\t\t\t</a>\n\t\t\t\t\t</li>\n\t\t\t\t\t<!--<li [class.active]=\"tab === CONTACT\">-->\n\t\t\t\t\t<li routerLinkActive=\"active\">\n\t\t\t\t\t\t<a class=\"tab\" (click)=\"routeTo(CONTACT)\">\n\t\t\t\t\t\t\t<tab-heading>contact</tab-heading>\n\t\t\t\t\t\t</a>\n\t\t\t\t\t</li>\n\t\t\t\t\t<li [class.active]=\"tab === NOTES\">\n\t\t\t\t\t\t<a class=\"tab\" (click)=\"routeTo(NOTES)\">\n\t\t\t\t\t\t\t<tab-heading>Notes</tab-heading>\n\t\t\t\t\t\t</a>\n\t\t\t\t\t</li>\n\t\t\t\t\t<li [class.active]=\"tab === QUOTES\">\n\t\t\t\t\t\t<a class=\"tab\" (click)=\"routeTo(QUOTES)\">\n\t\t\t\t\t\t\t<tab-heading>Quotes</tab-heading>\n\t\t\t\t\t\t</a>\n\t\t\t\t\t</li>\n\t\t\t\t</ul>\n\t\t\t</div>\n\t\t\t<router-outlet></router-outlet>\n\t\t</div>\n\t\t<i [routerLink]=\"['/settings']\" class=\"glyphicon glyphicon-cog pull-right\"></i>\n\t</div>\n\t",
     }),
     __metadata("design:paramtypes", [ng2_toastr_1.ToastsManager,
         core_1.ViewContainerRef,
@@ -85411,7 +85411,7 @@ exports.CONTACT = {
     Notes: void 0,
 };
 // export const SETTINGS: Settings = {
-//     ID: 'ff615834-1533-48f4-b38f-316108606e87',
+//     id: 'ff615834-1533-48f4-b38f-316108606e87',
 //     Name: "Aaron Campf",
 //     Gmail: "Example@Gmail.com",
 //     GmailPassword: "",
@@ -86554,7 +86554,7 @@ __webpack_require__(76)('Array');
 /* 380 */
 /***/ (function(module, exports, __webpack_require__) {
 
-// 20.3.3.1 / 15.9.4.4 Date.now()
+// 20.3.3.1 / 15.9.4.4 date.now()
 var $export = __webpack_require__(1);
 
 $export($export.S, 'Date', {now: function(){ return new Date().getTime(); }});
@@ -86565,7 +86565,7 @@ $export($export.S, 'Date', {now: function(){ return new Date().getTime(); }});
 
 "use strict";
 
-// 20.3.4.36 / 15.9.5.43 Date.prototype.toISOString()
+// 20.3.4.36 / 15.9.5.43 date.prototype.toISOString()
 var $export = __webpack_require__(1)
   , fails   = __webpack_require__(7)
   , getTime = Date.prototype.getTime;
@@ -86627,7 +86627,7 @@ if(!(TO_PRIMITIVE in proto))__webpack_require__(25)(proto, TO_PRIMITIVE, __webpa
 /***/ (function(module, exports, __webpack_require__) {
 
 var DateProto    = Date.prototype
-  , INVALID_DATE = 'Invalid Date'
+  , INVALID_DATE = 'Invalid date'
   , TO_STRING    = 'toString'
   , $toString    = DateProto[TO_STRING]
   , getTime      = DateProto.getTime;
@@ -91837,10 +91837,10 @@ try {
         getClass = objectProto.toString,
         isProperty, forEach, undef;
 
-    // Test the `Date#getUTC*` methods. Based on work by @Yaffle.
+    // Test the `date#getUTC*` methods. Based on work by @Yaffle.
     var isExtended = new Date(-3509827334573292);
     try {
-      // The `getUTCFullYear`, `Month`, and `Date` methods return nonsensical
+      // The `getUTCFullYear`, `Month`, and `date` methods return nonsensical
       // results for certain dates in Opera >= 10.53.
       isExtended = isExtended.getUTCFullYear() == -109252 && isExtended.getUTCMonth() === 0 && isExtended.getUTCDate() === 1 &&
         // Safari < 2.0.2 stores the internal millisecond time value correctly,
@@ -91992,7 +91992,7 @@ try {
       // Detect incomplete support for accessing string characters by index.
       var charIndexBuggy = has("bug-string-char-index");
 
-      // Define additional utility methods if the `Date` methods are buggy.
+      // Define additional utility methods if the `date` methods are buggy.
       if (!isExtended) {
         var floor = Math.floor;
         // A mapping between the months of the year and the number of days between
@@ -92181,7 +92181,7 @@ try {
             className = getClass.call(value);
             if (className == dateClass && !isProperty.call(value, "toJSON")) {
               if (value > -1 / 0 && value < 1 / 0) {
-                // Dates are serialized according to the `Date#toJSON` method
+                // Dates are serialized according to the `date#toJSON` method
                 // specified in ES 5.1 section 15.9.5.44. See section 15.9.1.15
                 // for the ISO 8601 date time string format.
                 if (getDay) {
@@ -92225,7 +92225,7 @@ try {
               }
             } else if (typeof value.toJSON == "function" && ((className != numberClass && className != stringClass && className != arrayClass) || isProperty.call(value, "toJSON"))) {
               // Prototype <= 1.6.1 adds non-standard `toJSON` methods to the
-              // `Number`, `String`, `Date`, and `Array` prototypes. JSON 3
+              // `Number`, `String`, `date`, and `Array` prototypes. JSON 3
               // ignores all `toJSON` methods on these objects unless they are
               // defined directly on an instance.
               value = value.toJSON(property);
@@ -94296,7 +94296,7 @@ var symbolProto = Symbol ? Symbol.prototype : undefined,
  * the same `toStringTag`.
  *
  * **Note:** This function only supports comparing values with tags of
- * `Boolean`, `Date`, `Error`, `Number`, `RegExp`, or `String`.
+ * `Boolean`, `date`, `Error`, `Number`, `RegExp`, or `String`.
  *
  * @private
  * @param {Object} object The object to compare.
@@ -94773,7 +94773,7 @@ var arrayBufferTag = '[object ArrayBuffer]',
  * Initializes an object clone based on its `toStringTag`.
  *
  * **Note:** This function only supports cloning values with tags of
- * `Boolean`, `Date`, `Error`, `Number`, `RegExp`, or `String`.
+ * `Boolean`, `date`, `Error`, `Number`, `RegExp`, or `String`.
  *
  * @private
  * @param {Object} object The object to clone.
@@ -101822,7 +101822,7 @@ var Subscriber_1 = __webpack_require__(2);
 var Notification_1 = __webpack_require__(82);
 /**
  * Delays the emission of items from the source Observable by a given timeout or
- * until a given Date.
+ * until a given date.
  *
  * <span class="informal">Time shifts each item by some specified amount of
  * milliseconds.</span>
@@ -101833,7 +101833,7 @@ var Notification_1 = __webpack_require__(82);
  * Observable by that amount of time expressed in milliseconds. The relative
  * time intervals between the values are preserved.
  *
- * If the delay argument is a Date, this operator time shifts the start of the
+ * If the delay argument is a date, this operator time shifts the start of the
  * Observable execution until the given date occurs.
  *
  * @example <caption>Delay each click by one second</caption>
@@ -101843,7 +101843,7 @@ var Notification_1 = __webpack_require__(82);
  *
  * @example <caption>Delay all clicks until a future date happens</caption>
  * var clicks = Rx.Observable.fromEvent(document, 'click');
- * var date = new Date('March 15, 2050 12:00:00'); // in the future
+ * var date = new date('March 15, 2050 12:00:00'); // in the future
  * var delayedClicks = clicks.delay(date); // click emitted only after that date
  * delayedClicks.subscribe(x => console.log(x));
  *
@@ -101851,11 +101851,11 @@ var Notification_1 = __webpack_require__(82);
  * @see {@link delayWhen}
  *
  * @param {number|Date} delay The delay duration in milliseconds (a `number`) or
- * a `Date` until which the emission of the source items is delayed.
+ * a `date` until which the emission of the source items is delayed.
  * @param {Scheduler} [scheduler=async] The IScheduler to use for
  * managing the timers that handle the time-shift for each item.
  * @return {Observable} An Observable that delays the emissions of the source
- * Observable by the specified timeout or Date.
+ * Observable by the specified timeout or date.
  * @method delay
  * @owner Observable
  */
@@ -112093,7 +112093,7 @@ function _tryDefineProperty(obj, prop, desc, originalConfigurableFlag) {
  * Use of this source code is governed by an MIT-style license that can be
  * found in the LICENSE file at https://angular.io/license
  */
-var WTF_ISSUE_555 = 'Anchor,Area,Audio,BR,Base,BaseFont,Body,Button,Canvas,Content,DList,Directory,Div,Embed,FieldSet,Font,Form,Frame,FrameSet,HR,Head,Heading,Html,IFrame,Image,Input,Keygen,LI,Label,Legend,Link,Map,Marquee,Media,Menu,Meta,Meter,Mod,OList,Object,OptGroup,Option,Output,Paragraph,Pre,Progress,Quote,Script,Select,Source,Span,Style,TableCaption,TableCell,TableCol,Table,TableRow,TableSection,TextArea,Title,Track,UList,Unknown,Video';
+var WTF_ISSUE_555 = 'Anchor,Area,Audio,BR,Base,BaseFont,Body,Button,Canvas,Content,DList,Directory,Div,Embed,FieldSet,Font,Form,Frame,FrameSet,HR,Head,Heading,Html,IFrame,Image,Input,Keygen,LI,Label,Legend,Link,Map,Marquee,Media,Menu,Meta,Meter,Mod,OList,Object,OptGroup,Option,Output,Paragraph,Pre,Progress,Quote,Script,Select,Source,Span,Style,TableCaption,TableCell,TableCol,Table,TableRow,TableSection,TextArea,title,Track,UList,Unknown,Video';
 var NO_EVENT_TARGET = 'ApplicationCache,EventSource,FileReader,InputMethodContext,MediaController,MessagePort,Node,Performance,SVGElementInstance,SharedWorker,TextTrack,TextTrackCue,TextTrackList,WebKitNamedFlow,Window,Worker,WorkerGlobalScope,XMLHttpRequest,XMLHttpRequestEventTarget,XMLHttpRequestUpload,IDBRequest,IDBOpenDBRequest,IDBDatabase,IDBTransaction,IDBCursor,DBIndex,WebSocket'
     .split(',');
 var EVENT_TARGET = 'EventTarget';

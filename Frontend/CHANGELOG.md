@@ -2,6 +2,13 @@
 >To make sense of all your busy-ness to other developers please log changes and use sem-ver. 
 
 ##unreleased
+
+##version 0.8.0
+[test] fixed mocha.. kindof. needs to have services faked, I think...
+[code] created a `form-create-component` and `list-compoennt`
+[code] created a `user.component` for state and user info
+[refactor] revised models for consistency and circular issues
+[refactor] turned all main components into modules
 [socket] created `socket.service` and installed `socket.io`
 [refactor] service for `settings.component`
 

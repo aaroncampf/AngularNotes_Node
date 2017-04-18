@@ -2,6 +2,7 @@ import {CUSTOM_ELEMENTS_SCHEMA, NgModule} from '@angular/core';
 import {CommonModule as AngularCommonModule} from '@angular/common';
 import {CompaniesComponent} from './companies.component';
 import {RouterModule, Routes} from '@angular/router';
+import {CommonModule} from '../common/common.module';
 
 const ROUTES: Routes = [
 	{path: '', children: [
@@ -16,6 +17,7 @@ const ROUTES: Routes = [
 	providers: [
 	],
 	imports: [
+		CommonModule,
 		AngularCommonModule,
 		RouterModule.forChild(ROUTES)
 	],

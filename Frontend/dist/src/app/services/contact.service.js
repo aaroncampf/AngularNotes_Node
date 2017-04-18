@@ -17,13 +17,13 @@ var ContactService = (function () {
         this.http = http;
     }
     ContactService.prototype.getContacts = function () {
-        return this.http.get('http://angularnotes-angularbros.azurewebsites.net/api/Contact')
+        return this.http.get('http://angularnotes-angularbros.azurewebsites.net/api/contact')
             .map(function (response) {
             return response.json();
         })
             .catch(function (err) { return err; });
     };
-    // public getContact(id: number): Observable<Contact> {
+    // public getContact(id: number): Observable<contact> {
     // 	return this.http.get(`http://angularnotes-angularbros.azurewebsites.net/api/Contact/${id}`)
     // 		.map(response => {
     // 			return response.json();
@@ -31,7 +31,7 @@ var ContactService = (function () {
     // 		.catch(err => err);
     // }
     ContactService.prototype.getCompanyContacts = function (id) {
-        return this.http.get("http://angularnotes-angularbros.azurewebsites.net/api/Contact?CompanyID=" + id)
+        return this.http.get("http://angularnotes-angularbros.azurewebsites.net/api/contact?CompanyID=" + id)
             .map(function (response) {
             return response.json();
         })
@@ -43,7 +43,7 @@ var ContactService = (function () {
             'content-type': 'application/json',
         });
         var options = new http_1.RequestOptions({ headers: headers });
-        return this.http.post("http://angularnotes-angularbros.azurewebsites.net/api/Contact?CompanyID=" + companyId, {}, options)
+        return this.http.post("http://angularnotes-angularbros.azurewebsites.net/api/contact?CompanyID=" + companyId, {}, options)
             .map(function (res) {
             return res;
         })
@@ -55,14 +55,14 @@ var ContactService = (function () {
             'content-type': 'application/json',
         });
         var options = new http_1.RequestOptions({ headers: headers });
-        return this.http.put("http://angularnotes-angularbros.azurewebsites.net/api/Contact/" + id, JSON.stringify(contact), options)
+        return this.http.put("http://angularnotes-angularbros.azurewebsites.net/api/contact/" + id, JSON.stringify(contact), options)
             .map(function (res) {
             return res;
         })
             .catch(function (err) { return _this.handleError(err); });
     };
     ContactService.prototype.deleteContact = function (contactId) {
-        return this.http.delete("http://angularnotes-angularbros.azurewebsites.net/api/Contact/" + contactId)
+        return this.http.delete("http://angularnotes-angularbros.azurewebsites.net/api/contact/" + contactId)
             .map(function (response) {
             return response.json();
         })

@@ -4,7 +4,19 @@ list-component {
   }
 
   list-item {
+    width: 100%;
     border: #565656 1px solid;
+    border-bottom: none;
+    transition: all .6s linear;
+    -webkit-transition: all .6s linear;
+    & :nth-last-child(1) {
+      border-bottom: #565656 1px solid;
+    }
+    & :hover, & :focus, & :active {
+      background-color: lightgrey;
+      transition: all .6s linear;
+      -webkit-transition: all .6s linear;
+    }
   }
 
   list-footer {

@@ -32,7 +32,7 @@ var NotesService = (function () {
             'content-type': 'application/json'
         });
         var options = new http_1.RequestOptions({ headers: headers });
-        return this.http.put("http://angularnotes-angularbros.azurewebsites.net/api/Notes/" + note.ID, JSON.stringify(note), options)
+        return this.http.put("http://angularnotes-angularbros.azurewebsites.net/api/Notes/" + note.id, JSON.stringify(note), options)
             .map(function (res) { return res; })
             .catch(function (err) { return _this.handleError(err); });
     };

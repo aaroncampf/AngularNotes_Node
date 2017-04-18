@@ -4,10 +4,10 @@
 import {Component, OnInit} from '@angular/core';
 import {Company} from "../companies/company.model";
 import {Quote} from "./quote.model";
-import {QuoteLine} from "./quotelines.model";
+import {QuoteLine} from "./quote.model";
 import {Settings} from "../common/models/setting.model";
 import {Contact} from '../contacts/contact.model';
-import {COMPANY, CONTACT, QUOTE, QUOTE_LINES} from './quote-line.fixture';
+// import {COMPANY, CONTACT, QUOTE, QUOTE_LINES} from './quote-line.fixture';
 import {DataShareService} from '../common/services/data-share.service';
 import {QuotesService} from './quotes.service';
 import {SocketService} from '../common/services/socket.service';
@@ -84,11 +84,11 @@ export class Quotes_Printout implements OnInit {
 	//TODO: Consider only using [Quote] and not the others
 	//TODO: Find out how to order _QuoteLines by Display
 
-	public _Quote: Quote = QUOTE;
-	public _Company: Company = COMPANY;
-	public _QuoteLines: QuoteLine[] = QUOTE_LINES;
+	public _Quote: Quote = <Quote>{};
+	public _Company: Company = <Company>{};
+	public _QuoteLines: QuoteLine[] = [];
 	public settings: Settings = <Settings>{};
-	public _Contact: Contact = CONTACT;
+	public _Contact: Contact = <Contact>{};
     constructor(private dataShareService: DataShareService,
                 private quoteService: QuotesService,
 				public socketService: SocketService){}
@@ -105,7 +105,7 @@ export class Quotes_Printout implements OnInit {
         this.dataShareService.quoteSelected$
             .subscribe(quote => {
             this._Quote = quote;
-            this.quoteService.getQuoteLines(quote.ID)
+            this.quoteService.getQuoteLines(+quote.id)
                 .subscribe(quoteLines => this._QuoteLines = quoteLines);
         });
     }

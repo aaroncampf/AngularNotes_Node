@@ -2,7 +2,7 @@ import {Injectable} from '@angular/core';
 import {Http, Headers, RequestOptions, Response} from '@angular/http';
 import {Observable} from 'rxjs';
 import {Quote} from './quote.model';
-import {QuoteLine} from './quotelines.model';
+import {QuoteLine} from './quote.model';
 
 @Injectable()
 export class QuotesService {
@@ -50,7 +50,7 @@ export class QuotesService {
 			'content-type': 'application/json',
 		});
 		const options = new RequestOptions({headers: headers});
-		return this.http.put(`http://angularnotes-angularbros.azurewebsites.net/api/Quotes/${quote.ID}`, JSON.stringify(quote), options)
+		return this.http.put(`http://angularnotes-angularbros.azurewebsites.net/api/Quotes/${quote.id}`, JSON.stringify(quote), options)
 			.map(response => response)
 			.catch(err => this.handleError(err));
 	}
@@ -60,7 +60,7 @@ export class QuotesService {
 			'content-type': 'application/json',
 		});
 		const options = new RequestOptions({headers: headers});
-		return this.http.post(`http://angularnotes-angularbros.azurewebsites.net/api/QuoteLines?QuoteID=${quote.ID}`, JSON.stringify(quoteLine), options)
+		return this.http.post(`http://angularnotes-angularbros.azurewebsites.net/api/QuoteLines?QuoteID=${quote.id}`, JSON.stringify(quoteLine), options)
 			.map(response => response)
 			.catch(err => this.handleError(err));
 	}
@@ -71,7 +71,7 @@ export class QuotesService {
 			'content-type': 'application/json',
 		});
 		const options = new RequestOptions({headers: headers});
-		return this.http.put(`http://angularnotes-angularbros.azurewebsites.net/api/QuoteLines/${quoteLine.ID}`, JSON.stringify(quoteLine), options)
+		return this.http.put(`http://angularnotes-angularbros.azurewebsites.net/api/QuoteLines/${quoteLine.id}`, JSON.stringify(quoteLine), options)
 			.map(response => response)
 			.catch(err => this.handleError(err));
 	}

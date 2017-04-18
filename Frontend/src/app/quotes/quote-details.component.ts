@@ -2,7 +2,7 @@ import {Component, OnInit} from '@angular/core';
 import {QuotesService} from './quotes.service';
 import {Quote} from './quote.model';
 import {DataShareService} from '../common/services/data-share.service';
-import {QuoteLine} from './quotelines.model';
+import {QuoteLine} from './quote.model';
 import {Router} from '@angular/router';
 import {ToastsManager} from 'ng2-toastr';
 @Component({
@@ -16,7 +16,7 @@ import {ToastsManager} from 'ng2-toastr';
 			<div class="quote-header">
 				<div class="row">
 					<button type="button" class="btn-danger pull-right" (click)="removeQuote(quote.ID)">Delete</button>
-					<div class="col-xs-6">ID: {{quote.ID}}</div>
+					<div class="col-xs-6">id: {{quote.id}}</div>
 				</div>
 				<div class="row">
 					<div class="col-xs-6">Date: {{quote.Date | date: 'MM/dd/yyyy'}}</div>
@@ -25,7 +25,7 @@ import {ToastsManager} from 'ng2-toastr';
 			</div>
 			<div *ngFor="let line of quoteLines" class="quote-item">
 				<div class="row">
-					<i class="glyphicon glyphicon-remove pull-right" (click)="removeLine(line.ID)"></i>
+					<i class="glyphicon glyphicon-remove pull-right" (click)="removeLine(line.id)"></i>
 				</div>
 				<div class="row">
 					<input-component class="col-xs-4" label="Unit" [model]="line.UNIT" (modelChange)="updateQuoteLine($event, 'UNIT', line)"></input-component>
@@ -59,7 +59,7 @@ export class QuoteDetailsComponent implements OnInit {
 				console.log('quote shared', quote);
 				this.quote = quote;
 		});
-		this.quoteService.getQuoteLines(this.quote.ID)
+		this.quoteService.getQuoteLines(+this.quote.id)
 			.subscribe(quoteLines => {
 				console.log('quoteLines', quoteLines);
 				this.quoteLines = quoteLines
@@ -70,7 +70,7 @@ export class QuoteDetailsComponent implements OnInit {
 		this.quoteService.deleteQuoteLine(lineId)
 			.subscribe(() => {
 				this.toastr.warning('Quote line Removed');
-				this.quoteService.getQuoteLines(this.quote.ID)
+				this.quoteService.getQuoteLines(+this.quote.id)
 					.subscribe(quoteLines => this.quoteLines = quoteLines);
 		});
 
@@ -80,13 +80,13 @@ export class QuoteDetailsComponent implements OnInit {
 		this.quoteService.createQuoteLine(quoteLine, this.quote)
 			.subscribe(() => {
 				this.newQuoteLine = <QuoteLine>{};
-				this.quoteService.getQuoteLines(this.quote.ID)
+				this.quoteService.getQuoteLines(+this.quote.id)
 					.subscribe(quoteLines => this.quoteLines = quoteLines);
 		});
 	}
 
-	public removeQuote(quoteID: number): void {
-		this.quoteService.deleteQuote(quoteID)
+	public removeQuote(quoteid: number): void {
+		this.quoteService.deleteQuote(quoteid)
 			.subscribe(() => {
 				this.toastr.warning('Quote Deleted');
 				this.router.navigate(['/quotes'])

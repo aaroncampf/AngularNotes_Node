@@ -29,7 +29,7 @@ __decorate([
 QuoteListComponent = __decorate([
     core_1.Component({
         selector: 'quote-list-component',
-        template: "\n\t<table class=\"table table-bordered table-striped\">\n\t\t<thead>\n\t\t\t<tr>\n\t\t\t\t<th>ID</th>\n\t\t\t\t<th>UNIT</th>\n\t\t\t\t<th>COST</th>\n\t\t\t</tr>\n\t\t</thead>\n\t\t<tbody>\n\t\t\t<tr *ngFor=\"let line of quoteLines\">\n\t\t\t\t<td class=\"col-xs-4\">{{line.ID}}</td>\n\t\t\t\t<td class=\"col-xs-4\">{{line.UNIT}}</td>\n\t\t\t\t<td class=\"col-xs-4\">{{line.COST | currency:'USD':true:'2.2'}}</td>\n\t\t\t</tr>\n\t\t</tbody>\n\t</table>\n\t"
+        template: "\n\t<table class=\"table table-bordered table-striped\">\n\t\t<thead>\n\t\t\t<tr>\n\t\t\t\t<th>id</th>\n\t\t\t\t<th>UNIT</th>\n\t\t\t\t<th>COST</th>\n\t\t\t</tr>\n\t\t</thead>\n\t\t<tbody>\n\t\t\t<tr *ngFor=\"let line of quoteLines\">\n\t\t\t\t<td class=\"col-xs-4\">{{line.id}}</td>\n\t\t\t\t<td class=\"col-xs-4\">{{line.UNIT}}</td>\n\t\t\t\t<td class=\"col-xs-4\">{{line.COST | currency:'USD':true:'2.2'}}</td>\n\t\t\t</tr>\n\t\t</tbody>\n\t</table>\n\t"
     }),
     __metadata("design:paramtypes", [quotes_service_1.QuoteService])
 ], QuoteListComponent);

@@ -11,15 +11,15 @@ import {Router} from '@angular/router';
 	template: `
 	<div class="row">
 		<button class="btn btn-block"(click)="createNewCompany()">Add Company</button>
-		<div class="selection-row" [class.active]="currentCompany.ID === company.ID" [class.collapsed]="currentCompany.ID && currentCompany.ID !== company.ID" *ngFor="let company of companies">
-			<div (click)="onSelectCompany(company)" class="col-xs-10" >{{company.Name}}</div>
+		<div class="selection-row" [class.active]="currentCompany.id === company.id" [class.collapsed]="currentCompany.id && currentCompany.id !== company.id" *ngFor="let company of companies">
+			<div (click)="onSelectCompany(company)" class="col-xs-10" >{{company.name}}</div>
 			<i class="glyphicon glyphicon-remove pull-right col-xs-2" (click)="removeCompany(company)"></i>
 		</div>
 	</div>
 	<div class="row">
-		<button class="btn btn-block" [disabled]="!currentCompany.ID" [class.disabled]="!currentCompany.ID" (click)="createNewContact(currentCompany.ID)">Add Contact</button>
-		<div class="selection-row" [class.active]="currentContact.ID === contact.ID" [class.collapsed]="currentContact.ID && currentContact.ID !== contact.ID" *ngFor="let contact of contacts">
-			<div class="col-xs-10" (click)="onSelectContact(contact)">{{contact.Name}}</div>
+		<button class="btn btn-block" [disabled]="!currentCompany.id" [class.disabled]="!currentCompany.id" (click)="createNewContact(currentCompany.id)">Add Contact</button>
+		<div class="selection-row" [class.active]="currentContact.id === contact.id" [class.collapsed]="currentContact.id && currentContact.id !== contact.id" *ngFor="let contact of contacts">
+			<div class="col-xs-10" (click)="onSelectContact(contact)">{{contact.name}}</div>
 			<i class="glyphicon glyphicon-remove col-xs-2" (click)="removeContact(contact)"></i>
 		</div>
 	</div>
@@ -68,9 +68,9 @@ export class SidePanelComponent implements OnInit{
 
 	public createNewContact(companyId): void {
 		this.contactService.createContact(companyId)
-			.subscribe(contactID => {
+			.subscribe(contactid => {
 				this.toastr.success('Success! Please provide a name.');
-				this.currentContact = <Contact>{ID: contactID._body};
+				this.currentContact = <Contact>{id: contactid._body};
 				this.currentContactChange.emit(this.currentContact);
 				let temp = this.contacts;
 				this.contacts = [];
@@ -82,10 +82,10 @@ export class SidePanelComponent implements OnInit{
 	}
 
 	public onSelectCompany(company: Company): void {
-		if (!this.currentCompany.ID){
+		if (!this.currentCompany.id){
 			this.currentCompany = company;
 			this.currentCompanyChange.emit(company);
-			this.contactService.getCompanyContacts(company.ID)
+			this.contactService.getCompanyContacts(company.id)
 				.subscribe(contacts => this.contacts = contacts);
 		} else {
 			this.currentCompany = <Company>{};
@@ -97,7 +97,7 @@ export class SidePanelComponent implements OnInit{
 	}
 
 	public onSelectContact(contact: Contact): void{
-		if (!this.currentContact.ID) {
+		if (!this.currentContact.id) {
 			this.currentContact = contact;
 			this.currentContactChange.emit(contact);
 		} else {
@@ -109,22 +109,22 @@ export class SidePanelComponent implements OnInit{
 	public removeContact(contact: Contact): void{
 			this.currentContact = <Contact>{};
 			this.currentContactChange.emit(<Contact>{});
-			this.contactService.deleteContact(contact.ID)
+			this.contactService.deleteContact(+contact.id)
 				.subscribe(() => {
-					this.toastr.warning('Removed ' + contact.Name);
+					this.toastr.warning('Removed ' + contact.name);
 					this.contactService.getContacts()
 						.subscribe(contacts => this.contacts = contacts)
-			}, error => this.toastr.error('There Are Notes Related to ' + contact.Name + 'Please delete them first.' ));
+			}, error => this.toastr.error('There Are Notes Related to ' + contact.name + 'Please delete them first.' ));
 	}
 
 	public removeCompany(company): void{
-		this.companyService.deleteCompany(company.ID)
+		this.companyService.deleteCompany(company.id)
 			.subscribe(() => {
-				this.toastr.warning('Removed ' + company.Name);
+				this.toastr.warning('Removed ' + company.name);
 				this.currentCompany = <Company>{};
 				this.companyService.getCompanies()
 					.subscribe(companies => this.companies = companies);
-		}, error => this.toastr.error('Oh no! Something went wrong with removing ' + company.Name + ' please try again later.'));
+		}, error => this.toastr.error('Oh no! Something went wrong with removing ' + company.name + ' please try again later.'));
 	}
 
 }

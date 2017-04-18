@@ -1,6 +1,7 @@
 import {Component, Input, OnInit} from '@angular/core';
 import {QuotesService} from './quotes.service';
-import {QuoteLine} from './quotelines.model';
+import {QuoteLine} from './quote.model';
+
 @Component({
 	selector: 'quote-list-component',
 	template: `
@@ -14,9 +15,9 @@ import {QuoteLine} from './quotelines.model';
 		</thead>
 		<tbody>
 			<tr *ngFor="let line of quoteLines">
-				<td class="col-xs-4">{{line.ID}}</td>
-				<td class="col-xs-4">{{line.UNIT}}</td>
-				<td class="col-xs-4">{{line.COST | currency:'USD':true:'2.2'}}</td>
+				<td class="col-xs-4">{{line.id}}</td>
+				<td class="col-xs-4">{{line.unit}}</td>
+				<td class="col-xs-4">{{line.cost | currency:'USD':true:'2.2'}}</td>
 			</tr>
 		</tbody>
 	</table>

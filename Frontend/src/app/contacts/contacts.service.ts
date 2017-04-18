@@ -7,13 +7,13 @@ import {Contact} from './contact.model';
 export class ContactsService {
 	constructor(private http: Http){}
 	public getContacts(): Observable<Contact[]> {
-		return this.http.get('http://angularnotes-angularbros.azurewebsites.net/api/Contact')
+		return this.http.get('http://angularnotes-angularbros.azurewebsites.net/api/contact')
 			.map(response => {
 				return response.json();
 			})
 			.catch(err => err);
 	}
-	// public getContact(id: number): Observable<Contact> {
+	// public getContact(id: number): Observable<contact> {
 	// 	return this.http.get(`http://angularnotes-angularbros.azurewebsites.net/api/Contact/${id}`)
 	// 		.map(response => {
 	// 			return response.json();
