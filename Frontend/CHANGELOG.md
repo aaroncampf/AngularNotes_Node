@@ -4,6 +4,7 @@
 ##unreleased
 
 ##version 0.8.0
+[refactor] routes redone for lazy loading of modules
 [test] fixed mocha.. kindof. needs to have services faked, I think...
 [code] created a `form-create-component` and `list-compoennt`
 [code] created a `user.component` for state and user info
