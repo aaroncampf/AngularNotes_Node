@@ -1,8 +1,8 @@
 import {Component, OnInit, ViewContainerRef} from '@angular/core';
-import {ActivatedRoute, Router} from '@angular/router';
+import {Router} from '@angular/router';
 import {Company} from '../models/company.model';
 import {Contact} from '../models/contact.model';
-import {DataShareService} from '../services/data-share.service';
+import {DataShareService} from '../global/data-share.service';
 import {ToastsManager} from 'ng2-toastr/ng2-toastr';
 import '../styles/main.scss';
 
@@ -10,42 +10,7 @@ import '../styles/main.scss';
 	selector: 'main',
 	template: `
 	<div class='container'>
-		<div *ngIf="!!navVisible">
-			<h4><b>AngularBro's Notes</b><small> with Angular</small></h4>
-			<input type="search" placeholder="search -WIP-"/>
-			<div class="col-sm-4 col-xs-12">
-				<side-panel (currentCompanyChange)="updateSelectedCompany($event)" (currentContactChange)="updateSelectedContact($event)"></side-panel>
-			</div>
-		</div>
-		<div [class.col-sm-8]="!!navVisible" class="col-xs-12">
-			<div *ngIf="!!navVisible" class="row">
-				<ul class="nav nav-tabs">
-					<!--<li [class.active]="tab === COMPANY">-->
-					<li >
-						<a class="tab" routerLinkActive="active" (click)="routeTo(COMPANY)">
-							<tab-heading>Company</tab-heading>
-						</a>
-					</li>
-					<!--<li [class.active]="tab === CONTACT">-->
-					<li routerLinkActive="active">
-						<a class="tab" (click)="routeTo(CONTACT)">
-							<tab-heading>Contact</tab-heading>
-						</a>
-					</li>
-					<li [class.active]="tab === NOTES">
-						<a class="tab" (click)="routeTo(NOTES)">
-							<tab-heading>Notes</tab-heading>
-						</a>
-					</li>
-					<li [class.active]="tab === QUOTES">
-						<a class="tab" (click)="routeTo(QUOTES)">
-							<tab-heading>Quotes</tab-heading>
-						</a>
-					</li>
-				</ul>
-			</div>
-			<router-outlet></router-outlet>
-		</div>
+		<router-outlet></router-outlet>
 		<i [routerLink]="['/settings']" class="glyphicon glyphicon-cog pull-right"></i>
 	</div>
 	`,

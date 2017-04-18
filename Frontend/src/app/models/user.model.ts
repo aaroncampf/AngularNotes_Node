@@ -1,13 +1,14 @@
 export interface User {
 	id: string;
-	name: string;
-	address: string;
-	credential: string;
-	accessToken: string;
-	refreshToken: string;
-	opaqueToke: string;
-	role: string;
-	email: string;
-	phone: string;
+	firstName: string;
+	lastName: string;
+	password: string;
+	userName?: string;
+	role?: string;
+	email?: string;
+	phone?: string;
+	address?: string;
+	credential?: string;
+	jwt?: any;
 }
 

@@ -1,5 +1,6 @@
 "use strict";
-exports.QUOTELINES = [
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.QUOTE_LINES = [
     {
         ID: 1,
         Display: 1,

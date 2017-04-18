@@ -1,11 +1,12 @@
 "use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
 require("./polyfills.browser");
 var platform_browser_dynamic_1 = require("@angular/platform-browser-dynamic");
-var app_module_1 = require("./app/app.module");
+var crm_module_1 = require("./app/crm.module");
 var core_1 = require("@angular/core");
 exports.platformRef = platform_browser_dynamic_1.platformBrowserDynamic();
 function main() {
-    return exports.platformRef.bootstrapModule(app_module_1.AppModule)
+    return exports.platformRef.bootstrapModule(crm_module_1.CRMModule)
         .catch(function (err) { return console.error(err); });
 }
 exports.main = main;

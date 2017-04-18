@@ -8,6 +8,7 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
+Object.defineProperty(exports, "__esModule", { value: true });
 var core_1 = require("@angular/core");
 var rxjs_1 = require("rxjs");
 var http_1 = require("@angular/http");
@@ -22,11 +23,6 @@ var CompanyService = (function () {
             .map(function (results) { return results.json(); })
             .catch(function (err) { return _this.handleError(err); });
     };
-    // public getCompany(id: number): Observable<any> {
-    // 	return this.http.get('http://angularnotes-angularbros.azurewebsites.net/api/companies/' + id)
-    // 		.map(results => results.json())
-    // 		.catch(err => this.handleError(err));
-    // }
     CompanyService.prototype.updateCompany = function (company) {
         var _this = this;
         var headers = new http_1.Headers({

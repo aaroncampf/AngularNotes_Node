@@ -1,4 +1,5 @@
 "use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
 function newNote() {
     var date = new Date().toISOString();
     var note = {};

@@ -1,5 +1,6 @@
 // Polyfills
 "use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
 require("ie-shim"); // Internet Explorer 9 support
 // import 'core-js/es6';
 // Added parts of es6 which are necessary for your project or your browser support requirements.

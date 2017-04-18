@@ -8,6 +8,7 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
+Object.defineProperty(exports, "__esModule", { value: true });
 var core_1 = require("@angular/core");
 var forms_1 = require("@angular/forms");
 var user_service_1 = require("../services/user.service");
@@ -46,12 +47,12 @@ var SettingsComponent = (function () {
     }
     SettingsComponent.prototype.ngOnInit = function () {
         var _this = this;
-        this.socketService.hotSocketCouple(this.getPath, { id: FIXTURE_ID_1.FIXTURE_USER_ID }, 'localhost:1729')
+        this.socketService.responseSocket(this.getPath, { id: FIXTURE_ID_1.FIXTURE_USER_ID }, 'localhost:1729')
             .subscribe(function (user) {
             console.log('USER', user);
             _this.userData = {
                 id: user.id,
-                name: user.name,
+                userName: user.name,
                 email: user.email,
                 address: user.address,
                 phone: user.phone,
@@ -63,7 +64,7 @@ var SettingsComponent = (function () {
     SettingsComponent.prototype.update = function (key, value) {
         console.log('value', value);
         // todo refoactor modulePort
-        this.socketService.hotSocketCouple(this.savePath, { id: this.userData.id, attributes: (_a = {}, _a[key] = value, _a) }, 'localhost:1729')
+        this.socketService.responseSocket(this.savePath, { id: this.userData.id, attributes: (_a = {}, _a[key] = value, _a) }, 'localhost:1729')
             .subscribe(function (response) {
             console.log(response);
         });
@@ -77,7 +78,7 @@ var SettingsComponent = (function () {
 SettingsComponent = __decorate([
     core_1.Component({
         selector: 'settings-component',
-        template: "\n\t\t<button class=\"btn btn-default\" [routerLink]=\"['../']\">Back</button>\n\t\t<h4>User Settings</h4>\n\t\t<div class=\"col-xs-11\">\n\t\t\t<input-component label=\"Name\" [model]=\"userData.name\" (modelChange)=\"update('name', $event)\" [control]=\"nameControl\"></input-component>\n\t\t\t<input-component label=\"Email\" [model]=\"userData.email\" (modelChange)=\"update('email', $event)\"[control]=\"emailControl\"></input-component>\n\t\t\t<input-component label=\"Address\" [model]=\"userData.address\" (modelChange)=\"update('address', $event)\" [control]=\"addressControl\"></input-component>\n\t\t\t<input-component label=\"Phone\" [model]=\"userData.phone\" (modelChange)=\"update('phone', $event)\" [control]=\"phoneControl\"></input-component>\n\t\t</div>\n\t"
+        template: "\n\t\t<button class=\"btn btn-default\" [routerLink]=\"['../']\">Back</button>\n\t\t<h4>User Settings</h4>\n\t\t<div class=\"col-xs-11\">\n\t\t\t<input-component label=\"Name\" [model]=\"userData.userName\" (modelChange)=\"update('name', $event)\" [control]=\"nameControl\"></input-component>\n\t\t\t<input-component label=\"Email\" [model]=\"userData.email\" (modelChange)=\"update('email', $event)\" [control]=\"emailControl\"></input-component>\n\t\t\t<input-component label=\"Address\" [model]=\"userData.address\" (modelChange)=\"update('address', $event)\" [control]=\"addressControl\"></input-component>\n\t\t\t<input-component label=\"Phone\" [model]=\"userData.phone\" (modelChange)=\"update('phone', $event)\" [control]=\"phoneControl\"></input-component>\n\t\t</div>\n\t"
     }),
     __metadata("design:paramtypes", [user_service_1.UserService,
         data_share_service_1.DataShareService,

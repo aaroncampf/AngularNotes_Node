@@ -8,6 +8,7 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
+Object.defineProperty(exports, "__esModule", { value: true });
 var core_1 = require("@angular/core");
 var forms_1 = require("@angular/forms");
 var companies_service_1 = require("../services/companies.service");
@@ -55,7 +56,7 @@ var CompanyDetailsComponent = (function () {
 }());
 CompanyDetailsComponent = __decorate([
     core_1.Component({
-        selector: 'company-details-component',
+        selector: 'company-component',
         template: "\n\t\t<div *ngIf=\"company.ID\">\n\t\t\t<h4>Company Details</h4>\n\t\t\t<input-component (modelChange)=\"saveCompany($event, 'Name')\" [model]=\"company.Name\" label=\"Name\" [control]=\"nameControl\"></input-component>\n\t\t\t<input-component (modelChange)=\"saveCompany($event, 'Phone')\" [model]=\"company.Phone\" label=\"Phone\" [control]=\"phoneControl\"></input-component>\n\t\t\t<input-component (modelChange)=\"saveCompany($event, 'Address')\" [model]=\"company.Address\" label=\"Address\" [control]=\"addressControl\"></input-component>\n\t\t\t<input-component (modelChange)=\"saveCompany($event, 'City')\" [model]=\"company.City\" label=\"City\" [control]=\"cityControl\"></input-component>\n\t\t\t<input-component (modelChange)=\"saveCompany($event, 'Zip')\" [model]=\"company.Zip\" label=\"Zip\" [control]=\"zipControl\"></input-component>\n\t\t\t<quotes-component></quotes-component>\n\t\t</div>\n\t\t<div *ngIf=\"!company.ID\">\n\t\t\t<h4>Please select a Company for it's details.</h4>\n\t\t</div>\n\t",
     }),
     __metadata("design:paramtypes", [companies_service_1.CompanyService,

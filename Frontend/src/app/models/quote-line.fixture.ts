@@ -2,7 +2,7 @@ import {Quote} from './quote.model';
 import {Company} from './company.model';
 import {Contact} from './contact.model';
 import {QuoteLine} from './quotelines.model';
-export const QUOTELINES: QuoteLine[] = [
+export const QUOTE_LINES: QuoteLine[] = [
 	{
 		ID: 1,
 		Display: 1,

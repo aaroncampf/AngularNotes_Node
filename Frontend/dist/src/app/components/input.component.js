@@ -8,6 +8,7 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
+Object.defineProperty(exports, "__esModule", { value: true });
 var core_1 = require("@angular/core");
 var forms_1 = require("@angular/forms");
 var InputComponent = (function () {
@@ -45,7 +46,7 @@ __decorate([
 InputComponent = __decorate([
     core_1.Component({
         selector: 'input-component',
-        template: "\n\t<div class=\"row\">\n\t\t<div *ngIf=\"!!label\" class=\"col-xs-3\">\n\t\t\t<strong>{{label}}</strong>\n\t\t</div>\n\t\t<div *ngIf=\"!!label\" class=\"col-xs-9\">\n\t\t\t<input [type]=\"password ? 'password':'text'\"  class=\"form-control\" [ngModel]=\"model\" (blur)=\"modelChange.emit($event.target.value)\" [formControl]=\"control\" [placeholder]=\"placeholder\"/>\n\t\t</div>\n\t\t<div *ngIf=\"!label\" class=\"col-xs-12\">\n\t\t\t <input [type]=\"password ? 'password':'text'\" class=\"form-control\" [ngModel]=\"model\" (blur)=\"modelChange.emit($event.target.value)\" [formControl]=\"control\" [placeholder]=\"placeholder\"/>\n\t\t</div>\n\t</div>\n\t"
+        template: "\n\t<div class=\"row\">\n\t\t<div *ngIf=\"!!label\" class=\"col-xs-3\">\n\t\t\t<strong>{{label}}</strong>\n\t\t</div>\n\t\t<div *ngIf=\"!!label\" class=\"col-xs-9\">\n\t\t\t<input type=\"text\" class=\"form-control\" [ngModel]=\"model\" (blur)=\"modelChange.emit($event.target.value)\" [formControl]=\"control\" [placeholder]=\"placeholder\"/>\n\t\t</div>\n\t\t<div *ngIf=\"!label\" class=\"col-xs-12\">\n\t\t\t <input type=\"text\" class=\"form-control\" [ngModel]=\"model\" (blur)=\"modelChange.emit($event.target.value)\" [formControl]=\"control\" [placeholder]=\"placeholder\"/>\n\t\t</div>\n\t</div>\n\t"
     })
 ], InputComponent);
 exports.InputComponent = InputComponent;

@@ -5,6 +5,7 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
     else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
     return c > 3 && r && Object.defineProperty(target, key, r), r;
 };
+Object.defineProperty(exports, "__esModule", { value: true });
 var core_1 = require("@angular/core");
 var router_1 = require("@angular/router");
 var platform_browser_1 = require("@angular/platform-browser");
@@ -31,9 +32,11 @@ var user_service_1 = require("./services/user.service");
 var quote_lines_list_component_1 = require("./components/quote-lines-list.component");
 var socket_service_1 = require("./services/socket.service");
 var registration_component_1 = require("./login/registration.component");
+var auth_service_1 = require("./services/auth.service");
+var registration_service_1 = require("./services/registration.service");
 var MAIN_ROUTES = [
     { path: '', children: [
-            { path: 'registration', component: settings_component_1.SettingsComponent },
+            { path: 'registration', component: registration_component_1.RegistrationComponent },
             { path: 'settings', component: settings_component_1.SettingsComponent },
             { path: 'company', component: company_details_component_1.CompanyDetailsComponent },
             { path: 'contact', component: contact_details_component_1.ContactDetailsComponent },
@@ -83,7 +86,9 @@ AppModule = __decorate([
             quotes_service_1.QuoteService,
             data_share_service_1.DataShareService,
             user_service_1.UserService,
-            socket_service_1.SocketService
+            socket_service_1.SocketService,
+            auth_service_1.AuthService,
+            registration_service_1.RegistrationService
         ],
         schemas: [
             core_1.CUSTOM_ELEMENTS_SCHEMA

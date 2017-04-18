@@ -1,4 +1,5 @@
 "use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
 var animations_1 = require("@angular/animations");
 function liftOffTransitions() {
     return liftOff();

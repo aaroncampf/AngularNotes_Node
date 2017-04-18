@@ -1104,12 +1104,12 @@ function applyParams(fnOrArray, key) {
  *
  * ```
  * var Greeter = ng.Class({
- *   constructor: function(name) {
- *     this.name = name;
+ *   constructor: function(userName) {
+ *     this.userName = userName;
  *   },
  *
  *   greet: function() {
- *     alert('Hello ' + this.name + '!');
+ *     alert('Hello ' + this.userName + '!');
  *   }
  * });
  * ```
@@ -1118,12 +1118,12 @@ function applyParams(fnOrArray, key) {
  *
  * ```
  * class Greeter {
- *   constructor(name) {
- *     this.name = name;
+ *   constructor(userName) {
+ *     this.userName = userName;
  *   }
  *
  *   greet() {
- *     alert('Hello ' + this.name + '!');
+ *     alert('Hello ' + this.userName + '!');
  *   }
  * }
  * ```
@@ -1131,12 +1131,12 @@ function applyParams(fnOrArray, key) {
  * or equivalent to ES5:
  *
  * ```
- * var Greeter = function (name) {
- *   this.name = name;
+ * var Greeter = function (userName) {
+ *   this.userName = userName;
  * }
  *
  * Greeter.prototype.greet = function () {
- *   alert('Hello ' + this.name + '!');
+ *   alert('Hello ' + this.userName + '!');
  * }
  * ```
  *
@@ -1144,7 +1144,7 @@ function applyParams(fnOrArray, key) {
  *
  * ```
  * var MyService = ng.Class({
- *   constructor: [String, [new Optional(), Service], function(name, myService) {
+ *   constructor: [String, [new Optional(), Service], function(userName, myService) {
  *     ...
  *   }]
  * });
@@ -1154,7 +1154,7 @@ function applyParams(fnOrArray, key) {
  *
  * ```
  * class MyService {
- *   constructor(name: string, \@Optional() myService: Service) {
+ *   constructor(userName: string, \@Optional() myService: Service) {
  *     ...
  *   }
  * }
@@ -1604,8 +1604,8 @@ var HostListener = makePropDecorator('HostListener', [['eventName', undefined], 
  */
 /**
  * Defines a schema that will allow:
- * - any non-Angular elements with a `-` in their name,
- * - any properties on elements with a `-` in their name which is the common rule for custom
+ * - any non-Angular elements with a `-` in their userName,
+ * - any properties on elements with a `-` in their userName which is the common rule for custom
  * elements.
  *
  * \@stable
@@ -1654,13 +1654,13 @@ ViewEncapsulation[ViewEncapsulation.None] = "None";
  * ```
  * \@Component({
  *   selector: 'greet',
- *   template: 'Hello {{name}}!',
+ *   template: 'Hello {{userName}}!',
  * })
  * class Greet {
- *   name: string;
+ *   userName: string;
  *
  *   constructor() {
- *     this.name = 'World';
+ *     this.userName = 'World';
  *   }
  * }
  * ```
@@ -6240,7 +6240,7 @@ var Renderer2Interceptor = new InjectionToken('Renderer2Interceptor');
  * Injectable service that provides a low-level interface for modifying the UI.
  *
  * Use this service to bypass Angular's templating and make custom UI changes that can't be
- * expressed declaratively. For example if you need to set a property or an attribute whose name is
+ * expressed declaratively. For example if you need to set a property or an attribute whose userName is
  * not statically known, use {\@link #setElementProperty} or {\@link #setElementAttribute}
  * respectively.
  *
@@ -9220,7 +9220,7 @@ function _reflector() {
     return reflector;
 }
 var _CORE_PLATFORM_PROVIDERS = [
-    // Set a default platform name for platforms that don't set it explicitly.
+    // Set a default platform userName for platforms that don't set it explicitly.
     { provide: PLATFORM_ID, useValue: 'unknown' },
     PlatformRef_,
     { provide: PlatformRef, useExisting: PlatformRef_ },
@@ -11840,7 +11840,7 @@ function updateProp(view, providerData, def, bindingIdx, value, changes) {
     var /** @type {?} */ binding = def.bindings[bindingIdx];
     var /** @type {?} */ propName = ((binding.name));
     // Note: This is still safe with Closure Compiler as
-    // the user passed in the property name as an object has to `providerDef`,
+    // the user passed in the property userName as an object has to `providerDef`,
     // so Closure Compiler will have renamed the property correctly already.
     providerData.instance[propName] = value;
     if (def.flags & 262144 /* OnChanges */) {
@@ -14303,12 +14303,12 @@ var LIFECYCLE_HOOKS_VALUES = [
  *
  * Triggers are registered within the component annotation data under the {\@link
  * Component#animations-anchor animations section}. An animation trigger can be placed on an element
- * within a template by referencing the name of the trigger followed by the expression value that the
+ * within a template by referencing the userName of the trigger followed by the expression value that the
  * trigger is bound to (in the form of `[\@triggerName]="expression"`.
  *
  * ### Usage
  *
- * `trigger` will create an animation trigger reference based on the provided `name` value. The
+ * `trigger` will create an animation trigger reference based on the provided `userName` value. The
  * provided `animation` value is expected to be an array consisting of {\@link state state} and {\@link
  * transition transition} declarations.
  *
@@ -14557,7 +14557,7 @@ function style$1(tokens) {
  * the state has been reached.
  *
  * ```typescript
- * // "void" is a reserved name for a state and is used to represent
+ * // "void" is a reserved userName for a state and is used to represent
  * // the state in which an element is detached from from the application.
  * state("void", style({ height: 0 }))
  *
@@ -15454,7 +15454,7 @@ var AsyncScheduler_1 = __webpack_require__(86);
  * // 3 after 6s
  *
  * @static true
- * @name async
+ * @userName async
  * @owner Scheduler
  */
 exports.async = new AsyncScheduler_1.AsyncScheduler(AsyncAction_1.AsyncAction);
@@ -16552,7 +16552,7 @@ var ArrayObservable = (function (_super) {
      * the emissions of the `next` notifications.
      * @return {Observable<T>} An Observable that emits each given input value.
      * @static true
-     * @name of
+     * @userName of
      * @owner Observable
      */
     ArrayObservable.of = function () {
@@ -16842,7 +16842,7 @@ var EmptyObservable = (function (_super) {
      * @return {Observable} An "empty" Observable: emits only the complete
      * notification.
      * @static true
-     * @name empty
+     * @userName empty
      * @owner Observable
      */
     EmptyObservable.create = function (scheduler) {
@@ -17430,7 +17430,7 @@ var CHECKBOX_VALUE_ACCESSOR = {
  *
  *  ### Example
  *  ```
- *  <input type="checkbox" name="rememberLogin" ngModel>
+ *  <input type="checkbox" userName="rememberLogin" ngModel>
  *  ```
  *
  *  \@stable
@@ -17518,7 +17518,7 @@ var COMPOSITION_BUFFER_MODE = new __WEBPACK_IMPORTED_MODULE_0__angular_core__["I
  *
  *  ### Example
  *  ```
- *  <input type="text" name="searchQuery" ngModel>
+ *  <input type="text" userName="searchQuery" ngModel>
  *  ```
  *
  *  \@stable
@@ -17801,7 +17801,7 @@ var RADIO_VALUE_ACCESSOR = {
     multi: true
 };
 /**
- * Internal class used by Angular to uncheck radio buttons with the matching name.
+ * Internal class used by Angular to uncheck radio buttons with the matching userName.
  */
 var RadioControlRegistry = (function () {
     function RadioControlRegistry() {
@@ -17874,13 +17874,13 @@ RadioControlRegistry.ctorParameters = function () { return []; };
  * ### How to use radio buttons with form directives
  *
  * To use radio buttons in a template-driven form, you'll want to ensure that radio buttons
- * in the same group have the same `name` attribute.  Radio buttons with different `name`
+ * in the same group have the same `userName` attribute.  Radio buttons with different `userName`
  * attributes do not affect each other.
  *
  * {\@example forms/ts/radioButtons/radio_button_example.ts region='TemplateDriven'}
  *
  * When using radio buttons in a reactive form, radio buttons in the same group should have the
- * same `formControlName`. You can also add a `name` attribute, but it's optional.
+ * same `formControlName`. You can also add a `userName` attribute, but it's optional.
  *
  * {\@example forms/ts/reactiveRadioButtons/reactive_radio_button_example.ts region='Reactive'}
  *
@@ -17966,7 +17966,7 @@ var RadioControlValueAccessor = (function () {
      * @return {?}
      */
     RadioControlValueAccessor.prototype._throwNameError = function () {
-        throw new Error("\n      If you define both a name and a formControlName attribute on your radio button, their values\n      must match. Ex: <input type=\"radio\" formControlName=\"food\" name=\"food\">\n    ");
+        throw new Error("\n      If you define both a userName and a formControlName attribute on your radio button, their values\n      must match. Ex: <input type=\"radio\" formControlName=\"food\" userName=\"food\">\n    ");
     };
     return RadioControlValueAccessor;
 }());
@@ -18114,7 +18114,7 @@ function _extractId(valueString) {
  *
  * ### How to use select controls with form directives
  *
- * To use a select in a template-driven form, simply add an `ngModel` and a `name`
+ * To use a select in a template-driven form, simply add an `ngModel` and a `userName`
  * attribute to the main `<select>` tag.
  *
  * If your option values are simple strings, you can bind to the normal `value` property
@@ -18145,7 +18145,7 @@ function _extractId(valueString) {
  * ```
  * <select [compareWith]="compareFn"  [(ngModel)]="selectedCountries">
  *     <option *ngFor="let country of countries" [ngValue]="country">
- *         {{country.name}}
+ *         {{country.userName}}
  *     </option>
  * </select>
  *
@@ -18415,7 +18415,7 @@ function _extractId$1(valueString) {
  * ```
  * <select multiple [compareWith]="compareFn"  [(ngModel)]="selectedCountries">
  *     <option *ngFor="let country of countries" [ngValue]="country">
- *         {{country.name}}
+ *         {{country.userName}}
  *     </option>
  * </select>
  *
@@ -18577,7 +18577,7 @@ SelectMultipleControlValueAccessor.propDecorators = {
  * ### Example
  *
  * ```
- * <select multiple name="city" ngModel>
+ * <select multiple userName="city" ngModel>
  *   <option *ngFor="let c of cities" [value]="c"></option>
  * </select>
  * ```
@@ -18777,10 +18777,10 @@ function _throwError(dir, message) {
         messageEnd = "path: '" + dir.path.join(' -> ') + "'";
     }
     else if (dir.path[0]) {
-        messageEnd = "name: '" + dir.path + "'";
+        messageEnd = "userName: '" + dir.path + "'";
     }
     else {
-        messageEnd = 'unspecified name attribute';
+        messageEnd = 'unspecified userName attribute';
     }
     throw new Error(message + " " + messageEnd);
 }
@@ -19627,17 +19627,17 @@ var AbstractControl = (function () {
         this._updateControlsErrors(emitEvent !== false);
     };
     /**
-     * Retrieves a child control given the control's name or path.
+     * Retrieves a child control given the control's userName or path.
      *
      * Paths can be passed in as an array or a string delimited by a dot.
      *
      * To get a control nested within a `person` sub-group:
      *
-     * * `this.form.get('person.name');`
+     * * `this.form.get('person.userName');`
      *
      * -OR-
      *
-     * * `this.form.get(['person', 'name']);`
+     * * `this.form.get(['person', 'userName']);`
      * @param {?} path
      * @return {?}
      */
@@ -20021,7 +20021,7 @@ var FormControl = (function (_super) {
  * instances.
  *
  * A `FormGroup` aggregates the values of each child {\@link FormControl} into one object,
- * with each control name as the key.  It calculates its status by reducing the statuses
+ * with each control userName as the key.  It calculates its status by reducing the statuses
  * of its children. For example, if one of the controls in a group is invalid, the entire
  * group becomes invalid.
  *
@@ -20031,7 +20031,7 @@ var FormControl = (function (_super) {
  * \@howToUse
  *
  * When instantiating a {\@link FormGroup}, pass in a collection of child controls as the first
- * argument. The key for each child will be the name under which it is registered.
+ * argument. The key for each child will be the userName under which it is registered.
  *
  * ### Example
  *
@@ -20141,7 +20141,7 @@ var FormGroup = (function (_super) {
         this._onCollectionChange();
     };
     /**
-     * Check whether there is an enabled control with the given name in the group.
+     * Check whether there is an enabled control with the given userName in the group.
      *
      * It will return false for disabled controls. If you'd like to check for
      * existence in the group only, use {\@link AbstractControl.get} instead.
@@ -20235,20 +20235,20 @@ var FormGroup = (function (_super) {
      * ### Example
      *
      * ```ts
-     * this.form.reset({first: 'name', last: 'last name'});
+     * this.form.reset({first: 'userName', last: 'last userName'});
      *
-     * console.log(this.form.value);  // {first: 'name', last: 'last name'}
+     * console.log(this.form.value);  // {first: 'userName', last: 'last userName'}
      * ```
      *
      * - OR -
      *
      * ```
      * this.form.reset({
-     *   first: {value: 'name', disabled: true},
+     *   first: {value: 'userName', disabled: true},
      *   last: 'last'
      * });
      *
-     * console.log(this.form.value);  // {first: 'name', last: 'last name'}
+     * console.log(this.form.value);  // {first: 'userName', last: 'last userName'}
      * console.log(this.form.get('first').status);  // 'DISABLED'
      * ```
      * @param {?=} value
@@ -20288,7 +20288,7 @@ var FormGroup = (function (_super) {
             throw new Error("\n        There are no form controls registered with this group yet.  If you're using ngModel,\n        you may want to check next tick (e.g. use setTimeout).\n      ");
         }
         if (!this.controls[name]) {
-            throw new Error("Cannot find form control with name: " + name + ".");
+            throw new Error("Cannot find form control with userName: " + name + ".");
         }
     };
     /**
@@ -20374,7 +20374,7 @@ var FormGroup = (function (_super) {
     FormGroup.prototype._checkAllValuesPresent = function (value) {
         this._forEachChild(function (control, name) {
             if (value[name] === undefined) {
-                throw new Error("Must supply a value for form control with name: '" + name + "'.");
+                throw new Error("Must supply a value for form control with userName: '" + name + "'.");
             }
         });
     };
@@ -20589,20 +20589,20 @@ var FormArray = (function (_super) {
      * ### Example
      *
      * ```ts
-     * this.arr.reset(['name', 'last name']);
+     * this.arr.reset(['userName', 'last userName']);
      *
-     * console.log(this.arr.value);  // ['name', 'last name']
+     * console.log(this.arr.value);  // ['userName', 'last userName']
      * ```
      *
      * - OR -
      *
      * ```
      * this.arr.reset([
-     *   {value: 'name', disabled: true},
+     *   {value: 'userName', disabled: true},
      *   'last'
      * ]);
      *
-     * console.log(this.arr.value);  // ['name', 'last name']
+     * console.log(this.arr.value);  // ['userName', 'last userName']
      * console.log(this.arr.get(0).status);  // 'DISABLED'
      * ```
      * @param {?=} value
@@ -20739,7 +20739,7 @@ var resolvedPromise = Promise.resolve(null);
  * user interaction properties like `dirty` and `touched`.
  *
  * To register child controls with the form, you'll want to use {\@link NgModel} with a
- * `name` attribute.  You can also use {\@link NgModelGroup} if you'd like to create
+ * `userName` attribute.  You can also use {\@link NgModelGroup} if you'd like to create
  * sub-groups within the form.
  *
  * You can listen to the directive's `ngSubmit` event to be notified when the user has
@@ -20948,7 +20948,7 @@ var FormErrorExamples = {
     formControlName: "\n    <div [formGroup]=\"myGroup\">\n      <input formControlName=\"firstName\">\n    </div>\n\n    In your class:\n\n    this.myGroup = new FormGroup({\n       firstName: new FormControl()\n    });",
     formGroupName: "\n    <div [formGroup]=\"myGroup\">\n       <div formGroupName=\"person\">\n          <input formControlName=\"firstName\">\n       </div>\n    </div>\n\n    In your class:\n\n    this.myGroup = new FormGroup({\n       person: new FormGroup({ firstName: new FormControl() })\n    });",
     formArrayName: "\n    <div [formGroup]=\"myGroup\">\n      <div formArrayName=\"cities\">\n        <div *ngFor=\"let city of cityArray.controls; index as i\">\n          <input [formControlName]=\"i\">\n        </div>\n      </div>\n    </div>\n\n    In your class:\n\n    this.cityArray = new FormArray([new FormControl('SF')]);\n    this.myGroup = new FormGroup({\n      cities: this.cityArray\n    });",
-    ngModelGroup: "\n    <form>\n       <div ngModelGroup=\"person\">\n          <input [(ngModel)]=\"person.name\" name=\"firstName\">\n       </div>\n    </form>",
+    ngModelGroup: "\n    <form>\n       <div ngModelGroup=\"person\">\n          <input [(ngModel)]=\"person.userName\" userName=\"firstName\">\n       </div>\n    </form>",
     ngModelWithFormGroup: "\n    <div [formGroup]=\"myGroup\">\n       <input formControlName=\"firstName\">\n       <input [(ngModel)]=\"showMoreControls\" [ngModelOptions]=\"{standalone: true}\">\n    </div>\n  "
 };
 /**
@@ -20977,7 +20977,7 @@ var TemplateDrivenErrors = (function () {
      * @return {?}
      */
     TemplateDrivenErrors.missingNameException = function () {
-        throw new Error("If ngModel is used within a form tag, either the name attribute must be set or the form\n      control must be defined as 'standalone' in ngModelOptions.\n\n      Example 1: <input [(ngModel)]=\"person.firstName\" name=\"first\">\n      Example 2: <input [(ngModel)]=\"person.firstName\" [ngModelOptions]=\"{standalone: true}\">");
+        throw new Error("If ngModel is used within a form tag, either the userName attribute must be set or the form\n      control must be defined as 'standalone' in ngModelOptions.\n\n      Example 1: <input [(ngModel)]=\"person.firstName\" userName=\"first\">\n      Example 2: <input [(ngModel)]=\"person.firstName\" [ngModelOptions]=\"{standalone: true}\">");
     };
     /**
      * @return {?}
@@ -21011,7 +21011,7 @@ var modelGroupProvider = {
  * the rest of your form, or if some values in your domain model make more sense to
  * consume together in a nested object.
  *
- * Pass in the name you'd like this sub-group to have and it will become the key
+ * Pass in the userName you'd like this sub-group to have and it will become the key
  * for the sub-group in the form's full value. You can also export the directive into
  * a local template variable using `ngModelGroup` (ex: `#myGroup="ngModelGroup"`).
  *
@@ -21122,8 +21122,8 @@ var resolvedPromise$1 = Promise.resolve(null);
  *
  * {\@example forms/ts/simpleNgModel/simple_ng_model_example.ts region='Component'}
  *
- * When using the `ngModel` within `<form>` tags, you'll also need to supply a `name` attribute
- * so that the control can be registered with the parent form under that name.
+ * When using the `ngModel` within `<form>` tags, you'll also need to supply a `userName` attribute
+ * so that the control can be registered with the parent form under that userName.
  *
  * It's worth noting that in the context of a parent form, you often can skip one-way or
  * two-way binding because the parent form will sync the value for you. You can access
@@ -21594,7 +21594,7 @@ var formDirectiveProvider$1 = {
  *
  * ### Example
  *
- * In this example, we create form controls for first name and last name.
+ * In this example, we create form controls for first userName and last userName.
  *
  * {\@example forms/ts/simpleFormGroup/simple_form_group_example.ts region='Component'}
  *
@@ -21850,8 +21850,8 @@ var formGroupNameProvider = {
  * This directive can only be used with a parent {\@link FormGroupDirective} (selector:
  * `[formGroup]`).
  *
- * It accepts the string name of the nested {\@link FormGroup} you want to link, and
- * will look for a {\@link FormGroup} registered with that name in the parent
+ * It accepts the string userName of the nested {\@link FormGroup} you want to link, and
+ * will look for a {\@link FormGroup} registered with that userName in the parent
  * {\@link FormGroup} instance you passed into {\@link FormGroupDirective}.
  *
  * Nested form groups can come in handy when you want to validate a sub-group of a
@@ -21859,10 +21859,10 @@ var formGroupNameProvider = {
  * controls into their own nested object.
  *
  * **Access the group**: You can access the associated {\@link FormGroup} using the
- * {\@link AbstractControl.get} method. Ex: `this.form.get('name')`.
+ * {\@link AbstractControl.get} method. Ex: `this.form.get('userName')`.
  *
  * You can also access individual controls within the group using dot syntax.
- * Ex: `this.form.get('name.first')`
+ * Ex: `this.form.get('userName.first')`
  *
  * **Get the value**: the `value` property is always synced and available on the
  * {\@link FormGroup}. See a full list of available properties in {\@link AbstractControl}.
@@ -21937,8 +21937,8 @@ var formArrayNameProvider = {
  * This directive is designed to be used with a parent {\@link FormGroupDirective} (selector:
  * `[formGroup]`).
  *
- * It accepts the string name of the nested {\@link FormArray} you want to link, and
- * will look for a {\@link FormArray} registered with that name in the parent
+ * It accepts the string userName of the nested {\@link FormArray} you want to link, and
+ * will look for a {\@link FormArray} registered with that userName in the parent
  * {\@link FormGroup} instance you passed into {\@link FormGroupDirective}.
  *
  * Nested form arrays can come in handy when you have a group of form controls but
@@ -22092,7 +22092,7 @@ var controlNameBinding = {
 };
 /**
  * \@whatItDoes Syncs a {\@link FormControl} in an existing {\@link FormGroup} to a form control
- * element by name.
+ * element by userName.
  *
  * In other words, this directive ensures that any values written to the {\@link FormControl}
  * instance programmatically will be written to the DOM element (model -> view). Conversely,
@@ -22104,8 +22104,8 @@ var controlNameBinding = {
  * This directive is designed to be used with a parent {\@link FormGroupDirective} (selector:
  * `[formGroup]`).
  *
- * It accepts the string name of the {\@link FormControl} instance you want to
- * link, and will look for a {\@link FormControl} registered with that name in the
+ * It accepts the string userName of the {\@link FormControl} instance you want to
+ * link, and will look for a {\@link FormControl} registered with that userName in the
  * closest {\@link FormGroup} or {\@link FormArray} above it.
  *
  * **Access the control**: You can access the {\@link FormControl} associated with
@@ -22126,7 +22126,7 @@ var controlNameBinding = {
  *
  * ### Example
  *
- * In this example, we create form controls for first name and last name.
+ * In this example, we create form controls for first userName and last userName.
  *
  * {\@example forms/ts/simpleFormGroup/simple_form_group_example.ts region='Component'}
  *
@@ -22306,7 +22306,7 @@ var CHECKBOX_REQUIRED_VALIDATOR = {
  * ### Example
  *
  * ```
- * <input name="fullName" ngModel required>
+ * <input userName="fullName" ngModel required>
  * ```
  *
  * \@stable
@@ -22366,7 +22366,7 @@ RequiredValidator.propDecorators = {
  * ### Example
  *
  * ```
- * <input type="checkbox" name="active" ngModel required>
+ * <input type="checkbox" userName="active" ngModel required>
  * ```
  *
  * \@experimental
@@ -22411,9 +22411,9 @@ var EMAIL_VALIDATOR = {
  * ### Example
  *
  * ```
- * <input type="email" name="email" ngModel email>
- * <input type="email" name="email" ngModel email="true">
- * <input type="email" name="email" ngModel [email]="true">
+ * <input type="email" userName="email" ngModel email>
+ * <input type="email" userName="email" ngModel email="true">
+ * <input type="email" userName="email" ngModel [email]="true">
  * ```
  *
  * \@experimental
@@ -22608,7 +22608,7 @@ var PATTERN_VALIDATOR = {
  * ### Example
  *
  * ```
- * <input [name]="fullName" pattern="[a-zA-Z ]*" ngModel>
+ * <input [userName]="fullName" pattern="[a-zA-Z ]*" ngModel>
  * ```
  * \@stable
  */
@@ -23117,7 +23117,7 @@ var DomAdapter = (function () {
     Object.defineProperty(DomAdapter.prototype, "attrToPropMap", {
         /**
          * Maps attribute names to their corresponding property names for cases
-         * where attribute name doesn't match property name.
+         * where attribute userName doesn't match property userName.
          * @return {?}
          */
         get: function () { return this._attrToPropMap; },
@@ -25123,8 +25123,8 @@ var Meta = (function () {
         if (!forceCreation) {
             var /** @type {?} */ selector = this._parseSelector(meta);
             var /** @type {?} */ elem = this.getTag(selector);
-            // It's allowed to have multiple elements with the same name so it's not enough to
-            // just check that element with the same name already present on the page. We also need to
+            // It's allowed to have multiple elements with the same userName so it's not enough to
+            // just check that element with the same userName already present on the page. We also need to
             // check if element has tag attributes
             if (elem && this._containsAttributes(meta, elem))
                 return elem;
@@ -26409,7 +26409,7 @@ KeyEventsPlugin.ctorParameters = function () { return [
  *
  * The pattern disallows &, used in HTML entity declarations before
  * one of the characters in [/?#]. This disallows HTML entities used in the
- * protocol name, which should never happen, e.g. "h&#116;tp" for "http".
+ * protocol userName, which should never happen, e.g. "h&#116;tp" for "http".
  * It also disallows HTML entities in the first path part of a relative path,
  * e.g. "foo&lt;bar/baz".  Our existing escaping functions should not produce
  * that. More importantly, it disallows masking of a colon,
@@ -27835,15 +27835,15 @@ var Scheduler = {
 exports.Scheduler = Scheduler;
 /**
  * @typedef {Object} Rx.Symbol
- * @property {Symbol|string} rxSubscriber A symbol to use as a property name to
+ * @property {Symbol|string} rxSubscriber A symbol to use as a property userName to
  * retrieve an "Rx safe" Observer from an object. "Rx safety" can be defined as
  * an object that has all of the traits of an Rx Subscriber, including the
  * ability to add and remove subscriptions to the subscription chain and
  * guarantees involving event triggering (can't "next" after unsubscription,
  * etc).
- * @property {Symbol|string} observable A symbol to use as a property name to
+ * @property {Symbol|string} observable A symbol to use as a property userName to
  * retrieve an Observable as defined by the [ECMAScript "Observable" spec](https://github.com/zenparsing/es-observable).
- * @property {Symbol|string} iterator The ES6 symbol to use as a property name
+ * @property {Symbol|string} iterator The ES6 symbol to use as a property userName
  * to retrieve an iterator from an object.
  */
 var Symbol = {
@@ -28078,7 +28078,7 @@ var Headers = (function () {
         return headers;
     };
     /**
-     * Appends a header to existing list of header values for a given header name.
+     * Appends a header to existing list of header values for a given header userName.
      * @param {?} name
      * @param {?} value
      * @return {?}
@@ -28093,7 +28093,7 @@ var Headers = (function () {
         }
     };
     /**
-     * Deletes all header values for the given name.
+     * Deletes all header values for the given userName.
      * @param {?} name
      * @return {?}
      */
@@ -28111,7 +28111,7 @@ var Headers = (function () {
         this._headers.forEach(function (values, lcName) { return fn(values, _this._normalizedNames.get(lcName), _this._headers); });
     };
     /**
-     * Returns first header that matches given name.
+     * Returns first header that matches given userName.
      * @param {?} name
      * @return {?}
      */
@@ -28123,7 +28123,7 @@ var Headers = (function () {
         return values.length > 0 ? values[0] : null;
     };
     /**
-     * Checks for existence of header by given name.
+     * Checks for existence of header by given userName.
      * @param {?} name
      * @return {?}
      */
@@ -28134,7 +28134,7 @@ var Headers = (function () {
      */
     Headers.prototype.keys = function () { return Array.from(this._normalizedNames.values()); };
     /**
-     * Sets or overrides header value for given name.
+     * Sets or overrides header value for given userName.
      * @param {?} name
      * @param {?} value
      * @return {?}
@@ -28169,7 +28169,7 @@ var Headers = (function () {
         return serialized;
     };
     /**
-     * Returns list of header values for a given name.
+     * Returns list of header values for a given userName.
      * @param {?} name
      * @return {?}
      */
@@ -28219,11 +28219,11 @@ var Headers = (function () {
  * import {ResponseOptions, Response} from '\@angular/http';
  *
  * var options = new ResponseOptions({
- *   body: '{"name":"Jeff"}'
+ *   body: '{"userName":"Jeff"}'
  * });
  * var res = new Response(options);
  *
- * console.log('res.json():', res.json()); // Object {name: "Jeff"}
+ * console.log('res.json():', res.json()); // Object {userName: "Jeff"}
  * ```
  *
  * \@experimental
@@ -28256,13 +28256,13 @@ var ResponseOptions = (function () {
      * import {ResponseOptions, Response} from '\@angular/http';
      *
      * var options = new ResponseOptions({
-     *   body: {name: 'Jeff'}
+     *   body: {userName: 'Jeff'}
      * });
      * var res = new Response(options.merge({
      *   url: 'https://google.com'
      * }));
      * console.log('options.url:', options.url); // null
-     * console.log('res.json():', res.json()); // Object {name: "Jeff"}
+     * console.log('res.json():', res.json()); // Object {userName: "Jeff"}
      * console.log('res.url:', res.url); // https://google.com
      * ```
      * @param {?=} options
@@ -33361,7 +33361,7 @@ function checkOutletNameUniqueness(nodes) {
         if (routeWithSameOutletName) {
             var /** @type {?} */ p = routeWithSameOutletName.url.map(function (s) { return s.toString(); }).join('/');
             var /** @type {?} */ c = n.value.url.map(function (s) { return s.toString(); }).join('/');
-            throw new Error("Two segments cannot have the same outlet name: '" + p + "' and '" + c + "'.");
+            throw new Error("Two segments cannot have the same outlet userName: '" + p + "' and '" + c + "'.");
         }
         names[n.value.outlet] = n.value;
     });
@@ -33827,7 +33827,7 @@ var Router = (function () {
      * router.resetConfig([
      *  { path: 'team/:id', component: TeamCmp, children: [
      *    { path: 'simple', component: SimpleCmp },
-     *    { path: 'user/:name', component: UserCmp }
+     *    { path: 'user/:userName', component: UserCmp }
      *  ]}
      * ]);
      * ```
@@ -34847,9 +34847,9 @@ function validateCommands(commands) {
  * \@howToUse
  *
  * Consider the following route configuration:
- * `[{ path: 'user/:name', component: UserCmp }]`
+ * `[{ path: 'user/:userName', component: UserCmp }]`
  *
- * When linking to this `user/:name` route, you can write:
+ * When linking to this `user/:userName` route, you can write:
  * `<a routerLink='/user/bob'>link to user component</a>`
  *
  * \@description
@@ -34868,7 +34868,7 @@ function validateCommands(commands) {
  * Multiple static segments can be merged into one
  * (e.g., `['/team/11/user', userName, {details: true}]`).
  *
- * The first segment name can be prepended with `/`, `./`, or `../`:
+ * The first segment userName can be prepended with `/`, `./`, or `../`:
  * * If the first segment begins with `/`, the router will look up the route from the root of the
  *   app.
  * * If the first segment begins with `./`, or doesn't begin with a slash, the router will
@@ -35358,8 +35358,8 @@ RouterLinkActive.propDecorators = {
  *
  * ```
  * <router-outlet></router-outlet>
- * <router-outlet name='left'></router-outlet>
- * <router-outlet name='right'></router-outlet>
+ * <router-outlet userName='left'></router-outlet>
+ * <router-outlet userName='right'></router-outlet>
  * ```
  *
  * A router outlet will emit an activate event any time a new component is being instantiated,
@@ -42230,7 +42230,7 @@ var SocketService = (function () {
     function SocketService() {
         this.io = IO;
     }
-    SocketService.prototype.hotSocketCouple = function (path, body, modulePort) {
+    SocketService.prototype.responseSocket = function (path, body, modulePort) {
         var _this = this;
         this.io.connect(modulePort);
         return rxjs_1.Observable.of(function (res) {
@@ -42752,7 +42752,7 @@ var moduleExports = freeModule && freeModule.exports === freeExports;
 /** Built-in value references. */
 var Buffer = moduleExports ? root.Buffer : undefined;
 
-/* Built-in method references for those with the same name as other `lodash` methods. */
+/* Built-in method references for those with the same userName as other `lodash` methods. */
 var nativeIsBuffer = Buffer ? Buffer.isBuffer : undefined;
 
 /**
@@ -43686,7 +43686,7 @@ module.exports = function(Base, NAME, Constructor, next, DEFAULT, IS_SET, FORCED
       if(!LIBRARY && !has(IteratorPrototype, ITERATOR))hide(IteratorPrototype, ITERATOR, returnThis);
     }
   }
-  // fix Array#{values, @@iterator}.name in V8 / FF
+  // fix Array#{values, @@iterator}.userName in V8 / FF
   if(DEF_VALUES && $native && $native.name !== VALUES){
     VALUES_BUG = true;
     $default = function values(){ return $native.call(this); };
@@ -44572,7 +44572,7 @@ var objectProto = Object.prototype;
 /** Built-in value references. */
 var propertyIsEnumerable = objectProto.propertyIsEnumerable;
 
-/* Built-in method references for those with the same name as other `lodash` methods. */
+/* Built-in method references for those with the same userName as other `lodash` methods. */
 var nativeGetSymbols = Object.getOwnPropertySymbols;
 
 /**
@@ -45624,7 +45624,7 @@ exports.concat = concat;
  * @return {Observable} All values of each passed Observable merged into a
  * single Observable, in order, in serial fashion.
  * @static true
- * @name concat
+ * @userName concat
  * @owner Observable
  */
 function concatStatic() {
@@ -46043,28 +46043,28 @@ exports.zipProto = zipProto;
  * If the latest parameter is a function, this function is used to compute the created value from the input values.
  * Otherwise, an array of the input values is returned.
  *
- * @example <caption>Combine age and name from different sources</caption>
+ * @example <caption>Combine age and userName from different sources</caption>
  *
  * let age$ = Observable.of<number>(27, 25, 29);
- * let name$ = Observable.of<string>('Foo', 'Bar', 'Beer');
+ * let userName$ = Observable.of<string>('Foo', 'Bar', 'Beer');
  * let isDev$ = Observable.of<boolean>(true, true, false);
  *
  * Observable
  *     .zip(age$,
- *          name$,
+ *          userName$,
  *          isDev$,
- *          (age: number, name: string, isDev: boolean) => ({ age, name, isDev }))
+ *          (age: number, userName: string, isDev: boolean) => ({ age, userName, isDev }))
  *     .subscribe(x => console.log(x));
  *
  * // outputs
- * // { age: 27, name: 'Foo', isDev: true }
- * // { age: 25, name: 'Bar', isDev: true }
- * // { age: 29, name: 'Beer', isDev: false }
+ * // { age: 27, userName: 'Foo', isDev: true }
+ * // { age: 25, userName: 'Bar', isDev: true }
+ * // { age: 29, userName: 'Beer', isDev: false }
  *
  * @param observables
  * @return {Observable<R>}
  * @static true
- * @name zip
+ * @userName zip
  * @owner Observable
  */
 function zipStatic() {
@@ -46251,7 +46251,7 @@ var ZipBufferIterator = (function (_super) {
     ZipBufferIterator.prototype[iterator_1.iterator] = function () {
         return this;
     };
-    // NOTE: there is actually a name collision here with Subscriber.next and Iterator.next
+    // NOTE: there is actually a userName collision here with Subscriber.next and Iterator.next
     //    this is legit because `next()` will never be called by a subscription in this case.
     ZipBufferIterator.prototype.next = function () {
         var buffer = this.buffer;
@@ -46737,12 +46737,12 @@ var AUTO_STYLE = '*';
  *
  * Triggers are registered within the component annotation data under the {\@link
  * Component#animations-anchor animations section}. An animation trigger can be placed on an element
- * within a template by referencing the name of the trigger followed by the expression value that the
+ * within a template by referencing the userName of the trigger followed by the expression value that the
  * trigger is bound to (in the form of `[\@triggerName]="expression"`.
  *
  * ### Usage
  *
- * `trigger` will create an animation trigger reference based on the provided `name` value. The
+ * `trigger` will create an animation trigger reference based on the provided `userName` value. The
  * provided `animation` value is expected to be an array consisting of {\@link state state} and {\@link
  * transition transition} declarations.
  *
@@ -46991,7 +46991,7 @@ function style(tokens) {
  * the state has been reached.
  *
  * ```typescript
- * // "void" is a reserved name for a state and is used to represent
+ * // "void" is a reserved userName for a state and is used to represent
  * // the state in which an element is detached from from the application.
  * state("void", style({ height: 0 }))
  *
@@ -48979,7 +48979,7 @@ function Polling (opts) {
 inherit(Polling, Transport);
 
 /**
- * Transport name.
+ * Transport userName.
  */
 
 Polling.prototype.name = 'polling';
@@ -49883,7 +49883,7 @@ var arrayPush = __webpack_require__(151),
     getSymbols = __webpack_require__(157),
     stubArray = __webpack_require__(254);
 
-/* Built-in method references for those with the same name as other `lodash` methods. */
+/* Built-in method references for those with the same userName as other `lodash` methods. */
 var nativeGetSymbols = Object.getOwnPropertySymbols;
 
 /**
@@ -51062,7 +51062,7 @@ var FromObservable = (function (_super) {
      * @return {Observable<T>} The Observable whose values are originally from the
      * input object that was converted.
      * @static true
-     * @name from
+     * @userName from
      * @owner Observable
      */
     FromObservable.create = function (ish, scheduler) {
@@ -51151,7 +51151,7 @@ var PromiseObservable = (function (_super) {
      * the delivery of the resolved value (or the rejection).
      * @return {Observable<T>} An Observable which wraps the Promise.
      * @static true
-     * @name fromPromise
+     * @userName fromPromise
      * @owner Observable
      */
     PromiseObservable.create = function (promise, scheduler) {
@@ -51374,7 +51374,7 @@ var AjaxObservable = (function (_super) {
      *   the Observable. Gets {@link AjaxResponse} as an argument.
      * @return {Observable} An observable sequence containing the XMLHttpRequest.
      * @static true
-     * @name ajax
+     * @userName ajax
      * @owner Observable
     */
     AjaxObservable.create = (function () {
@@ -51758,7 +51758,7 @@ var subscribeToResult_1 = __webpack_require__(4);
  * @return {Observable} An observable that originates from either the source or the observable returned by the
  *  catch `selector` function.
  * @method catch
- * @name catch
+ * @userName catch
  * @owner Observable
  */
 function _catch(selector) {
@@ -51979,21 +51979,21 @@ var errorObject_1 = __webpack_require__(17);
  * @example <caption>An example using a compare function</caption>
  * interface Person {
  *    age: number,
- *    name: string
+ *    userName: string
  * }
  *
  * Observable.of<Person>(
- *     { age: 4, name: 'Foo'},
- *     { age: 7, name: 'Bar'},
- *     { age: 5, name: 'Foo'})
- *     { age: 6, name: 'Foo'})
- *     .distinctUntilChanged((p: Person, q: Person) => p.name === q.name)
+ *     { age: 4, userName: 'Foo'},
+ *     { age: 7, userName: 'Bar'},
+ *     { age: 5, userName: 'Foo'})
+ *     { age: 6, userName: 'Foo'})
+ *     .distinctUntilChanged((p: Person, q: Person) => p.userName === q.userName)
  *     .subscribe(x => console.log(x));
  *
  * // displays:
- * // { age: 4, name: 'Foo' }
- * // { age: 7, name: 'Bar' }
- * // { age: 5, name: 'Foo' }
+ * // { age: 4, userName: 'Foo' }
+ * // { age: 7, userName: 'Bar' }
+ * // { age: 5, userName: 'Foo' }
  *
  * @see {@link distinct}
  * @see {@link distinctUntilKeyChanged}
@@ -52656,7 +52656,7 @@ exports.merge = merge;
  * @return {Observable} an Observable that emits items that are the result of
  * every input Observable.
  * @static true
- * @name merge
+ * @userName merge
  * @owner Observable
  */
 function mergeStatic() {
@@ -53353,7 +53353,7 @@ var AsapScheduler_1 = __webpack_require__(847);
  * // ... but 'asap' goes first!
  *
  * @static true
- * @name asap
+ * @userName asap
  * @owner Scheduler
  */
 exports.asap = new AsapScheduler_1.AsapScheduler(AsapAction_1.AsapAction);
@@ -53425,7 +53425,7 @@ var QueueScheduler_1 = __webpack_require__(849);
  *
  *
  * @static true
- * @name queue
+ * @userName queue
  * @owner Scheduler
  */
 exports.queue = new QueueScheduler_1.QueueScheduler(QueueAction_1.QueueAction);
@@ -54294,7 +54294,7 @@ module.exports = on;
  * Helper for subscriptions.
  *
  * @param {Object|EventEmitter} obj with `Emitter` mixin or `EventEmitter`
- * @param {String} event name
+ * @param {String} event userName
  * @param {Function} callback
  * @api public
  */
@@ -54441,7 +54441,7 @@ Socket.prototype.send = function () {
  * Override `emit`.
  * If the event is in `events`, it's emitted normally.
  *
- * @param {String} event name
+ * @param {String} event userName
  * @return {Socket} self
  * @api public
  */
@@ -58106,7 +58106,7 @@ function templateVisitAll(visitor, asts, context) {
 /**
  * A token representing the a reference to a static type.
  *
- * This token is unique for a filePath and name and can be used as a hash table key.
+ * This token is unique for a filePath and userName and can be used as a hash table key.
  */
 var StaticSymbol = (function () {
     /**
@@ -58173,7 +58173,7 @@ function splitNsName(elementName) {
     }
     var /** @type {?} */ colonIndex = elementName.indexOf(':', 1);
     if (colonIndex == -1) {
-        throw new Error("Unsupported format \"" + elementName + "\" expecting \":namespace:name\"");
+        throw new Error("Unsupported format \"" + elementName + "\" expecting \":namespace:userName\"");
     }
     return [elementName.slice(1, colonIndex), elementName.slice(colonIndex + 1)];
 }
@@ -58579,13 +58579,13 @@ var _SELECTOR_REGEXP = new RegExp('(\\:not\\()|' +
     '(?:\\.([-\\w]+))|' +
     // "-" should appear first in the regexp below as FF31 parses "[.-\w]" as a range
     '(?:\\[([-.\\w*]+)(?:=([\"\']?)([^\\]\"\']*)\\5)?\\])|' +
-    // "[name="value"]",
-    // "[name='value']"
+    // "[userName="value"]",
+    // "[userName='value']"
     '(\\))|' +
     '(\\s*,\\s*)', // ","
 'g');
 /**
- * A css selector contains an element name,
+ * A css selector contains an element userName,
  * css classes and attribute/value pairs with the purpose
  * of selecting subsets out of them.
  */
@@ -62426,7 +62426,7 @@ var _ParseAST = (function () {
                 var /** @type {?} */ letStart = this.inputIndex;
                 this.advance(); // consume `as`
                 name = rawKey;
-                key = this.expectTemplateBindingKey(); // read local var name
+                key = this.expectTemplateBindingKey(); // read local var userName
                 keyIsVar = true;
             }
             else if (this.next !== EOF && !this.peekKeywordLet()) {
@@ -62439,7 +62439,7 @@ var _ParseAST = (function () {
             if (this.peekKeywordAs() && !keyIsVar) {
                 var /** @type {?} */ letStart = this.inputIndex;
                 this.advance(); // consume `as`
-                var /** @type {?} */ letName = this.expectTemplateBindingKey(); // read local var name
+                var /** @type {?} */ letName = this.expectTemplateBindingKey(); // read local var userName
                 bindings.push(new TemplateBinding(this.span(letStart), letName, true, key, null));
             }
             if (!this.optionalCharacter($SEMICOLON)) {
@@ -64624,7 +64624,7 @@ var TAG_TO_PLACEHOLDER_NAMES = {
 /**
  * Creates unique names for placeholder with different content.
  *
- * Returns the same placeholder name when the content is identical.
+ * Returns the same placeholder userName when the content is identical.
  *
  * \@internal
  */
@@ -65539,8 +65539,8 @@ var _SerializerVisitor = (function () {
     _SerializerVisitor.prototype.visitTagPlaceholder = function (ph, context) {
         var _this = this;
         return ph.isVoid ?
-            "<ph tag name=\"" + ph.startName + "\"/>" :
-            "<ph tag name=\"" + ph.startName + "\">" + ph.children.map(function (child) { return child.visit(_this); }).join(', ') + "</ph name=\"" + ph.closeName + "\">";
+            "<ph tag userName=\"" + ph.startName + "\"/>" :
+            "<ph tag userName=\"" + ph.startName + "\">" + ph.children.map(function (child) { return child.visit(_this); }).join(', ') + "</ph userName=\"" + ph.closeName + "\">";
     };
     /**
      * @param {?} ph
@@ -65548,7 +65548,7 @@ var _SerializerVisitor = (function () {
      * @return {?}
      */
     _SerializerVisitor.prototype.visitPlaceholder = function (ph, context) {
-        return ph.value ? "<ph name=\"" + ph.name + "\">" + ph.value + "</ph>" : "<ph name=\"" + ph.name + "\"/>";
+        return ph.value ? "<ph userName=\"" + ph.name + "\">" + ph.value + "</ph>" : "<ph userName=\"" + ph.name + "\"/>";
     };
     /**
      * @param {?} ph
@@ -65556,7 +65556,7 @@ var _SerializerVisitor = (function () {
      * @return {?}
      */
     _SerializerVisitor.prototype.visitIcuPlaceholder = function (ph, context) {
-        return "<ph icu name=\"" + ph.name + "\">" + ph.value.visit(this) + "</ph>";
+        return "<ph icu userName=\"" + ph.name + "\">" + ph.value.visit(this) + "</ph>";
     };
     return _SerializerVisitor;
 }());
@@ -65963,7 +65963,7 @@ var Serializer = (function () {
     return Serializer;
 }());
 /**
- * A simple mapper that take a function to transform an internal name to a public name
+ * A simple mapper that take a function to transform an internal userName to a public userName
  */
 var SimplePlaceholderMapper = (function (_super) {
     __extends(SimplePlaceholderMapper, _super);
@@ -66575,7 +66575,7 @@ var _MESSAGES_TAG = 'messagebundle';
 var _MESSAGE_TAG = 'msg';
 var _PLACEHOLDER_TAG$1 = 'ph';
 var _EXEMPLE_TAG = 'ex';
-var _DOCTYPE = "<!ELEMENT messagebundle (msg)*>\n<!ATTLIST messagebundle class CDATA #IMPLIED>\n\n<!ELEMENT msg (#PCDATA|ph|source)*>\n<!ATTLIST msg id CDATA #IMPLIED>\n<!ATTLIST msg seq CDATA #IMPLIED>\n<!ATTLIST msg name CDATA #IMPLIED>\n<!ATTLIST msg desc CDATA #IMPLIED>\n<!ATTLIST msg meaning CDATA #IMPLIED>\n<!ATTLIST msg obsolete (obsolete) #IMPLIED>\n<!ATTLIST msg xml:space (default|preserve) \"default\">\n<!ATTLIST msg is_hidden CDATA #IMPLIED>\n\n<!ELEMENT source (#PCDATA)>\n\n<!ELEMENT ph (#PCDATA|ex)*>\n<!ATTLIST ph name CDATA #REQUIRED>\n\n<!ELEMENT ex (#PCDATA)>";
+var _DOCTYPE = "<!ELEMENT messagebundle (msg)*>\n<!ATTLIST messagebundle class CDATA #IMPLIED>\n\n<!ELEMENT msg (#PCDATA|ph|source)*>\n<!ATTLIST msg id CDATA #IMPLIED>\n<!ATTLIST msg seq CDATA #IMPLIED>\n<!ATTLIST msg userName CDATA #IMPLIED>\n<!ATTLIST msg desc CDATA #IMPLIED>\n<!ATTLIST msg meaning CDATA #IMPLIED>\n<!ATTLIST msg obsolete (obsolete) #IMPLIED>\n<!ATTLIST msg xml:space (default|preserve) \"default\">\n<!ATTLIST msg is_hidden CDATA #IMPLIED>\n\n<!ELEMENT source (#PCDATA)>\n\n<!ELEMENT ph (#PCDATA|ex)*>\n<!ATTLIST ph userName CDATA #REQUIRED>\n\n<!ELEMENT ex (#PCDATA)>";
 var Xmb = (function (_super) {
     __extends(Xmb, _super);
     function Xmb() {
@@ -67013,7 +67013,7 @@ var XmlToI18n$1 = (function () {
             if (nameAttr) {
                 return new Placeholder('', nameAttr.value, el.sourceSpan);
             }
-            this._addError(el, "<" + _PLACEHOLDER_TAG$2 + "> misses the \"name\" attribute");
+            this._addError(el, "<" + _PLACEHOLDER_TAG$2 + "> misses the \"userName\" attribute");
         }
         else {
             this._addError(el, "Unexpected tag");
@@ -68703,7 +68703,7 @@ var BindingParser = (function () {
                 securityContexts = [__WEBPACK_IMPORTED_MODULE_0__angular_core__["SecurityContext"].STYLE];
             }
         }
-        // If not a special case, use the full property name
+        // If not a special case, use the full property userName
         if (boundPropertyName === null) {
             boundPropertyName = this._schemaRegistry.getMappedPropName(boundProp.name);
             securityContexts = calcPossibleSecurityContexts(this._schemaRegistry, elementSelector, boundPropertyName, false);
@@ -68753,7 +68753,7 @@ var BindingParser = (function () {
             }
         }
         else {
-            this._reportError("The animation trigger output event (@" + eventName + ") is missing its phase value name (start or done are currently supported)", sourceSpan);
+            this._reportError("The animation trigger output event (@" + eventName + ") is missing its phase value userName (start or done are currently supported)", sourceSpan);
         }
     };
     /**
@@ -68771,7 +68771,7 @@ var BindingParser = (function () {
         targetMatchableAttrs.push([name, ast.source]);
         targetEvents.push(new BoundEventAst(eventName, target, null, ast, sourceSpan));
         // Don't detect directives for event names for now,
-        // so don't add the event name to the matchableAttrs
+        // so don't add the event userName to the matchableAttrs
     };
     /**
      * @param {?} value
@@ -68840,7 +68840,7 @@ var BindingParser = (function () {
         }
     };
     /**
-     * @param {?} propName the name of the property / attribute
+     * @param {?} propName the userName of the property / attribute
      * @param {?} sourceSpan
      * @param {?} isAttr true when binding to an attribute
      * @return {?}
@@ -69535,7 +69535,7 @@ var TemplateParseVisitor = (function () {
         // as selectorMatcher uses Maps inside.
         // Also deduplicate directives as they might match more than one time!
         var /** @type {?} */ directives = new Array(this.directivesIndex.size);
-        // Whether any directive selector matches on the element name
+        // Whether any directive selector matches on the element userName
         var /** @type {?} */ matchElement = false;
         selectorMatcher.match(elementCssSelector, function (selector, directive) {
             directives[_this.directivesIndex.get(directive)] = directive;
@@ -69569,7 +69569,7 @@ var TemplateParseVisitor = (function () {
             var /** @type {?} */ directiveProperties = [];
             var /** @type {?} */ hostProperties = _this._bindingParser.createDirectiveHostPropertyAsts(directive, elementName, sourceSpan);
             // Note: We need to check the host properties here as well,
-            // as we don't know the element name in the DirectiveWrapperCompiler yet.
+            // as we don't know the element userName in the DirectiveWrapperCompiler yet.
             hostProperties = _this._checkPropertiesInSchema(elementName, hostProperties);
             var /** @type {?} */ hostEvents = _this._bindingParser.createDirectiveHostEventAsts(directive, sourceSpan);
             _this._createDirectivePropertyAsts(directive.inputs, props, directiveProperties, targetBoundDirectivePropNames);
@@ -69678,9 +69678,9 @@ var TemplateParseVisitor = (function () {
      * Make sure that non-angular tags conform to the schemas.
      *
      * Note: An element is considered an angular tag when at least one directive selector matches the
-     * tag name.
+     * tag userName.
      *
-     * @param {?} matchElement Whether any directive has matched on the tag name
+     * @param {?} matchElement Whether any directive has matched on the tag userName
      * @param {?} element the html element
      * @return {?}
      */
@@ -69714,7 +69714,7 @@ var TemplateParseVisitor = (function () {
             this._reportError("Components on an embedded template: " + componentTypeNames.join(','), sourceSpan);
         }
         elementProps.forEach(function (prop) {
-            _this._reportError("Property binding " + prop.name + " not used by any directive on an embedded template. Make sure that the property name is spelled correctly and all directives are listed in the \"@NgModule.declarations\".", sourceSpan);
+            _this._reportError("Property binding " + prop.name + " not used by any directive on an embedded template. Make sure that the property userName is spelled correctly and all directives are listed in the \"@NgModule.declarations\".", sourceSpan);
         });
     };
     /**
@@ -69733,7 +69733,7 @@ var TemplateParseVisitor = (function () {
         });
         events.forEach(function (event) {
             if (event.target != null || !allDirectiveEvents.has(event.name)) {
-                _this._reportError("Event binding " + event.fullName + " not emitted by any directive on an embedded template. Make sure that the event name is spelled correctly and all directives are listed in the \"@NgModule.declarations\".", event.sourceSpan);
+                _this._reportError("Event binding " + event.fullName + " not emitted by any directive on an embedded template. Make sure that the event userName is spelled correctly and all directives are listed in the \"@NgModule.declarations\".", event.sourceSpan);
             }
         });
     };
@@ -70104,7 +70104,7 @@ function getUrlScheme(url) {
  * undefined.
  *
  * @param {?=} opt_scheme The scheme such as 'http'.
- * @param {?=} opt_userInfo The user name before the '\@'.
+ * @param {?=} opt_userInfo The user userName before the '\@'.
  * @param {?=} opt_domain The domain such as 'www.google.com', already
  *     URI-encoded.
  * @param {?=} opt_port The port number.
@@ -70713,7 +70713,7 @@ var DirectiveResolver = (function () {
                         throw new Error("@HostBinding can not bind to events. Use @HostListener instead.");
                     }
                     else if (startWith === '[') {
-                        throw new Error("@HostBinding parameter should be a property name, 'class.<name>', or 'attr.<name>'.");
+                        throw new Error("@HostBinding parameter should be a property userName, 'class.<userName>', or 'attr.<userName>'.");
                     }
                     host["[" + hostBinding.hostPropertyName + "]"] = propName;
                 }
@@ -76323,13 +76323,13 @@ var SCHEMA = [
     ':svg:gradient^:svg:|',
     ':svg:textContent^:svg:graphics|',
     ':svg:textPositioning^:svg:textContent|',
-    'a^[HTMLElement]|charset,coords,download,hash,host,hostname,href,hreflang,name,password,pathname,ping,port,protocol,referrerPolicy,rel,rev,search,shape,target,text,type,username',
+    'a^[HTMLElement]|charset,coords,download,hash,host,hostname,href,hreflang,userName,password,pathname,ping,port,protocol,referrerPolicy,rel,rev,search,shape,target,text,type,username',
     'area^[HTMLElement]|alt,coords,hash,host,hostname,href,!noHref,password,pathname,ping,port,protocol,referrerPolicy,search,shape,target,username',
     'audio^media|',
     'br^[HTMLElement]|clear',
     'base^[HTMLElement]|href,target',
     'body^[HTMLElement]|aLink,background,bgColor,link,*beforeunload,*blur,*error,*focus,*hashchange,*languagechange,*load,*message,*offline,*online,*pagehide,*pageshow,*popstate,*rejectionhandled,*resize,*scroll,*storage,*unhandledrejection,*unload,text,vLink',
-    'button^[HTMLElement]|!autofocus,!disabled,formAction,formEnctype,formMethod,!formNoValidate,formTarget,name,type,value',
+    'button^[HTMLElement]|!autofocus,!disabled,formAction,formEnctype,formMethod,!formNoValidate,formTarget,userName,type,value',
     'canvas^[HTMLElement]|#height,#width',
     'content^[HTMLElement]|select',
     'dl^[HTMLElement]|!compact',
@@ -76338,43 +76338,43 @@ var SCHEMA = [
     'dialog^[HTMLElement]|!open,returnValue',
     'dir^[HTMLElement]|!compact',
     'div^[HTMLElement]|align',
-    'embed^[HTMLElement]|align,height,name,src,type,width',
-    'fieldset^[HTMLElement]|!disabled,name',
+    'embed^[HTMLElement]|align,height,userName,src,type,width',
+    'fieldset^[HTMLElement]|!disabled,userName',
     'font^[HTMLElement]|color,face,size',
-    'form^[HTMLElement]|acceptCharset,action,autocomplete,encoding,enctype,method,name,!noValidate,target',
-    'frame^[HTMLElement]|frameBorder,longDesc,marginHeight,marginWidth,name,!noResize,scrolling,src',
+    'form^[HTMLElement]|acceptCharset,action,autocomplete,encoding,enctype,method,userName,!noValidate,target',
+    'frame^[HTMLElement]|frameBorder,longDesc,marginHeight,marginWidth,userName,!noResize,scrolling,src',
     'frameset^[HTMLElement]|cols,*beforeunload,*blur,*error,*focus,*hashchange,*languagechange,*load,*message,*offline,*online,*pagehide,*pageshow,*popstate,*rejectionhandled,*resize,*scroll,*storage,*unhandledrejection,*unload,rows',
     'hr^[HTMLElement]|align,color,!noShade,size,width',
     'head^[HTMLElement]|',
     'h1,h2,h3,h4,h5,h6^[HTMLElement]|align',
     'html^[HTMLElement]|version',
-    'iframe^[HTMLElement]|align,!allowFullscreen,frameBorder,height,longDesc,marginHeight,marginWidth,name,referrerPolicy,%sandbox,scrolling,src,srcdoc,width',
-    'img^[HTMLElement]|align,alt,border,%crossOrigin,#height,#hspace,!isMap,longDesc,lowsrc,name,referrerPolicy,sizes,src,srcset,useMap,#vspace,#width',
-    'input^[HTMLElement]|accept,align,alt,autocapitalize,autocomplete,!autofocus,!checked,!defaultChecked,defaultValue,dirName,!disabled,%files,formAction,formEnctype,formMethod,!formNoValidate,formTarget,#height,!incremental,!indeterminate,max,#maxLength,min,#minLength,!multiple,name,pattern,placeholder,!readOnly,!required,selectionDirection,#selectionEnd,#selectionStart,#size,src,step,type,useMap,value,%valueAsDate,#valueAsNumber,#width',
-    'keygen^[HTMLElement]|!autofocus,challenge,!disabled,keytype,name',
+    'iframe^[HTMLElement]|align,!allowFullscreen,frameBorder,height,longDesc,marginHeight,marginWidth,userName,referrerPolicy,%sandbox,scrolling,src,srcdoc,width',
+    'img^[HTMLElement]|align,alt,border,%crossOrigin,#height,#hspace,!isMap,longDesc,lowsrc,userName,referrerPolicy,sizes,src,srcset,useMap,#vspace,#width',
+    'input^[HTMLElement]|accept,align,alt,autocapitalize,autocomplete,!autofocus,!checked,!defaultChecked,defaultValue,dirName,!disabled,%files,formAction,formEnctype,formMethod,!formNoValidate,formTarget,#height,!incremental,!indeterminate,max,#maxLength,min,#minLength,!multiple,userName,pattern,placeholder,!readOnly,!required,selectionDirection,#selectionEnd,#selectionStart,#size,src,step,type,useMap,value,%valueAsDate,#valueAsNumber,#width',
+    'keygen^[HTMLElement]|!autofocus,challenge,!disabled,keytype,userName',
     'li^[HTMLElement]|type,#value',
     'label^[HTMLElement]|htmlFor',
     'legend^[HTMLElement]|align',
     'link^[HTMLElement]|as,charset,%crossOrigin,!disabled,href,hreflang,integrity,media,rel,%relList,rev,%sizes,target,type',
-    'map^[HTMLElement]|name',
+    'map^[HTMLElement]|userName',
     'marquee^[HTMLElement]|behavior,bgColor,direction,height,#hspace,#loop,#scrollAmount,#scrollDelay,!trueSpeed,#vspace,width',
     'menu^[HTMLElement]|!compact',
-    'meta^[HTMLElement]|content,httpEquiv,name,scheme',
+    'meta^[HTMLElement]|content,httpEquiv,userName,scheme',
     'meter^[HTMLElement]|#high,#low,#max,#min,#optimum,#value',
     'ins,del^[HTMLElement]|cite,dateTime',
     'ol^[HTMLElement]|!compact,!reversed,#start,type',
-    'object^[HTMLElement]|align,archive,border,code,codeBase,codeType,data,!declare,height,#hspace,name,standby,type,useMap,#vspace,width',
+    'object^[HTMLElement]|align,archive,border,code,codeBase,codeType,data,!declare,height,#hspace,userName,standby,type,useMap,#vspace,width',
     'optgroup^[HTMLElement]|!disabled,label',
     'option^[HTMLElement]|!defaultSelected,!disabled,label,!selected,text,value',
-    'output^[HTMLElement]|defaultValue,%htmlFor,name,value',
+    'output^[HTMLElement]|defaultValue,%htmlFor,userName,value',
     'p^[HTMLElement]|align',
-    'param^[HTMLElement]|name,type,value,valueType',
+    'param^[HTMLElement]|userName,type,value,valueType',
     'picture^[HTMLElement]|',
     'pre^[HTMLElement]|#width',
     'progress^[HTMLElement]|#max,#value',
     'q,blockquote,cite^[HTMLElement]|',
     'script^[HTMLElement]|!async,charset,%crossOrigin,!defer,event,htmlFor,integrity,src,text,type',
-    'select^[HTMLElement]|!autofocus,!disabled,#length,!multiple,name,!required,#selectedIndex,#size,value',
+    'select^[HTMLElement]|!autofocus,!disabled,#length,!multiple,userName,!required,#selectedIndex,#size,value',
     'shadow^[HTMLElement]|',
     'source^[HTMLElement]|media,sizes,src,srcset,type',
     'span^[HTMLElement]|',
@@ -76386,7 +76386,7 @@ var SCHEMA = [
     'tr^[HTMLElement]|align,bgColor,ch,chOff,vAlign',
     'tfoot,thead,tbody^[HTMLElement]|align,ch,chOff,vAlign',
     'template^[HTMLElement]|',
-    'textarea^[HTMLElement]|autocapitalize,!autofocus,#cols,defaultValue,dirName,!disabled,#maxLength,#minLength,name,placeholder,!readOnly,!required,#rows,selectionDirection,#selectionEnd,#selectionStart,value,wrap',
+    'textarea^[HTMLElement]|autocapitalize,!autofocus,#cols,defaultValue,dirName,!disabled,#maxLength,#minLength,userName,placeholder,!readOnly,!required,#rows,selectionDirection,#selectionEnd,#selectionStart,value,wrap',
     'title^[HTMLElement]|text',
     'track^[HTMLElement]|!default,kind,label,src,srclang',
     'ul^[HTMLElement]|!compact,type',
@@ -76558,8 +76558,8 @@ var DomElementSchemaRegistry = (function (_super) {
     /**
      * securityContext returns the security context for the given property on the given DOM tag.
      *
-     * Tag and property name are statically known and cannot change at runtime, i.e. it is not
-     * possible to bind a value into a changing attribute or tag name.
+     * Tag and property userName are statically known and cannot change at runtime, i.e. it is not
+     * possible to bind a value into a changing attribute or tag userName.
      *
      * The filtering is white list based. All attributes in the schema above are assumed to have the
      * 'NONE' security context, i.e. that they are safe inert string values. Only specific well known
@@ -76571,7 +76571,7 @@ var DomElementSchemaRegistry = (function (_super) {
      */
     DomElementSchemaRegistry.prototype.securityContext = function (tagName, propName, isAttribute) {
         if (isAttribute) {
-            // NB: For security purposes, use the mapped property name, not the attribute name.
+            // NB: For security purposes, use the mapped property userName, not the attribute userName.
             propName = this.getMappedPropName(propName);
         }
         // Make sure comparisons are case insensitive, so that case differences between attribute and
@@ -78577,7 +78577,7 @@ var ViewBuilder = (function () {
         this.nodes.push(null);
         var /** @type {?} */ elName = ast.name;
         if (ast.name === NG_CONTAINER_TAG) {
-            // Using a null element name creates an anchor.
+            // Using a null element userName creates an anchor.
             elName = null;
         }
         var _a = this._visitElementOrTemplate(nodeIndex, ast), flags = _a.flags, usedEvents = _a.usedEvents, queryMatchesExpr = _a.queryMatchesExpr, dirHostBindings = _a.hostBindings, hostEvents = _a.hostEvents;
@@ -78814,8 +78814,8 @@ var ViewBuilder = (function () {
         // directiveDef(
         //   flags: NodeFlags, matchedQueries: [string, QueryValueType][], childCount: number, ctor:
         //   any,
-        //   deps: ([DepFlags, any] | any)[], props?: {[name: string]: [number, string]},
-        //   outputs?: {[name: string]: string}, component?: () => ViewDefinition): NodeDef;
+        //   deps: ([DepFlags, any] | any)[], props?: {[userName: string]: [number, string]},
+        //   outputs?: {[userName: string]: string}, component?: () => ViewDefinition): NodeDef;
         this.nodes[nodeIndex] = function () { return ({
             sourceSpan: dirAst.sourceSpan,
             nodeFlags: 8192 /* TypeDirective */ | flags,
@@ -80607,7 +80607,7 @@ var StaticReflector = (function () {
      * All types passed to the StaticResolver should be pseudo-types returned by this method.
      *
      * @param {?} declarationFile the absolute path of the file where the symbol is declared
-     * @param {?} name the name of the type.
+     * @param {?} name the userName of the type.
      * @param {?=} members
      * @return {?}
      */
@@ -81285,7 +81285,7 @@ var StaticSymbolResolver = (function () {
      * All types passed to the StaticResolver should be pseudo-types returned by this method.
      *
      * @param {?} declarationFile the absolute path of the file where the symbol is declared
-     * @param {?} name the name of the type.
+     * @param {?} name the userName of the type.
      * @param {?=} members a symbol for a static member of the named type
      * @return {?}
      */
@@ -81331,7 +81331,7 @@ var StaticSymbolResolver = (function () {
                 var /** @type {?} */ symbol = _this.getStaticSymbol(filePath, name);
                 var /** @type {?} */ importSymbol = undefined;
                 if (metadata['importAs']) {
-                    // Index bundle indexes should use the importAs module name instead of a reference
+                    // Index bundle indexes should use the importAs module userName instead of a reference
                     // to the .d.ts file directly.
                     importSymbol = _this.getStaticSymbol(metadata['importAs'], name);
                     _this.recordImportAs(symbol, importSymbol);
@@ -83401,7 +83401,7 @@ var ImportResolver = (function () {
     function ImportResolver() {
     }
     /**
-     * Converts a file path to a module name that can be used as an `import.
+     * Converts a file path to a module userName that can be used as an `import.
      * I.e. `path/to/importedFile.ts` should be imported by `path/to/containingFile.ts`.
      * @abstract
      * @param {?} importedFilePath
@@ -84355,7 +84355,7 @@ var CompanyDetailsComponent = (function () {
     }
     CompanyDetailsComponent.prototype.saveCompany = function (event, key) {
         if (this.companyGroup.invalid) {
-            this.toastr.error('To save please provide a name', 'Oh no! ');
+            this.toastr.error('To save please provide a userName', 'Oh no! ');
         }
         else {
             console.log(event, key);
@@ -84374,7 +84374,7 @@ var CompanyDetailsComponent = (function () {
 }());
 CompanyDetailsComponent = __decorate([
     core_1.Component({
-        selector: 'company-details-component',
+        selector: 'company-component',
         template: "\n\t\t<div *ngIf=\"company.ID\">\n\t\t\t<h4>Company Details</h4>\n\t\t\t<input-component (modelChange)=\"saveCompany($event, 'Name')\" [model]=\"company.Name\" label=\"Name\" [control]=\"nameControl\"></input-component>\n\t\t\t<input-component (modelChange)=\"saveCompany($event, 'Phone')\" [model]=\"company.Phone\" label=\"Phone\" [control]=\"phoneControl\"></input-component>\n\t\t\t<input-component (modelChange)=\"saveCompany($event, 'Address')\" [model]=\"company.Address\" label=\"Address\" [control]=\"addressControl\"></input-component>\n\t\t\t<input-component (modelChange)=\"saveCompany($event, 'City')\" [model]=\"company.City\" label=\"City\" [control]=\"cityControl\"></input-component>\n\t\t\t<input-component (modelChange)=\"saveCompany($event, 'Zip')\" [model]=\"company.Zip\" label=\"Zip\" [control]=\"zipControl\"></input-component>\n\t\t\t<quotes-component></quotes-component>\n\t\t</div>\n\t\t<div *ngIf=\"!company.ID\">\n\t\t\t<h4>Please select a Company for it's details.</h4>\n\t\t</div>\n\t",
     }),
     __metadata("design:paramtypes", [companies_service_1.CompanyService,
@@ -84438,7 +84438,7 @@ var ContactDetailsComponent = (function () {
                 .subscribe(function () { });
         }
         else {
-            this.toastr.error('Please provide a name', 'Can\'t Save');
+            this.toastr.error('Please provide a userName', 'Can\'t Save');
         }
     };
     return ContactDetailsComponent;
@@ -84777,7 +84777,7 @@ var Quotes_Printout = (function () {
     Quotes_Printout.prototype.ngOnInit = function () {
         var _this = this;
         console.log('hit');
-        this.socketService.hotSocketCouple('get.userById', { id: FIXTURE_ID_1.FIXTURE_USER_ID }, 'localhost:1729')
+        this.socketService.responseSocket('get.userById', { id: FIXTURE_ID_1.FIXTURE_USER_ID }, 'localhost:1729')
             .subscribe(function (response) {
             console.log('print response', response);
             _this.settings = response;
@@ -84796,7 +84796,7 @@ var Quotes_Printout = (function () {
 Quotes_Printout = __decorate([
     core_1.Component({
         selector: 'quotes-printout-component',
-        template: "\n\t\t<h1 style=\"text-align: center;\">{{settings.companyName}}</h1>\n\t\t<p style=\"text-align: center;\">{{settings.address}}</p>\n\t\t<p style=\"text-align: center;\">{{settings.companyWeb}}</p>\n\t\t<table>\n\t\t\t<tr>\n\t\t\t\t<td style=\"text-align: center;\">Cell: {{settings.phone}}</td>\n\t\t\t\t<td style=\"text-align: center;\">Phone: {{settings.companyPhone}}</td>\n\t\t\t\t<td style=\"text-align: center;\">Fax: {{settings.companyFax}}</td>\n\t\t\t</tr>\n\t\t</table>\n\t\t<table>\n\t\t\t<tr>\n\t\t\t\t<td>\n\t\t\t\t\t<p>\n\t\t\t\t\t\t<b>TO:</b> {{_Company.Name}}<br>\n\t\t\t\t\t\t{{_Contact.Name}}<br>\n\t\t\t\t\t\t{{_Company.Address}}<br>\n\t\t\t\t\t\t{{_Company.Phone}}\n\t\t\t\t\t</p>\n\t\t\t\t</td>\n\t\t\t\t<td>\n\t\t\t\t\t<table style=\"float:right\">\n\t\t\t\t\t\t<tr>\n\t\t\t\t\t\t\t<th style=\"background-color:lightblue;text-align: center;\">Salesperson</th>\n\t\t\t\t\t\t\t<th style=\"background-color:lightblue;text-align: center;\">Email</th>\n\t\t\t\t\t\t</tr>\n\t\t\t\t\t\t<tr>\n\t\t\t\t\t\t\t<td style=\"text-align: center;\">{{settings.name}}</td>\n\t\t\t\t\t\t\t<td style=\"text-align: center;\">{{settings.email}}</td>\n\t\t\t\t\t\t</tr>\n\t\t\t\t\t</table>\n\t\t\t\t</td>\n\t\t\t</tr>\n\t\t</table>\n\t\t<br>\n\t\t<table class=\"table table-striped\">\n\t\t\t<caption style=\"text-align: center;\">{{_Quote.Name}}</caption>\n\t\t\t<tr>\n\t\t\t\t<th style=\"background-color: lightblue;text-align: center;\">Unit</th>\n\t\t\t\t<th style=\"background-color: lightblue;text-align: center;\">Description</th>\n\t\t\t\t<th style=\"background-color: lightblue;text-align: center;\">Cost</th>\n\t\t\t</tr>\n\t\t\t<tbody>\n\t\t\t<tr *ngFor=\"let Line of _QuoteLines\">\n\t\t\t\t<td style=\"text-align: center;\">{{Line.UNIT}}</td>\n\t\t\t\t<td style=\"text-align: center;\">{{Line.DESC}}</td>\n\t\t\t\t<td style=\"text-align: center;\">{{Line.COST}}</td>\n\t\t\t</tr>\n\t\t\t</tbody>\n\t\t</table>\n\t\t<table>\n\t\t\t<tr>\n\t\t\t\t<td>Supplies on Request</td>\n\t\t\t\t<td style=\"text-align: right;\">All prices subject to change without notice</td>\n\t\t\t</tr>\n\t\t</table>\n\t"
+        template: "\n\t\t<h1 style=\"text-align: center;\">{{settings.companyName}}</h1>\n\t\t<p style=\"text-align: center;\">{{settings.address}}</p>\n\t\t<p style=\"text-align: center;\">{{settings.companyWeb}}</p>\n\t\t<table>\n\t\t\t<tr>\n\t\t\t\t<td style=\"text-align: center;\">Cell: {{settings.phone}}</td>\n\t\t\t\t<td style=\"text-align: center;\">Phone: {{settings.companyPhone}}</td>\n\t\t\t\t<td style=\"text-align: center;\">Fax: {{settings.companyFax}}</td>\n\t\t\t</tr>\n\t\t</table>\n\t\t<table>\n\t\t\t<tr>\n\t\t\t\t<td>\n\t\t\t\t\t<p>\n\t\t\t\t\t\t<b>TO:</b> {{_Company.Name}}<br>\n\t\t\t\t\t\t{{_Contact.Name}}<br>\n\t\t\t\t\t\t{{_Company.Address}}<br>\n\t\t\t\t\t\t{{_Company.Phone}}\n\t\t\t\t\t</p>\n\t\t\t\t</td>\n\t\t\t\t<td>\n\t\t\t\t\t<table style=\"float:right\">\n\t\t\t\t\t\t<tr>\n\t\t\t\t\t\t\t<th style=\"background-color:lightblue;text-align: center;\">Salesperson</th>\n\t\t\t\t\t\t\t<th style=\"background-color:lightblue;text-align: center;\">Email</th>\n\t\t\t\t\t\t</tr>\n\t\t\t\t\t\t<tr>\n\t\t\t\t\t\t\t<td style=\"text-align: center;\">{{settings.userName}}</td>\n\t\t\t\t\t\t\t<td style=\"text-align: center;\">{{settings.email}}</td>\n\t\t\t\t\t\t</tr>\n\t\t\t\t\t</table>\n\t\t\t\t</td>\n\t\t\t</tr>\n\t\t</table>\n\t\t<br>\n\t\t<table class=\"table table-striped\">\n\t\t\t<caption style=\"text-align: center;\">{{_Quote.Name}}</caption>\n\t\t\t<tr>\n\t\t\t\t<th style=\"background-color: lightblue;text-align: center;\">Unit</th>\n\t\t\t\t<th style=\"background-color: lightblue;text-align: center;\">Description</th>\n\t\t\t\t<th style=\"background-color: lightblue;text-align: center;\">Cost</th>\n\t\t\t</tr>\n\t\t\t<tbody>\n\t\t\t<tr *ngFor=\"let Line of _QuoteLines\">\n\t\t\t\t<td style=\"text-align: center;\">{{Line.UNIT}}</td>\n\t\t\t\t<td style=\"text-align: center;\">{{Line.DESC}}</td>\n\t\t\t\t<td style=\"text-align: center;\">{{Line.COST}}</td>\n\t\t\t</tr>\n\t\t\t</tbody>\n\t\t</table>\n\t\t<table>\n\t\t\t<tr>\n\t\t\t\t<td>Supplies on Request</td>\n\t\t\t\t<td style=\"text-align: right;\">All prices subject to change without notice</td>\n\t\t\t</tr>\n\t\t</table>\n\t"
     })
     /**
      * Displays a quote as a mutha $!@#!@# beautiful printout
@@ -84978,12 +84978,12 @@ var SettingsComponent = (function () {
     }
     SettingsComponent.prototype.ngOnInit = function () {
         var _this = this;
-        this.socketService.hotSocketCouple(this.getPath, { id: FIXTURE_ID_1.FIXTURE_USER_ID }, 'localhost:1729')
+        this.socketService.responseSocket(this.getPath, { id: FIXTURE_ID_1.FIXTURE_USER_ID }, 'localhost:1729')
             .subscribe(function (user) {
             console.log('USER', user);
             _this.userData = {
                 id: user.id,
-                name: user.name,
+                userName: user.name,
                 email: user.email,
                 address: user.address,
                 phone: user.phone,
@@ -84995,7 +84995,7 @@ var SettingsComponent = (function () {
     SettingsComponent.prototype.update = function (key, value) {
         console.log('value', value);
         // todo refoactor modulePort
-        this.socketService.hotSocketCouple(this.savePath, { id: this.userData.id, attributes: (_a = {}, _a[key] = value, _a) }, 'localhost:1729')
+        this.socketService.responseSocket(this.savePath, { id: this.userData.id, attributes: (_a = {}, _a[key] = value, _a) }, 'localhost:1729')
             .subscribe(function (response) {
             console.log(response);
         });
@@ -85009,7 +85009,7 @@ var SettingsComponent = (function () {
 SettingsComponent = __decorate([
     core_1.Component({
         selector: 'settings-component',
-        template: "\n\t\t<button class=\"btn btn-default\" [routerLink]=\"['../']\">Back</button>\n\t\t<h4>User Settings</h4>\n\t\t<div class=\"col-xs-11\">\n\t\t\t<input-component label=\"Name\" [model]=\"userData.name\" (modelChange)=\"update('name', $event)\" [control]=\"nameControl\"></input-component>\n\t\t\t<input-component label=\"Email\" [model]=\"userData.email\" (modelChange)=\"update('email', $event)\"[control]=\"emailControl\"></input-component>\n\t\t\t<input-component label=\"Address\" [model]=\"userData.address\" (modelChange)=\"update('address', $event)\" [control]=\"addressControl\"></input-component>\n\t\t\t<input-component label=\"Phone\" [model]=\"userData.phone\" (modelChange)=\"update('phone', $event)\" [control]=\"phoneControl\"></input-component>\n\t\t</div>\n\t"
+        template: "\n\t\t<button class=\"btn btn-default\" [routerLink]=\"['../']\">Back</button>\n\t\t<h4>User Settings</h4>\n\t\t<div class=\"col-xs-11\">\n\t\t\t<input-component label=\"Name\" [model]=\"userData.userName\" (modelChange)=\"update('userName', $event)\" [control]=\"nameControl\"></input-component>\n\t\t\t<input-component label=\"Email\" [model]=\"userData.email\" (modelChange)=\"update('email', $event)\"[control]=\"emailControl\"></input-component>\n\t\t\t<input-component label=\"Address\" [model]=\"userData.address\" (modelChange)=\"update('address', $event)\" [control]=\"addressControl\"></input-component>\n\t\t\t<input-component label=\"Phone\" [model]=\"userData.phone\" (modelChange)=\"update('phone', $event)\" [control]=\"phoneControl\"></input-component>\n\t\t</div>\n\t"
     }),
     __metadata("design:paramtypes", [user_service_1.UserService,
         data_share_service_1.DataShareService,
@@ -85068,7 +85068,7 @@ var SidePanelComponent = (function () {
         this.router.navigate(['/company']);
         this.companyService.createCompany()
             .subscribe(function (company) {
-            _this.toastr.success('Company Successfully Created! Please provide a name.');
+            _this.toastr.success('Company Successfully Created! Please provide a userName.');
             _this.currentCompany = company;
             _this.currentCompanyChange.emit(company);
             _this.companies.push(_this.currentCompany);
@@ -85079,7 +85079,7 @@ var SidePanelComponent = (function () {
         var _this = this;
         this.contactService.createContact(companyId)
             .subscribe(function (contactID) {
-            _this.toastr.success('Success! Please provide a name.');
+            _this.toastr.success('Success! Please provide a userName.');
             _this.currentContact = { ID: contactID._body };
             console.log('create current', _this.currentContact);
             _this.currentContactChange.emit(_this.currentContact);
@@ -85208,7 +85208,7 @@ var RegistrationComponent = (function () {
             hash: SHA256(password),
             model: user
         };
-        this.socketService.hotSocketCouple('register.user', body, 'localhost:1729')
+        this.socketService.responseSocket('register.user', body, 'localhost:1729')
             .subscribe(function (res) {
             _this.toastr.success('registered' + res);
         });
@@ -85221,8 +85221,8 @@ var RegistrationComponent = (function () {
 }());
 RegistrationComponent = __decorate([
     core_1.Component({
-        selector: 'Registration',
-        template: "\t\t\n\t<h4>Welcome</h4>, please register or choose, \"Proceed as Guest\". \n\t<form [formGroup]=\"registrationGroup\" (ngSubmit)=\"registerUser(user, passwordControl.value)\">\n\t\t<input-component label=\"User Name\" [(model)]=\"user.name\" [control]=\"nameControl\" placeholder = \"Your Name Please\"></input-component>\n\t\t<input-component label=\"User Email\" [(model)]=\"user.email\" [control]=\"emailControl\" placeholder = \"Your Email Please\"></input-component>\n\t\t<input-component label=\"User Phone\" [(model)]=\"user.phone\" [control]=\"phoneControl\" placeholder = \"Your Phone Please\"></input-component>\n\t\t<input-component label=\"Choose Password\" [(model)]=\"password\" [control]=\"passwordControl\" placeholder = \"Choose a Password\"></input-component>\n\t\t<input-component label=\"Password Again\" [(model)]=\"passwordMatch\" [control]=\"passwordMatchControl\" placeholder = \"Re-Enter Password\"></input-component>\n\t\t<button class=\"btn btn-large\" type=\"button\" [disabled]=\"registrationGroup.invalid || passwordControl.value === passwordMatchControl.value\" [class.disabled]=\"registrationGroup.invalid || passwordControl.value === passwordMatchControl.value\">Register</button>\n\t\t<button class=\"btn btn-large\" type=\"reset\">Clear</button>\n\t\t<button class=\"btn btn-large\" type=\"button\" (click)=\"loginGuest()\">Proceed as Guest</button>\n\t</form>\n\t"
+        selector: 'RegistrationComponent',
+        template: "\t\t\n\t<h4>Welcome</h4>, please register or choose, \"Proceed as Guest\". \n\t<form [formGroup]=\"registrationGroup\" (ngSubmit)=\"registerUser(user, passwordControl.value)\">\n\t\t<input-component label=\"User Name\" [(model)]=\"user.userName\" [control]=\"nameControl\" placeholder = \"Your Name Please\"></input-component>\n\t\t<input-component label=\"User Email\" [(model)]=\"user.email\" [control]=\"emailControl\" placeholder = \"Your Email Please\"></input-component>\n\t\t<input-component label=\"User Phone\" [(model)]=\"user.phone\" [control]=\"phoneControl\" placeholder = \"Your Phone Please\"></input-component>\n\t\t<input-component label=\"Choose Password\" [(model)]=\"password\" [control]=\"passwordControl\" placeholder = \"Choose a Password\"></input-component>\n\t\t<input-component label=\"Password Again\" [(model)]=\"passwordToMatch\" [control]=\"passwordMatchControl\" placeholder = \"Re-Enter Password\"></input-component>\n\t\t<button class=\"btn btn-large\" type=\"button\" [disabled]=\"registrationGroup.invalid || passwordControl.value === passwordMatchControl.value\" [class.disabled]=\"registrationGroup.invalid || passwordControl.value === passwordMatchControl.value\">Register</button>\n\t\t<button class=\"btn btn-large\" type=\"reset\">Clear</button>\n\t\t<button class=\"btn btn-large\" type=\"button\" (click)=\"loginGuest()\">Proceed as Guest</button>\n\t</form>\n\t"
     }),
     __metadata("design:paramtypes", [socket_service_1.SocketService,
         router_1.Router,
@@ -86681,7 +86681,7 @@ var isExtensible = Object.isExtensible || function(){
   return true;
 };
 
-// 19.2.4.2 name
+// 19.2.4.2 userName
 NAME in FProto || __webpack_require__(16) && dP(FProto, NAME, {
   configurable: true,
   get: function(){
@@ -87881,7 +87881,7 @@ if(__webpack_require__(7)(function(){ return $toString.call({source: 'a', flags:
     return '/'.concat(R.source, '/',
       'flags' in R ? R.flags : !DESCRIPTORS && R instanceof RegExp ? $flags.call(R) : undefined);
   });
-// FF44- RegExp#toString has a wrong name
+// FF44- RegExp#toString has a wrong userName
 } else if($toString.name != TO_STRING){
   define(function toString(){
     return $toString.call(this);
@@ -87894,7 +87894,7 @@ if(__webpack_require__(7)(function(){ return $toString.call({source: 'a', flags:
 
 "use strict";
 
-// B.2.3.2 String.prototype.anchor(name)
+// B.2.3.2 String.prototype.anchor(userName)
 __webpack_require__(24)('anchor', function(createHTML){
   return function anchor(name){
     return createHTML(this, 'a', 'name', name);
@@ -89779,7 +89779,7 @@ function disable() {
 }
 
 /**
- * Returns true if the given mode name is enabled, false otherwise.
+ * Returns true if the given mode userName is enabled, false otherwise.
  *
  * @param {String} name
  * @return {Boolean}
@@ -89993,7 +89993,7 @@ Socket.parser = __webpack_require__(66);
 /**
  * Creates transport of the given type.
  *
- * @param {String} transport name
+ * @param {String} transport userName
  * @return {Transport}
  * @api private
  */
@@ -90005,7 +90005,7 @@ Socket.prototype.createTransport = function (name) {
   // append engine.io protocol identifier
   query.EIO = parser.protocol;
 
-  // transport name
+  // transport userName
   query.transport = name;
 
   // session id if we already have one
@@ -90123,7 +90123,7 @@ Socket.prototype.setTransport = function (transport) {
 /**
  * Probes a transport.
  *
- * @param {String} transport name
+ * @param {String} transport userName
  * @api private
  */
 
@@ -90784,7 +90784,7 @@ JSONPPolling.prototype.doWrite = function (data, fn) {
 
     try {
       // ie6 dynamic iframes with target="" support (thanks Chris Lambacher)
-      var html = '<iframe src="javascript:0" name="' + self.iframeId + '">';
+      var html = '<iframe src="javascript:0" userName="' + self.iframeId + '">';
       iframe = document.createElement(html);
     } catch (e) {
       iframe = document.createElement('iframe');
@@ -91319,7 +91319,7 @@ function WS (opts) {
 inherit(WS, Transport);
 
 /**
- * Transport name.
+ * Transport userName.
  *
  * @api public
  */
@@ -91643,7 +91643,7 @@ try {
 /* 0 */
 /***/ function(module, exports) {
 
-	// function.name (all IE)
+	// function.userName (all IE)
 	/*! @source http://stackoverflow.com/questions/6903762/function-name-not-supported-in-ie*/
 	if (!Object.hasOwnProperty('name')) {
 	  Object.defineProperty(Function.prototype, 'name', {
@@ -91981,7 +91981,7 @@ try {
     }
 
     if (!has("json")) {
-      // Common `[[Class]]` name aliases.
+      // Common `[[Class]]` userName aliases.
       var functionClass = "[object Function]",
           dateClass = "[object Date]",
           numberClass = "[object Number]",
@@ -92088,7 +92088,7 @@ try {
             // Create a set of iterated properties.
             var members = {}, isFunction = getClass.call(object) == functionClass, property;
             for (property in object) {
-              // Store each property name to prevent double enumeration. The
+              // Store each property userName to prevent double enumeration. The
               // `prototype` property of functions is not enumerated due to cross-
               // environment inconsistencies.
               if (!(isFunction && property == "prototype") && !isProperty.call(members, property) && (members[property] = 1) && isProperty.call(object, property)) {
@@ -92583,7 +92583,7 @@ try {
                 }
                 // Leading commas are not permitted, object property names must be
                 // double-quoted strings, and a `:` must separate each property
-                // name and value.
+                // userName and value.
                 if (value == "," || typeof value != "string" || (charIndexBuggy ? value.charAt(0) : value[0]) != "@" || lex() != ":") {
                   abort();
                 }
@@ -92609,7 +92609,7 @@ try {
 
         // Internal: Recursively traverses a parsed JSON object, invoking the
         // `callback` function for each value. This is an implementation of the
-        // `Walk(holder, name)` operation defined in ES 5.1 section 15.12.2.
+        // `Walk(holder, userName)` operation defined in ES 5.1 section 15.12.2.
         var walk = function (source, property, callback) {
           var value = source[property], length;
           if (typeof value == "object" && value) {
@@ -94575,7 +94575,7 @@ var nativeCreate = __webpack_require__(106);
  * Removes all key-value entries from the hash.
  *
  * @private
- * @name clear
+ * @userName clear
  * @memberOf Hash
  */
 function hashClear() {
@@ -94594,7 +94594,7 @@ module.exports = hashClear;
  * Removes `key` and its value from the hash.
  *
  * @private
- * @name delete
+ * @userName delete
  * @memberOf Hash
  * @param {Object} hash The hash to modify.
  * @param {string} key The key of the value to remove.
@@ -94628,7 +94628,7 @@ var hasOwnProperty = objectProto.hasOwnProperty;
  * Gets the hash value for `key`.
  *
  * @private
- * @name get
+ * @userName get
  * @memberOf Hash
  * @param {string} key The key of the value to get.
  * @returns {*} Returns the entry value.
@@ -94661,7 +94661,7 @@ var hasOwnProperty = objectProto.hasOwnProperty;
  * Checks if a hash value for `key` exists.
  *
  * @private
- * @name has
+ * @userName has
  * @memberOf Hash
  * @param {string} key The key of the entry to check.
  * @returns {boolean} Returns `true` if an entry for `key` exists, else `false`.
@@ -94687,7 +94687,7 @@ var HASH_UNDEFINED = '__lodash_hash_undefined__';
  * Sets the hash `key` to `value`.
  *
  * @private
- * @name set
+ * @userName set
  * @memberOf Hash
  * @param {string} key The key of the value to set.
  * @param {*} value The value to set.
@@ -94938,7 +94938,7 @@ module.exports = isMasked;
  * Removes all key-value entries from the list cache.
  *
  * @private
- * @name clear
+ * @userName clear
  * @memberOf ListCache
  */
 function listCacheClear() {
@@ -94965,7 +94965,7 @@ var splice = arrayProto.splice;
  * Removes `key` and its value from the list cache.
  *
  * @private
- * @name delete
+ * @userName delete
  * @memberOf ListCache
  * @param {string} key The key of the value to remove.
  * @returns {boolean} Returns `true` if the entry was removed, else `false`.
@@ -95000,7 +95000,7 @@ var assocIndexOf = __webpack_require__(104);
  * Gets the list cache value for `key`.
  *
  * @private
- * @name get
+ * @userName get
  * @memberOf ListCache
  * @param {string} key The key of the value to get.
  * @returns {*} Returns the entry value.
@@ -95025,7 +95025,7 @@ var assocIndexOf = __webpack_require__(104);
  * Checks if a list cache value for `key` exists.
  *
  * @private
- * @name has
+ * @userName has
  * @memberOf ListCache
  * @param {string} key The key of the entry to check.
  * @returns {boolean} Returns `true` if an entry for `key` exists, else `false`.
@@ -95047,7 +95047,7 @@ var assocIndexOf = __webpack_require__(104);
  * Sets the list cache `key` to `value`.
  *
  * @private
- * @name set
+ * @userName set
  * @memberOf ListCache
  * @param {string} key The key of the value to set.
  * @param {*} value The value to set.
@@ -95081,7 +95081,7 @@ var Hash = __webpack_require__(509),
  * Removes all key-value entries from the map.
  *
  * @private
- * @name clear
+ * @userName clear
  * @memberOf MapCache
  */
 function mapCacheClear() {
@@ -95106,7 +95106,7 @@ var getMapData = __webpack_require__(105);
  * Removes `key` and its value from the map.
  *
  * @private
- * @name delete
+ * @userName delete
  * @memberOf MapCache
  * @param {string} key The key of the value to remove.
  * @returns {boolean} Returns `true` if the entry was removed, else `false`.
@@ -95130,7 +95130,7 @@ var getMapData = __webpack_require__(105);
  * Gets the map value for `key`.
  *
  * @private
- * @name get
+ * @userName get
  * @memberOf MapCache
  * @param {string} key The key of the value to get.
  * @returns {*} Returns the entry value.
@@ -95152,7 +95152,7 @@ var getMapData = __webpack_require__(105);
  * Checks if a map value for `key` exists.
  *
  * @private
- * @name has
+ * @userName has
  * @memberOf MapCache
  * @param {string} key The key of the entry to check.
  * @returns {boolean} Returns `true` if an entry for `key` exists, else `false`.
@@ -95174,7 +95174,7 @@ var getMapData = __webpack_require__(105);
  * Sets the map `key` to `value`.
  *
  * @private
- * @name set
+ * @userName set
  * @memberOf MapCache
  * @param {string} key The key of the value to set.
  * @param {*} value The value to set.
@@ -95198,7 +95198,7 @@ module.exports = mapCacheSet;
 
 var overArg = __webpack_require__(248);
 
-/* Built-in method references for those with the same name as other `lodash` methods. */
+/* Built-in method references for those with the same userName as other `lodash` methods. */
 var nativeKeys = overArg(Object.keys, Object);
 
 module.exports = nativeKeys;
@@ -95293,7 +95293,7 @@ module.exports = objectToString;
 
 var apply = __webpack_require__(514);
 
-/* Built-in method references for those with the same name as other `lodash` methods. */
+/* Built-in method references for those with the same userName as other `lodash` methods. */
 var nativeMax = Math.max;
 
 /**
@@ -95340,7 +95340,7 @@ var HASH_UNDEFINED = '__lodash_hash_undefined__';
  * Adds `value` to the array cache.
  *
  * @private
- * @name add
+ * @userName add
  * @memberOf SetCache
  * @alias push
  * @param {*} value The value to cache.
@@ -95362,7 +95362,7 @@ module.exports = setCacheAdd;
  * Checks if `value` is in the array cache.
  *
  * @private
- * @name has
+ * @userName has
  * @memberOf SetCache
  * @param {*} value The value to search for.
  * @returns {number} Returns `true` if `value` is found, else `false`.
@@ -95402,7 +95402,7 @@ module.exports = setToString;
 var HOT_COUNT = 800,
     HOT_SPAN = 16;
 
-/* Built-in method references for those with the same name as other `lodash` methods. */
+/* Built-in method references for those with the same userName as other `lodash` methods. */
 var nativeNow = Date.now;
 
 /**
@@ -95447,7 +95447,7 @@ var ListCache = __webpack_require__(103);
  * Removes all key-value entries from the stack.
  *
  * @private
- * @name clear
+ * @userName clear
  * @memberOf Stack
  */
 function stackClear() {
@@ -95466,7 +95466,7 @@ module.exports = stackClear;
  * Removes `key` and its value from the stack.
  *
  * @private
- * @name delete
+ * @userName delete
  * @memberOf Stack
  * @param {string} key The key of the value to remove.
  * @returns {boolean} Returns `true` if the entry was removed, else `false`.
@@ -95490,7 +95490,7 @@ module.exports = stackDelete;
  * Gets the stack value for `key`.
  *
  * @private
- * @name get
+ * @userName get
  * @memberOf Stack
  * @param {string} key The key of the value to get.
  * @returns {*} Returns the entry value.
@@ -95510,7 +95510,7 @@ module.exports = stackGet;
  * Checks if a stack value for `key` exists.
  *
  * @private
- * @name has
+ * @userName has
  * @memberOf Stack
  * @param {string} key The key of the entry to check.
  * @returns {boolean} Returns `true` if an entry for `key` exists, else `false`.
@@ -95537,7 +95537,7 @@ var LARGE_ARRAY_SIZE = 200;
  * Sets the stack `key` to `value`.
  *
  * @private
- * @name set
+ * @userName set
  * @memberOf Stack
  * @param {string} key The key of the value to set.
  * @param {*} value The value to set.
@@ -97786,7 +97786,7 @@ var BoundCallbackObservable = (function (_super) {
      * @return {function(...params: *): Observable} A function which returns the
      * Observable that delivers the same values the callback would deliver.
      * @static true
-     * @name bindCallback
+     * @userName bindCallback
      * @owner Observable
      */
     BoundCallbackObservable.create = function (func, selector, scheduler) {
@@ -98046,7 +98046,7 @@ var BoundNodeCallbackObservable = (function (_super) {
      * Observable that delivers the same values the Node.js callback would
      * deliver.
      * @static true
-     * @name bindNodeCallback
+     * @userName bindNodeCallback
      * @owner Observable
      */
     BoundNodeCallbackObservable.create = function (func, selector, scheduler) {
@@ -98230,7 +98230,7 @@ var DeferObservable = (function (_super) {
      * @return {Observable} An Observable whose Observers' subscriptions trigger
      * an invocation of the given Observable factory function.
      * @static true
-     * @name defer
+     * @userName defer
      * @owner Observable
      */
     DeferObservable.create = function (observableFactory) {
@@ -98328,7 +98328,7 @@ var ErrorObservable = (function (_super) {
      * @return {Observable} An error Observable: emits only the error notification
      * using the given error argument.
      * @static true
-     * @name throw
+     * @userName throw
      * @owner Observable
      */
     ErrorObservable.create = function (error, scheduler) {
@@ -98388,7 +98388,7 @@ var ForkJoinObservable = (function (_super) {
      * @param sources
      * @return {any}
      * @static true
-     * @name forkJoin
+     * @userName forkJoin
      * @owner Observable
      */
     ForkJoinObservable.create = function () {
@@ -98549,7 +98549,7 @@ var FromEventObservable = (function (_super) {
      *
      * @param {EventTargetLike} target The DOMElement, event target, Node.js
      * EventEmitter, NodeList or HTMLCollection to attach the event handler to.
-     * @param {string} eventName The event name of interest, being emitted by the
+     * @param {string} eventName The event userName of interest, being emitted by the
      * `target`.
      * @param {EventListenerOptions} [options] Options to pass through to addEventListener
      * @param {SelectorMethodSignature<T>} [selector] An optional function to
@@ -98557,7 +98557,7 @@ var FromEventObservable = (function (_super) {
      * should return a single value.
      * @return {Observable<T>}
      * @static true
-     * @name fromEvent
+     * @userName fromEvent
      * @owner Observable
      */
     FromEventObservable.create = function (target, eventName, options, selector) {
@@ -98691,7 +98691,7 @@ var FromEventPatternObservable = (function (_super) {
      * should return a single value.
      * @return {Observable<T>}
      * @static true
-     * @name fromEventPattern
+     * @userName fromEventPattern
      * @owner Observable
      */
     FromEventPatternObservable.create = function (addHandler, removeHandler, selector) {
@@ -99010,7 +99010,7 @@ var IntervalObservable = (function (_super) {
      * @return {Observable} An Observable that emits a sequential number each time
      * interval.
      * @static true
-     * @name interval
+     * @userName interval
      * @owner Observable
      */
     IntervalObservable.create = function (period, scheduler) {
@@ -99260,7 +99260,7 @@ var NeverObservable = (function (_super) {
      *
      * @return {Observable} A "never" Observable: never emits anything.
      * @static true
-     * @name never
+     * @userName never
      * @owner Observable
      */
     NeverObservable.create = function () {
@@ -99417,7 +99417,7 @@ var RangeObservable = (function (_super) {
      * @return {Observable} An Observable of numbers that emits a finite range of
      * sequential integers.
      * @static true
-     * @name range
+     * @userName range
      * @owner Observable
      */
     RangeObservable.create = function (start, count, scheduler) {
@@ -99605,7 +99605,7 @@ var TimerObservable = (function (_super) {
      * `initialDelay` and ever increasing numbers after each `period` of time
      * thereafter.
      * @static true
-     * @name timer
+     * @userName timer
      * @owner Observable
      */
     TimerObservable.create = function (initialDelay, period, scheduler) {
@@ -99840,7 +99840,7 @@ var combineLatest_1 = __webpack_require__(170);
  * values from each input Observable, or an array of the most recent values from
  * each input Observable.
  * @static true
- * @name combineLatest
+ * @userName combineLatest
  * @owner Observable
  */
 function combineLatest() {
@@ -99972,7 +99972,7 @@ var WebSocketSubject = (function (_super) {
      * @param {string | WebSocketSubjectConfig} urlConfigOrSource the source of the websocket as an url or a structure defining the websocket object
      * @return {WebSocketSubject}
      * @static true
-     * @name webSocket
+     * @userName webSocket
      * @owner Observable
      */
     WebSocketSubject.create = function (urlConfigOrSource) {
@@ -102259,19 +102259,19 @@ var Set_1 = __webpack_require__(859);
  * @example <caption>An example using a keySelector function</caption>
  * interface Person {
  *    age: number,
- *    name: string
+ *    userName: string
  * }
  *
  * Observable.of<Person>(
- *     { age: 4, name: 'Foo'},
- *     { age: 7, name: 'Bar'},
- *     { age: 5, name: 'Foo'})
- *     .distinct((p: Person) => p.name)
+ *     { age: 4, userName: 'Foo'},
+ *     { age: 7, userName: 'Bar'},
+ *     { age: 5, userName: 'Foo'})
+ *     .distinct((p: Person) => p.userName)
  *     .subscribe(x => console.log(x));
  *
  * // displays:
- * // { age: 4, name: 'Foo' }
- * // { age: 7, name: 'Bar' }
+ * // { age: 4, userName: 'Foo' }
+ * // { age: 7, userName: 'Bar' }
  *
  * @see {@link distinctUntilChanged}
  * @see {@link distinctUntilKeyChanged}
@@ -102365,45 +102365,45 @@ var distinctUntilChanged_1 = __webpack_require__(274);
  *
  * If a comparator function is not provided, an equality check is used by default.
  *
- * @example <caption>An example comparing the name of persons</caption>
+ * @example <caption>An example comparing the userName of persons</caption>
  *
  *  interface Person {
  *     age: number,
- *     name: string
+ *     userName: string
  *  }
  *
  * Observable.of<Person>(
- *     { age: 4, name: 'Foo'},
- *     { age: 7, name: 'Bar'},
- *     { age: 5, name: 'Foo'},
- *     { age: 6, name: 'Foo'})
- *     .distinctUntilKeyChanged('name')
+ *     { age: 4, userName: 'Foo'},
+ *     { age: 7, userName: 'Bar'},
+ *     { age: 5, userName: 'Foo'},
+ *     { age: 6, userName: 'Foo'})
+ *     .distinctUntilKeyChanged('userName')
  *     .subscribe(x => console.log(x));
  *
  * // displays:
- * // { age: 4, name: 'Foo' }
- * // { age: 7, name: 'Bar' }
- * // { age: 5, name: 'Foo' }
+ * // { age: 4, userName: 'Foo' }
+ * // { age: 7, userName: 'Bar' }
+ * // { age: 5, userName: 'Foo' }
  *
- * @example <caption>An example comparing the first letters of the name</caption>
+ * @example <caption>An example comparing the first letters of the userName</caption>
  *
  * interface Person {
  *     age: number,
- *     name: string
+ *     userName: string
  *  }
  *
  * Observable.of<Person>(
- *     { age: 4, name: 'Foo1'},
- *     { age: 7, name: 'Bar'},
- *     { age: 5, name: 'Foo2'},
- *     { age: 6, name: 'Foo3'})
- *     .distinctUntilKeyChanged('name', (x: string, y: string) => x.substring(0, 3) === y.substring(0, 3))
+ *     { age: 4, userName: 'Foo1'},
+ *     { age: 7, userName: 'Bar'},
+ *     { age: 5, userName: 'Foo2'},
+ *     { age: 6, userName: 'Foo3'})
+ *     .distinctUntilKeyChanged('userName', (x: string, y: string) => x.substring(0, 3) === y.substring(0, 3))
  *     .subscribe(x => console.log(x));
  *
  * // displays:
- * // { age: 4, name: 'Foo1' }
- * // { age: 7, name: 'Bar' }
- * // { age: 5, name: 'Foo2' }
+ * // { age: 4, userName: 'Foo1' }
+ * // { age: 7, userName: 'Bar' }
+ * // { age: 5, userName: 'Foo2' }
  *
  * @see {@link distinct}
  * @see {@link distinctUntilChanged}
@@ -102478,7 +102478,7 @@ var Subscriber_1 = __webpack_require__(2);
  * @return {Observable} An Observable identical to the source, but runs the
  * specified Observer or callback(s) for each item.
  * @method do
- * @name do
+ * @userName do
  * @owner Observable
  */
 function _do(nextOrObserver, error, complete) {
@@ -103168,40 +103168,40 @@ var FastMap_1 = __webpack_require__(855);
  * <img src="./img/groupBy.png" width="100%">
  *
  * @example <caption>Group objects by id and return as array</caption>
- * Observable.of<Obj>({id: 1, name: 'aze1'},
- *                    {id: 2, name: 'sf2'},
- *                    {id: 2, name: 'dg2'},
- *                    {id: 1, name: 'erg1'},
- *                    {id: 1, name: 'df1'},
- *                    {id: 2, name: 'sfqfb2'},
- *                    {id: 3, name: 'qfs3'},
- *                    {id: 2, name: 'qsgqsfg2'}
+ * Observable.of<Obj>({id: 1, userName: 'aze1'},
+ *                    {id: 2, userName: 'sf2'},
+ *                    {id: 2, userName: 'dg2'},
+ *                    {id: 1, userName: 'erg1'},
+ *                    {id: 1, userName: 'df1'},
+ *                    {id: 2, userName: 'sfqfb2'},
+ *                    {id: 3, userName: 'qfs3'},
+ *                    {id: 2, userName: 'qsgqsfg2'}
  *     )
  *     .groupBy(p => p.id)
  *     .flatMap( (group$) => group$.reduce((acc, cur) => [...acc, cur], []))
  *     .subscribe(p => console.log(p));
  *
  * // displays:
- * // [ { id: 1, name: 'aze1' },
- * //   { id: 1, name: 'erg1' },
- * //   { id: 1, name: 'df1' } ]
+ * // [ { id: 1, userName: 'aze1' },
+ * //   { id: 1, userName: 'erg1' },
+ * //   { id: 1, userName: 'df1' } ]
  * //
- * // [ { id: 2, name: 'sf2' },
- * //   { id: 2, name: 'dg2' },
- * //   { id: 2, name: 'sfqfb2' },
- * //   { id: 2, name: 'qsgqsfg2' } ]
+ * // [ { id: 2, userName: 'sf2' },
+ * //   { id: 2, userName: 'dg2' },
+ * //   { id: 2, userName: 'sfqfb2' },
+ * //   { id: 2, userName: 'qsgqsfg2' } ]
  * //
- * // [ { id: 3, name: 'qfs3' } ]
+ * // [ { id: 3, userName: 'qfs3' } ]
  *
  * @example <caption>Pivot data on the id field</caption>
- * Observable.of<Obj>({id: 1, name: 'aze1'},
- *                    {id: 2, name: 'sf2'},
- *                    {id: 2, name: 'dg2'},
- *                    {id: 1, name: 'erg1'},
- *                    {id: 1, name: 'df1'},
- *                    {id: 2, name: 'sfqfb2'},
- *                    {id: 3, name: 'qfs1'},
- *                    {id: 2, name: 'qsgqsfg2'}
+ * Observable.of<Obj>({id: 1, userName: 'aze1'},
+ *                    {id: 2, userName: 'sf2'},
+ *                    {id: 2, userName: 'dg2'},
+ *                    {id: 1, userName: 'erg1'},
+ *                    {id: 1, userName: 'df1'},
+ *                    {id: 2, userName: 'sfqfb2'},
+ *                    {id: 3, userName: 'qfs1'},
+ *                    {id: 2, userName: 'qsgqsfg2'}
  *                   )
  *     .groupBy(p => p.id, p => p.anme)
  *     .flatMap( (group$) => group$.reduce((acc, cur) => [...acc, cur], ["" + group$.key]))
@@ -103744,13 +103744,13 @@ var reduce_1 = __webpack_require__(115);
  * @example <caption>Use a comparer function to get the maximal item</caption>
  * interface Person {
  *   age: number,
- *   name: string
+ *   userName: string
  * }
- * Observable.of<Person>({age: 7, name: 'Foo'},
- *                       {age: 5, name: 'Bar'},
- *                       {age: 9, name: 'Beer'})
+ * Observable.of<Person>({age: 7, userName: 'Foo'},
+ *                       {age: 5, userName: 'Bar'},
+ *                       {age: 9, userName: 'Beer'})
  *           .max<Person>((a: Person, b: Person) => a.age < b.age ? -1 : 1)
- *           .subscribe((x: Person) => console.log(x.name)); // -> 'Beer'
+ *           .subscribe((x: Person) => console.log(x.userName)); // -> 'Beer'
  * }
  *
  * @see {@link min}
@@ -103926,13 +103926,13 @@ var reduce_1 = __webpack_require__(115);
  * @example <caption>Use a comparer function to get the minimal item</caption>
  * interface Person {
  *   age: number,
- *   name: string
+ *   userName: string
  * }
- * Observable.of<Person>({age: 7, name: 'Foo'},
- *                       {age: 5, name: 'Bar'},
- *                       {age: 9, name: 'Beer'})
+ * Observable.of<Person>({age: 7, userName: 'Foo'},
+ *                       {age: 5, userName: 'Bar'},
+ *                       {age: 9, userName: 'Beer'})
  *           .min<Person>( (a: Person, b: Person) => a.age < b.age ? -1 : 1)
- *           .subscribe((x: Person) => console.log(x.name)); // -> 'Bar'
+ *           .subscribe((x: Person) => console.log(x.userName)); // -> 'Bar'
  * }
  *
  * @see {@link max}
@@ -105546,7 +105546,7 @@ var subscribeToResult_1 = __webpack_require__(4);
  * @return {Observable<T>} An Observable that emits the items emitted by the
  * Observable most recently emitted by the source Observable.
  * @method switch
- * @name switch
+ * @userName switch
  * @owner Observable
  */
 function _switch() {
@@ -108062,7 +108062,7 @@ var AnimationFrameScheduler_1 = __webpack_require__(845);
  *
  *
  * @static true
- * @name animationFrame
+ * @userName animationFrame
  * @owner Scheduler
  */
 exports.animationFrame = new AnimationFrameScheduler_1.AnimationFrameScheduler(AnimationFrameAction_1.AnimationFrameAction);
@@ -111425,7 +111425,7 @@ var Zone$1 = (function (global) {
                 if (structuredStackTrace) {
                     for (var i = 0; i < structuredStackTrace.length; i++) {
                         var st = structuredStackTrace[i];
-                        // remove the first function which name is zoneCaptureStackTrace
+                        // remove the first function which userName is zoneCaptureStackTrace
                         if (st.getFunctionName() === 'zoneCaptureStackTrace') {
                             structuredStackTrace.splice(i, 1);
                             break;
@@ -111453,10 +111453,10 @@ var Zone$1 = (function (global) {
                 while (frames_2.length) {
                     var frame = frames_2.shift();
                     // On safari it is possible to have stack frame with no line number.
-                    // This check makes sure that we don't filter frames on name only (must have
+                    // This check makes sure that we don't filter frames on userName only (must have
                     // linenumber)
                     if (/:\d+:\d+/.test(frame)) {
-                        // Get rid of the path so that we don't accidentally find function name in path.
+                        // Get rid of the path so that we don't accidentally find function userName in path.
                         // In chrome the separator is `(` and `@` in FF and safari
                         // Chrome: at Zone.run (zone.js:100)
                         // Chrome: at Zone.run (http://localhost:9876/base/build/lib/zone.js:100:24)

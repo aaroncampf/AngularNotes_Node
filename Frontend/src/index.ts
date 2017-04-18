@@ -1,12 +1,12 @@
 import './polyfills.browser';
 import {platformBrowserDynamic} from '@angular/platform-browser-dynamic';
-import {AppModule} from './app/app.module';
+import {CRMModule} from './app/crm.module';
 import {enableProdMode} from '@angular/core';
 
 export const platformRef = platformBrowserDynamic();
 
 export function main() {
-	return platformRef.bootstrapModule(AppModule)
+	return platformRef.bootstrapModule(CRMModule)
 		.catch(err => console.error(err));
 }
 
