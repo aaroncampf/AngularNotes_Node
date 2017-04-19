@@ -1,8 +1,8 @@
 export interface _Company {
 	id?: number;
 	name: string;
-	address1: string;
-	address2: string;
+	addressOne: string;
+	addressTwo: string;
 	city: string;
 	zip: string;
 	phone: string;

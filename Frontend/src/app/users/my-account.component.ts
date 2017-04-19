@@ -7,7 +7,7 @@ import {FIXTURE_USER_ID} from '../common/models/FIXTURE_ID';
 @Component({
 	selector: 'my-account-component',
 	template: `
-	<form-details-component [model]="user" path="user"></form-details-component>
+		My Account
 	`
 })
 
@@ -25,17 +25,4 @@ export class MyAccountComponent implements OnInit {
 		})
 	}
 
-	private initForm() {
-		this.userData = {
-			title: 'My Account',
-			header: 'All information here is public at the moment',
-			items: []
-		};
-		for (let prop of Object.keys(this.user)) {
-			this.userData.items.push({
-				label: prop,
-				validators: [],
-			})
-		}
-	}
 }

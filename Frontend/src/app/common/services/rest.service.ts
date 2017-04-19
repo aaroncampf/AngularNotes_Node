@@ -4,7 +4,7 @@ import {Observable} from 'RxJS';
 
 export const OPTIONS =  () => {
 	 const headers = new Headers({
-		'content-type': 'application/json',
+		'Content-Type': 'application/json',
 	});
 	return new RequestOptions({headers: headers});
 };
@@ -12,9 +12,9 @@ export const OPTIONS =  () => {
 @Injectable()
 export class RESTService {
 	constructor(private http: Http){}
-
 	public callPath(verb: string, path: string, payload?: {}): Observable<any> {
-		return this.http[verb](path, JSON.stringify(payload), OPTIONS)
+		payload = JSON.stringify(payload);
+		return this.http[verb](path, payload, OPTIONS)
 			.map(response => response.json())
 			.catch(err => new Error(err.json()));
 	}
