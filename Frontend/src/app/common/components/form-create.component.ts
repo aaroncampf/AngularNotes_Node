@@ -56,15 +56,13 @@ export class FormCreateComponent implements OnInit{
 
 	public onSave(value): void {
 		if(!this.formGroupCreate.invalid) {
-		console.log('save hit', value);
 			let savePayLoad: {} = {};
 			for (let item of this.formData.items){
 				savePayLoad = Object.assign(savePayLoad, {
 					[item.label.toLowerCase()]: this.formGroupCreate[item.controlName].value
 				});
 			}
-			console.log('savePAyLoad', savePayLoad);
-			this.socketService.responseSocket(this.path + '.save', savePayLoad).then(response => {
+			this.socketService.responseSocket(this.path + '.save', savePayLoad).subscribe(response => {
 				this.toastr.success(this.formData.title + ' has been created!');
 				console.log('create response', response);
 			}, error => {

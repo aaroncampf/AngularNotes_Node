@@ -1,31 +1,17 @@
 import {Injectable} from '@angular/core';
 import * as IO from 'socket.io-client';
-import {Observable} from 'rxjs';
+import {Observable} from 'rxjs/Observable';
 
 @Injectable()
 export class SocketService {
-public io;
-	public responseSocket(pathVerb: string, body: {}): Promise<any> {
+	public io;
 
-			console.log('socket?', this.io);
+	public responseSocket(pathVerb: string, payload: {}): Observable<any> {
+		console.log('socket?', this.io);
 		this.io = IO('localhost:1729', {transport: ['polling', 'websocket']});
-		this.io.connect('user.get');
-		return new Promise((resolve, reject) => {
-			resolve(this.io.on('user.response', (response: any) => {
-				console.log('15', response);
-			}));
-
-		});
-		console.log('handler', handler);
-		handler.emit('user.get', ['one', 'two'], response => {
-			console.log('ack?', response);
-		});
-			return new Promise((resolve, reject) => {
-				this.io.on(pathVerb + '.response', handler => {
-					this.io.emit(pathVerb, body);
-						resolve(handler);
-					});
-				})
+		this.io.emit(pathVerb, payload);
+		return Observable.of(this.io.on(pathVerb + '.response', payload => {
+			console.log(payload);
+		})).map(payload => payload)
 	}
-
 }

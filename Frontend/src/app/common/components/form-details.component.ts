@@ -2,15 +2,15 @@ import {Component, Input, OnInit} from '@angular/core';
 import {FormControl, FormGroup, Validators} from '@angular/forms';
 import {SocketService} from '../services/socket.service';
 import {ToastsManager} from 'ng2-toastr';
-import {FormDataFeed} from '../models/form-data.model';
+import {FormDataFeed, FormDataFeedItem} from '../models/form-data.model';
 
 @Component({
 	selector: 'form-details-component',
 	template: `
 	<div class="row">
 		<form [formGroup]="formGroupCreate">
-			<form-title class="col-xs-12" *ngIf="formData.title">{{formData.title}}</form-title>
-			<form-header class="col-xs-12" *ngIf="formData.header">{{formData.header}}</form-header>
+			<form-title class="col-xs-12" *ngIf="title">{{title}}</form-title>
+			<form-header class="col-xs-12" *ngIf="header">{{header}}</form-header>
 			<form-item class="col-xs-12" *ngFor="let item of formData.items" class="row">
 				<input-component [label]="item.label" [(model)]="model[item.label]" (onBlur)="onSave($event)" [control]="formGroupCreate.controls[item.controlName]"></input-component>
 			</form-item>
@@ -21,10 +21,14 @@ import {FormDataFeed} from '../models/form-data.model';
 
 export class FormDetailsComponent implements OnInit{
 	@Input()
-	public formData: FormDataFeed;
+	public title;
+	@Input()
+	public header;
 	@Input()
 	public path: string;
+	@Input()
 	public model: {} = {};
+	public dataFeed: FormDataFeed = <FormDataFeed>{};
 	public formGroupCreate: FormGroup;
 	constructor( private socketService: SocketService,
 				 public toastr: ToastsManager){};
@@ -34,6 +38,7 @@ export class FormDetailsComponent implements OnInit{
 	}
 
 	private initForm(): void {
+		//controls
 		let tempControls: {} = {};
 		for (let item of this.formData.items) {
 			this.model = Object.assign(this.model, {
@@ -62,7 +67,7 @@ export class FormDetailsComponent implements OnInit{
 				});
 			}
 			console.log('savePayLoad', savePayLoad);
-			this.socketService.responseSocket(this.path + '.set', savePayLoad).then(response => {
+			this.socketService.responseSocket(this.path + '.set', savePayLoad).subscribe(response => {
 				this.toastr.success(this.formData.title + ' has been created!');
 				console.log('create response', this.path + '.set');
 			}, error => {

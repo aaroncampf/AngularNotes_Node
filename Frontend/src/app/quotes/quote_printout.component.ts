@@ -5,11 +5,9 @@ import {Component, OnInit} from '@angular/core';
 import {Company} from "../companies/company.model";
 import {Quote} from "./quote.model";
 import {QuoteLine} from "./quote.model";
-import {Settings} from "../common/models/setting.model";
 import {Contact} from '../contacts/contact.model';
 import {DataShareService} from '../common/services/data-share.service';
 import {SocketService} from '../common/services/socket.service';
-import {FIXTURE_USER_ID} from '../common/models/FIXTURE_ID';
 
 /**
  * Displays a quote as a beautiful printout
@@ -85,7 +83,7 @@ export class Quotes_Printout implements OnInit {
 	public _Quote: Quote = <Quote>{};
 	public _Company: Company = <Company>{};
 	public _QuoteLines: QuoteLine[] = [];
-	public settings: Settings = <Settings>{};
+	public settings = {};
 	public _Contact: Contact = <Contact>{};
     constructor(private dataShareService: DataShareService,
 				public socketService: SocketService){}

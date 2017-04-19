@@ -1,9 +1,9 @@
 import {NgModule} from '@angular/core';
 import {CommonModule as AngularCommonModule} from '@angular/common';
 import {MyAccountComponent} from './my-account.component';
-import {SignInComponent} from './sign-in.component';
-import {SignOutComponent} from './sign-out.component';
-import {SignUpComponent} from './sign-up.component';
+import {SignInComponent} from './unused/sign-in.component';
+import {SignOutComponent} from './unused/sign-out.component';
+import {SignUpComponent} from './unused/sign-up.component';
 import {RouterModule, Routes} from '@angular/router';
 import {CommonModule} from '../common/common.module';
 
