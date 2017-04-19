@@ -1,5 +1,4 @@
 import {Component, OnInit} from '@angular/core';
-import {QuotesService} from './quotes.service';
 import {Quote} from './quote.model';
 import {DataShareService} from '../common/services/data-share.service';
 import {QuoteLine} from './quote.model';
@@ -50,60 +49,24 @@ export class QuoteDetailsComponent implements OnInit {
 	public quoteLines: QuoteLine[] = [];
 	constructor(public toastr: ToastsManager,
 				private router: Router,
-				private quoteService: QuotesService,
 				private dataShareService: DataShareService){}
 
 	public ngOnInit(): void {
-		this.dataShareService.quoteSelected$
-			.subscribe(quote => {
-				console.log('quote shared', quote);
-				this.quote = quote;
-		});
-		this.quoteService.getQuoteLines(+this.quote.id)
-			.subscribe(quoteLines => {
-				console.log('quoteLines', quoteLines);
-				this.quoteLines = quoteLines
-		});
 	}
 
 	public removeLine(lineId: number): void {
-		this.quoteService.deleteQuoteLine(lineId)
-			.subscribe(() => {
-				this.toastr.warning('Quote line Removed');
-				this.quoteService.getQuoteLines(+this.quote.id)
-					.subscribe(quoteLines => this.quoteLines = quoteLines);
-		});
 
 	}
 
 	public addLine(quoteLine: QuoteLine): void {
-		this.quoteService.createQuoteLine(quoteLine, this.quote)
-			.subscribe(() => {
-				this.newQuoteLine = <QuoteLine>{};
-				this.quoteService.getQuoteLines(+this.quote.id)
-					.subscribe(quoteLines => this.quoteLines = quoteLines);
-		});
 	}
 
 	public removeQuote(quoteid: number): void {
-		this.quoteService.deleteQuote(quoteid)
-			.subscribe(() => {
-				this.toastr.warning('Quote Deleted');
-				this.router.navigate(['/quotes'])
-		});
 	}
 
 	public updateQuote(value: string, key: string, quote: Quote){
-		quote[key] = value;
-		this.quoteService.updateQuote(quote)
-			.subscribe(res => {
-				console.log('update quote', res);
-		});
 	}
 
 	public updateQuoteLine(value: string, prop: string, quoteLine: QuoteLine): void {
-		quoteLine[prop] = value;
-		this.quoteService.updateQuoteLine(quoteLine)
-			.subscribe(() => {});
 	}
 }

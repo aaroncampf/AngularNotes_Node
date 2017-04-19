@@ -5,7 +5,7 @@ import {Component} from '@angular/core';
 	template: `
 	<ul class="nav nav-tabs">
 		<li class="tab" role="tab">
-			<a [routerLink]="['/companies/list']">Companies</a>
+			<a [routerLink]="['/companies']">Companies</a>
 		</li>
 		<li class="tab" role="tab">
 			<a [routerLink]="['/quotes']">Quotes</a>

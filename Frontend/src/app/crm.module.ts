@@ -7,19 +7,19 @@ import {BrowserAnimationsModule, NoopAnimationsModule} from '@angular/platform-b
 import {ToastModule} from 'ng2-toastr';
 import {DataShareService} from './common/services/data-share.service';
 import {MainComponent} from './main/main.component';
-import {SidePanelComponent} from './main/side-panel.component';
-import {SettingsComponent} from './users/settings.component';
+import {NavigationComponent} from './main/navigation.component';
+import {DashboardComponent} from './main/dashboard.component';
 import {UserModule} from './users/users.module'
 import {CompaniesModule} from './companies/companies.module';
 import {ContactsModule} from './contacts/contacts.module';
 import {QuotesModule} from './quotes/quotes.module';
 import {NotesModule} from './notes/notes.module';
 import {CommonModule} from './common/common.module';
-import {NavigationComponent} from './main/navigation.component';
 
 const MAIN_ROUTES: Routes = [
 	// {path: ''}
 	{path:'user', loadChildren: "./users/users.module#UsersModule"},
+	{path:'contacts', loadChildren: "./contacts/contacts.module#ContactsModule"},
 	{path:'quotes', loadChildren: "./quotes/quotes.module#QuotesModule"},
 	{path:'notes', loadChildren: "./notes/notes.module#NotesModule"},
 	{path:'companies', loadChildren: "./companies/companies.module#CompaniesModule"},
@@ -29,14 +29,7 @@ const MAIN_ROUTES: Routes = [
 	// {path: '**', component: '/user/my-account'}
 ];
 
-@NgModule({
-	declarations: [
-		MainComponent,
-		SidePanelComponent,
-		SettingsComponent,
-		NavigationComponent
-	],
-	imports: [
+const MODULES = [
 		NoopAnimationsModule,
 		BrowserAnimationsModule,
 		AngularCommonModule,
@@ -50,12 +43,25 @@ const MAIN_ROUTES: Routes = [
 		ContactsModule,
 		CommonModule,
 		CompaniesModule,
+];
+
+@NgModule({
+	declarations: [
+		MainComponent,
+		NavigationComponent,
+		DashboardComponent
+	],
+	imports: [
+		MODULES
 	],
 	providers: [
 		DataShareService,
 	],
 	schemas: [
 		CUSTOM_ELEMENTS_SCHEMA
+	],
+	exports: [
+
 	],
 	bootstrap: [MainComponent]
 })

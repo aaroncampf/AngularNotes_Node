@@ -1,10 +1,11 @@
 import {NgModule} from '@angular/core';
 import {NotesComponent} from './notes.component';
-import {NotesService} from './notes.service';
 import {RouterModule, Routes} from '@angular/router';
+import {CommonModule as AngularComonModule} from '@angular/common';
+import {CommonModule} from '../common/common.module';
 
 const ROUTES: Routes = [
-	{path: 'company', component: NotesComponent}
+	{path: '', component: NotesComponent}
 ];
 
 @NgModule({
@@ -12,9 +13,10 @@ const ROUTES: Routes = [
 		NotesComponent
 	],
 	providers: [
-		NotesService
 	],
 	imports: [
+		AngularComonModule,
+		CommonModule,
 		RouterModule.forChild(ROUTES)
 	],
 	exports: [

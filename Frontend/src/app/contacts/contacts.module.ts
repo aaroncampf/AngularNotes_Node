@@ -1,10 +1,11 @@
-import {NgModule} from '@angular/core';
+import {CUSTOM_ELEMENTS_SCHEMA, NgModule} from '@angular/core';
+import {CommonModule as AngularCommonModule} from '@angular/common';
 import {ContactsComponent} from './contacts.component';
-import {ContactsService} from './contacts.service';
 import {RouterModule, Routes} from '@angular/router';
+import {CommonModule} from '../common/common.module';
 
 const ROUTES: Routes = [
-	{path: 'company', component: ContactsComponent}
+	{path: '', component: ContactsComponent}
 ];
 
 @NgModule({
@@ -12,13 +13,17 @@ const ROUTES: Routes = [
 		ContactsComponent
 	],
 	providers: [
-		ContactsService
 	],
 	imports: [
+		AngularCommonModule,
+		CommonModule,
 		RouterModule.forChild(ROUTES)
 	],
 	exports: [
 		ContactsComponent
+	],
+	schemas: [
+		CUSTOM_ELEMENTS_SCHEMA
 	]
 
 })

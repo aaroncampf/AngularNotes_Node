@@ -1,5 +1,4 @@
 import {Component, Input, OnInit} from '@angular/core';
-import {QuotesService} from './quotes.service';
 import {QuoteLine} from './quote.model';
 
 @Component({
@@ -27,10 +26,7 @@ import {QuoteLine} from './quote.model';
 export class QuoteListComponent implements OnInit {
 	@Input()
 	public quoteID: number;
-	public quoteLines: QuoteLine[];
-	constructor(private quoteService: QuotesService){}
+	public quoteLines: QuoteLine[] = [];
 	public ngOnInit(): void {
-		this.quoteService.getQuoteLines(this.quoteID)
-			.subscribe(quoteLines => this.quoteLines = quoteLines);
 	}
 }

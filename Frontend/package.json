@@ -9,7 +9,7 @@
     "start": "npm run server",
     "test": "tsc  && mocha --require ./mocha-test-shim.js ./dist/src/test/*.test.js ",
     "test:watch": "concurrently \"tsc -w\" \"mocha --require ./mocha-test-shim.js -w\"",
-    "clean": "rm -rf dist/",
+    "clean": "rm -rf dist/"
   },
   "authors": [
     "rdev1163@outlook.com",

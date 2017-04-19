@@ -1,12 +1,10 @@
 import {getTestBed, TestBed} from '@angular/core/testing';
-// import {QuoteListComponent} from '../app/components/quote-lines-list.component';
 var chai = require('chai');
 var assert = chai.assert;
 var expect = chai.expect;
 import {spy} from 'sinon';
 import {NotesComponent} from '../app/notes/notes.component';
-import {NotesService} from '../app/notes/notes.service';
-// import {angular1Providers} from '@angular/upgrade/static/src/static/angular1_providers';
+import {angular1Providers} from '@angular/upgrade/static/src/static/angular1_providers';
 let i: string = 'RdEV';
 
 describe(`QuoteListComponent ${i}`, () => {
@@ -15,7 +13,7 @@ describe(`QuoteListComponent ${i}`, () => {
 		TestBed.configureTestingModule({
 			declarations: [NotesComponent],
 			providers: [
-				{provide: NotesService, useClass: FakeNotesService}
+				// {provide: NotesService, useClass: FakeNotesService}
 			]
 		});
 	});
@@ -48,11 +46,3 @@ describe(`QuoteListComponent ${i}`, () => {
 // 	});
 // 	/* snip */
 });
-
-export class FakeDataShareService {
-
-}
-
-export class FakeNotesService {
-
-}

@@ -1,20 +1,31 @@
 import {Component, OnInit} from '@angular/core';
-import {FormControl, FormGroup, Validators} from '@angular/forms';
-import {Contact} from './contact.model';
-import {ContactsService} from './contacts.service';
-import {DataShareService} from '../common/services/data-share.service';
-import {ToastsManager} from 'ng2-toastr/ng2-toastr'
-import {EmailRegEx} from '../common/regex/email.regex';
+import {RESTService} from '../common/services/rest.service';
+import {ListData, newListData} from '../common/components/list.component';
 
 @Component({
 	selector: 'contact-details-component',
 	template: `
-		<h4>Contact Details</h4>
+		<list-component (onSelect)="onSelection($event)" [listData]="contacts"></list-component>
 	`,
 })
 
 export class ContactsComponent implements OnInit{
-	public ngOnInit() {
+	public contacts: ListData = <ListData>{};
+	public currentID: string;
+	public getPath: string = `http://angularnotes-angularbros.azurewebsites.net/api/Contact`;
+	public setPath: string = `http://angularnotes-angularbros.azurewebsites.net/api/Contact/${this.currentID}`;
+
+	constructor(private restService: RESTService){}
+
+	public ngOnInit(): void {
+		this.restService.callPath('get', this.getPath, {})
+			.subscribe((response: any) => {
+			this.contacts = newListData(response, void 0, 'Updated at Just Now!')
+		})
 	}
 
+	public onSelection(e): void {
+		this.currentID = e;
+		console.log(e);
+	}
 }

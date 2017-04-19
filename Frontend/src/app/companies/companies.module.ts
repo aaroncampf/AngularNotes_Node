@@ -5,9 +5,7 @@ import {RouterModule, Routes} from '@angular/router';
 import {CommonModule} from '../common/common.module';
 
 const ROUTES: Routes = [
-	{path: '', children: [
-		{path: 'list', component: CompaniesComponent}
-	]}
+	{path: '', component: CompaniesComponent}
 ];
 
 @NgModule({

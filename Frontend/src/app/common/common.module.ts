@@ -3,19 +3,21 @@ import {CommonModule as AngularCommonModule} from '@angular/common';
 import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 import {InputComponent} from './components/input.component';
 import {SocketService} from './services/socket.service';
-import {FormComponent} from './components/form.component';
+import {FormCreateComponent} from './components/form-create.component';
 import {ListComponent} from './components/list.component';
+import {RESTService} from './services/rest.service';
+import {FormDetailsComponent} from './components/form-details.component';
 
-// const COMPONENTS: Component[] = [
-//
-//
-// ];
-//
+const COMPONENTS = [
+	InputComponent,
+	FormCreateComponent,
+	ListComponent,
+	FormDetailsComponent,
+];
+
 @NgModule({
 	declarations: [
-		InputComponent,
-		FormComponent,
-		ListComponent
+		COMPONENTS
 	],
 	imports: [
 		AngularCommonModule,
@@ -23,15 +25,14 @@ import {ListComponent} from './components/list.component';
 		FormsModule
 	],
 	providers: [
-		SocketService
+		SocketService,
+		RESTService
 	],
 	schemas: [
 		CUSTOM_ELEMENTS_SCHEMA
 	],
 	exports: [
-		InputComponent,
-		FormComponent,
-		ListComponent
+		COMPONENTS
 	]
 
 })

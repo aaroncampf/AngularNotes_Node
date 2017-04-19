@@ -10,16 +10,18 @@ import {FormControl} from '@angular/forms';
 		</div>
 		<div *ngIf="!!label" class="col-xs-11">
 			<!--<input [type]="password ? 'password' : 'text'" class="form-control" [(ngModel)]="model" (ngModelChange)="modelChange.emit($event.target.value)" [formControl]="control" [placeholder]="placeholder"/>-->
-			<input [type]="password ? 'password' : 'text'" class="form-control" [(ngModel)]="model" [formControl]="control" [placeholder]="placeholder"/>
+			<input [type]="password ? 'password' : 'text'" class="form-control" [(ngModel)]="model" (blur)="blurred($event)" [formControl]="control" [placeholder]="placeholder"/>
 		</div>
 		<div *ngIf="!label" class="col-xs-12">
-		 	<input [type]="password ? 'password' : 'text'" class="form-control" [(ngModel)]="model" [formControl]="control" [placeholder]="placeholder"/>
+		 	<input [type]="password ? 'password' : 'text'" class="form-control" [(ngModel)]="model" (blur)="blurred($event)" [formControl]="control" [placeholder]="placeholder"/>
 		</div>
 	</div>
 	`
 })
 
 export class InputComponent {
+	@Output()
+	public onBlur: EventEmitter<string> = new EventEmitter<string>();
 	@Input()
 	public password: boolean;
 	@Input()
@@ -32,4 +34,7 @@ export class InputComponent {
 	public control: FormControl;
 	@Output()
 	public modelChange: EventEmitter<any> = new EventEmitter<any>();
+	public blurred(event): void {
+		this.onBlur.emit(event.target.value);
+	}
 }

@@ -1,5 +1,6 @@
 import {Component, OnInit} from '@angular/core';
-import {ListData} from '../common/components/list.component';
+import {ListData, newListData} from '../common/components/list.component';
+import {RESTService} from '../common/services/rest.service';
 
 @Component({
 	selector: 'companies-component',
@@ -9,19 +10,21 @@ import {ListData} from '../common/components/list.component';
 })
 
 export class CompaniesComponent implements OnInit {
-	public companies: ListData = <ListData>{
-		headers: ['Companies'],
-		items:[
-			['companyOne'],
-			['companyOne'],
-			['companyOne'],
-		],
-		footer: 'Updated Last 12/34/1234'
-	};
+	public companies: ListData = <ListData>{};
+	public currentID: string;
+	public getPath: string = `http://angularnotes-angularbros.azurewebsites.net/api/companies`;
+	public setPath: string = `http://angularnotes-angularbros.azurewebsites.net/api/companies/${this.currentID}`;
 
-	public ngOnInit(): void {}
+	constructor(private restService: RESTService) {}
+
+	public ngOnInit(): void {
+		this.restService.callPath('get', this.getPath, {})
+			.subscribe((response: any[]) => {
+			this.companies = newListData(response, void 0, 'updated at: Stardate, 4321:0532' );
+		})
+	}
 
 	public onSelection(e): void {
-	console.log(e);
+		this.currentID = e;
 	}
 }

@@ -1,23 +1,25 @@
 import {NgModule} from '@angular/core';
+import {CommonModule as AngularCommonModule} from '@angular/common';
 import {MyAccountComponent} from './my-account.component';
 import {SignInComponent} from './sign-in.component';
 import {SignOutComponent} from './sign-out.component';
 import {SignUpComponent} from './sign-up.component';
 import {RouterModule, Routes} from '@angular/router';
+import {CommonModule} from '../common/common.module';
 
 const components = [
 	MyAccountComponent,
-	SignInComponent,
-	SignOutComponent,
-	SignUpComponent
+	// SignInComponent,
+	// SignOutComponent,
+	// SignUpComponent,
 ];
 
 const ROUTES: Routes = [
-	{path: 'users', children: [
+	{path: '', children: [
 		{path: 'my-account', component: MyAccountComponent},
-		{path: 'sign-in', component: SignInComponent},
-		{path: 'sign-up', component: SignUpComponent},
-		{path: 'sign-out', component: SignOutComponent}
+		// {path: 'sign-in', component: SignInComponent},
+		// {path: 'sign-up', component: SignUpComponent},
+		// {path: 'sign-out', component: SignOutComponent}
 	]}
 ];
 
@@ -26,6 +28,8 @@ const ROUTES: Routes = [
 		components
 	],
 	imports: [
+		CommonModule,
+		AngularCommonModule,
 		RouterModule.forChild(ROUTES)
 	],
 	exports: [

@@ -7,8 +7,8 @@ import '../styles/main.scss';
 	template: `
 	<div class="container">
 		<div *ngIf="!!MOBILE">
-			<h1>Mobile dashboard</h1>
-			<navigation-component></navigation-component>				
+		<dashboard-component></dashboard-component>			
+		<navigation-component></navigation-component>				
 		</div>
 		<div *ngIf="!MOBILE">
 			<h1>Wide dashboard</h1>
