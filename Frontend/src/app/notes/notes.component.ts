@@ -1,6 +1,7 @@
 import {Component, OnInit} from '@angular/core';
 import {ListData, newListData} from '../common/components/list.component';
 import {RESTService} from '../common/services/rest.service';
+import {Note} from './note.model';
 
 @Component({
 	selector: 'notes-component',
@@ -17,7 +18,7 @@ export class NotesComponent implements OnInit {
 	constructor(private restService: RESTService){}
 
 	public ngOnInit(): void {
-		this.restService.callPath('get', this.getPath, {})
+		this.restService.callPath('get', this.getPath, <Note>{})
 			.subscribe((response: any) => {
 				console.log('notes', response);
 				this.notes = newListData(response, void 0, 'Updated at Just Now!')

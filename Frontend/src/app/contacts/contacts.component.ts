@@ -1,6 +1,7 @@
 import {Component, OnInit} from '@angular/core';
 import {RESTService} from '../common/services/rest.service';
 import {ListData, newListData} from '../common/components/list.component';
+import {CRMTypes} from '../common/models/CRMTypes.type';
 
 @Component({
 	selector: 'contact-details-component',
@@ -18,7 +19,7 @@ export class ContactsComponent implements OnInit{
 	constructor(private restService: RESTService){}
 
 	public ngOnInit(): void {
-		this.restService.callPath('get', this.getPath, {})
+		this.restService.callPath('get', this.getPath, <CRMTypes>{})
 			.subscribe((response: any) => {
 			this.contacts = newListData(response, void 0, 'Updated at Just Now!')
 		})

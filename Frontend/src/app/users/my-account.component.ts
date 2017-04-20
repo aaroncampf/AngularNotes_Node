@@ -1,6 +1,5 @@
 import {Component, OnInit} from '@angular/core';
 import {User} from './user.model';
-import {FormDataFeed} from '../common/models/form-data.model';
 import {SocketService} from '../common/services/socket.service';
 import {FIXTURE_USER_ID} from '../common/models/FIXTURE_ID';
 
@@ -12,7 +11,6 @@ import {FIXTURE_USER_ID} from '../common/models/FIXTURE_ID';
 })
 
 export class MyAccountComponent implements OnInit {
-	public userData: FormDataFeed = <FormDataFeed>{};
 
 	constructor(private socketService: SocketService) {
 	}

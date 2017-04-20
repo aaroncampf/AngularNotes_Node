@@ -27,7 +27,7 @@ import {ToastsManager} from 'ng2-toastr';
 
 export class CreateCompanyComponent {
 	public company: Company = <Company>{};
-	public path: string = `http://angularnotes-angularbros.azurewebsites.net/api/Companies`;
+	public path: string = `http://angularnotes-angularbros.azurewebsites.net/api/companies`;
 	public nameControl: FormControl = new FormControl('', [Validators.required, Validators.maxLength(255)]);
 	public phoneControl: FormControl = new FormControl('', [Validators.maxLength(255)]);
 	public emailControl: FormControl = new FormControl('', [Validators.required, Validators.pattern(EmailRegEx)]);
@@ -55,7 +55,8 @@ export class CreateCompanyComponent {
 
 	public onSave(company): void {
 		console.log(JSON.stringify(company));
-		this.restService.callPath('post', this.path, company).subscribe(response => {
+		// this.restService.callPath('post', this.path, company).subscribe((response:Company) => {
+		this.restService.createPath(<Company>company, this.path).subscribe((response:Company) => {
 			this.toastr.success(response.name + ' has been created!');
 		}, error => this.toastr.error( 'Sorry, there was a problem with company creation.'))
 	}

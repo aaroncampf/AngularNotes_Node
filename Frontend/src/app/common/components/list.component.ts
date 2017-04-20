@@ -1,4 +1,5 @@
 import {Component, EventEmitter, Input, Output} from '@angular/core';
+import {CRMTypes} from '../models/CRMTypes.type';
 
 export interface ListData {
 	title: string;
@@ -7,7 +8,7 @@ export interface ListData {
 	items: string[][];
 }
 
-export function newListData(responseOrigin: any[],  title?: string, footer?: string ):ListData {
+export function newListData(responseOrigin: CRMTypes[],  title?: string, footer?: string ):ListData {
 	let responseAlpha: string[] = [];
 	if(responseOrigin[0]) {
 		let response: ListData = <ListData>{

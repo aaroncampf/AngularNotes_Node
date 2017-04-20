@@ -1,6 +1,7 @@
 import {Component, OnInit} from '@angular/core';
 import {ListData, newListData} from '../common/components/list.component';
 import {RESTService} from '../common/services/rest.service';
+import {Quote} from './quote.model';
 
 @Component({
 	selector: 'quotes-component',
@@ -19,7 +20,7 @@ export class QuotesComponent implements OnInit {
 	constructor(private restService: RESTService){}
 
 	public ngOnInit(): void {
-		this.restService.callPath('get', this.getPath, {})
+		this.restService.callPath('get', this.getPath, <Quote>{})
 			.subscribe((response: any) => {
 				this.quotes = newListData(response, void 0, 'Updated at Just Now!')
 			})

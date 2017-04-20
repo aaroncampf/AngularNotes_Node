@@ -2,6 +2,7 @@ import {Component, OnInit} from '@angular/core';
 import {ListData, newListData} from '../common/components/list.component';
 import {RESTService} from '../common/services/rest.service';
 import {Router} from '@angular/router';
+import {Company} from './company.model';
 
 @Component({
 	selector: 'companies-component',
@@ -23,9 +24,9 @@ export class CompaniesComponent implements OnInit {
 				private router: Router) {}
 
 	public ngOnInit(): void {
-		this.restService.callPath('get', this.getPath, {})
-			.subscribe((response: any[]) => {
-			this.companies = newListData(response, void 0, 'updated at: Stardate, 4321:0532' );
+		this.restService.callPath('get', this.getPath)
+			.subscribe(response => {
+			this.companies = newListData(<Company[]>response, void 0, 'updated at: Stardate, 4321:0532' );
 		})
 	}
 
