@@ -1,16 +1,17 @@
 import {Component, OnInit} from '@angular/core';
-import {ListData, newListData} from '../common/components/list.component';
-import {RESTService} from '../common/services/rest.service';
+import {} from '../global/components/list.component';
+import {RESTService} from '../global/services/rest.service';
 import {Note} from './note.model';
 
 @Component({
 	selector: 'notes-component',
 	template: `
+	<button class="btn btn-block" (click)="addNote()">Add A Note</button>
 	<list-component (onSelect)="onSelection($event)" [listData]="notes"></list-component>
 	`
 })
 export class NotesComponent implements OnInit {
-	public notes: ListData = <ListData>{};
+	public notes = {};
 	public currentID: string;
 	public getPath: string = `http://angularnotes-angularbros.azurewebsites.net/api/Notes`;
 	public setPath: string = `http://angularnotes-angularbros.azurewebsites.net/api/Notes/${this.currentID}`;
@@ -21,12 +22,16 @@ export class NotesComponent implements OnInit {
 		this.restService.callPath('get', this.getPath, <Note>{})
 			.subscribe((response: any) => {
 				console.log('notes', response);
-				this.notes = newListData(response, void 0, 'Updated at Just Now!')
+				this.notes = (void 0, 'Updated at Just Now!')
 			})
 	}
 
 	public onSelection(e): void {
 		this.currentID = e;
 		console.log(e);
+	}
+
+	public addNote(): void {
+
 	}
 }

@@ -3,7 +3,7 @@ import {CommonModule as AngularCommonModule} from '@angular/common';
 import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 import {CompaniesComponent} from './companies.component';
 import {RouterModule, Routes} from '@angular/router';
-import {CommonModule} from '../common/common.module';
+import {GlobalModule} from '../global/global.module';
 import {CreateCompanyComponent} from './create-company.component';
 
 const ROUTES: Routes = [
@@ -20,7 +20,7 @@ const ROUTES: Routes = [
 	imports: [
 		FormsModule,
 		ReactiveFormsModule,
-		CommonModule,
+		GlobalModule,
 		AngularCommonModule,
 		RouterModule.forChild(ROUTES)
 	],

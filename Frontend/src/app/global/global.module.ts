@@ -5,10 +5,11 @@ import {InputComponent} from './components/input.component';
 import {SocketService} from './services/socket.service';
 import {ListComponent} from './components/list.component';
 import {RESTService} from './services/rest.service';
+import {OperationsService} from './services/operations.service';
 
 const COMPONENTS = [
 	InputComponent,
-	ListComponent
+	ListComponent,
 ];
 
 @NgModule({
@@ -22,7 +23,8 @@ const COMPONENTS = [
 	],
 	providers: [
 		SocketService,
-		RESTService
+		RESTService,
+		OperationsService
 	],
 	schemas: [
 		CUSTOM_ELEMENTS_SCHEMA
@@ -33,4 +35,4 @@ const COMPONENTS = [
 
 })
 
-export class CommonModule {}
+export class GlobalModule {}

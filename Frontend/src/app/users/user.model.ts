@@ -1,10 +1,11 @@
 
-export interface StateStore {
+export interface TWT extends User{
+	// role: 'admin' | 'general' | 'blocked' | 'removed';
 	currentSelect : {
 		[name: string]: {};
 		childrenRelations: {};
 		parentRelations: {};
-	}
+	},
 }
 
 export interface User {
@@ -17,9 +18,6 @@ export interface User {
 	phone?: string;
 	businessWeb?: string;
 	businessName?: string;
-	businessEmail?: string;
 	businessPhone?: string;
 	businessFax?: string;
-	role: string;
-	state?: StateStore;
 }

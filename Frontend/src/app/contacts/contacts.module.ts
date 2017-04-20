@@ -2,7 +2,7 @@ import {CUSTOM_ELEMENTS_SCHEMA, NgModule} from '@angular/core';
 import {CommonModule as AngularCommonModule} from '@angular/common';
 import {ContactsComponent} from './contacts.component';
 import {RouterModule, Routes} from '@angular/router';
-import {CommonModule} from '../common/common.module';
+import {GlobalModule} from '../global/global.module';
 
 const ROUTES: Routes = [
 	{path: '', component: ContactsComponent}
@@ -16,7 +16,7 @@ const ROUTES: Routes = [
 	],
 	imports: [
 		AngularCommonModule,
-		CommonModule,
+		GlobalModule,
 		RouterModule.forChild(ROUTES)
 	],
 	exports: [

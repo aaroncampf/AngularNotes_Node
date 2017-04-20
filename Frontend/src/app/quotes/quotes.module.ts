@@ -1,7 +1,7 @@
 import {NgModule} from '@angular/core';
 import {QuotesComponent} from './quotes.component';
 import {RouterModule, Routes} from '@angular/router';
-import {CommonModule} from '../common/common.module';
+import {GlobalModule} from '../global/global.module';
 import {CommonModule as AngularCommonModule} from '@angular/common';
 
 const ROUTES: Routes = [
@@ -16,7 +16,7 @@ const ROUTES: Routes = [
 	],
 	imports: [
 		AngularCommonModule,
-		CommonModule,
+		GlobalModule,
 		RouterModule.forChild(ROUTES)
 	],
 	exports: [

@@ -2,7 +2,7 @@ import {NgModule} from '@angular/core';
 import {NotesComponent} from './notes.component';
 import {RouterModule, Routes} from '@angular/router';
 import {CommonModule as AngularComonModule} from '@angular/common';
-import {CommonModule} from '../common/common.module';
+import {GlobalModule} from '../global/global.module';
 
 const ROUTES: Routes = [
 	{path: '', component: NotesComponent}
@@ -16,7 +16,7 @@ const ROUTES: Routes = [
 	],
 	imports: [
 		AngularComonModule,
-		CommonModule,
+		GlobalModule,
 		RouterModule.forChild(ROUTES)
 	],
 	exports: [

@@ -27189,7 +27189,7 @@ var BrowserModule = (function () {
      */
     function BrowserModule(parentModule) {
         if (parentModule) {
-            throw new Error("BrowserModule has already been loaded. If you need access to common directives such as NgIf and NgFor from a lazy loaded module, import CommonModule instead.");
+            throw new Error("BrowserModule has already been loaded. If you need access to common directives such as NgIf and NgFor from a lazy loaded module, import GlobalModule instead.");
         }
     }
     /**
@@ -27232,7 +27232,7 @@ BrowserModule.decorators = [
                     Meta,
                     Title,
                 ],
-                exports: [__WEBPACK_IMPORTED_MODULE_0__angular_common__["CommonModule"], __WEBPACK_IMPORTED_MODULE_1__angular_core__["ApplicationModule"]]
+                exports: [__WEBPACK_IMPORTED_MODULE_0__angular_common__["GlobalModule"], __WEBPACK_IMPORTED_MODULE_1__angular_core__["ApplicationModule"]]
             },] },
 ];
 /**
@@ -39421,7 +39421,7 @@ function getPluralCase(locale, nLike) {
  * found in the LICENSE file at https://angular.io/license
  */
 /**
- * \@ngModule CommonModule
+ * \@ngModule GlobalModule
  *
  * \@whatItDoes Adds and removes CSS classes on an HTML element.
  *
@@ -40270,7 +40270,7 @@ var SwitchView = (function () {
     return SwitchView;
 }());
 /**
- * \@ngModule CommonModule
+ * \@ngModule GlobalModule
  *
  * \@whatItDoes Adds / removes DOM sub-trees when the nest match expressions matches the switch
  *             expression.
@@ -40389,7 +40389,7 @@ NgSwitch.propDecorators = {
     'ngSwitch': [{ type: __WEBPACK_IMPORTED_MODULE_0__angular_core__["Input"] },],
 };
 /**
- * \@ngModule CommonModule
+ * \@ngModule GlobalModule
  *
  * \@whatItDoes Creates a view that will be added/removed from the parent {\@link NgSwitch} when the
  *             given expression evaluate to respectively the same/different value as the switch
@@ -40444,7 +40444,7 @@ NgSwitchCase.propDecorators = {
     'ngSwitchCase': [{ type: __WEBPACK_IMPORTED_MODULE_0__angular_core__["Input"] },],
 };
 /**
- * \@ngModule CommonModule
+ * \@ngModule GlobalModule
  * \@whatItDoes Creates a view that is added to the parent {\@link NgSwitch} when no case expressions
  * match the
  *             switch expression.
@@ -40496,7 +40496,7 @@ NgSwitchDefault.ctorParameters = function () { return [
  * found in the LICENSE file at https://angular.io/license
  */
 /**
- * \@ngModule CommonModule
+ * \@ngModule GlobalModule
  *
  * \@whatItDoes Adds / removes DOM sub-trees based on a numeric value. Tailored for pluralization.
  *
@@ -40593,7 +40593,7 @@ NgPlural.propDecorators = {
     'ngPlural': [{ type: __WEBPACK_IMPORTED_MODULE_0__angular_core__["Input"] },],
 };
 /**
- * \@ngModule CommonModule
+ * \@ngModule GlobalModule
  *
  * \@whatItDoes Creates a view that will be added/removed from the parent {\@link NgPlural} when the
  *             given expression matches the plural expression according to CLDR rules.
@@ -40644,7 +40644,7 @@ NgPluralCase.ctorParameters = function () { return [
  * found in the LICENSE file at https://angular.io/license
  */
 /**
- * \@ngModule CommonModule
+ * \@ngModule GlobalModule
  *
  * \@whatItDoes Update an HTML element styles.
  *
@@ -40745,7 +40745,7 @@ NgStyle.propDecorators = {
  * found in the LICENSE file at https://angular.io/license
  */
 /**
- * \@ngModule CommonModule
+ * \@ngModule GlobalModule
  *
  * \@whatItDoes Inserts an embedded view from a prepared `TemplateRef`
  *
@@ -40911,7 +40911,7 @@ var PromiseStrategy = (function () {
 var _promiseStrategy = new PromiseStrategy();
 var _observableStrategy = new ObservableStrategy();
 /**
- * \@ngModule CommonModule
+ * \@ngModule GlobalModule
  * \@whatItDoes Unwraps a value from an asynchronous primitive.
  * \@howToUse `observable_or_promise_expression | async`
  * \@description
@@ -41452,7 +41452,7 @@ function formatNumber(pipe, locale, value, style, digits, currency, currencyAsSy
     });
 }
 /**
- * \@ngModule CommonModule
+ * \@ngModule GlobalModule
  * \@whatItDoes Formats a number according to locale rules.
  * \@howToUse `number_expression | number[:digitInfo]`
  *
@@ -41506,7 +41506,7 @@ DecimalPipe.ctorParameters = function () { return [
     { type: undefined, decorators: [{ type: __WEBPACK_IMPORTED_MODULE_0__angular_core__["Inject"], args: [__WEBPACK_IMPORTED_MODULE_0__angular_core__["LOCALE_ID"],] },] },
 ]; };
 /**
- * \@ngModule CommonModule
+ * \@ngModule GlobalModule
  * \@whatItDoes Formats a number as a percentage according to locale rules.
  * \@howToUse `number_expression | percent[:digitInfo]`
  *
@@ -41553,7 +41553,7 @@ PercentPipe.ctorParameters = function () { return [
     { type: undefined, decorators: [{ type: __WEBPACK_IMPORTED_MODULE_0__angular_core__["Inject"], args: [__WEBPACK_IMPORTED_MODULE_0__angular_core__["LOCALE_ID"],] },] },
 ]; };
 /**
- * \@ngModule CommonModule
+ * \@ngModule GlobalModule
  * \@whatItDoes Formats a number as currency using locale rules.
  * \@howToUse `number_expression | currency[:currencyCode[:symbolDisplay[:digitInfo]]]`
  * \@description
@@ -41634,7 +41634,7 @@ function isNumeric(value) {
  */
 var ISO8601_DATE_REGEX = /^(\d{4})-?(\d\d)-?(\d\d)(?:T(\d\d)(?::?(\d\d)(?::?(\d\d)(?:\.(\d+))?)?)?(Z|([+-])(\d\d):?(\d\d))?)?$/;
 /**
- * \@ngModule CommonModule
+ * \@ngModule GlobalModule
  * \@whatItDoes Formats a date according to locale rules.
  * \@howToUse `date_expression | date[:format]`
  * \@description
@@ -41831,7 +41831,7 @@ function toInt(str) {
  */
 var _INTERPOLATION_REGEXP = /#/g;
 /**
- * \@ngModule CommonModule
+ * \@ngModule GlobalModule
  * \@whatItDoes Maps a value to a string that pluralizes the value according to locale rules.
  * \@howToUse `expression | i18nPlural:mapping`
  * \@description
@@ -41887,7 +41887,7 @@ I18nPluralPipe.ctorParameters = function () { return [
  * found in the LICENSE file at https://angular.io/license
  */
 /**
- * \@ngModule CommonModule
+ * \@ngModule GlobalModule
  * \@whatItDoes Generic selector that displays the string that matches the current value.
  * \@howToUse `expression | i18nSelect:mapping`
  * \@description
@@ -41942,7 +41942,7 @@ I18nSelectPipe.ctorParameters = function () { return []; };
  * found in the LICENSE file at https://angular.io/license
  */
 /**
- * \@ngModule CommonModule
+ * \@ngModule GlobalModule
  * \@whatItDoes Converts value into JSON string.
  * \@howToUse `expression | json`
  * \@description
@@ -41979,7 +41979,7 @@ JsonPipe.ctorParameters = function () { return []; };
  * found in the LICENSE file at https://angular.io/license
  */
 /**
- * \@ngModule CommonModule
+ * \@ngModule GlobalModule
  * \@whatItDoes Creates a new List or String containing a subset (slice) of the elements.
  * \@howToUse `array_or_string_expression | slice:start[:end]`
  * \@description
@@ -69752,7 +69752,7 @@ var TemplateParseVisitor = (function () {
                 var /** @type {?} */ errorMsg = "Can't bind to '" + boundProp.name + "' since it isn't a known property of '" + elementName + "'.";
                 if (elementName.startsWith('ng-')) {
                     errorMsg +=
-                        "\n1. If '" + boundProp.name + "' is an Angular directive, then add 'CommonModule' to the '@NgModule.imports' of this component." +
+                        "\n1. If '" + boundProp.name + "' is an Angular directive, then add 'GlobalModule' to the '@NgModule.imports' of this component." +
                             "\n2. To allow any property add 'NO_ERRORS_SCHEMA' to the '@NgModule.schemas' of this component.";
                 }
                 else if (elementName.indexOf('-') > -1) {

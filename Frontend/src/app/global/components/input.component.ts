@@ -1,4 +1,4 @@
-import {Component, Input, Output, EventEmitter} from '@angular/core';
+import {Component, Input, Output, EventEmitter, OnInit} from '@angular/core';
 import {FormControl} from '@angular/forms';
 
 @Component({
@@ -19,7 +19,7 @@ import {FormControl} from '@angular/forms';
 	`
 })
 
-export class InputComponent {
+export class InputComponent implements OnInit {
 	@Output()
 	public onBlur: EventEmitter<string> = new EventEmitter<string>();
 	@Input()
@@ -30,11 +30,18 @@ export class InputComponent {
 	public placeholder: string = '';
 	@Input()
 	public label: string;
+	//todo break validation?
 	@Input()
-	public control: FormControl;
+	public control: FormControl = new FormControl;
 	@Output()
 	public modelChange: EventEmitter<any> = new EventEmitter<any>();
-	public blurred(event,): void {
+
+	public blurred(event): void {
 		this.onBlur.emit(event.target.value);
 	}
+
+	public ngOnInit(): void {
+	}
+
+
 }

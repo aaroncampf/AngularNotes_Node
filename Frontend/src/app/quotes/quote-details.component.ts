@@ -1,6 +1,6 @@
 import {Component, OnInit} from '@angular/core';
 import {Quote} from './quote.model';
-import {DataShareService} from '../common/services/data-share.service';
+import {DataShareService} from '../global/services/data-share.service';
 import {QuoteLine} from './quote.model';
 import {Router} from '@angular/router';
 import {ToastsManager} from 'ng2-toastr';

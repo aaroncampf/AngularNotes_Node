@@ -6,8 +6,8 @@ import {Company} from "../companies/company.model";
 import {Quote} from "./quote.model";
 import {QuoteLine} from "./quote.model";
 import {Contact} from '../contacts/contact.model';
-import {DataShareService} from '../common/services/data-share.service';
-import {SocketService} from '../common/services/socket.service';
+import {DataShareService} from '../global/services/data-share.service';
+import {SocketService} from '../global/services/socket.service';
 
 /**
  * Displays a quote as a beautiful printout

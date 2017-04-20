@@ -3,4 +3,4 @@ import {Note} from '../../notes/note.model';
 import {Contact} from '../../contacts/contact.model';
 import {Company} from '../../companies/company.model';
 
-export type CRMTypes = Company | Contact | Note | Quote;
+export type CRMType = Company | Contact | Note | Quote;

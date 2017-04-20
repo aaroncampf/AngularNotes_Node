@@ -5,7 +5,7 @@ import {BrowserModule} from '@angular/platform-browser';
 import {HttpModule} from '@angular/http';
 import {BrowserAnimationsModule, NoopAnimationsModule} from '@angular/platform-browser/animations';
 import {ToastModule} from 'ng2-toastr';
-import {DataShareService} from './common/services/data-share.service';
+import {DataShareService} from './global/services/data-share.service';
 import {MainComponent} from './main/main.component';
 import {NavigationComponent} from './main/navigation.component';
 import {DashboardComponent} from './main/dashboard.component';
@@ -14,19 +14,18 @@ import {CompaniesModule} from './companies/companies.module';
 import {ContactsModule} from './contacts/contacts.module';
 import {QuotesModule} from './quotes/quotes.module';
 import {NotesModule} from './notes/notes.module';
-import {CommonModule} from './common/common.module';
+import {GlobalModule} from './global/global.module';
+import {NotFoundComponent} from './main/not-found.component';
 
 const MAIN_ROUTES: Routes = [
-	// {path: ''}
 	{path:'user', loadChildren: "./users/users.module#UsersModule"},
 	{path:'contacts', loadChildren: "./contacts/contacts.module#ContactsModule"},
 	{path:'quotes', loadChildren: "./quotes/quotes.module#QuotesModule"},
 	{path:'notes', loadChildren: "./notes/notes.module#NotesModule"},
 	{path:'companies', loadChildren: "./companies/companies.module#CompaniesModule"},
-	// {path:'settings', component: SettingsComponent},
 	{path:'dashboard', component: MainComponent},
 	{path:'', redirectTo: '/dashboard', pathMatch: 'full'},
-	// {path: '**', component: '/user/my-account'}
+	{path: '**', component: NotFoundComponent}
 ];
 
 const MODULES = [
@@ -41,15 +40,20 @@ const MODULES = [
 		QuotesModule,
 		NotesModule,
 		ContactsModule,
-		CommonModule,
+		GlobalModule,
 		CompaniesModule,
+];
+
+const COMPONENTS = [
+		MainComponent,
+		NavigationComponent,
+		DashboardComponent,
+		NotFoundComponent
 ];
 
 @NgModule({
 	declarations: [
-		MainComponent,
-		NavigationComponent,
-		DashboardComponent
+		COMPONENTS
 	],
 	imports: [
 		MODULES
@@ -61,7 +65,7 @@ const MODULES = [
 		CUSTOM_ELEMENTS_SCHEMA
 	],
 	exports: [
-
+		COMPONENTS
 	],
 	bootstrap: [MainComponent]
 })

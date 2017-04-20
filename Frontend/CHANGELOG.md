@@ -2,6 +2,8 @@
 >To make sense of all your busy-ness to other developers please log changes and use sem-ver. 
 
 ##unreleased
+[code] created `User.services`
+[refactor] changed `common-module` to `global.module`
 
 ##version 0.8.0
 [refactor] routes redone for lazy loading of modules

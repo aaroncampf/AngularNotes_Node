@@ -4,7 +4,7 @@ import {Component} from '@angular/core';
 	template: `
 	<div class="row">
 		<small class="pull-left">Angular Bros <strong>CRM</strong></small>
-		<div class="pull-right">
+		<div>
 			<i [routerLink]="['/my-account']" class="glyphicon glyphicon-cog pull-right"></i>
 		</div>		
 	</div>

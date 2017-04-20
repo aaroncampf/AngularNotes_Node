@@ -1,9 +1,9 @@
 import {Component, OnInit} from '@angular/core';
 import {User} from './user.model';
-import {SocketService} from '../common/services/socket.service';
-import {FIXTURE_USER_ID} from '../common/models/FIXTURE_ID';
+import {SocketService} from '../global/services/socket.service';
+import {FIXTURE_USER_ID} from '../global/models/FIXTURE_ID';
 import {FormControl, FormGroup, Validators} from '@angular/forms';
-import {EmailRegEx} from '../common/regex/email.regex';
+import {EmailRegEx} from '../global/regex/email.regex';
 
 @Component({
 	selector: 'my-account-component',
@@ -20,23 +20,22 @@ import {EmailRegEx} from '../common/regex/email.regex';
 		<input-component label="Business Fax" [control]="businessFaxControl" [(model)]="user.businessFax" (onBlur)="blurrySave($event, 'businessFax')"></input-component>
 		<input-component label="Business Name" [control]="businessNameControl" [(model)]="user.businessName" (onBlur)="blurrySave($event, 'businessName')"></input-component>
 		<input-component label="Business Phone" [control]="businessPhoneControl" [(model)]="user.businessPhone" (onBlur)="blurrySave($event, 'businessPhone')"></input-component>
-		<input-component label="Business Email" [control]="businessEmailControl" [(model)]="user.businessEmail" (onBlur)="blurrySave($event, 'businessEmail')"></input-component>
 	`
 })
 
 export class MyAccountComponent implements OnInit {
 	public user: User = <User>{};
-	public firstNameControl: FormControl = new FormControl('', []);
-	public lastNameControl: FormControl = new FormControl('', []);
-	public emailControl: FormControl = new FormControl('', [Validators.pattern(EmailRegEx)]);
-	public addressOneControl: FormControl = new FormControl('', []);
-	public addressTwoControl: FormControl = new FormControl('', []);
-	public businessFaxControl: FormControl = new FormControl('', []);
-	public businessNameControl: FormControl = new FormControl('', []);
-	public businessPhoneControl: FormControl = new FormControl('', []);
-	public businessEmailControl: FormControl = new FormControl('', []);
-	public websiteControl: FormControl = new FormControl('', []);
-	public phoneControl: FormControl = new FormControl('', []);
+	public firstNameControl: FormControl = new FormControl('', [Validators.required, Validators.maxLength(255)]);
+	public lastNameControl: FormControl = new FormControl('', [Validators.maxLength(255)]);
+	public emailControl: FormControl = new FormControl('', [Validators.required, Validators.pattern(EmailRegEx)]);
+	public addressOneControl: FormControl = new FormControl('', [Validators.maxLength(255)]);
+	public addressTwoControl: FormControl = new FormControl('', [Validators.maxLength(255)]);
+	public businessFaxControl: FormControl = new FormControl('', [Validators.maxLength(24)]);
+	public businessNameControl: FormControl = new FormControl('', [Validators.maxLength(255)]);
+	public businessPhoneControl: FormControl = new FormControl('', [Validators.maxLength(24)]);
+	public businessEmailControl: FormControl = new FormControl('', [Validators.pattern(EmailRegEx)]);
+	public websiteControl: FormControl = new FormControl('', [Validators.maxLength(255)]);
+	public phoneControl: FormControl = new FormControl('', [Validators.maxLength(255)]);
 	public userGroup: FormGroup = new FormGroup({
 		firstName: this.firstNameControl,
 		lastName: this.lastNameControl,
@@ -48,7 +47,7 @@ export class MyAccountComponent implements OnInit {
 		businessPhone: this.businessPhoneControl,
 		businessEmail: this.businessEmailControl,
 		website: this.websiteControl,
-		phone: this.phoneControl,
+		phone: this.phoneControl
 	});
 
 	public updatePath: string = 'user.set';
@@ -69,10 +68,8 @@ export class MyAccountComponent implements OnInit {
 					businessFax: user.businessFax,
 					businessName: user.businessName,
 					businessPhone: user.businessPhone,
-					businessEmail: user.businessEmail,
 					businessWeb: user.businessWeb,
 					phone: user.phone,
-					role: user.role
 				};
 			})
 	}
