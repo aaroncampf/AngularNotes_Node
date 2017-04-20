@@ -15,7 +15,7 @@ export interface User {
 	addressOne?: string;
 	addressTwo?: string;
 	phone?: string;
-	website?: string;
+	businessWeb?: string;
 	businessName?: string;
 	businessEmail?: string;
 	businessPhone?: string;

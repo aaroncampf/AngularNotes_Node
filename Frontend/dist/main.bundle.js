@@ -26852,7 +26852,7 @@ function sanitizeStyle(value) {
  *
  * For example, when binding a URL in an `<a [href]="someValue">` hyperlink, `someValue` will be
  * sanitized so that an attacker cannot inject e.g. a `javascript:` URL that would execute code on
- * the website.
+ * the businessWeb.
  *
  * In specific situations, it might be necessary to disable sanitization, for example if the
  * application genuinely needs to produce a `javascript:` style link with a dynamic value in it.
