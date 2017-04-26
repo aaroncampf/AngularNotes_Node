@@ -1,9 +1,7 @@
 import {Component, EventEmitter, Input, OnChanges, OnInit, Output} from '@angular/core';
 import {UsersServices} from '../../users/users.services';
-import {SocketService} from '../services/socket.service';
 import {CRMType} from '../models/CRMTypes.type';
 import {TWT} from '../../users/user.model';
-import {Subject} from 'rxjs/Subject';
 
 @Component({
 	selector: 'list-component',
@@ -19,22 +17,27 @@ import {Subject} from 'rxjs/Subject';
 			<h4>{{title}}</h4>
 		</list-subheader>
 		<list-group class="col-xs-12">
-			<list-item-slide *ngFor="let item of listData" [class.collapse]="activeItem.id !== item.id && details">
-					<slide-top (click)="onSelect('slide', item)" [class.active]="item.id === activeItem.id" >{{item.Name || item.Title}}</slide-top>
-					<slide-details-option class="pull-right">
+			<div *ngFor="let item of listData" >
+				<list-item-slide [class.collapse]="activeItem.id !== item.id && details">
+					<slide-top (click)="onSelect('slide', item)" class="swip-box" ng-style="{'transform': 'rotate('+number+'deg)', '-webkit-transform': 'rotate('+number+'deg)', '-ms-transform': 'rotate('+number+'deg)'}" (pan)="panning($event, item)" (swipeLeft)="swipe($event.type, item)" (swipeRight)="swipe($event.type)"  [class.active]="item.id === activeItem.id" [class.option]="(optionOne || optionTwo) && !(optionOne && optionTwo)" [class.options]="optionOne && optionTwo">{{item.name || item.title}} </slide-top>
+					<slide-details-option (click)="onSelect('details', item)">
 						<i class="glyphicon glyphicon-info-sign"></i>
 					</slide-details-option>
-					<slide-option class="pull-right" *ngIf="!optionTwo">
+					<slide-option *ngIf="optionTwo">
 						<b>{{optionTwo}}</b>
 					</slide-option>
-					<slide-option class="pull-right" *ngIf="!optionOne">
+					<slide-option *ngIf="optionOne">
 						<b>{{optionOne}}</b>
 					</slide-option>
-			<!--//details-->
-			<item-details *ngIf="details && activeItem.id === item.id">
-				<input-component *ngFor="let key of keys" [label]="key" [(model)]="item[key]" (onBlur)="blurrySave($event, key)"></input-component>
-			</item-details>
-			</list-item-slide>
+				</list-item-slide>
+					<!--//details-->
+				<item-details *ngIf="details && activeItem.id === item.id">
+					<list-item *ngFor="let key of keys">
+						{{key}}
+						<input-component [label]="key" [(model)]="item[key]" (onBlur)="blurrySave($event, key)"></input-component>
+					</list-item>
+				</item-details>
+			</div>
 		</list-group>
 	</div>
 `
@@ -62,13 +65,14 @@ export class ListComponent implements OnInit, OnChanges {
 	public keys: any[] = [];
 	public tokenTest: TWT = <TWT>{};
 	public currentSelect: any = <any>{};
-	constructor(private userServices: UsersServices,
-				private socket: SocketService){};
+	public SWIPE_ACTION = {RIGHT: 'swip-right', LEFT: 'swip-left'};
+	public xVal: number;
+	constructor(private userServices: UsersServices){};
 
 	public ngOnInit(): void {
+
 		this.updateKeys(this.listData);
 		this.userServices.userState$.subscribe((twt:TWT) => {
-			console.log('MY OBSERVABLE IS CHANGING!');
 			if (twt.currentSelect.current) {
 			this.activeItem = twt.currentSelect.current;
 			} else {
@@ -83,20 +87,21 @@ export class ListComponent implements OnInit, OnChanges {
 
 	public updateKeys(list): void {
 		this.keys = [];
+		let i = 0;
 		for(let obj of list){
-			this.keys.push(Object.keys(obj));
+			this.keys.push(Object.keys(obj)[i].charAt(0).toUpperCase() + Object.keys(obj)[i].slice(1));
+			i++;
 		}
 	}
 
 	public onSelect(type: string, content: CRMType): void {
-		console.log('selcte',this.activeItem);
 		switch(type) {
 			case'slide':
 				if (!this.slide) {
 					this.slide = true;
-					this.userServices.setTWTProp({currentSelect: {current: content}});
+					this.userServices.setTWTProp(<TWT>{currentSelect: {current: content}});
 				} else if (this.slide && this.activeItem.id !== content.id) {
-					this.userServices.setTWTProp({currentSelect: {current: content}});
+					this.userServices.setTWTProp(<TWT>{currentSelect: {current: content}});
 				} else {
 					this.slide = false;
 					this.userServices.setTWTProp(<TWT>{currentSelect: {}});
@@ -114,6 +119,28 @@ export class ListComponent implements OnInit, OnChanges {
 		}
 	}
 
+	public swipe(action = this.SWIPE_ACTION.RIGHT, content?: {}){
+		console.log('swipped', action);
+		switch(action) {
+			case'swipeleft':
+				this.userServices.setTWTProp(<TWT>{currentSelect: {current: content}});
+				break;
+			case'swiperight':
+				this.userServices.setTWTProp(<TWT>{currentSelect: {}});
+		}
+	}
+
+	public panning(event, content) {
+		this.xVal = event.srcEvent.clientX;
+		if(this.xVal === 50 ) {
+			this.onSelect('slide', content);
+			console.log(event);
+
+		} else if (this.xVal === -50) {
+			this.onSelect('slide', <CRMType>{});
+			console.log(event);
+		}
+}
 	public blurrySave(event, name): void {
 
 	}

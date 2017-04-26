@@ -4,7 +4,7 @@ import {CRMType} from '../models/CRMTypes.type';
 import {Observable} from 'rxjs/Observable';
 import 'rxjs/add/operator/map'
 import 'rxjs/add/operator/catch'
-import {keysToCamelCase} from '../helpers/keysToCamelCase';
+import {keysToCamelCase} from '../pipes/TitleToCamelCase.pipe';
 
 @Injectable()
 export class RESTService {

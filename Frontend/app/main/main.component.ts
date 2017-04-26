@@ -47,9 +47,7 @@ export class MainComponent implements OnInit {
 
 		// update twt with user info
 		this.twtFactor.tokenFactory().then(token => {
-			console.log('token',token);
 			this.userServices.userState$.subscribe((res: TWT) => {
-				console.log('observe state', res);
 			});
 			this.userServices.setTWTProp(<TWT>token);
 		});

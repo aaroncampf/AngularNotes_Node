@@ -6,6 +6,7 @@ import {SocketService} from './services/socket.service';
 import {ListComponent} from './components/list.component';
 import {RESTService} from './services/rest.service';
 import {TokenService, UsersServices} from '../users/users.services';
+import {HAMMER_GESTURE_CONFIG, HammerGestureConfig} from '@angular/platform-browser';
 
 const COMPONENTS = [
 	InputComponent,
@@ -18,6 +19,13 @@ const MODULES = [
 	FormsModule
 ];
 
+export class MyHammerConfig extends HammerGestureConfig {
+	overrides = <any>{
+		'swipe': {velocity: 0.4, threshold: 20}
+
+	}
+}
+
 @NgModule({
 	declarations: [
 		COMPONENTS
@@ -26,6 +34,10 @@ const MODULES = [
 		MODULES
 	],
 	providers: [
+		{
+		provide: HAMMER_GESTURE_CONFIG,
+		useClass: MyHammerConfig
+	},
 		SocketService,
 		RESTService,
 		UsersServices,

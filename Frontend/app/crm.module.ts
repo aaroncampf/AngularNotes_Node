@@ -16,7 +16,6 @@ import {QuotesModule} from './quotes/quotes.module';
 import {NotesModule} from './notes/notes.module';
 import {GlobalModule} from './global/global.module';
 
-
 const MAIN_ROUTES: Routes = [
 	{path:'user', loadChildren: "./users/users.module#UsersModule"},
 	{path:'contacts', loadChildren: "./contacts/contacts.module#ContactsModule"},

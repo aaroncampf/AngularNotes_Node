@@ -11,9 +11,7 @@ export class UsersServices {
 	private userStatesSource: Subject<TWT> = new Subject();
 	public userState$: Observable<TWT> = this.userStatesSource.asObservable();
 	public setTWTProp(prop:{} | string): void {
-		console.log('hit observabel', prop);
 		this.userStatesSource.next(this.userStatesSource = Object.assign(this.userStatesSource, this.userStatesSource[Object.keys(prop)[0]], prop));
-		console.log(this.userStatesSource);
 	}
 
 }

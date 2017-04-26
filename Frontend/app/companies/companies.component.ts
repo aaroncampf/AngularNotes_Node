@@ -8,7 +8,7 @@ import {UsersServices} from '../users/users.services';
 	selector: 'companies-component',
 	template: `
 	<button class="btn btn-block" (click)="toggle('create')">Add New Company</button>
-	<list-component *ngIf="mode === 'list'" (onSelect)="onSelection($event)" [listData]="companies"></list-component>
+	<list-component optionOne="Quotes"  optionTwo="Contacts" *ngIf="mode === 'list'" (onSelect)="onSelection($event)" [listData]="companies"></list-component>
 	<create-company-component *ngIf="mode === 'create'"></create-company-component>
 	`,
 })
