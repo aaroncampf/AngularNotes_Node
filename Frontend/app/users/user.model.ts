@@ -2,7 +2,6 @@
 import {CRMType} from '../global/models/CRMTypes.type';
 
 export interface TWT extends User{
-	role: 'admin' | 'general' | 'blocked' | 'removed';
 	currentSelect : {
 		currentParent?: CRMType;
 		currentSiblings?: {
@@ -10,9 +9,13 @@ export interface TWT extends User{
 		};
 		current: CRMType;
 	};
+	focus?: {
+		type: string;
+		mode: string;
+	}
 }
 
-export interface User {
+export interface User extends _User {
 	id: string;
 	firstName: string;
 	lastName?: string;
@@ -24,4 +27,18 @@ export interface User {
 	businessName?: string;
 	businessPhone?: string;
 	businessFax?: string;
+	type: 'user';
+}
+
+export interface _User {
+	role: 'admin' | 'general' | 'blocked' | 'removed';
+}
+
+export function initUser(props: object): User {
+	let user: User = <User>{};
+	for (let key of Object.keys(props)) {
+		user[key] = props[key];
+	}
+	return user;
+
 }

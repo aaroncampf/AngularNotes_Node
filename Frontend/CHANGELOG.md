@@ -3,7 +3,13 @@
 
 ##unreleased
 [code] created `User.services`
+[refactor] changed models to include type and created init process for `User.model`  
+[code] created helper functions/pies to manage API response consistency
+[code] created Typescript Writable Token <TWT> for point of authority in state
 [refactor] changed `common-module` to `global.module`
+[refactor] removed API calls from `list.component`
+[code] updated `list.component` and `company.component` with twt authority
+ 
 
 ##version 0.8.0
 [refactor] routes redone for lazy loading of modules

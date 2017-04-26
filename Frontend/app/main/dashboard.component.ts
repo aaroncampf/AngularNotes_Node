@@ -3,10 +3,11 @@ import {Component} from '@angular/core';
 	selector: `dashboard-component`,
 	template: `
 	<div class="row">
-		<small class="pull-left">Angular Bros <strong>CRM</strong></small>
+		<small class="pull-right">Angular Bros <strong>CRM</strong></small>
 		<div>
 			<i [routerLink]="['/my-account']" class="glyphicon glyphicon-cog pull-right"></i>
-		</div>		
+		</div>
+		<button class="pull-left btn btn-lg" [routerLink]="['../']">Back</button>
 	</div>
 	`
 })

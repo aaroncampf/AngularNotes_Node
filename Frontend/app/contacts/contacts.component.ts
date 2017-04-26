@@ -4,7 +4,7 @@ import {CRMType} from '../global/models/CRMTypes.type';
 import {Contact} from './contact.model';
 
 @Component({
-	selector: 'contact-details-component',
+	selector: 'contacts-component',
 	template: `
 		<list-component [listData]="contacts" optionOne="notes"></list-component>
 		<notes-component></notes-component>

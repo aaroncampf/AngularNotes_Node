@@ -9,6 +9,7 @@ export interface Contact {
 	phone: string;
 	email: string;
 	position: string;
+	type: 'contact';
 	update_at?: string;
 	created_at?: string;
 

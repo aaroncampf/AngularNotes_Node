@@ -9,6 +9,7 @@ export interface Note {
     date: string;
     title: string;
     text: string;
+    type: 'note';
 }
 
 export function newNote(): Note {

@@ -23,10 +23,10 @@ import {TWT} from '../../users/user.model';
 					<slide-details-option (click)="onSelect('details', item)">
 						<i class="glyphicon glyphicon-info-sign"></i>
 					</slide-details-option>
-					<slide-option *ngIf="optionTwo">
+					<slide-option *ngIf="optionTwo" (click)="onSelect('optionOne', item)">
 						<b>{{optionTwo}}</b>
 					</slide-option>
-					<slide-option *ngIf="optionOne">
+					<slide-option *ngIf="optionOne" (click)="onSelect('optionTwo', item)" >
 						<b>{{optionOne}}</b>
 					</slide-option>
 				</list-item-slide>
@@ -53,17 +53,13 @@ export class ListComponent implements OnInit, OnChanges {
 	public optionOne: string;
 	@Input()
 	public optionTwo: string;
-	@Output()
-	public optionTwoSelected: EventEmitter<any> = new EventEmitter<any>()
-	@Output()
-	public optionOneSelected: EventEmitter<any> = new EventEmitter<any>()
 	@Input()
 	public activeItem: CRMType = <CRMType>{};
 	public slide: boolean = false;
 	public details: boolean = false;
 	public keys: any[] = [];
 	public tokenTest: TWT = <TWT>{};
-	public currentSelect: any = <any>{};
+	public currentSelect: CRMType = <CRMType>{};
 	public SWIPE_ACTION = {RIGHT: 'swip-right', LEFT: 'swip-left'};
 	public xVal: number;
 	constructor(private userServices: UsersServices){};
@@ -98,9 +94,16 @@ export class ListComponent implements OnInit, OnChanges {
 			case'slide':
 				if (!this.slide) {
 					this.slide = true;
-					this.userServices.setTWTProp(<TWT>{currentSelect: {current: content}});
+					this.userServices.setTWTProp({
+						currentSelect: {
+							current: content
+						},
+						focus: {
+							type: content.type,
+							mode: 'target'
+					}});
 				} else if (this.slide && this.activeItem.id !== content.id) {
-					this.userServices.setTWTProp(<TWT>{currentSelect: {current: content}});
+					this.userServices.setTWTProp({currentSelect: {current: content}});
 				} else {
 					this.slide = false;
 					this.userServices.setTWTProp(<TWT>{currentSelect: {}});
@@ -110,10 +113,10 @@ export class ListComponent implements OnInit, OnChanges {
 				this.details = !this.details;
 				break;
 			case 'optionOne':
-				this.optionOneSelected.emit(content);
+				this.userServices.setTWTProp(content);
 				break;
 			case 'optionTwo':
-				this.optionTwoSelected.emit(content);
+				this.userServices.setTWTProp(content);
 				break;
 		}
 	}

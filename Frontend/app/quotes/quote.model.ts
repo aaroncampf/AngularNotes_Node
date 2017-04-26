@@ -12,6 +12,7 @@ export interface QuoteLine {
     unit: string;
     cost: string;
     desc: string;
+    type: 'quote-line';
 }
 
 export interface Quote {
@@ -22,4 +23,5 @@ export interface Quote {
     quoteLines: QuoteLine[];
     updated_at?: string;
     created_at?: string;
+    type: 'quote';
 }

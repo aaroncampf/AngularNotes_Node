@@ -78353,7 +78353,7 @@ __decorate([
 ], ContactsComponent.prototype, "ownerId", void 0);
 ContactsComponent = __decorate([
     core_1.Component({
-        selector: 'contact-details-component',
+        selector: 'contacts-component',
         template: "\n\t\t<list-component [listData]=\"contacts\"></list-component>\n\t",
     }),
     __metadata("design:paramtypes", [rest_service_1.RESTService])

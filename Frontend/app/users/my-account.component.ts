@@ -1,14 +1,14 @@
 import {Component, OnInit} from '@angular/core';
 import {User} from './user.model';
 import {SocketService} from '../global/services/socket.service';
-import {FIXTURE_USER_ID} from '../global/models/FIXTURE_ID';
 import {FormControl, FormGroup, Validators} from '@angular/forms';
 import {EmailRegEx} from '../global/regex/email.regex';
+import {UsersServices} from './users.services';
 
 @Component({
 	selector: 'my-account-component',
 	template: `
-		<h4>My Account</h4>
+		<h4>My Account Details</h4>
 		<hr>
 		<input-component label="First Name" [control]="firstNameControl" [(model)]="user.firstName" (onBlur)="blurrySave($event, 'firstName')"></input-component>
 		<input-component label="Last Name" [control]="lastNameControl" [(model)]="user.lastName" (onBlur)="blurrySave($event, 'lastName')"></input-component>
@@ -52,26 +52,15 @@ export class MyAccountComponent implements OnInit {
 
 	public updatePath: string = 'user.set';
 	public getPath: string = 'user.get';
-	constructor(private socketService: SocketService){}
+	constructor(private userServices: UsersServices,
+				private socketService: SocketService){}
 
 	public ngOnInit(): void {
-		this.socketService
-			.responseSocket(this.getPath, {id: FIXTURE_USER_ID})
-			.subscribe(user => {
-				this.user = {
-					id: user.id,
-					firstName: user.firstName,
-					lastName: user.lastName,
-					email: user.email,
-					addressOne: user.addressOne,
-					addressTwo: user.addressTwo,
-					businessFax: user.businessFax,
-					businessName: user.businessName,
-					businessPhone: user.businessPhone,
-					businessWeb: user.businessWeb,
-					phone: user.phone,
-				};
-			})
+		this.userServices.userState$.subscribe(twt => {
+			for (let key of Object.keys(<User>{})) {
+				this.user[key] = twt[key];
+			}
+		})
 	}
 
 	public blurrySave(value, key): void {
@@ -84,8 +73,9 @@ export class MyAccountComponent implements OnInit {
 					value: value
 				}
 			})
-			.subscribe(response => {
-			console.log('response', response);
+			.subscribe((response: User) => {
+				this.userServices.setTWTProp(response);
+				console.log('response', response);
 		})
 	}
 }export interface UpdateObject {

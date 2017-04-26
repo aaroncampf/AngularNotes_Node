@@ -10,6 +10,7 @@ export interface _Company {
 	web: string;
 	misc: string;
 	fax: string;
+	type: 'company';
 }
 
 export interface Company extends _Company {
