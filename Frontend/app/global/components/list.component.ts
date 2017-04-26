@@ -33,7 +33,6 @@ import {TWT} from '../../users/user.model';
 					<!--//details-->
 				<item-details *ngIf="details && activeItem.id === item.id">
 					<list-item *ngFor="let key of keys">
-						{{key}}
 						<input-component [label]="key" [(model)]="item[key]" (onBlur)="blurrySave($event, key)"></input-component>
 					</list-item>
 				</item-details>

@@ -6,7 +6,8 @@ import {Contact} from './contact.model';
 @Component({
 	selector: 'contact-details-component',
 	template: `
-		<list-component [listData]="contacts"></list-component>
+		<list-component [listData]="contacts" optionOne="notes"></list-component>
+		<notes-component></notes-component>
 	`,
 })
 

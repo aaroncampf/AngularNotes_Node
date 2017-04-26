@@ -14,14 +14,14 @@ export function keysToCamelCase(source: any): any {
 	// separate the TitleCase words so we can target the first one
 	for (let key of Object.keys(source)) {
 
-		// most likely will catch words with Capitals, unless maybe single letter var names like ABCDVarOne..
-		let temp00 = key.match(/([A-Z][^\s]*)/g);
-		temp00[0] = temp00[0].toLowerCase();
-		let temp01 = '';
-		for (let seg of temp00) {
-			temp01 = temp01.concat(seg);
+		// catch case: ID is turned to iD
+		if (key === 'ID') {
+			Object.assign(camelCased, {['id']: source[key]});
+			continue;
 		}
-		camelCased = Object.assign(camelCased, {[temp01]: source[key]});
+
+		camelCased = Object.assign(camelCased, {[key.match(/([A-Z][^\s]*)/g)[0].charAt(0).toLowerCase() + key.slice(1)]: source[key]});
+		console.log('cc now?', camelCased);
 	}
 	// catch up with the array's we stashed earlier to make some new Objects to put back into an array.
 	if (sourceTemp.length >= 1 ) {
@@ -49,6 +49,6 @@ export function keysToCamelCase(source: any): any {
 // ..two minutes from stack overflow
 // http://stackoverflow.com/questions/196972/convert-string-to-title-case-with-javascript
 export function toProperCase(string: string): string {
-	return string.replace(/\w\S*/g, function(string){return string.charAt(0).toUpperCase() + str.substr(1).toLowerCase();});
+	return string.replace(/\w\S*/g, function(string){return string.charAt(0).toLowerCase() + string.substr(1).toLowerCase()});
 };
 
