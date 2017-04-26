@@ -5,7 +5,7 @@ import {Quote} from './quote.model';
 @Component({
 	selector: 'quotes-component',
 	template: `
-		<list-component (onSelect)="onSelection($event)" [listData]="quotes"></list-component>
+		<list-component (onSelect)="onSelection($event)" [listItems]="quotes"></list-component>
 	`,
 })
 

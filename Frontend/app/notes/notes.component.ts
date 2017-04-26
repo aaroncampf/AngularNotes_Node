@@ -6,8 +6,8 @@ import {Note} from './note.model';
 @Component({
 	selector: 'notes-component',
 	template: `
-	<button class="btn btn-block" (click)="addNote()">Add A Note</button>
-	<list-component (onSelect)="onSelection($event)" [listData]="notes"></list-component>
+		<button class="btn btn-block" (click)="addNote()">Add A Note</button>
+		<list-component (onSelect)="onSelection($event)" [listItems]="notes"></list-component>
 	`
 })
 export class NotesComponent implements OnInit {

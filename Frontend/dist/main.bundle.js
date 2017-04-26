@@ -78228,7 +78228,7 @@ var CompaniesComponent = (function () {
 CompaniesComponent = __decorate([
     core_1.Component({
         selector: 'companies-component',
-        template: "\n\t<button class=\"btn btn-block\" (click)=\"toggle('create')\">Add New Company</button>\n\t<list-component *ngIf=\"mode === 'list'\" (onSelect)=\"onSelection($event)\" [listData]=\"companies\"></list-component>\n\t<create-company-component *ngIf=\"mode === 'create'\"></create-company-component>\n\t",
+        template: "\n\t<button class=\"btn btn-block\" (click)=\"toggle('create')\">Add New Company</button>\n\t<list-component *ngIf=\"mode === 'list'\" (onSelect)=\"onSelection($event)\" [listItems]=\"companies\"></list-component>\n\t<create-company-component *ngIf=\"mode === 'create'\"></create-company-component>\n\t",
     }),
     __metadata("design:paramtypes", [rest_service_1.RESTService,
         router_1.Router,
@@ -78354,7 +78354,7 @@ __decorate([
 ContactsComponent = __decorate([
     core_1.Component({
         selector: 'contacts-component',
-        template: "\n\t\t<list-component [listData]=\"contacts\"></list-component>\n\t",
+        template: "\n\t\t<list-component [listItems]=\"contacts\"></list-component>\n\t",
     }),
     __metadata("design:paramtypes", [rest_service_1.RESTService])
 ], ContactsComponent);
@@ -78454,7 +78454,7 @@ var ListComponent = (function () {
     function ListComponent(userServices, socket) {
         this.userServices = userServices;
         this.socket = socket;
-        this.listData = [];
+        this.listItems = [];
         this.activeItem = {};
         this.folders = ['1', '2', '3'];
         this.notes = ['1', '2', '3'];
@@ -78468,15 +78468,15 @@ var ListComponent = (function () {
     ;
     ListComponent.prototype.ngOnInit = function () {
         var _this = this;
-        this.updateKeys(this.listData);
+        this.updateKeys(this.listItems);
         this.userServices.userState$.subscribe(function (twt) {
             _this.activeItem = twt.currentSelect.current;
             console.log('token', _this.tokenTest);
         });
-        console.log(this.listData);
+        console.log(this.listItems);
     };
     ListComponent.prototype.ngOnChanges = function () {
-        this.updateKeys(this.listData);
+        this.updateKeys(this.listItems);
     };
     ListComponent.prototype.updateKeys = function (list) {
         this.keys = [];
@@ -78512,7 +78512,7 @@ var ListComponent = (function () {
 __decorate([
     core_1.Input(),
     __metadata("design:type", Array)
-], ListComponent.prototype, "listData", void 0);
+], ListComponent.prototype, "listItems", void 0);
 __decorate([
     core_1.Input(),
     __metadata("design:type", String)
@@ -78532,7 +78532,7 @@ __decorate([
 ListComponent = __decorate([
     core_1.Component({
         selector: 'list-component',
-        template: "\n\t\t\t\t<md-toolbar *ngIf=\"header\">\n\t\t\t\t\t<div class=\"md-toolbar-tools\">{{header}}</div>\n\t\t\t\t</md-toolbar>\n\t\t\t\t<!--//master-->\n\t\t\t\t<md-content *ngFor=\"let item of listData\">\n\t\t\t\t\t<md-subheader class=\"col-md-12\" *ngIf=\"title\">\n\t\t\t\t\t\t<h4>{{title}}</h4>\n\t\t\t\t\t</md-subheader>\n\t\t\t\t\t<md-list [class.collapsed]=\"activeItem.id !== item.ID && details\">\n\t\t\t\t\t\t<md-list-item (click)=\"onSelect('slide', item)\" class=\"slide col-12\">{{item.Name || item.Title}}\n\t\t\t\t\t\t\t<span [class.slide-out]=\"slide\" class=\"slide\" (click)=\"onSelect('details', item)\"><i class=\"glyphicon glyphicon-info-sign\"></i></span>\n\t\t\t\t\t\t</md-list-item>\n\t\t\t\t\t\t<!--//details-->\n\t\t\t\t\t\t<md-list-item class=\"col-12\"  [class.collapsed]=\"details && activeItem.id === item.ID\">\n\t\t\t\t\t\t\t<input-component *ngFor=\"let key of keys[0]\" [label]=\"key\" [(model)]=\"item[key]\" (onBlur)=\"blurrySave($event, key)\"></input-component>\n\t\t\t\t\t\t</md-list-item>\n\t\t\t\t\t</md-list>\n\t\t\t\t</md-content>\n\t\t\t<!--<md-list>-->\n\t\t\t\t<!--<h3 md-subheader>Folders</h3>-->\n\t\t\t\t<!--<md-list-item *ngFor=\"let folder of folders\">-->\n\t\t\t\t\t<!--<md-icon md-list-icon>folder</md-icon>-->\n\t\t\t\t\t<!--<h4 md-line>{{folder.name}}</h4>-->\n\t\t\t\t\t<!--<p md-line class=\"demo-2\"> {{folder.updated}} </p>-->\n\t\t\t\t<!--</md-list-item>-->\n\t\t\t\t<!--<md-divider></md-divider>-->\n\t\t\t\t<!--<h3 md-subheader>Notes</h3>-->\n\t\t\t\t<!--<md-list-item *ngFor=\"let note of notes\">-->\n\t\t\t\t\t<!--<md-icon md-list-icon>note</md-icon>-->\n\t\t\t\t\t<!--<h4 md-line>{{note.name}}</h4>-->\n\t\t\t\t\t<!--<p md-line class=\"demo-2\"> {{note.updated}} </p>-->\n\t\t\t\t<!--</md-list-item>-->\n\t\t\t<!--</md-list>-->\n\t"
+        template: "\n\t\t\t\t<md-toolbar *ngIf=\"header\">\n\t\t\t\t\t<div class=\"md-toolbar-tools\">{{header}}</div>\n\t\t\t\t</md-toolbar>\n\t\t\t\t<!--//master-->\n\t\t\t\t<md-content *ngFor=\"let item of listItems\">\n\t\t\t\t\t<md-subheader class=\"col-md-12\" *ngIf=\"title\">\n\t\t\t\t\t\t<h4>{{title}}</h4>\n\t\t\t\t\t</md-subheader>\n\t\t\t\t\t<md-list [class.collapsed]=\"activeItem.id !== item.ID && details\">\n\t\t\t\t\t\t<md-list-item (click)=\"onSelect('slide', item)\" class=\"slide col-12\">{{item.Name || item.Title}}\n\t\t\t\t\t\t\t<span [class.slide-out]=\"slide\" class=\"slide\" (click)=\"onSelect('details', item)\"><i class=\"glyphicon glyphicon-info-sign\"></i></span>\n\t\t\t\t\t\t</md-list-item>\n\t\t\t\t\t\t<!--//details-->\n\t\t\t\t\t\t<md-list-item class=\"col-12\"  [class.collapsed]=\"details && activeItem.id === item.ID\">\n\t\t\t\t\t\t\t<input-component *ngFor=\"let key of keys[0]\" [label]=\"key\" [(model)]=\"item[key]\" (onBlur)=\"blurrySave($event, key)\"></input-component>\n\t\t\t\t\t\t</md-list-item>\n\t\t\t\t\t</md-list>\n\t\t\t\t</md-content>\n\t\t\t<!--<md-list>-->\n\t\t\t\t<!--<h3 md-subheader>Folders</h3>-->\n\t\t\t\t<!--<md-list-item *ngFor=\"let folder of folders\">-->\n\t\t\t\t\t<!--<md-icon md-list-icon>folder</md-icon>-->\n\t\t\t\t\t<!--<h4 md-line>{{folder.name}}</h4>-->\n\t\t\t\t\t<!--<p md-line class=\"demo-2\"> {{folder.updated}} </p>-->\n\t\t\t\t<!--</md-list-item>-->\n\t\t\t\t<!--<md-divider></md-divider>-->\n\t\t\t\t<!--<h3 md-subheader>Notes</h3>-->\n\t\t\t\t<!--<md-list-item *ngFor=\"let note of notes\">-->\n\t\t\t\t\t<!--<md-icon md-list-icon>note</md-icon>-->\n\t\t\t\t\t<!--<h4 md-line>{{note.name}}</h4>-->\n\t\t\t\t\t<!--<p md-line class=\"demo-2\"> {{note.updated}} </p>-->\n\t\t\t\t<!--</md-list-item>-->\n\t\t\t<!--</md-list>-->\n\t"
     }),
     __metadata("design:paramtypes", [users_services_1.UsersServices,
         socket_service_1.SocketService])
@@ -78754,7 +78754,7 @@ var NotesComponent = (function () {
 NotesComponent = __decorate([
     core_1.Component({
         selector: 'notes-component',
-        template: "\n\t<button class=\"btn btn-block\" (click)=\"addNote()\">Add A Note</button>\n\t<list-component (onSelect)=\"onSelection($event)\" [listData]=\"notes\"></list-component>\n\t"
+        template: "\n\t<button class=\"btn btn-block\" (click)=\"addNote()\">Add A Note</button>\n\t<list-component (onSelect)=\"onSelection($event)\" [listItems]=\"notes\"></list-component>\n\t"
     }),
     __metadata("design:paramtypes", [rest_service_1.RESTService])
 ], NotesComponent);
@@ -78803,7 +78803,7 @@ var QuotesComponent = (function () {
 QuotesComponent = __decorate([
     core_1.Component({
         selector: 'quotes-component',
-        template: "\n\t\t<list-component (onSelect)=\"onSelection($event)\" [listData]=\"quotes\"></list-component>\n\t",
+        template: "\n\t\t<list-component (onSelect)=\"onSelection($event)\" [listItems]=\"quotes\"></list-component>\n\t",
     }),
     __metadata("design:paramtypes", [rest_service_1.RESTService])
 ], QuotesComponent);

@@ -7,16 +7,23 @@ import {TWT} from '../users/user.model';
 @Component({
 	selector: 'companies-component',
 	template: `
-		<button class="btn btn-block" (click)="toggle('create')">Add New Company</button>
-		<list-component optionOne="Quotes" optionTwo="Contacts" *ngIf="mode === 'list'" [listData]="companies"></list-component>
-		<create-company-component *ngIf="mode === 'create'"></create-company-component>
-		<quotes-component *ngIf="mode === 'quotes'"></quotes-component>
-		<contacts-component *ngIf="mode === 'contacts'"></contacts-component>
+		<button class="btn btn-block" (click)="mode === CREATE ? mode = LIST : mode = CREATE">
+			<span *ngIf="mode === CREATE">List Companies</span>
+			<span *ngIf="mode === LIST">Add A Company</span></button>
+		<list-component optionOne="Quotes" optionTwo="Contacts" *ngIf="mode === LIST"
+						[listItems]="companies"></list-component>
+		<create-company-component *ngIf="mode === CREATE"></create-company-component>
+		<quotes-component *ngIf="mode === QUOTES"></quotes-component>
+		<contacts-component *ngIf="mode === CONTACTS"></contacts-component>
 	`,
 })
 
 export class CompaniesComponent implements OnInit {
-	public mode: string = 'list';
+	public CREATE(): string { return 'create'};
+	public LIST(): string { return 'list'};
+	public QUOTES(): string { return 'quotes'};
+	public CONTACTS(): string { return 'contacts'};
+	public mode: string = this.LIST();
 	public companies: Company[] = [];
 	public getPath: string = `http://angularnotes-angularbros.azurewebsites.net/api/companies`;
 	private twt: TWT = <TWT>{};

@@ -1,7 +1,8 @@
 //Todo If you ask WTF.. well.. that's a good question.
 //todo Unhackify (maybe with sockets :)
+
+//Todo Convert To PipeTransform
 export function keysToCamelCase(source: any): any {
-	console.log('starting with', source);
 	let sourceTemp = [];
 	// Case: if source is an Array and not an Object
 	if (Array.isArray(source)) {
@@ -19,14 +20,12 @@ export function keysToCamelCase(source: any): any {
 			Object.assign(camelCased, {['id']: source[key]});
 			continue;
 		}
-
 		camelCased = Object.assign(camelCased, {[key.match(/([A-Z][^\s]*)/g)[0].charAt(0).toLowerCase() + key.slice(1)]: source[key]});
-		console.log('cc now?', camelCased);
 	}
 	// catch up with the array's we stashed earlier to make some new Objects to put back into an array.
 	if (sourceTemp.length >= 1 ) {
 
-		// cuz screw it that's why.
+		// cuz Im not wanting to make another temp.. is that lazy?
 		source = [];
 		for(let obj of sourceTemp) {
 			let temp02 = {};
@@ -42,7 +41,6 @@ export function keysToCamelCase(source: any): any {
 		// Success!!
 		camelCased = source;
 	}
-	console.log('is it camelCased?',camelCased);
 	return camelCased;
 }
 

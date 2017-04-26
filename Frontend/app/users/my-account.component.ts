@@ -4,6 +4,7 @@ import {SocketService} from '../global/services/socket.service';
 import {FormControl, FormGroup, Validators} from '@angular/forms';
 import {EmailRegEx} from '../global/regex/email.regex';
 import {UsersServices} from './users.services';
+import {FIXTURE_USER_ID} from '../global/models/FIXTURE_ID';
 
 @Component({
 	selector: 'my-account-component',
@@ -56,11 +57,8 @@ export class MyAccountComponent implements OnInit {
 				private socketService: SocketService){}
 
 	public ngOnInit(): void {
-		this.userServices.userState$.subscribe(twt => {
-			for (let key of Object.keys(<User>{})) {
-				this.user[key] = twt[key];
-			}
-		})
+		this.socketService.responseSocket('user.get', {id: FIXTURE_USER_ID})
+			.subscribe(user => this.user = user);
 	}
 
 	public blurrySave(value, key): void {

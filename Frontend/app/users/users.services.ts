@@ -1,6 +1,5 @@
 import {Injectable} from '@angular/core';
-import {BehaviorSubject} from 'rxjs/BehaviorSubject';
-import {TWT} from './user.model';
+import {initUser, TWT} from './user.model';
 import {Observable} from 'rxjs/Observable';
 import {SocketService} from '../global/services/socket.service';
 import {FIXTURE_USER_ID} from '../global/models/FIXTURE_ID';
@@ -13,7 +12,6 @@ export class UsersServices {
 	public setTWTProp(prop:{} | string): void {
 		this.userStatesSource.next(this.userStatesSource = Object.assign(this.userStatesSource, this.userStatesSource[Object.keys(prop)[0]], prop));
 	}
-
 }
 
 @Injectable()
@@ -29,10 +27,12 @@ export class TokenService {
 				.responseSocket('user.get', {id: FIXTURE_USER_ID})
 				.subscribe(user => {
 					let token: TWT = <TWT>{};
-					for (let prop of Object.keys(user)) {
-						token[prop] = user[prop];
-					}
-					token.currentSelect = void 0;
+					Object.assign(token, initUser(user));
+					// for (let prop of Object.keys(user)) {
+					// 	token[prop] = user[prop];
+					// }
+					console.log('token', token);
+					console.log('user', user);
 					resolve(token);
 					reject('error with token');
 				});

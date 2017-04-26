@@ -44,11 +44,8 @@ export class MainComponent implements OnInit {
 
 	private InitializeUserState(): void {
 		//todo login or register
-
 		// update twt with user info
 		this.twtFactor.tokenFactory().then(token => {
-			this.userServices.userState$.subscribe((res: TWT) => {
-			});
 			this.userServices.setTWTProp(<TWT>token);
 		});
 		//set state to default

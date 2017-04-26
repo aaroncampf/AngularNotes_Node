@@ -1,4 +1,4 @@
-import {Component, EventEmitter, Input, OnChanges, OnInit, Output} from '@angular/core';
+import {Component, Input, OnChanges, OnInit} from '@angular/core';
 import {UsersServices} from '../../users/users.services';
 import {CRMType} from '../models/CRMTypes.type';
 import {TWT} from '../../users/user.model';
@@ -6,45 +6,52 @@ import {TWT} from '../../users/user.model';
 @Component({
 	selector: 'list-component',
 	template: `
-	<div class="row">
-		<list-header *ngIf="header">
-			<div class="md-toolbar-tools">{{header}}</div>
-		</list-header>
-	</div>
-	<!--//master-->
-	<div class="row">
-		<list-subheader class="col-xs-12" *ngIf="title">
-			<h4>{{title}}</h4>
-		</list-subheader>
-		<list-group class="col-xs-12">
-			<div *ngFor="let item of listData" >
-				<list-item-slide [class.collapse]="activeItem.id !== item.id && details">
-					<slide-top (click)="onSelect('slide', item)" class="swip-box" ng-style="{'transform': 'rotate('+number+'deg)', '-webkit-transform': 'rotate('+number+'deg)', '-ms-transform': 'rotate('+number+'deg)'}" (pan)="panning($event, item)" (swipeLeft)="swipe($event.type, item)" (swipeRight)="swipe($event.type)"  [class.active]="item.id === activeItem.id" [class.option]="(optionOne || optionTwo) && !(optionOne && optionTwo)" [class.options]="optionOne && optionTwo">{{item.name || item.title}} </slide-top>
-					<slide-details-option (click)="onSelect('details', item)">
-						<i class="glyphicon glyphicon-info-sign"></i>
-					</slide-details-option>
-					<slide-option *ngIf="optionTwo" (click)="onSelect('optionOne', item)">
-						<b>{{optionTwo}}</b>
-					</slide-option>
-					<slide-option *ngIf="optionOne" (click)="onSelect('optionTwo', item)" >
-						<b>{{optionOne}}</b>
-					</slide-option>
-				</list-item-slide>
+		<div class="row">
+			<list-header *ngIf="header">
+				<div class="md-toolbar-tools">{{header}}</div>
+			</list-header>
+		</div>
+		<!--//master-->
+		<div class="row">
+			<list-subheader class="col-xs-12" *ngIf="title">
+				<h4>{{title}}</h4>
+			</list-subheader>
+			<list-group class="col-xs-12">
+				<div *ngFor="let item of listItems">
+					<list-item-slide [class.collapse]="activeItem.id !== item.id && details">
+						<slide-top (click)="onSelect('slide', item)" class="swip-box"
+								   ng-style="{'transform': 'rotate('+number+'deg)', '-webkit-transform': 'rotate('+number+'deg)', '-ms-transform': 'rotate('+number+'deg)'}"
+								   (pan)="panning($event, item)" (swipeLeft)="swipe($event.type, item)"
+								   (swipeRight)="swipe($event.type)" [class.active]="item.id === activeItem.id"
+								   [class.option]="(optionOne || optionTwo) && !(optionOne && optionTwo)"
+								   [class.options]="optionOne && optionTwo">{{item.name || item.title}}
+						</slide-top>
+						<slide-details-option (click)="onSelect('details', item)">
+							<i class="glyphicon glyphicon-info-sign"></i>
+						</slide-details-option>
+						<slide-option *ngIf="optionTwo" (click)="onSelect('optionOne', item)">
+							<b>{{optionTwo}}</b>
+						</slide-option>
+						<slide-option *ngIf="optionOne" (click)="onSelect('optionTwo', item)">
+							<b>{{optionOne}}</b>
+						</slide-option>
+					</list-item-slide>
 					<!--//details-->
-				<item-details *ngIf="details && activeItem.id === item.id">
-					<list-item *ngFor="let key of keys">
-						<input-component [label]="key" [(model)]="item[key]" (onBlur)="blurrySave($event, key)"></input-component>
-					</list-item>
-				</item-details>
-			</div>
-		</list-group>
-	</div>
-`
+					<item-details *ngIf="details && activeItem.id === item.id">
+						<list-item *ngFor="let key of keys">
+							<input-component [label]="key.charAt(0).toUpperCase() + key.slice(1)" [(model)]="item[key]"
+											 (onBlur)="blurrySave($event, key)"></input-component>
+						</list-item>
+					</item-details>
+				</div>
+			</list-group>
+		</div>
+	`
 })
 
 export class ListComponent implements OnInit, OnChanges {
 	@Input()
-	public listData: CRMType[] = [];
+	public listItems: CRMType[] = [];
 	@Input()
 	public title: string;
 	@Input()
@@ -65,27 +72,34 @@ export class ListComponent implements OnInit, OnChanges {
 	constructor(private userServices: UsersServices){};
 
 	public ngOnInit(): void {
-
-		this.updateKeys(this.listData);
-		this.userServices.userState$.subscribe((twt:TWT) => {
-			if (twt.currentSelect.current) {
-			this.activeItem = twt.currentSelect.current;
-			} else {
-				this.activeItem = <CRMType>{};
+		do {
+		console.log(this.listItems);
+			if(this.listItems.length >= 1){
+				this.updateKeys(this.listItems);
+				this.userServices.userState$.subscribe((twt:TWT) => {
+					if (twt.currentSelect.current) {
+						this.activeItem = twt.currentSelect.current;
+					} else {
+						this.activeItem = <CRMType>{};
+					}
+				});
 			}
-		});
+		} while (this.keys.length < 1);
 	}
 
 	public ngOnChanges(): void {
-		 this.updateKeys(this.listData);
+		 // this.updateKeys(this.listItems);
+		console.log(this.keys);
 	}
 
 	public updateKeys(list): void {
 		this.keys = [];
-		let i = 0;
-		for(let obj of list){
-			this.keys.push(Object.keys(obj)[i].charAt(0).toUpperCase() + Object.keys(obj)[i].slice(1));
-			i++;
+		if(list.length >= 1) {
+			for(let key of Object.keys(list[0])){
+				if(key !== 'id'){
+					this.keys.push(key);
+				}
+			}
 		}
 	}
 
