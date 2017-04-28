@@ -1,18 +1,19 @@
+import {CRMType} from '../shared/models/CRMTypes.type';
+import {Quote} from '../quotes/quote.model';
+import {Note} from '../notes/note.model';
+import {Company} from '../companies/company.model';
+import {Contact} from '../contacts/contact.model';
 
-import {CRMType} from '../global/models/CRMTypes.type';
-
-export interface TWT extends User{
-	currentSelect : {
-		currentParent?: CRMType;
-		currentSiblings?: {
-			[siblingId: string]: CRMType[]
-		};
-		current: CRMType;
+export interface TWT extends User {
+	selectedRelates: {
+		company: Company;
+		contacts: {
+			contact: Contact,
+			notes: Note
+		}[];
+		quotes: Quote[];
 	};
-	focus?: {
-		type: string;
-		mode: string;
-	}
+	selected: CRMType;
 }
 
 export interface User extends _User {
@@ -33,6 +34,8 @@ export interface User extends _User {
 export interface _User {
 	role: 'admin' | 'general' | 'blocked' | 'removed';
 }
+
+//todo SET relative selectedState data
 
 export function initUser(props: object): User {
 	let user: User = <User>{};

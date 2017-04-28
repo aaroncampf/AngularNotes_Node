@@ -2,8 +2,8 @@ import {Pipe, PipeTransform} from '@angular/core';
 @Pipe({
 	name: 'toTitleCase'
 })
-export class ToTitleCase implements PipeTransform {
-	transform(value: string, args: string[]): any {
+export class ToTitleCaseKeys implements PipeTransform {
+	public transform(value: string): any {
 		if (!value) {
 			return value;
 		}

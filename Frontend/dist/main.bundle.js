@@ -37998,7 +37998,7 @@ var TokenService = (function () {
                     var prop = _a[_i];
                     token[prop] = user[prop];
                 }
-                token.currentSelect['initial'] = 'nothing';
+                token.selected['initial'] = 'nothing';
                 resolve(token);
                 reject('error with token');
             });
@@ -78462,7 +78462,7 @@ var ListComponent = (function () {
         this.details = false;
         this.keys = [];
         this.tokenTest = {};
-        // public currentSelect: Subscription = new Subscription;
+        // public selected: Subscription = new Subscription;
         this.currentSelect = {};
     }
     ;
@@ -78470,7 +78470,7 @@ var ListComponent = (function () {
         var _this = this;
         this.updateKeys(this.listItems);
         this.userServices.userState$.subscribe(function (twt) {
-            _this.activeItem = twt.currentSelect.current;
+            _this.activeItem = twt.selected.current;
             console.log('token', _this.tokenTest);
         });
         console.log(this.listItems);

@@ -3,7 +3,7 @@ import {ToastsManager} from 'ng2-toastr/ng2-toastr';
 import '../styles/main.scss';
 import {UsersServices, TokenService} from '../users/users.services';
 import {TWT, User} from '../users/user.model';
-import {SocketService} from '../global/services/socket.service';
+import {SocketService} from '../shared/services/socket.service';
 
 @Component({
 	selector: 'main',

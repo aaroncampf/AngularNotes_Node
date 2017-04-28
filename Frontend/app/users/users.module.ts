@@ -2,7 +2,7 @@ import {NgModule} from '@angular/core';
 import {CommonModule as AngularCommonModule} from '@angular/common';
 import {MyAccountComponent} from './my-account.component';
 import {RouterModule, Routes} from '@angular/router';
-import {GlobalModule} from '../global/global.module';
+import {SharedModule} from '../shared/shared.module';
 import {UsersServices} from './users.services';
 
 const components = [
@@ -10,9 +10,7 @@ const components = [
 ];
 
 const ROUTES: Routes = [
-	{path: '', children: [
-		{path: 'my-account', component: MyAccountComponent},
-	]}
+	{path: 'my-account', component: MyAccountComponent},
 ];
 
 @NgModule({
@@ -20,7 +18,7 @@ const ROUTES: Routes = [
 		components
 	],
 	imports: [
-		GlobalModule,
+		SharedModule,
 		AngularCommonModule,
 		RouterModule.forChild(ROUTES)
 	],
@@ -34,4 +32,4 @@ const ROUTES: Routes = [
 
 })
 
-export class UserModule {}
+export class UsersModule {}

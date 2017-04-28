@@ -5,10 +5,14 @@ import {InputComponent} from './components/input.component';
 import {SocketService} from './services/socket.service';
 import {ListComponent} from './components/list.component';
 import {RESTService} from './services/rest.service';
-import {TokenService, UsersServices} from '../users/users.services';
+import {UsersServices} from '../users/users.services';
 import {HAMMER_GESTURE_CONFIG, HammerGestureConfig} from '@angular/platform-browser';
+import {ToTitleCaseKeys} from './pipes/toTitleCase.pipe';
+import {DiamondLoaderComponent} from './animations/loading-screen.animation';
+import {TokenService} from './services/twt.service';
 
 const COMPONENTS = [
+	DiamondLoaderComponent,
 	InputComponent,
 	ListComponent,
 ];
@@ -16,7 +20,7 @@ const COMPONENTS = [
 const MODULES = [
 	AngularCommonModule,
 	ReactiveFormsModule,
-	FormsModule
+	FormsModule,
 ];
 
 export class MyHammerConfig extends HammerGestureConfig {
@@ -38,6 +42,7 @@ export class MyHammerConfig extends HammerGestureConfig {
 		provide: HAMMER_GESTURE_CONFIG,
 		useClass: MyHammerConfig
 	},
+		ToTitleCaseKeys,
 		SocketService,
 		RESTService,
 		UsersServices,
@@ -53,4 +58,4 @@ export class MyHammerConfig extends HammerGestureConfig {
 
 })
 
-export class GlobalModule {}
+export class SharedModule {}

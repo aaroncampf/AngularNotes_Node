@@ -1,4 +1,3 @@
-//Todo If you ask WTF.. well.. that's a good question.
 //todo Unhackify (maybe with sockets :)
 
 //Todo Convert To PipeTransform

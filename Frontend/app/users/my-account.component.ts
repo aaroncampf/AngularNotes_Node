@@ -1,10 +1,10 @@
 import {Component, OnInit} from '@angular/core';
 import {User} from './user.model';
-import {SocketService} from '../global/services/socket.service';
+import {SocketService} from '../shared/services/socket.service';
 import {FormControl, FormGroup, Validators} from '@angular/forms';
-import {EmailRegEx} from '../global/regex/email.regex';
+import {EmailRegEx} from '../shared/regex/email.regex';
 import {UsersServices} from './users.services';
-import {FIXTURE_USER_ID} from '../global/models/FIXTURE_ID';
+import {FIXTURE_USER_ID} from '../shared/models/FIXTURE_ID';
 
 @Component({
 	selector: 'my-account-component',

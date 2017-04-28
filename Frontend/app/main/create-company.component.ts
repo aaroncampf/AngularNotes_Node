@@ -1,8 +1,8 @@
 import {Component} from '@angular/core';
-import {Company} from './company.model';
+import {Company} from '../companies/company.model';
 import {FormControl, FormGroup, Validators} from '@angular/forms';
-import {EmailRegEx} from '../global/regex/email.regex';
-import {RESTService} from '../global/services/rest.service';
+import {EmailRegEx} from '../shared/regex/email.regex';
+import {RESTService} from '../shared/services/rest.service';
 import {ToastsManager} from 'ng2-toastr';
 
 @Component({
