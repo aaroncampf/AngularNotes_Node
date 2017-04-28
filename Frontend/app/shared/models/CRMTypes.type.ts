@@ -1,6 +1,6 @@
-import {Quote} from '../../quotes/quote.model';
-import {Note} from '../../notes/note.model';
-import {Contact} from '../../contacts/contact.model';
-import {Company} from '../../companies/company.model';
+import {Company} from './company.model';
+import {Contact} from './contact.model';
+import {Note} from './note.model';
+import {Quote} from './quote.model';
 
 export type CRMType = Company | Contact | Note | Quote;
