@@ -43,7 +43,7 @@
 // 	public ngOnInit(): void{
 // 		this.companyService.getCompanies()
 // 			.subscribe(companies => {
-// 				this.companies = companies;
+// 				this.items = items;
 // 				this.companies.sort();
 // 		});
 // 		this.contactService.getContacts()
@@ -122,7 +122,7 @@
 // 				this.toastr.warning('Removed ' + company.name);
 // 				this.currentCompany = <Company>{};
 // 				this.companyService.getCompanies()
-// 					.subscribe(companies => this.companies = companies);
+// 					.subscribe(items => this.items = items);
 // 		}, error => this.toastr.error('Oh no! Something went wrong with removing ' + company.name + ' please try again later.'));
 // 	}
 //

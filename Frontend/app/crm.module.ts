@@ -4,20 +4,21 @@ import {BrowserAnimationsModule, NoopAnimationsModule} from '@angular/platform-b
 import {BrowserModule} from '@angular/platform-browser';
 import {HttpModule} from '@angular/http';
 import {ToastModule} from 'ng2-toastr';
-import {MainComponent} from './main/create.component';
+import {MainComponent} from './main/main.component';
 import {NavigationComponent} from './main/ui/navigation.component';
 import {DashboardComponent} from './main/ui/dashboard.component';
 import {NotFoundComponent} from './main/routes/not-found.component';
 import {UsersModule} from './users/users.module'
 import {SharedModule} from './shared/shared.module';
 import {RouterModule, Routes} from '@angular/router';
-import {CompaniesComponent} from './main/view-editor.component';
+import {ViewEditComponent} from './main/view-editor.component';
+import {CreateComponent} from './main/create.component';
 
 const MAIN_ROUTES: Routes = [
-	{path:':tab', component: CompaniesComponent},
+	{path:'user', loadChildren: "./users/users.module#UsersModule"},
 	{path:'dashboard', component: MainComponent},
-
-	{path:'', redirectTo: '/user/my-account', pathMatch: 'full'},
+	{path:'crm', component: ViewEditComponent},
+	{path:'', redirectTo: '/crm', pathMatch: 'full'},
 	{path: '**', component: NotFoundComponent}
 ];
 
@@ -34,6 +35,8 @@ const MODULES = [
 ];
 
 const COMPONENTS = [
+		CreateComponent,
+		ViewEditComponent,
 		MainComponent,
 		NavigationComponent,
 		DashboardComponent,

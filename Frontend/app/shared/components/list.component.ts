@@ -88,12 +88,14 @@ export class ListComponent implements OnInit, OnChanges {
 	}
 
 	public ngOnChanges(): void {
-		this.updateKeys(this.listItems);
-		console.log(this.keys);
+		if(this.listItems){
+			this.updateKeys(this.listItems);
+			console.log(this.keys);
+		}
 	}
 
 	public updateKeys(list): void {
-		if (list.length >= 1) {
+		if (list) {
 			console.log(list[0]);
 			this.keys = [...Object.keys(list[0])];
 		}

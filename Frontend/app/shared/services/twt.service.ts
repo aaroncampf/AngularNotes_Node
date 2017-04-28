@@ -2,6 +2,7 @@ import {initUser, TWT} from '../../users/user.model';
 import {FIXTURE_USER_ID} from '../models/FIXTURE_ID';
 import {SocketService} from './socket.service';
 import {Injectable} from '@angular/core';
+import {CRMType} from '../models/CRMTypes.type';
 
 @Injectable()
 export class TokenService {
@@ -27,4 +28,5 @@ export class TokenService {
 				});
 		})
 	};
+
 }
