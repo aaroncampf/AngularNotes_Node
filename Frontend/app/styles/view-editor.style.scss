@@ -36,13 +36,13 @@ view-edit-component {
   .panel-body div.content {
     -webkit-backface-visibility: hidden;
     -webkit-transform: translateX(0%) rotate(90deg);
-    -webkit-transform-origin: left top;
+    -webkit-transform-origin: center center;
     -moz-transform: translateX(0%) rotate(90deg);
-    -moz-transform-origin: left top;
+    -moz-transform-origin: center center;
     -o-transform: translateX(0%) rotate(90deg);
-    -o-transform-origin: left top;
+    -o-transform-origin: center center;
     transform: translateX(0%) rotate(90deg);
-    transform-origin: left top;
+    transform-origin: center center;
     height: 86.2rem;
     max-height: 64vw;
   }

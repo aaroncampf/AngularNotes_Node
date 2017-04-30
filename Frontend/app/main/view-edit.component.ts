@@ -1,6 +1,5 @@
 import {Component, OnInit} from '@angular/core';
 import {RESTService} from '../shared/services/rest.service';
-import {TokenService} from '../shared/services/twt.service';
 import {UsersServices} from '../users/users.services';
 import {TWT} from '../users/user.model';
 import {CRMType} from '../shared/models/CRMTypes.type';
@@ -16,7 +15,7 @@ import {ActivatedRoute} from '@angular/router';
 		</div>
 		<div *ngIf="list">
 			{{twt?.currentCompany?.name || "Company List" }}
-			<button class="btn btn-block" (click)="create = true; list = false;">Add A Company</button>
+			<button class="btn btn-block" (click)="create = true; list = false;">Add A New {{tab}}</button>
 			<list-component [listItems]="items" (onSave)="onSaveProp($event)"></list-component>
 			<div class="container-fluid">
 				<div class="row">
@@ -36,8 +35,7 @@ import {ActivatedRoute} from '@angular/router';
 										 aria-labelledby="heading-quotes">
 										<div class="panel-body">
 											<div class="content">
-												<list-component
-														[listItems]="twt?.selectedRelations?.quotes"></list-component>
+												<list-component [listItems]="twt?.selectedRelations?.quotes"></list-component>
 											</div>
 										</div>
 									</div>
@@ -73,35 +71,35 @@ import {ActivatedRoute} from '@angular/router';
 export class ViewEditComponent implements OnInit {
 	public items: CRMType[] = <CRMType[]>[];
 	public list: boolean;
-	public tab: string;
+	public tab: string = 'companies';
 	public path: string = `http://angularnotes-angularbros.azurewebsites.net/api/Contact`;
 	public create: boolean = false;
 	private twt: TWT = <TWT>{};
 	constructor(private restService: RESTService,
 				private userService: UsersServices,
-				private tokenService: TokenService,
 				private titleCase: ToTitleCaseKeys,
 				private activatedRoute: ActivatedRoute) {
 	}
 
 	public ngOnInit(): void {
 		this.twtInit();
-		this.initListData();
-		this.list = true;
 		this.activatedRoute.params.subscribe(params => {
-			this.tab = params[0];
+			this.tab = params.tab;
+			this.initListData();
+			this.list = true;
 		})
 	}
 
 	private initListData(): void{
 		this.restService.callPath('get', `http://angularnotes-angularbros.azurewebsites.net/api/${this.tab}`)
 			.subscribe((response: CRMType[]) => {
-				 this.items = response;
+				console.log('initListData', response);
+				this.items = response;
 			});
 	}
 
 	private twtInit(): void {
-		this.tokenService.tokenFactory().then(twt => {
+		this.userService.tokenFactory().then(twt => {
 			this.twt = twt;
 			this.userService.setTWTProp(Object.assign(twt, {state: {
 				rootView: 'items'}}));

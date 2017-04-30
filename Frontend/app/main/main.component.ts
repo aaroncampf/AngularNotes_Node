@@ -31,7 +31,6 @@ export class MainComponent implements OnInit {
 				public vcr: ViewContainerRef,
 				public ngZone: NgZone,
 				private userServices: UsersServices,
-				private twtFactor: UsersServices
 	){
 		this.toastr.setRootViewContainerRef(vcr);
 	}
@@ -44,8 +43,9 @@ export class MainComponent implements OnInit {
 	private InitializeUserState(): void {
 		//todo login or register
 		// update twt with user info
-		this.twtFactor.tokenFactory().then(token => {
-			this.userServices.setTWTProp(<TWT>token);
+		this.userServices.tokenFactory().then(token => {
+			this.userServices.setTWTProp(token);
+
 		});
 		//set state to default
 	}

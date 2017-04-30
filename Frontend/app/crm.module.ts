@@ -11,14 +11,14 @@ import {NotFoundComponent} from './main/routes/not-found.component';
 import {UsersModule} from './users/users.module'
 import {SharedModule} from './shared/shared.module';
 import {RouterModule, Routes} from '@angular/router';
-import {ViewEditComponent} from './main/view-editor.component';
+import {ViewEditComponent} from './main/view-edit.component';
 import {CreateComponent} from './main/create.component';
 
 const MAIN_ROUTES: Routes = [
 	{path:'user', loadChildren: "./users/users.module#UsersModule"},
 	{path:'dashboard', component: MainComponent},
-	{path:'crm', component: ViewEditComponent},
-	{path:'', redirectTo: '/crm', pathMatch: 'full'},
+	{path:':tab', component: ViewEditComponent},
+	// {path:'', redirectTo: '/companies', pathMatch: 'full'},
 	{path: '**', component: NotFoundComponent}
 ];
 

@@ -2,6 +2,13 @@ import {Component, EventEmitter, Input, OnChanges, OnInit, Output} from '@angula
 import {UsersServices} from '../../users/users.services';
 import {CRMType} from '../models/CRMTypes.type';
 import {TWT} from '../../users/user.model';
+import {ToTitleCaseKeys} from '../pipes/toTitleCase.pipe';
+import {Company} from '../models/company.model';
+import {Contact} from '../models/contact.model';
+import {Quote} from '../models/quote.model';
+import {Note} from '../models/note.model';
+import {RESTService} from '../services/rest.service';
+import {TEST_COMPANY} from '../models/comparrison-models.obj';
 
 
 //Todo take off collapses
@@ -42,8 +49,8 @@ import {TWT} from '../../users/user.model';
 					</list-item-slide>
 					<!--//details-->
 					<item-details *ngIf="details && twt?.selected?.id === item.id">
-						<list-item *ngFor="let key of keys">
-							<input-component [label]="key.charAt(0).toUpperCase() + key.slice(1)" [(model)]="item[key]"
+						<list-item *ngFor="let key of itemKeys">
+							<input-component [label]="key.charAt(0).toUpperCase() + key.slice(1)" [model]="item[key]"
 											 (onBlur)="blurrySave(item, key, $event)"></input-component>
 						</list-item>
 					</item-details>
@@ -55,7 +62,7 @@ import {TWT} from '../../users/user.model';
 
 export class ListComponent implements OnInit, OnChanges {
 	@Input()
-	public listItems: CRMType[] = [];
+	public listItems: {}[] = <{}[]>[];
 	@Input()
 	public title: string;
 	@Input()
@@ -71,17 +78,16 @@ export class ListComponent implements OnInit, OnChanges {
 	public twt: TWT = <TWT>{};
 	public slide: boolean = false;
 	public details: boolean = false;
-	public keys: any[] = [];
+	public itemKeys: string[] = <string[]>[];
 	// public tokenTest: TWT = <TWT>{};
-	public currentSelect: CRMType = <CRMType>{};
 	public SWIPE_ACTION = {RIGHT: 'swipe-right', LEFT: 'swipe-left'};
 	public xVal: number;
 
-	constructor(private userServices: UsersServices) {
+	constructor(private userServices: UsersServices, public toTitleCase: ToTitleCaseKeys, private restService: RESTService) {
 	};
 
 	public ngOnInit(): void {
-		// this.updateKeys(this.listItems);
+		this.updateKeys(this.listItems);
 		this.userServices.userState$.subscribe((twt: TWT) => {
 			this.twt = twt;
 		})
@@ -89,30 +95,33 @@ export class ListComponent implements OnInit, OnChanges {
 
 	public ngOnChanges(): void {
 		if(this.listItems){
+			console.log('items 91',this.listItems[0]);
 			this.updateKeys(this.listItems);
-			console.log(this.keys);
 		}
 	}
 
-	public updateKeys(list): void {
-		if (list) {
-			console.log(list[0]);
-			this.keys = [...Object.keys(list[0])];
-		}
+	public updateKeys(list: {} = {}): void {
+			if(Array.isArray(list) && list.length > 0){
+				console.log('list',list);
+				for(let key of Object.keys(list[0])) {
+					this.itemKeys.push(key.charAt(0).toUpperCase() + key.slice(1));
+				}
+			}
 	}
 
 	public onSelect(type: string, item: CRMType = <CRMType>{}): void {
 			switch (type) {
 				case'slide-open':
 					this.slide = true;
-					this.userServices.setTWTProp({currentSelect: item});
+					this.userServices.setTWTProp({selected: item});
+					this.userServices.activeSelectUpdate(item);
 					break;
 				case'slide-close':
-					this.userServices.setTWTProp({currentSelect: {}});
+					this.userServices.setTWTProp({selected: {}});
 					this.slide = false;
 					break;
 				case 'details':
-					this.userServices.setTWTProp({currentSelect:item});
+					this.userServices.setTWTProp({selected:item});
 					this.details = !this.details;
 					break;
 				case 'option-one':

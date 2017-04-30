@@ -1,4 +1,4 @@
-import {Component} from '@angular/core';
+import {Component, Input} from '@angular/core';
 import {FormControl, FormGroup, Validators} from '@angular/forms';
 import {EmailRegEx} from '../shared/regex/email.regex';
 import {RESTService} from '../shared/services/rest.service';
@@ -8,7 +8,7 @@ import {Company} from '../shared/models/company.model';
 @Component({
 	selector: 'create-component',
 	template: `
-	<h4>Create Company</h4>
+	<h4>Create {{modelName}}</h4>
 	<form [formGroup]="companyGroup" (ngSubmit)="onSave(companyGroup.value)">
 		<input-component [(model)]="company.name" [control]="nameControl" placeholder="Name"></input-component>
 		<input-component [(model)]="company.phone" [control]="phoneControl" placeholder="Phone Number"></input-component>
@@ -26,6 +26,8 @@ import {Company} from '../shared/models/company.model';
 })
 
 export class CreateComponent {
+	@Input()
+	public modelName: string;
 	public company: Company = <Company>{};
 	public path: string = `http://angularnotes-angularbros.azurewebsites.net/api/companies`;
 	public nameControl: FormControl = new FormControl('', [Validators.required, Validators.maxLength(255)]);

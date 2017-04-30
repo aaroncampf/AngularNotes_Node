@@ -5,13 +5,13 @@ import {Component} from '@angular/core';
 	template: `
 	<ul class="nav nav-tabs">
 		<li class="tab" role="tab">
-			<a [routerLink]="['/companies']">Companies</a>
+			<a [routerLink]="['companies']">Companies</a>
 		</li>
 		<li class="tab" role="tab">
-			<a [routerLink]="['/quotes']">Quotes</a>
+			<a [routerLink]="['quotes']">Quotes</a>
 		</li>
 		<li class="tab" role="tab">
-			<a [routerLink]="['/contacts']">Contacts</a>
+			<a [routerLink]="['/contact']">Contacts</a>
 		</li>
 		<li class="tab" role="tab">
 			<a [routerLink]="['/notes']">Notes</a>

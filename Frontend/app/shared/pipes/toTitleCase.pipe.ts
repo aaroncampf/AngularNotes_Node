@@ -8,6 +8,6 @@ export class ToTitleCaseKeys implements PipeTransform {
 			return value;
 		}
 		return value.charAt(0).toUpperCase() + value.slice(1)
-		// this.keys.push(Object.keys(obj)[i].charAt(0).toUpperCase() + Object.keys(obj)[i].slice(1));
+		// this.itemKeys.push(Object.itemKeys(obj)[i].charAt(0).toUpperCase() + Object.itemKeys(obj)[i].slice(1));
 	}
 }

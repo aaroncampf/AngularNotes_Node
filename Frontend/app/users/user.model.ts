@@ -6,11 +6,11 @@ import {Quote} from '../shared/models/quote.model';
 
 export interface TWT extends User {
 	selectedRelations?: {
-		company:Company,
-		quotes?: Quote[],
+		company?: {};
+		quotes?: {}[];
 		contacts?: {
-			contact?: Contact,
-			notes?: Note[]
+			contact?: {},
+			notes?: {}[]
 		}[],
 	},
 	selected: CRMType;

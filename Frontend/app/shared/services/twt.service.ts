@@ -9,7 +9,7 @@ export class TokenService {
 	constructor(private socketService: SocketService) {
 	};
 
-	//todo add credentials
+	//todo add credential authentication
 	public tokenFactory(): Promise<TWT> {
 		return new Promise((resolve, reject) => {
 			//todo if id else demoId

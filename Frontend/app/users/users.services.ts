@@ -9,30 +9,39 @@ import {Company} from '../shared/models/company.model';
 import {Contact} from '../shared/models/contact.model';
 import {Quote} from '../shared/models/quote.model';
 import {Note} from '../shared/models/note.model';
+import {CRMType} from '../shared/models/CRMTypes.type';
+import {TEST_COMPANY} from '../shared/models/comparrison-models.obj';
 
 @Injectable()
 export class UsersServices implements OnInit {
 	private userStatesSource: Subject<TWT> = new Subject();
 	public userState$: Observable<TWT> = this.userStatesSource.asObservable();
-	public twt: TWT;
-	public path: (endPoint) => string = (endPoint) => {
-		return `http://angularnotes-angularbros.azurewebsites.net/api/${endPoint}/`
-	};
-
 	constructor(private restService: RESTService,
-				private socketService: SocketService){}
-
-	public ngOnInit(): void {
-		this.userState$.subscribe(twt => {
-			this.twt = twt;
-		})
+				private socketService: SocketService) {
 	}
 
-	public setTWTProp(prop:{} | string): void {
-		this.userStatesSource.next(this.userStatesSource = Object.assign(this.userStatesSource, this.userStatesSource[Object.keys(prop)[0]], prop));
-		if((typeof this.twt.selected) === typeof <Company>{}){
-			this.updateCompanyRelations(<Company>{id: this.twt.selected.id});
+	public path(endPoint): string {
+		return `http://angularnotes-angularbros.azurewebsites.net/api/${endPoint}`
+	}
+
+	public ngOnInit(): void {
+	}
+
+	public setTWTProp(prop: {} | string): void {
+		this.userStatesSource
+		 	.next(this.userStatesSource = Object.assign(this.userStatesSource, this.userStatesSource[Object.keys(prop)[0]], prop));
+		console.log(this.userStatesSource);
+	}
+
+	public activeSelectUpdate(item: CRMType): void {
+		if (JSON.stringify(Object.keys(item).sort()) ===
+			JSON.stringify(Object.keys(TEST_COMPANY).sort())
+		) {
+			this.updateCompanyRelations(<any>item).then((res) => {
+				console.log('update Promise', res);
+			});
 		}
+		//todo apply for other resource types
 	}
 
 	//todo add credentials
@@ -47,8 +56,6 @@ export class UsersServices implements OnInit {
 					// for (let prop of Object.keys(user)) {
 					// 	token[prop] = user[prop];
 					// }
-					console.log('token', token);
-					console.log('user', user);
 					resolve(token);
 					reject('error with token');
 				});
@@ -56,7 +63,8 @@ export class UsersServices implements OnInit {
 	};
 
 	public updateQuoteRelations(quote: Quote): void {
-		this.updateCompanyRelations(<Company>{id: +quote.companyId});
+		//todo fix extra call
+		// this.updateCompanyRelations(<Company>{id: +quote.companyId});
 	}
 
 	public updateNoteRelations(note: Note): void {
@@ -64,30 +72,79 @@ export class UsersServices implements OnInit {
 	}
 
 	public updateContactRelations(contact: Contact): void {
-		this.restService.callPath('get', this.path('Companies') + contact.companyId).subscribe((company: Company) => {
-			Object.assign(this.twt, {selectedRelations: { company: company}});
-			this.updateCompanyRelations(company);
+		let twt: TWT = <TWT>{};
+		this.restService
+			.callPath('get', this.path('Companies') + contact.companyId)
+			.subscribe((company: Company) => {
+			Object.assign(twt, {selectedRelations: {company: company}});
+			// this.updateCompanyRelations(company);
 		})
 	}
 
-	public updateCompanyRelations(company: Company): void {
-		this.restService.callPath('get', this.path('Contact') + `?CompanyID=${company.id}`)
-			.subscribe((res: Contact[]) => {
-				Object.assign(this.twt, {selectedRelations: {company: {contact: res}}});
-				this.setTWTProp(this.twt);
-				for (let contact of res) {
-					this.restService.callPath('get', this.path('Notes') + `?CompanyID=${contact.id}`)
-						.subscribe((notes: Note[]) => {
-							this.twt.selectedRelations.contacts.forEach(contact => Object.assign(contact, {notes: notes}));
-							this.setTWTProp(this.twt);
+	public updateCompanyRelations(company: Company): Promise<{}> {
+		let twtProps = {
+			selectedRelations: <SelectedRelations>{
+				company: company,
+				contacts: <{
+				}[]>[],
+				quotes: []
+			}
+		};
+		console.log('then 0', twtProps);
+		return new Promise((resolve, reject) => {
+			Promise.resolve(company)
+			.then((company) => {
+				console.log('then 1', twtProps);
+				return new Promise((resolve, reject) => {
+					this.restService
+						.getPath(this.path('Contact') + `?CompanyID=${company.id}`)
+						.subscribe((contacts: Contact[]) => {
+							resolve(<{}[]>contacts);
+						})
+				}).then((contacts: {}[]) => {
+					for (let i = 0, k = contacts.length; i < k; i++) {
+						console.log('contact', contacts[i]);
+						let twtContact: TWTContact = <TWTContact>{
+							notes: []
+						};
+						this.restService
+							.getPath(this.path('Notes') + `?ContactID=${contacts[i]['ID']}`)
+							.subscribe((notes: Note[]) => {
+							twtContact.notes = notes;
+							twtProps.selectedRelations.contacts.push(<TWTContact>Object.assign({}, {
+								contact: contacts[i],
+								notes: notes
+							}));
+							console.log('then 2', twtProps);
+							});
+					}
+					return;
+				}).then(() => {
+					console.log('then 3', twtProps);
+					this.restService
+						.getPath(this.path('Quotes') + `?CompanyID=${company.id}`)
+						.subscribe((quotes: Quote[]) => {
+							twtProps.selectedRelations.quotes.concat(Object.assign({quotes: <Quote[]>quotes}));
+							return;
 						});
-				}
-		});
-
-		this.restService.callPath('get', this.path('Quotes') +`?CompanyID=${company.id}`)
-			.subscribe((res: Quote[]) => {
-				this.twt.selectedRelations.quotes = <Quote[]>res;
-				this.setTWTProp(this.twt);
-			});
+				}).then(() => {
+					console.log('then 4', twtProps);
+					this.setTWTProp(twtProps);
+					console.log('twtProps', twtProps);
+					return 'Success!?'
+				})
+			})
+		})
 	}
+}
+
+export interface SelectedRelations {
+	company: Company;
+	contacts: TWTContact[];
+	quotes: Quote[];
+}
+
+export interface TWTContact {
+	contact: {};
+	notes: {}[];
 }
