@@ -22,5 +22,9 @@ export const TEST_NOTE = {
 };
 
 export const TEST_CONTACT = {
-
+	email: null,
+	id: null,
+	name: null,
+	phone: null,
+	position: null
 };

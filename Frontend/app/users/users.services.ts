@@ -10,7 +10,7 @@ import {Contact} from '../shared/models/contact.model';
 import {Quote} from '../shared/models/quote.model';
 import {Note} from '../shared/models/note.model';
 import {CRMType} from '../shared/models/CRMTypes.type';
-import {TEST_COMPANY} from '../shared/models/comparrison-models.obj';
+import {TEST_COMPANY, TEST_CONTACT, TEST_NOTE, TEST_QUOTE} from '../shared/models/comparrison-models.obj';
 
 @Injectable()
 export class UsersServices implements OnInit {
@@ -33,16 +33,6 @@ export class UsersServices implements OnInit {
 		console.log(this.userStatesSource);
 	}
 
-	public activeSelectUpdate(item: CRMType): void {
-		if (JSON.stringify(Object.keys(item).sort()) ===
-			JSON.stringify(Object.keys(TEST_COMPANY).sort())
-		) {
-			this.updateCompanyRelations(<any>item).then((res) => {
-				console.log('update Promise', res);
-			});
-		}
-		//todo apply for other resource types
-	}
 
 	//todo add credentials
 	public tokenFactory(): Promise<TWT> {
@@ -62,6 +52,25 @@ export class UsersServices implements OnInit {
 		})
 	};
 
+	public selectedUpdate(item: any): void {
+		console.log(JSON.stringify(Object.keys(item).sort()));
+		console.log(JSON.stringify(Object.keys(TEST_CONTACT).sort()));
+
+		if (JSON.stringify(Object.keys(item).sort()) === JSON.stringify(Object.keys(TEST_COMPANY).sort())){
+			console.log('company update', item);
+			this.updateCompanyRelations(item)
+				.then((res) => console.log(res));
+		} else if (JSON.stringify(Object.keys(item).sort()) === JSON.stringify(Object.keys(TEST_CONTACT).sort())){
+			console.log('contact update', item);
+			this.updateContactRelations(item);
+
+		} else if (JSON.stringify(Object.keys(item).sort()) === JSON.stringify(Object.keys(TEST_NOTE).sort())) {
+
+		} else if (JSON.stringify(Object.keys(item).sort()) === JSON.stringify(Object.keys(TEST_QUOTE).sort())) {
+
+		}
+
+	}
 	public updateQuoteRelations(quote: Quote): void {
 		//todo fix extra call
 		// this.updateCompanyRelations(<Company>{id: +quote.companyId});
@@ -72,16 +81,22 @@ export class UsersServices implements OnInit {
 	}
 
 	public updateContactRelations(contact: Contact): void {
-		let twt: TWT = <TWT>{};
 		this.restService
-			.callPath('get', this.path('Companies') + contact.companyId)
+			.callPath('get', this.path('Companies/') + contact.companyId)
 			.subscribe((company: Company) => {
-			Object.assign(twt, {selectedRelations: {company: company}});
-			// this.updateCompanyRelations(company);
+			return new Promise((resolve, reject) => {
+				Promise.resolve(<any>company)
+					.then(()=> {
+						console.log('promise contact to company', company);
+						resolve(company);
+					}).then((company: any) => {
+						this.updateCompanyRelations(company).then(res => console.log('contact ' + res));
+				});
+			})
 		})
 	}
 
-	public updateCompanyRelations(company: Company): Promise<{}> {
+	public updateCompanyRelations(company: any): Promise<{}> {
 		let twtProps = {
 			selectedRelations: <SelectedRelations>{
 				company: company,
@@ -92,8 +107,8 @@ export class UsersServices implements OnInit {
 		};
 		console.log('then 0', twtProps);
 		return new Promise((resolve, reject) => {
-			Promise.resolve(company)
-			.then((company) => {
+			Promise.resolve(<any>company)
+			.then(() => {
 				console.log('then 1', twtProps);
 				return new Promise((resolve, reject) => {
 					this.restService
@@ -131,7 +146,7 @@ export class UsersServices implements OnInit {
 					console.log('then 4', twtProps);
 					this.setTWTProp(twtProps);
 					console.log('twtProps', twtProps);
-					return 'Success!?'
+					resolve('Success!?');
 				})
 			})
 		})

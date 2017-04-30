@@ -114,7 +114,7 @@ export class ListComponent implements OnInit, OnChanges {
 				case'slide-open':
 					this.slide = true;
 					this.userServices.setTWTProp({selected: item});
-					this.userServices.activeSelectUpdate(item);
+					this.userServices.selectedUpdate(item);
 					break;
 				case'slide-close':
 					this.userServices.setTWTProp({selected: {}});
