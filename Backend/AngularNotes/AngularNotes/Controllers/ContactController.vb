@@ -66,4 +66,9 @@ Public Class ContactController
 		db.SaveChanges()
 	End Sub
 
+	Public Function QuickSearch() As IEnumerable(Of Contact_QuickSearch)
+		Dim Data = Aggregate Contact In db.Contacts Select Contact.Name, Contact.ID, CompanyID = Contact.Company.ID Into ToArray
+		Return Data.Select(Function(x) New Contact_QuickSearch With {.ContactID = x.ID, .ContactName = x.Name, .CompanyID = x.CompanyID})
+	End Function
+
 End Class
