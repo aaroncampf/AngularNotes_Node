@@ -1,17 +1,15 @@
 import {Injectable, OnInit} from '@angular/core';
 import {Http, RequestOptions, Headers, Response}from '@angular/http';
-import {CRMType} from '../models/CRMTypes.type';
+import {CRMType} from '../models/crm-models.type';
 import {Observable} from 'rxjs/Observable';
 import 'rxjs/add/operator/map'
 import 'rxjs/add/operator/catch'
 import 'rxjs/add/observable/throw'
-import {keysToCamelCase} from '../helper/TitleToCamelCase';
 
 @Injectable()
 export class RESTService implements OnInit {
 	private headers = new Headers({'content-type': 'application/json'});
 	private options;
-	private keysToCamelCase = keysToCamelCase;
 	constructor(public http: Http) {}
 
 	public ngOnInit(){
@@ -23,19 +21,19 @@ export class RESTService implements OnInit {
 			case'get':
 				return this.http.get(path, this.options)
 					.map((response: any) => {
-						return this.keysToCamelCase(JSON.parse(response._body));
+						return JSON.parse(response._body);
 					})
 					.catch((error: Response | any) => this.handleError(error));
 			case'post':
 				return this.http.post(path, JSON.stringify(payload), this.options)
 					.map((response: any) => {
-						return this.keysToCamelCase(JSON.parse(response._body));
+						return JSON.parse(response._body);
 					})
 					.catch((error: Response | any) => this.handleError(error));
 			case'put':
 				return this.http.put(path, JSON.stringify(payload), this.options)
 					.map((response: any) => {
-						return this.keysToCamelCase(JSON.parse(response._body));
+						return JSON.parse(response._body);
 					})
 					.catch((error: Response | any) => this.handleError(error));
 		}
@@ -48,7 +46,7 @@ export class RESTService implements OnInit {
 		const options = new RequestOptions({headers: headers});
 		return this.http.post(path, JSON.stringify(<CRMType>payload), options)
 			.map((response: any) => {
-				return this.keysToCamelCase(JSON.parse(response._body));
+				return JSON.parse(response._body);
 			})
 			.catch((error: Response | any) => this.handleError(error));
 	}

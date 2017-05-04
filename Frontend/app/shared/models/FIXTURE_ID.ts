@@ -1,1 +1,1 @@
-export const FIXTURE_USER_ID: string = '8aa45720-0a70-4ae6-bb43-1897989fb47c';
+export const FIXTURE_USER_ID: string = '00d37f56-3bad-4ac1-880b-fa7181ba80d2';

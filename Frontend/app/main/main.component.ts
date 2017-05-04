@@ -1,8 +1,9 @@
 import {Component, NgZone, OnInit, ViewContainerRef} from '@angular/core';
 import {ToastsManager} from 'ng2-toastr/ng2-toastr';
 import '../styles/main.scss';
-import {UsersServices, } from '../users/users.services';
+import {UsersService, } from '../users/users.services';
 import {TWT} from '../users/user.model';
+import {FIXTURE_USER_ID} from '../shared/models/FIXTURE_ID';
 
 @Component({
 	selector: 'main',
@@ -16,6 +17,7 @@ import {TWT} from '../users/user.model';
 			<h1>Wide dashboard coming soon</h1>
 			<h1>nav</h1>
 			<h1 class="pull-left">side-panel</h1>
+		<router-outlet name="wide-screen"></router-outlet>
 		</div>
 		<router-outlet></router-outlet>
 	</div>
@@ -27,27 +29,30 @@ export class MainComponent implements OnInit {
 	public get MOBILE(): boolean {
 		return this.windowWidth < 768;
 	}
+
 	constructor(public toastr: ToastsManager,
 				public vcr: ViewContainerRef,
 				public ngZone: NgZone,
-				private userServices: UsersServices,
+				private userServices: UsersService,
 	){
 		this.toastr.setRootViewContainerRef(vcr);
 	}
 
 	public ngOnInit(): void {
 		this.detectWindowSize();
-		this.InitializeUserState();
+		this.initializeUserState();
 	}
 
-	private InitializeUserState(): void {
+	private initializeUserState(): void {
 		//todo login or register
-		// update twt with user info
 		this.userServices.tokenFactory().then(token => {
 			this.userServices.setTWTProp(token);
-
-		});
-		//set state to default
+			this.userServices.getCurrentUserData(FIXTURE_USER_ID)
+				.subscribe(user => {
+				this.userServices.setTWTProp({user: user});
+			});
+		} )
+		// update twt with user info
 	}
 
 	private detectWindowSize(): void {

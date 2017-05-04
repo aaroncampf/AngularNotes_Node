@@ -5,11 +5,12 @@ import {InputComponent} from './components/input.component';
 import {SocketService} from './services/socket.service';
 import {ListComponent} from './components/list.component';
 import {RESTService} from './services/rest.service';
-import {UsersServices} from '../users/users.services';
+import {UsersService} from '../users/users.services';
 import {HAMMER_GESTURE_CONFIG, HammerGestureConfig} from '@angular/platform-browser';
 import {ToTitleCaseKeys} from './pipes/toTitleCase.pipe';
 import {DiamondLoaderComponent} from './animations/loading-screen.animation';
-import {TokenService} from './services/twt.service';
+import {QuestionService} from './services/question.service';
+import {ModelService} from './services/model.service';
 
 const COMPONENTS = [
 	DiamondLoaderComponent,
@@ -23,10 +24,10 @@ const MODULES = [
 	FormsModule,
 ];
 
+
 export class MyHammerConfig extends HammerGestureConfig {
 	overrides = <any>{
 		'swipe': {velocity: 0.4, threshold: 20}
-
 	}
 }
 
@@ -45,15 +46,15 @@ export class MyHammerConfig extends HammerGestureConfig {
 		ToTitleCaseKeys,
 		SocketService,
 		RESTService,
-		UsersServices,
-		TokenService
+		UsersService,
+		QuestionService,
+		ModelService,
 	],
 	schemas: [
 		CUSTOM_ELEMENTS_SCHEMA
 	],
 	exports: [
-		COMPONENTS,
-		MODULES,
+		COMPONENTS
 	]
 
 })

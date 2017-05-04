@@ -11,14 +11,26 @@ export interface QuoteLine {
 	unit: string;
 	cost: string;
 	desc: string;
+	modelType: 'quoteLine';
 }
 
 export interface Quote {
 	id?: string;
 	companyId: string;
-	date: string;
 	name: string;
 	quoteLines: QuoteLine[];
 	updated_at?: string;
 	created_at?: string;
+	modelType: 'quote';
+}
+
+export function newQuote(): Quote {
+	return {
+		id: null,
+		companyId: null,
+		name: null,
+		quoteLines: [],
+		modelType: 'quote'
+	}
+
 }

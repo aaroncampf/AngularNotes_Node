@@ -1,10 +1,6 @@
-import {CRMType} from '../shared/models/CRMTypes.type';
-import {Company} from '../shared/models/company.model';
-import {Contact} from '../shared/models/contact.model';
-import {Note} from '../shared/models/note.model';
-import {Quote} from '../shared/models/quote.model';
+import {CRMType} from '../shared/models/crm-models.type';
 
-export interface TWT extends User {
+export interface TWT {
 	selectedRelations?: {
 		company?: {};
 		quotes?: {}[];
@@ -13,12 +9,14 @@ export interface TWT extends User {
 			notes?: {}[]
 		}[],
 	},
-	selected: CRMType;
+	viewContext?: string;
+	viewMode?: string;
+	selected?: CRMType;
 }
 
 export interface User extends _User {
-	id: string;
-	firstName: string;
+	id?: string;
+	firstName?: string;
 	lastName?: string;
 	email: string;
 	addressOne?: string;

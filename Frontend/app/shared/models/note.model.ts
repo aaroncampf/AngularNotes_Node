@@ -8,6 +8,7 @@ export interface Note {
 	date: string;
 	title: string;
 	text: string;
+	modelType: 'note'
 }
 
 export function newNote(): Note {
@@ -16,3 +17,4 @@ export function newNote(): Note {
 	note.date = date;
 	return note;
 }
+

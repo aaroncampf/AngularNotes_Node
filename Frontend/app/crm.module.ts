@@ -8,39 +8,49 @@ import {MainComponent} from './main/main.component';
 import {NavigationComponent} from './main/ui/navigation.component';
 import {DashboardComponent} from './main/ui/dashboard.component';
 import {NotFoundComponent} from './main/routes/not-found.component';
+import {FormComponent} from './main/forms/form.component';
+import {FormQuestionComponent} from './main/forms/form-question.component';
 import {UsersModule} from './users/users.module'
 import {SharedModule} from './shared/shared.module';
 import {RouterModule, Routes} from '@angular/router';
-import {ViewEditComponent} from './main/view-edit.component';
-import {CreateComponent} from './main/create.component';
+import {ViewEditComponent} from './main/view.component';
+import {QuestionService} from './shared/services/question.service';
+import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 
 const MAIN_ROUTES: Routes = [
 	{path:'user', loadChildren: "./users/users.module#UsersModule"},
+	{path:'create', component: FormComponent},
 	{path:'dashboard', component: MainComponent},
-	{path:':tab', component: ViewEditComponent},
+	{path:'companies', component: ViewEditComponent},
+	{path:'contacts', component: ViewEditComponent},
+	{path:'notes', component: ViewEditComponent},
+	{path:'quotes', component: ViewEditComponent},
 	// {path:'', redirectTo: '/companies', pathMatch: 'full'},
 	{path: '**', component: NotFoundComponent}
 ];
 
 const MODULES = [
-		RouterModule.forRoot(MAIN_ROUTES),
-		AngularCommonModule,
-		BrowserAnimationsModule,
-		NoopAnimationsModule,
-		BrowserModule,
-		HttpModule,
-		ToastModule.forRoot(),
-		UsersModule,
-		SharedModule,
+	FormsModule,
+	ReactiveFormsModule,
+	RouterModule.forRoot(MAIN_ROUTES),
+	AngularCommonModule,
+	BrowserAnimationsModule,
+	NoopAnimationsModule,
+	BrowserModule,
+	HttpModule,
+	ToastModule.forRoot(),
+	UsersModule,
+	SharedModule
 ];
 
 const COMPONENTS = [
-		CreateComponent,
-		ViewEditComponent,
-		MainComponent,
-		NavigationComponent,
-		DashboardComponent,
-		NotFoundComponent
+	FormQuestionComponent,
+	FormComponent,
+	ViewEditComponent,
+	MainComponent,
+	NavigationComponent,
+	DashboardComponent,
+	NotFoundComponent,
 ];
 
 @NgModule({
@@ -48,9 +58,10 @@ const COMPONENTS = [
 		COMPONENTS
 	],
 	imports: [
-		MODULES
+		MODULES,
 	],
 	providers: [
+		QuestionService
 	],
 	schemas: [
 		CUSTOM_ELEMENTS_SCHEMA

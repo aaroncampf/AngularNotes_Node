@@ -3,7 +3,7 @@ import {CommonModule as AngularCommonModule} from '@angular/common';
 import {MyAccountComponent} from './my-account.component';
 import {RouterModule, Routes} from '@angular/router';
 import {SharedModule} from '../shared/shared.module';
-import {UsersServices} from './users.services';
+import {UsersService} from './users.services';
 
 const components = [
 	MyAccountComponent,
@@ -26,7 +26,7 @@ const ROUTES: Routes = [
 		components
 	],
 	providers: [
-		UsersServices
+		UsersService
 	]
 
 
