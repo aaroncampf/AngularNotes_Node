@@ -16,7 +16,6 @@ export class RESTService implements OnInit {
 		this.options = new RequestOptions({headers: this.headers});
 	}
 	public callPath(verb: string, path: string, payload?: CRMType): Observable<CRMType[] | CRMType> {
-		console.log('hit REST');
 		switch (verb) {
 			case'get':
 				return this.http.get(path, this.options)

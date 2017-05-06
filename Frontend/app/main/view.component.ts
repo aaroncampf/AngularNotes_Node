@@ -6,15 +6,16 @@ import {ActivatedRoute} from '@angular/router';
 import {SocketService} from '../shared/services/socket.service';
 import {ToastsManager} from 'ng2-toastr';
 import {Subscription} from 'rxjs/Subscription';
+import {QuestionService} from '../shared/services/question.service';
+import {TriggerListenerTuple} from '@angular/animations/browser/src/render/dom_animation_engine';
 
 @Component({
 	selector: 'view-edit-component',
 	template: `
-		<button (click)="test()"> TEST</button>
 		<div *ngIf="twt.viewMode === 'list'">
 			<h1>{{twt.viewContext}}<small>by Angular Bros</small></h1>
 			<button class="btn btn-block" [routerLink]="['/create']">Add New</button>
-			<list-component [twt]="twt" [listItems]="items" (onSave)="onSaveProps($event)"></list-component>
+			<list-component [listItems]="twt.listItems" [selected]="twt.selected" [control]="twt.controls" (onSave)="onSaveProps($event)" [optionOne]=""></list-component>
 			<div class="container-fluid">
 				<div class="row">
 					<div class="col-lg-12">
@@ -23,14 +24,13 @@ import {Subscription} from 'rxjs/Subscription';
 								<div class="panel panel-default">
 									<div class="panel-heading" role="tab" id="heading-quotes">
 										<h4 class="panel-title">
-											<a role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseQuotes" aria-expanded="false" aria-controls="collapseQuotes">Quotes
-											</a>
+											<a role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseQuotes" aria-expanded="false" aria-controls="collapseQuotes">Quotes</a>
 										</h4>
 									</div>
-									<div id="collapseQuotes" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="heading-quotes">
+									<div id="collapseC" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="heading-quotes">
 										<div class="panel-body">
 											<div class="content">
-												<list-component [twt]="twt" (onSave)="onSaveProps($event)" [listItems]="twt?.selectedRelations?.quotes"></list-component>
+												
 											</div>
 										</div>
 									</div>
@@ -48,7 +48,7 @@ import {Subscription} from 'rxjs/Subscription';
 										 aria-labelledby="heading-contacts">
 										<div class="panel-body">
 											<div class="content">
-												<list-component [twt]="twt" (onSave)="onSaveProps($event)" [listItems]="twt?.selectedRelations?.contacts"></list-component>
+												<list-component (onSave)="onSaveProps($event)" [listItems]="twt?.selectedRelations?.contacts"></list-component>
 											</div>
 										</div>
 									</div>
@@ -63,11 +63,11 @@ import {Subscription} from 'rxjs/Subscription';
 })
 
 export class ViewEditComponent implements OnInit, OnDestroy{
-	public items: CRMType[] = <CRMType[]>[];
 	private twt: TWT = <TWT>{};
 	public twtSub: Subscription;
 	constructor(
 				private socketService: SocketService,
+				private questionService: QuestionService,
 				private userService: UsersService,
 				private activatedRoute: ActivatedRoute,
 				public toastr: ToastsManager
@@ -77,29 +77,24 @@ export class ViewEditComponent implements OnInit, OnDestroy{
 		return `${modelName}.${verb}`
 	}
 
-	public changeMode(mode: string): void {
-		this.userService.setTWTProp({viewMode: mode});
-	}
-
 	public ngOnInit(): void {
 		this.twtSub = this.userService.userState$.subscribe((twt: TWT) => {
-			console.log('subscription hit', this.twt);
 			this.twt = twt;
 		});
-			this.userService.setTWTProp({viewMode: 'list'});
-			console.log('twt inside view', this.twt);
+		this.userService.setTWTProp({viewMode: 'list'});
 		this.activatedRoute.url.subscribe(url => {
 			this.userService.setTWTProp({viewContext: url[0].path});
 		});
 		this.initData().then((items: CRMType[]) => {
-			this.items = items;
+			this.userService.setTWTProp({listItems:items});
+			const LIST_QUESTIONS = this.questionService.initQuestions(items);
+			const CONTROLS = this.questionService.initControlsFromQuestions(LIST_QUESTIONS);
+			Object.assign(this.twt, {listItems: LIST_QUESTIONS});
+			Object.assign(this.twt, {controls: CONTROLS});
+			this.userService.setTWTProp(this.twt);
 		})
 	}
-	public i = 0;
-	public test(){
-		this.userService.setTWTProp({test: 'I AM A TEST' + this.i });
-		this.i ++;
-	}
+
 	public ngOnDestroy(): void {
 		this.twtSub.unsubscribe();
 	}
@@ -109,7 +104,6 @@ export class ViewEditComponent implements OnInit, OnDestroy{
 			this.socketService
 				.responseSocket(this.socketEndpoint(this.twt.viewContext, 'get'), {})
 				.subscribe((items:CRMType[]) => {
-				console.log('items', items);
 					resolve(items);
 					reject('error');
 			});
@@ -117,9 +111,33 @@ export class ViewEditComponent implements OnInit, OnDestroy{
 	}
 
 	public onSaveProps(payload): void {
-		this.socketService.responseSocket(this.socketEndpoint(this.twt.viewContext,'post'), payload).subscribe(response => {
-			this.toastr.success('Saved!' + response);
+		let newList: CRMType[] = [];
+		this.socketService.responseSocket(this.socketEndpoint(this.twt.viewContext, 'set'), payload)
+			.subscribe(response => {
+			for (let item of this.twt.listItems) {
+				if (item.id && item.id === response.id) {
+					item = response;
+				}
+				newList.push(item);
+			}
+			this.userService.setTWTProp({listItems: newList});
 		});
-
 	}
+}
+
+export interface _seedListData {
+	context: {
+		id?: string;
+		siblings:ListData[]
+		parent:ListData[]
+		children:ListData[]
+	}
+}
+
+export interface ListData extends _seedListData{
+	list: {
+		items: ListData[];
+		id?: string;
+	}
+
 }

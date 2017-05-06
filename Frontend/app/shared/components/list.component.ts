@@ -4,36 +4,31 @@ import {CRMType} from '../models/crm-models.type';
 import {TWT} from '../../users/user.model';
 import {ToTitleCaseKeys} from '../pipes/toTitleCase.pipe';
 import {ModelService} from '../services/model.service';
-import {QuestionService} from '../services/question.service';
 import {QuestionBase} from '../../main/forms/base-question.class';
+import {FormControl, FormGroup} from '@angular/forms';
 
 //Todo take off collapses
 @Component({
 	selector: 'list-component',
 	template: `
-		<div class="row">
-			<list-header *ngIf="header">
-				<div class="md-toolbar-tools">{{header}}</div>
-			</list-header>
-		</div>
 		<!--//master-->
 		<div class="row">
 			<list-subheader class="col-xs-12" *ngIf="title">
 				<h4>{{title}}</h4>
 			</list-subheader>
 			<list-group *ngIf="dataReady" class="col-xs-12">
-				<div *ngFor="let question of questions">
-					<list-item-slide [class.collapse]="twt?.selected?.id !== question.id && details">
-						<slide-top (click)="slide ? onSelect('slide-close') : onSelect('slide-open', question)"
+				<div *ngFor="let model of listItems">
+					<list-item-slide>
+						<slide-top (click)="slide ? onSelect('slide-close', model) : onSelect('slide-open', model)"
 								   class="swipe-box"
 								   ng-style="{'transform': 'rotate('+number+'deg)', '-webkit-transform': 'rotate('+number+'deg)', '-ms-transform': 'rotate('+number+'deg)'}"
-								   (pan)="panning($event, question)" (swipeLeft)="swipe($event.type, question)"
-								   (swipeRight)="swipe($event.type)"
-								   [class.active]="question.id === twt?.selected?.id"
+								   (pan)="panning($event, model)" (swipeLeft)="swipe($event.type, model)"
+								   (swipeRight)="swipe($event.type,  model)"
+								   [class.active]="selected?.id === model?.id"
 								   [class.option]="(optionOne || optionTwo) && !(optionOne && optionTwo)"
-								   [class.options]="optionOne && optionTwo">{{question.name || question.title}}
+								   [class.options]="optionOne && optionTwo">{{model.name}}
 						</slide-top>
-						<slide-details-option (click)="onSelect('details', question)">
+						<slide-details-option (click)="onSelect('details')">
 							<i class="glyphicon glyphicon-info-sign"></i>
 						</slide-details-option>
 						<slide-option *ngIf="optionTwo" (click)="onSelect('option-one', question)">
@@ -44,11 +39,12 @@ import {QuestionBase} from '../../main/forms/base-question.class';
 						</slide-option>
 					</list-item-slide>
 					<!--//details-->
-					<item-details *ngIf="details && twt?.selected?.id === question.id">
-						<list-item *ngFor="let detailQuestion of questions">
-							<input-component [label]="detailQuestion.label" [(model)]="detailQuestion[question.key]"
-											 (onBlur)="blurrySave(detailQuestion.id, $event)"></input-component>
-						</list-item>
+					<item-details *ngIf="!!details && selected.id === model.id">
+							<div *ngFor="let question of model.questions">
+								<div [formGroup]="detailsForm">
+									<input-component [label]="question.label" (onBlur)="blurrySave(model.id, question.key, $event)" [(model)]="question.value"></input-component>
+								</div>
+							</div>
 					</item-details>
 				</div>
 			</list-group>
@@ -59,75 +55,73 @@ import {QuestionBase} from '../../main/forms/base-question.class';
 export class ListComponent implements OnInit, OnChanges {
 	public dataReady: boolean = false;
 	@Input()
-	public listItems: CRMType[] = <CRMType[]>[];
+	public selected: CRMType = <CRMType>{};
+	@Input()
+	public listItems: QuestionBase<any>[] = <QuestionBase<any>[]>[];
+	@Input()
+	public controls: {[name: string]:FormControl} = <{[name: string]:FormControl}>{};
 	@Input()
 	public title: string;
-	@Input()
-	public header: string;
 	@Input()
 	public optionOne: string;
 	@Input()
 	public optionTwo: string;
-	@Input()
-	public twt: TWT;
 	@Output()
-	public onOptions: EventEmitter<any> = new EventEmitter<any>();
+	public onOptionOne: EventEmitter<any> = new EventEmitter<any>();
+	@Output()
+	public onOptionTwo: EventEmitter<any> = new EventEmitter<any>();
 	@Output()
 	public onSave: EventEmitter<any> = new EventEmitter<any>();
 	public slide: boolean = false;
 	public details: boolean = false;
-	public questions: (QuestionBase<string> | string)[] = <QuestionBase<string>[]>[];
-	// public tokenTest: TWT = <TWT>{};
 	public SWIPE_ACTION = {RIGHT: 'swipe-right', LEFT: 'swipe-left'};
 	public xVal: number;
+	public detailsForm: FormGroup;
 
 	constructor(
 		private userServices: UsersService,
 		public toTitleCase: ToTitleCaseKeys,
 		private modelService: ModelService,
-		private questionService: QuestionService,
 	) {};
 
 	public ngOnInit(): void {
 	}
 
 	public ngOnChanges(): void {
-
-		if(this.listItems) {
-			this.questions = this.questionService.initQuestions(this.listItems);
-			this.dataReady = true;
-		}
+		this.detailsForm = new FormGroup(this.controls);
+		this.dataReady= true;
+		console.log('list component', this.listItems);
 	}
 
-	public onSelect(type: string, question: CRMType = <CRMType>{}): void {
+	public onSelect(type: string,  model: CRMType = <CRMType>{}): void {
 		switch (type) {
 			case'slide-open':
 				this.slide = true;
-				this.userServices.setTWTProp({selected: question});
-				this.modelService.selectedUpdate(question);
+				this.userServices.setTWTProp({selected:  model});
+				this.modelService.selectedUpdate( model);
 				break;
 			case'slide-close':
 				this.userServices.setTWTProp({selected: {}});
 				this.slide = false;
 				break;
 			case 'details':
-				this.userServices.setTWTProp({selected:question});
 				this.details = !this.details;
 				break;
 			case 'option-one':
-				this.userServices.setTWTProp(question);
-				this.onOptions.emit({option: 'option-one', question: question});
+				this.userServices.setTWTProp( model);
+				this.onOptionOne.emit(model);
 				break;
 			case 'option-two':
-				this.userServices.setTWTProp(question);
-				this.onOptions.emit({option: 'option-two', question: question});
+				this.userServices.setTWTProp(model);
+				this.onOptionTwo.emit(model);
 				break;
 		}
 	}
 
-	public blurrySave(id: string, event: any): void {
-		console.log('blurry save cares about what you tap.. ');
-		this.onSave.emit({id: id, [Object.keys(event)[0]]: event});
+	public blurrySave(id, key, event): void {
+		this.onSave.emit({id: id, prop: {
+			[key]: event}
+		});
 	}
 
 	//todo Gesture Tuning and Implementation

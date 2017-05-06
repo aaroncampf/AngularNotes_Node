@@ -24,8 +24,8 @@ export class UsersService implements OnInit {
 
 	 //todo recursion strategy for assigning nested values
 	public setTWTProp(props: {}): void {
-		Object.assign(this.userStatesSource, props);
-		console.log('twt updated', this.userStatesSource);
+		this.userStatesSource.next(Object.assign(this.userStatesSource, props));
+		console.log(this.userStatesSource);
 	}
 
 	//todo add credentials auth

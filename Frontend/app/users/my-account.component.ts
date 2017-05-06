@@ -61,7 +61,6 @@ export class MyAccountComponent implements OnInit {
 	}
 
 	public blurrySave(value, key): void {
-		console.log('value key', value, key);
 		this.socketService
 			.responseSocket(this.updatePath, <UpdateObject>{
 				id: this.user.id,
@@ -71,8 +70,8 @@ export class MyAccountComponent implements OnInit {
 				}
 			})
 			.subscribe((response: User) => {
-				this.userServices.setTWTProp(response);
-				console.log('response', response);
+				console.log('value key', response);
+				this.userServices.setTWTProp({user: response});
 		})
 	}
 }export interface UpdateObject {

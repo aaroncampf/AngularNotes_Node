@@ -1,4 +1,6 @@
 import {CRMType} from '../shared/models/crm-models.type';
+import {QuestionBase} from '../main/forms/base-question.class';
+import {FormControl} from '@angular/forms';
 
 export interface TWT {
 	selectedRelations?: {
@@ -9,9 +11,12 @@ export interface TWT {
 			notes?: {}[]
 		}[],
 	},
+	listItems?: any[];
 	viewContext?: string;
 	viewMode?: string;
 	selected?: CRMType;
+	questions?: QuestionBase<any>[];
+	controls?: {[name: string]: FormControl};
 }
 
 export interface User extends _User {
