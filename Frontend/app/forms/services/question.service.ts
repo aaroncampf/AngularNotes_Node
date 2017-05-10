@@ -1,9 +1,23 @@
 import {Injectable} from '@angular/core';
 import {FormControl, Validators} from '@angular/forms';
+import {REPLACMENT_LABELS, REQUIRED, RESTRICTED_KEYS} from '../settings/dynamic-forms.config';
+
+export interface ListControls {
+	[name: string]: FormControl;
+}
+
+export interface List {
+	items: any[];
+	controls: ListControls;
+	groupName: string;
+	title: string;
+	subLists?: List[];
+}
 
 @Injectable()
 export class QuestionService {
-	constructor() {}
+	constructor(){}
+
 	private labelMaker(key, replacmentLabels): string {
 		for (let item of replacmentLabels){
 			if (item.key === key){
@@ -13,11 +27,15 @@ export class QuestionService {
 		return key;
 	}
 
+	public buildList(models: {}[]): List {
+		let list: List = <List>{};
+		list.items = this.initQuestions(models);
+		list.controls = this.initControlsFromQuestions(list.items);
+		return list;
+	}
+
 	public initQuestions(models: {}[]): {}[] {
 		if(Array.isArray(models)) {
-			const REQUIRED = ['email', 'name'];
-			const RESTRICT_KEYS = ['id', 'created_at', 'updated_at', 'deleted_at', 'user_id', 'company_id', 'companyId', 'quoteLines', 'modelType', 'contactId', 'contact_id', ''];
-			const REPLACMENT_LABELS = [{ key: 'addressOne', replace: 'address'}, { key: 'addressTwo', replace: 'address cont.'}];
 			// todo refactor select condition
 			let questions: any[] = [];
 			if(models && models.length > 0) {
@@ -25,7 +43,7 @@ export class QuestionService {
 					for (let key of Object.keys(model)) {
 						let question: any = {};
 						let label = this.labelMaker(key, REPLACMENT_LABELS);
-						if (RESTRICT_KEYS.indexOf(key) === -1) {
+						if (RESTRICTED_KEYS.indexOf(key) === -1) {
 							Object.assign(question, {
 								key: key,
 								label: label[0].toUpperCase() + label.slice(1),
@@ -39,6 +57,7 @@ export class QuestionService {
 					questions = [];
 				}
 			} else {
+				//todo error message
 				return models;
 			}
 		}

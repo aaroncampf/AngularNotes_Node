@@ -1,3 +1,4 @@
+import {CRMType} from './crm-models.type';
 export interface Company {
 	id: string
 	name: string;

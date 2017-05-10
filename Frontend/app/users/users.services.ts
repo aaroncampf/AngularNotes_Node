@@ -4,6 +4,7 @@ import {Observable} from 'rxjs/Observable';
 import {SocketService} from '../shared/services/socket.service';
 import {FIXTURE_USER_ID} from '../shared/models/FIXTURE_ID';
 import {BehaviorSubject} from 'rxjs/BehaviorSubject';
+import {CRMType} from '../shared/models/crm-models.type';
 
 @Injectable()
 export class UsersService implements OnInit {
@@ -22,7 +23,6 @@ export class UsersService implements OnInit {
 		return this.socketService.responseSocket('user.get', {id: credentials})
 	}
 
-	 //todo recursion strategy for assigning nested values
 	public setTWTProp(props: {}): void {
 		this.userStatesSource.next(Object.assign(this.userStatesSource, props));
 		console.log(this.userStatesSource);
@@ -45,5 +45,4 @@ export class UsersService implements OnInit {
 				});
 		});
 	}
-
 }

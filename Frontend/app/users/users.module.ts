@@ -1,9 +1,10 @@
 import {NgModule} from '@angular/core';
-import {CommonModule as AngularCommonModule} from '@angular/common';
+import {CommonModule} from '@angular/common';
 import {MyAccountComponent} from './my-account.component';
 import {RouterModule, Routes} from '@angular/router';
 import {SharedModule} from '../shared/shared.module';
 import {UsersService} from './users.services';
+import {DynamicFormModule} from '../forms/dynamic-forms.module';
 
 const components = [
 	MyAccountComponent,
@@ -18,8 +19,9 @@ const ROUTES: Routes = [
 		components
 	],
 	imports: [
+		DynamicFormModule,
 		SharedModule,
-		AngularCommonModule,
+		CommonModule,
 		RouterModule.forChild(ROUTES)
 	],
 	exports: [

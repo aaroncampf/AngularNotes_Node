@@ -8,30 +8,27 @@ import {MainComponent} from './main/main.component';
 import {NavigationComponent} from './main/ui/navigation.component';
 import {DashboardComponent} from './main/ui/dashboard.component';
 import {NotFoundComponent} from './main/routes/not-found.component';
-import {FormComponent} from './main/forms/form.component';
-import {FormQuestionComponent} from './main/forms/form-question.component';
+import {FormQuestionComponent} from './forms/form-question.component';
 import {UsersModule} from './users/users.module'
 import {SharedModule} from './shared/shared.module';
 import {RouterModule, Routes} from '@angular/router';
 import {ViewEditComponent} from './main/view.component';
-import {QuestionService} from './shared/services/question.service';
-import {FormsModule, ReactiveFormsModule} from '@angular/forms';
+import {DynamicFormModule} from './forms/dynamic-forms.module';
+import {FormComponent} from './forms/components/form.component';
 
 const MAIN_ROUTES: Routes = [
 	{path:'user', loadChildren: "./users/users.module#UsersModule"},
-	{path:'create', component: FormComponent},
+	{path:'create', component: FormComponent },
 	{path:'dashboard', component: MainComponent},
 	{path:'companies', component: ViewEditComponent},
 	{path:'contacts', component: ViewEditComponent},
 	{path:'notes', component: ViewEditComponent},
 	{path:'quotes', component: ViewEditComponent},
-	// {path:'', redirectTo: '/companies', pathMatch: 'full'},
+	// {path:'', redirectTo: '/user/my-account', pathMatch: 'full'},
 	{path: '**', component: NotFoundComponent}
 ];
 
 const MODULES = [
-	FormsModule,
-	ReactiveFormsModule,
 	RouterModule.forRoot(MAIN_ROUTES),
 	AngularCommonModule,
 	BrowserAnimationsModule,
@@ -40,12 +37,12 @@ const MODULES = [
 	HttpModule,
 	ToastModule.forRoot(),
 	UsersModule,
-	SharedModule
+	SharedModule,
+	DynamicFormModule
 ];
 
 const COMPONENTS = [
 	FormQuestionComponent,
-	FormComponent,
 	ViewEditComponent,
 	MainComponent,
 	NavigationComponent,
@@ -61,7 +58,6 @@ const COMPONENTS = [
 		MODULES,
 	],
 	providers: [
-		QuestionService
 	],
 	schemas: [
 		CUSTOM_ELEMENTS_SCHEMA

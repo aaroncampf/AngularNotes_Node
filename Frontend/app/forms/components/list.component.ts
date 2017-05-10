@@ -1,10 +1,10 @@
 import {Component, EventEmitter, Input, OnChanges, OnInit, Output} from '@angular/core';
 import {UsersService} from '../../users/users.services';
-import {CRMType} from '../models/crm-models.type';
+import {CRMType} from '../../shared/models/crm-models.type';
 import {TWT} from '../../users/user.model';
-import {ToTitleCaseKeys} from '../pipes/toTitleCase.pipe';
-import {ModelService} from '../services/model.service';
-import {QuestionBase} from '../../main/forms/base-question.class';
+import {ToTitleCaseKeys} from '../../shared/pipes/toTitleCase.pipe';
+import {ModelService} from '../../shared/services/model.service';
+import {QuestionBase} from '../base-question.class';
 import {FormControl, FormGroup} from '@angular/forms';
 
 //Todo take off collapses
@@ -13,6 +13,10 @@ import {FormControl, FormGroup} from '@angular/forms';
 	template: `
 		<!--//master-->
 		<div class="row">
+			<div *ngIf="parentCreate" >
+				<button class="btn btn-block" [routerLink]="['/create']">Add New</button>
+				<form-component [controls]="" [questions]=""></form-component>
+			</div>
 			<list-subheader class="col-xs-12" *ngIf="title">
 				<h4>{{title}}</h4>
 			</list-subheader>
@@ -48,6 +52,12 @@ import {FormControl, FormGroup} from '@angular/forms';
 					</item-details>
 				</div>
 			</list-group>
+			<list-group>
+				<div *ngFor="let subList of subLists" >
+					<button class="btn btn-block" (click)="showForm(subList.title)">Add New</button>
+					<form-component *ngIf="" [controls]="" [questions]=""  ></form-component>
+				</div>
+			</list-group>
 		</div>
 	`
 })
@@ -56,6 +66,8 @@ export class ListComponent implements OnInit, OnChanges {
 	public dataReady: boolean = false;
 	@Input()
 	public selected: CRMType = <CRMType>{};
+	@Input()
+	public subLists: any[];
 	@Input()
 	public listItems: QuestionBase<any>[] = <QuestionBase<any>[]>[];
 	@Input()
@@ -104,14 +116,14 @@ export class ListComponent implements OnInit, OnChanges {
 				this.userServices.setTWTProp({selected: {}});
 				this.slide = false;
 				break;
-			case 'details':
+			case 'details-pressed':
 				this.details = !this.details;
 				break;
-			case 'option-one':
+			case 'option-one-pressed':
 				this.userServices.setTWTProp( model);
 				this.onOptionOne.emit(model);
 				break;
-			case 'option-two':
+			case 'option-two-pressed':
 				this.userServices.setTWTProp(model);
 				this.onOptionTwo.emit(model);
 				break;

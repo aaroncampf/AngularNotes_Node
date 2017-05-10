@@ -1,22 +1,20 @@
 import {CRMType} from '../shared/models/crm-models.type';
-import {QuestionBase} from '../main/forms/base-question.class';
+import {QuestionBase} from '../forms/base-question.class';
 import {FormControl} from '@angular/forms';
 
 export interface TWT {
-	selectedRelations?: {
-		company?: {};
-		quotes?: {}[];
-		contacts?: {
-			contact?: {},
-			notes?: {}[]
-		}[],
-	},
 	listItems?: any[];
+	subListGroups?: ListGroup[];
 	viewContext?: string;
 	viewMode?: string;
 	selected?: CRMType;
 	questions?: QuestionBase<any>[];
 	controls?: {[name: string]: FormControl};
+}
+
+export interface ListGroup {
+	name: string;
+	list: any[];
 }
 
 export interface User extends _User {

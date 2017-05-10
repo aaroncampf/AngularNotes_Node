@@ -1,4 +1,4 @@
-import {QuestionBase} from './base-question.class';
+import {QuestionBase} from '../base-question.class';
 
 export class SelectQuestion extends QuestionBase<string> {
 	controlType: string = 'select';

@@ -5,7 +5,7 @@
 
 
 ##version0.9.0 - 05/06/2017
-[code] implemented `sockets-service` globally  
+[code] implemented `sockets-service` globally
 [refactor] TypeScript Writable Token syncd with data feeds and smart components and made to be PointOfTruth
 [code] `list.component` built and implemented with generics 
 [code] `form.component` built and implemented with generics  

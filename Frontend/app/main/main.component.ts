@@ -2,7 +2,6 @@ import {Component, NgZone, OnInit, ViewContainerRef} from '@angular/core';
 import {ToastsManager} from 'ng2-toastr/ng2-toastr';
 import '../styles/main.scss';
 import {UsersService, } from '../users/users.services';
-import {TWT} from '../users/user.model';
 import {FIXTURE_USER_ID} from '../shared/models/FIXTURE_ID';
 
 @Component({
@@ -10,8 +9,8 @@ import {FIXTURE_USER_ID} from '../shared/models/FIXTURE_ID';
 	template: `
 	<div class="container">
 		<div *ngIf="!!MOBILE">
-		<dashboard-component></dashboard-component>			
-		<navigation-component></navigation-component>				
+			<dashboard-component></dashboard-component>			
+			<navigation-component></navigation-component>				
 		</div>
 		<div *ngIf="!MOBILE">
 			<h1>Wide dashboard coming soon</h1>
@@ -26,6 +25,7 @@ import {FIXTURE_USER_ID} from '../shared/models/FIXTURE_ID';
 
 export class MainComponent implements OnInit {
 	private windowWidth: number = void 0;
+
 	public get MOBILE(): boolean {
 		return this.windowWidth < 768;
 	}
@@ -33,8 +33,7 @@ export class MainComponent implements OnInit {
 	constructor(public toastr: ToastsManager,
 				public vcr: ViewContainerRef,
 				public ngZone: NgZone,
-				private userServices: UsersService,
-	){
+				private userServices: UsersService,) {
 		this.toastr.setRootViewContainerRef(vcr);
 	}
 
@@ -49,9 +48,9 @@ export class MainComponent implements OnInit {
 			this.userServices.setTWTProp(token);
 			this.userServices.getCurrentUserData(FIXTURE_USER_ID)
 				.subscribe(user => {
-				this.userServices.setTWTProp({user: user});
-			});
-		} )
+					this.userServices.setTWTProp({user: user});
+				});
+		})
 		// update twt with user info
 	}
 
@@ -63,6 +62,5 @@ export class MainComponent implements OnInit {
 			})
 		};
 
-}
-
+	}
 }
