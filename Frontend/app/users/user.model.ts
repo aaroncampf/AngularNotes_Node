@@ -1,24 +1,25 @@
-import {CRMType} from '../shared/models/CRMTypes.type';
-import {Company} from '../shared/models/company.model';
-import {Contact} from '../shared/models/contact.model';
-import {Note} from '../shared/models/note.model';
-import {Quote} from '../shared/models/quote.model';
+import {CRMType} from '../shared/models/crm-models.type';
+import {QuestionBase} from '../forms/base-question.class';
+import {FormControl} from '@angular/forms';
 
-export interface TWT extends User {
-	selectedRelations?: {
-		company?: {};
-		quotes?: {}[];
-		contacts?: {
-			contact?: {},
-			notes?: {}[]
-		}[],
-	},
-	selected: CRMType;
+export interface TWT {
+	listItems?: any[];
+	subListGroups?: ListGroup[];
+	viewContext?: string;
+	viewMode?: string;
+	selected?: CRMType;
+	questions?: QuestionBase<any>[];
+	controls?: {[name: string]: FormControl};
+}
+
+export interface ListGroup {
+	name: string;
+	list: any[];
 }
 
 export interface User extends _User {
-	id: string;
-	firstName: string;
+	id?: string;
+	firstName?: string;
 	lastName?: string;
 	email: string;
 	addressOne?: string;

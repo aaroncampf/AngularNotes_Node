@@ -2,6 +2,13 @@
 >To make sense of all your busy-ness to other developers please log changes and use sem-ver. 
 
 ##unreleased
+
+
+##version0.9.0 - 05/06/2017
+[code] implemented `sockets-service` globally
+[refactor] TypeScript Writable Token syncd with data feeds and smart components and made to be PointOfTruth
+[code] `list.component` built and implemented with generics 
+[code] `form.component` built and implemented with generics  
 [code] created `User.services`
 [refactor] changed models to include type and created init process for `User.model`  
 [code] created helper functions/pipes to manage API response consistency

@@ -3,7 +3,7 @@ import {User} from './user.model';
 import {SocketService} from '../shared/services/socket.service';
 import {FormControl, FormGroup, Validators} from '@angular/forms';
 import {EmailRegEx} from '../shared/regex/email.regex';
-import {UsersServices} from './users.services';
+import {UsersService} from './users.services';
 import {FIXTURE_USER_ID} from '../shared/models/FIXTURE_ID';
 
 @Component({
@@ -37,7 +37,7 @@ export class MyAccountComponent implements OnInit {
 	public businessEmailControl: FormControl = new FormControl('', [Validators.pattern(EmailRegEx)]);
 	public websiteControl: FormControl = new FormControl('', [Validators.maxLength(255)]);
 	public phoneControl: FormControl = new FormControl('', [Validators.maxLength(255)]);
-	public userGroup: FormGroup = new FormGroup({
+	public form: FormGroup = new FormGroup({
 		firstName: this.firstNameControl,
 		lastName: this.lastNameControl,
 		email: this.emailControl,
@@ -50,10 +50,9 @@ export class MyAccountComponent implements OnInit {
 		website: this.websiteControl,
 		phone: this.phoneControl
 	});
-
 	public updatePath: string = 'user.set';
 	public getPath: string = 'user.get';
-	constructor(private userServices: UsersServices,
+	constructor(private userServices: UsersService,
 				private socketService: SocketService){}
 
 	public ngOnInit(): void {
@@ -62,7 +61,6 @@ export class MyAccountComponent implements OnInit {
 	}
 
 	public blurrySave(value, key): void {
-		console.log(value, key);
 		this.socketService
 			.responseSocket(this.updatePath, <UpdateObject>{
 				id: this.user.id,
@@ -72,8 +70,8 @@ export class MyAccountComponent implements OnInit {
 				}
 			})
 			.subscribe((response: User) => {
-				this.userServices.setTWTProp(response);
-				console.log('response', response);
+				console.log('value key', response);
+				this.userServices.setTWTProp({user: response});
 		})
 	}
 }export interface UpdateObject {

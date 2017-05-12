@@ -8,39 +8,46 @@ import {MainComponent} from './main/main.component';
 import {NavigationComponent} from './main/ui/navigation.component';
 import {DashboardComponent} from './main/ui/dashboard.component';
 import {NotFoundComponent} from './main/routes/not-found.component';
+import {FormQuestionComponent} from './forms/form-question.component';
 import {UsersModule} from './users/users.module'
 import {SharedModule} from './shared/shared.module';
 import {RouterModule, Routes} from '@angular/router';
-import {ViewEditComponent} from './main/view-edit.component';
-import {CreateComponent} from './main/create.component';
+import {ViewEditComponent} from './main/view.component';
+import {DynamicFormModule} from './forms/dynamic-forms.module';
+import {FormComponent} from './forms/components/form.component';
 
 const MAIN_ROUTES: Routes = [
 	{path:'user', loadChildren: "./users/users.module#UsersModule"},
+	{path:'create', component: FormComponent },
 	{path:'dashboard', component: MainComponent},
-	{path:':tab', component: ViewEditComponent},
-	// {path:'', redirectTo: '/companies', pathMatch: 'full'},
+	{path:'companies', component: ViewEditComponent},
+	{path:'contacts', component: ViewEditComponent},
+	{path:'notes', component: ViewEditComponent},
+	{path:'quotes', component: ViewEditComponent},
+	// {path:'', redirectTo: '/user/my-account', pathMatch: 'full'},
 	{path: '**', component: NotFoundComponent}
 ];
 
 const MODULES = [
-		RouterModule.forRoot(MAIN_ROUTES),
-		AngularCommonModule,
-		BrowserAnimationsModule,
-		NoopAnimationsModule,
-		BrowserModule,
-		HttpModule,
-		ToastModule.forRoot(),
-		UsersModule,
-		SharedModule,
+	RouterModule.forRoot(MAIN_ROUTES),
+	AngularCommonModule,
+	BrowserAnimationsModule,
+	NoopAnimationsModule,
+	BrowserModule,
+	HttpModule,
+	ToastModule.forRoot(),
+	UsersModule,
+	SharedModule,
+	DynamicFormModule
 ];
 
 const COMPONENTS = [
-		CreateComponent,
-		ViewEditComponent,
-		MainComponent,
-		NavigationComponent,
-		DashboardComponent,
-		NotFoundComponent
+	FormQuestionComponent,
+	ViewEditComponent,
+	MainComponent,
+	NavigationComponent,
+	DashboardComponent,
+	NotFoundComponent,
 ];
 
 @NgModule({
@@ -48,7 +55,7 @@ const COMPONENTS = [
 		COMPONENTS
 	],
 	imports: [
-		MODULES
+		MODULES,
 	],
 	providers: [
 	],
