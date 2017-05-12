@@ -4,7 +4,7 @@ var webpackMerge = require("webpack-merge"); // jshint ignore:line
 
 // Webpack Config
 var webpackConfig = {
-	entry: "./src/index.ts",
+	entry: "./index.ts",
 	output: {
 		//publicPath: './dist',
 		path: path.resolve(__dirname, "./dist"), // jshint ignore:line
@@ -13,7 +13,7 @@ var webpackConfig = {
 	plugins: [
 		new webpack.ContextReplacementPlugin(
 			/angular(\\|\/)core(\\|\/)@angular/,
-			path.resolve(__dirname, '../src')
+			path.resolve(__dirname, './')
 		)
 	],
 

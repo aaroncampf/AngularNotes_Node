@@ -1,0 +1,13 @@
+notes-component {
+  .card-panel {
+    padding: 10px;
+    background-color: rgb(255, 249, 227);
+    textarea {
+      background: white;
+      height: 5em;
+    }
+  }
+  .glyphicon-remove:before {
+    color: red;
+  }
+}

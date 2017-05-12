@@ -1,0 +1,28 @@
+quote-details-component {
+  .btn-danger {
+    height: 39px;
+    color: #fff;
+    background-color: #d9534f;
+    border-color: #d43f3a;
+    width: 100px;
+    border-radius: 5px;
+  }
+  .quote-header {
+    background: #f8ece6;
+  }
+
+  .quote-item {
+    display: inline-block;
+    background: #f9fff8;
+    border: #dedede 1px solid;
+    padding: 2px;
+  }
+  .quote-item-add {
+    background: #e3f7ff;
+    border: grey 3px solid;
+  }
+
+  .glyphicon-remove:before {
+    color: red;
+  }
+}
