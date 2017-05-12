@@ -1,3 +1,4 @@
+import {_baseListItem} from './base-model.model';
 /**
  * Created by aaron on 3/14/2017.
  * edited by Rd on 4/17/2017
@@ -14,7 +15,7 @@ export interface QuoteLine {
 	modelType: 'quoteLine';
 }
 
-export interface Quote {
+export interface Quote extends _baseListItem {
 	id?: string;
 	companyId: string;
 	name: string;

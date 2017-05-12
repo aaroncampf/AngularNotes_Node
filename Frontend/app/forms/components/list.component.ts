@@ -1,11 +1,12 @@
 import {Component, EventEmitter, Input, OnChanges, OnInit, Output} from '@angular/core';
 import {UsersService} from '../../users/users.services';
 import {CRMType} from '../../shared/models/crm-models.type';
-import {TWT} from '../../users/user.model';
+import {ListItems, TWT} from '../../users/user.model';
 import {ToTitleCaseKeys} from '../../shared/pipes/toTitleCase.pipe';
 import {ModelService} from '../../shared/services/model.service';
 import {QuestionBase} from '../base-question.class';
 import {FormControl, FormGroup} from '@angular/forms';
+import {List} from '../services/forms.service';
 
 //Todo take off collapses
 @Component({
@@ -13,79 +14,79 @@ import {FormControl, FormGroup} from '@angular/forms';
 	template: `
 		<!--//master-->
 		<div class="row">
-			<div *ngIf="parentCreate" >
-				<button class="btn btn-block" [routerLink]="['/create']">Add New</button>
-				<form-component [controls]="" [questions]=""></form-component>
+			<div>
 			</div>
 			<list-subheader class="col-xs-12" *ngIf="title">
-				<h4>{{title}}</h4>
+				<h1>{{title}}</h1>
 			</list-subheader>
 			<list-group *ngIf="dataReady" class="col-xs-12">
-				<div *ngFor="let model of listItems">
+				<div *ngFor="let entry of listItems.items">
 					<list-item-slide>
-						<slide-top (click)="slide ? onSelect('slide-close', model) : onSelect('slide-open', model)"
+						<slide-top (click)="slide ? onSelect('slide-close', entry) : onSelect('slide-open', entry)"
 								   class="swipe-box"
 								   ng-style="{'transform': 'rotate('+number+'deg)', '-webkit-transform': 'rotate('+number+'deg)', '-ms-transform': 'rotate('+number+'deg)'}"
-								   (pan)="panning($event, model)" (swipeLeft)="swipe($event.type, model)"
-								   (swipeRight)="swipe($event.type,  model)"
-								   [class.active]="selected?.id === model?.id"
+								   (pan)="panning($event, entry)" (swipeLeft)="swipe($event.type, entry)"
+								   (swipeRight)="swipe($event.type,  entry)"
+								   [class.active]="selected?.id === entry?.id"
 								   [class.option]="(optionOne || optionTwo) && !(optionOne && optionTwo)"
-								   [class.options]="optionOne && optionTwo">{{model.name}}
+								   [class.options]="optionOne && optionTwo">{{entry.name}}
 						</slide-top>
-						<slide-details-option (click)="onSelect('details')">
+						<slide-details-option (click)="action.emit('touched', {type: 'details-toggle', entry})">
 							<i class="glyphicon glyphicon-info-sign"></i>
 						</slide-details-option>
-						<slide-option *ngIf="optionTwo" (click)="onSelect('option-one', question)">
+						<slide-option *ngIf="optionTwo" (click)="action.emit('touched', {type: optionOne, entry})">
 							<b>{{optionTwo}}</b>
 						</slide-option>
-						<slide-option *ngIf="optionOne" (click)="onSelect('option-two', question)">
+						<slide-option *ngIf="optionOne" (click)="action.emit('touched', {type: optionTwo, entry})">
 							<b>{{optionOne}}</b>
 						</slide-option>
 					</list-item-slide>
 					<!--//details-->
-					<item-details *ngIf="!!details && selected.id === model.id">
-							<div *ngFor="let question of model.questions">
-								<div [formGroup]="detailsForm">
-									<input-component [label]="question.label" (onBlur)="blurrySave(model.id, question.key, $event)" [(model)]="question.value"></input-component>
-								</div>
+					<item-details *ngIf="!!details && selected.id === entry.id">
+						<div *ngFor="let question of entry.questions">
+							<div [formGroup]="detailsForm">
+								<input-component [label]="question.label"
+												 (onBlur)="blurrySave(entry.id, question.key, $event)"
+												 [(model)]="question.value"></input-component>
 							</div>
+						</div>
 					</item-details>
-				</div>
-			</list-group>
-			<list-group>
-				<div *ngFor="let subList of subLists" >
-					<button class="btn btn-block" (click)="showForm(subList.title)">Add New</button>
-					<form-component *ngIf="" [controls]="" [questions]=""  ></form-component>
+					<list-group *ngIf="!!listItems.subLists">
+						<h2>SubLists</h2>
+						<div *ngFor="let subList of listItems.subLists" >
+							{{subList.title}}
+							<list-component [createContext]="subList.title" *ngFor="let subList of listItems.subLists" [listItems]="subList.items" [controls]="subList.controls"></list-component>
+						</div>
+					</list-group>
 				</div>
 			</list-group>
 		</div>
-	`
+	`,
 })
 
 export class ListComponent implements OnInit, OnChanges {
 	public dataReady: boolean = false;
 	@Input()
+	public details: boolean = false;
+	@Input()
+	public createContext: string;
+	@Input()
 	public selected: CRMType = <CRMType>{};
 	@Input()
-	public subLists: any[];
-	@Input()
-	public listItems: QuestionBase<any>[] = <QuestionBase<any>[]>[];
+	public listItems: List = <List>{};
 	@Input()
 	public controls: {[name: string]:FormControl} = <{[name: string]:FormControl}>{};
 	@Input()
 	public title: string;
 	@Input()
-	public optionOne: string;
+	public optionOne?: string;
 	@Input()
-	public optionTwo: string;
+	public optionTwo?: string;
 	@Output()
-	public onOptionOne: EventEmitter<any> = new EventEmitter<any>();
-	@Output()
-	public onOptionTwo: EventEmitter<any> = new EventEmitter<any>();
+	public action: EventEmitter<any> = new EventEmitter<any>();
 	@Output()
 	public onSave: EventEmitter<any> = new EventEmitter<any>();
 	public slide: boolean = false;
-	public details: boolean = false;
 	public SWIPE_ACTION = {RIGHT: 'swipe-right', LEFT: 'swipe-left'};
 	public xVal: number;
 	public detailsForm: FormGroup;
@@ -118,14 +119,6 @@ export class ListComponent implements OnInit, OnChanges {
 				break;
 			case 'details-pressed':
 				this.details = !this.details;
-				break;
-			case 'option-one-pressed':
-				this.userServices.setTWTProp( model);
-				this.onOptionOne.emit(model);
-				break;
-			case 'option-two-pressed':
-				this.userServices.setTWTProp(model);
-				this.onOptionTwo.emit(model);
 				break;
 		}
 	}

@@ -1,18 +1,18 @@
 import {Component, OnDestroy, OnInit} from '@angular/core';
 import {UsersService} from '../users/users.services';
-import {TWT} from '../users/user.model';
+import {ListItems, TWT} from '../users/user.model';
 import {CRMType} from '../shared/models/crm-models.type';
 import {ActivatedRoute} from '@angular/router';
 import {SocketService} from '../shared/services/socket.service';
 import {Subscription} from 'rxjs/Subscription';
-import {List, QuestionService} from '../forms/services/question.service';
+import {List, FormsService} from '../forms/services/forms.service';
 
 @Component({
 	selector: 'view-edit-component',
 	template: `
 		<div *ngIf="twt.viewMode === 'list'">
 			<h1>{{twt.viewContext}}<small>by Angular Bros</small></h1>
-			<list-component [listItems]="twt.listItems" [selected]="twt.selected" [control]="twt.controls" (onSave)="onSaveProps($event)" [optionOne]=""></list-component>
+			<list-component [listItems]="twt.listItems.items" [selected]="twt.selected" [control]="twt.controls" (onSave)="onSaveProps($event)" [optionOne]=""></list-component>
 			<div class="container-fluid" >
 				<div class="row">
 					<div class="col-lg-12">
@@ -46,7 +46,7 @@ export class ViewEditComponent implements OnInit, OnDestroy{
 	public twtSub: Subscription;
 	constructor(
 				private socketService: SocketService,
-				private questionService: QuestionService,
+				private questionService: FormsService,
 				private userService: UsersService,
 				private activatedRoute: ActivatedRoute,
 	) {}
@@ -67,8 +67,9 @@ export class ViewEditComponent implements OnInit, OnDestroy{
 			this.userService.setTWTProp({viewContext: url[0].path});
 		});
 		this.initData().then((items: any[]) => {
-			let list = this.questionService.buildList(items);
-			list.subLists = this.buildSubLists(items);
+			let list = this.questionService.ListBuilder(items);
+			// list.subLists = ListItems[];
+			// list.subLists = this.buildSubLists(items);
 			this.userService.setTWTProp({listItems:items});
 			Object.assign(this.twt, list);
 			this.userService.setTWTProp(this.twt);
@@ -82,7 +83,7 @@ export class ViewEditComponent implements OnInit, OnDestroy{
 		for (let item of items) {
 			for(let key of Object.keys(item)) {
 				if (MODELS.indexOf(key) !== -1) {
-					response.push(this.questionService.buildList(item[key]));
+					response.push(this.questionService.ListBuilder(item[key]));
 				}
 			}
 		}
@@ -108,31 +109,14 @@ export class ViewEditComponent implements OnInit, OnDestroy{
 		let newList: CRMType[] = [];
 		this.socketService.responseSocket(this.socketEndpoint(this.twt.viewContext, 'set'), payload)
 			.subscribe(response => {
-			for (let item of this.twt.listItems) {
+			for (let item of this.twt.listItems.items) {
 				if (item.id && item.id === response.id) {
 					item = response;
 				}
 				newList.push(item);
 			}
-			this.userService.setTWTProp({listItems: newList});
+			this.userService.setTWTProp({listItems: {items:  newList}});
 		});
 	}
 
-	// public updateSubLists(current, usersService: UsersService, questionService:QuestionService): void {
-	// 	const MODELS = ['contacts', 'quotes', 'notes', 'companies'];
-	// 	let subList: SubList = <SubList>{};
-	// 	let subLists: any[] = [];
-	// 	for (let key of Object.keys(current)) {
-	// 		if (MODELS.indexOf(key) !== -1 ) {
-	// 			for(let model of current[key]) {
-	// 			Object.assign(subList,{items: model});
-	// 			}
-	// 			subList.items = this.questionService.initQuestions(subList.items);
-	// 			subList.controls = this.questionService.initControlsFromQuestions(subList.items);
-	// 			subLists.push(subList);
-	// 			subList = <SubList>{};
-	// 		}
-	// 	}
-	// 	usersService.setTWTProp({subLists: subLists})
-	// }
 }

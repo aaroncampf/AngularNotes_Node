@@ -25,36 +25,28 @@ main {
     padding-bottom: 35px;
   }
 
-  .glyphicon-cog:before {
-    font-size: 123px;
-    position: fixed;
-    right: -36px;
-    bottom: -41px;
-    z-index: 100;
-  //  font-size: 3em;
+  toast-container div#toast-container {
+    bottom: inherit;
+    top: 0 !important;
   }
-}
 
-toast-container div#toast-container {
-  bottom: inherit;
-  top: 0 !important;
-}
+  .toast-error {
+    background: #f51616;
+  }
 
-.toast-error {
-  background: #f51616;
-}
+  .toast-warning {
+    background: #f58e00;
+  }
 
-.toast-warning {
-  background: #f58e00;
-}
+  .toast-success {
+    background: #16d11c;
+  }
 
-.toast-success{
-  background: #16d11c;
 }
-
-@import 'side-panel';
-@import 'quote-details';
-@import 'quote';
-@import 'input';
-@import 'notes';
-@import '../shared/shared.styles';
+  @import './dashboard.scss';
+  @import 'side-panel';
+  @import 'quote-details';
+  @import 'quote';
+  @import 'input';
+  @import 'notes';
+  @import '../shared/shared.styles';

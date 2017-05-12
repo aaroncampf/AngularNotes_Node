@@ -3,18 +3,20 @@ import {QuestionBase} from '../forms/base-question.class';
 import {FormControl} from '@angular/forms';
 
 export interface TWT {
-	listItems?: any[];
-	subListGroups?: ListGroup[];
+	listItems?: ListItems;
 	viewContext?: string;
 	viewMode?: string;
 	selected?: CRMType;
 	questions?: QuestionBase<any>[];
 	controls?: {[name: string]: FormControl};
+	details?: boolean;
 }
 
-export interface ListGroup {
-	name: string;
-	list: any[];
+export interface ListItems {
+	items: any[];
+	controls: {[name: string]: FormControl};
+	title?: string;
+	sublists?: ListItems[];
 }
 
 export interface User extends _User {

@@ -3,18 +3,19 @@ import {FormGroup} from '@angular/forms';
 import {ToastsManager} from 'ng2-toastr';
 import {SocketService} from '../../shared/services/socket.service';
 import {TWT} from '../../users/user.model';
-import {QuestionService} from '../services/question.service';
+import {FormsService} from '../services/forms.service';
 import {UsersService} from '../../users/users.services';
-import {Router} from '@angular/router';
+import {ActivatedRoute, Router} from '@angular/router';
 import {ModelService} from '../../shared/services/model.service';
 import {Subscription} from 'rxjs/Subscription';
+import {CRMType} from '../../shared/models/crm-models.type';
 
 @Component({
-	selector: 'form-component',
+	selector: 'smart-form-component',
 	template: `
 	<div *ngIf="dataReady === true" [formGroup]="form">
 		<h1><small>CREATE</small>{{this.twt.viewContext.toUpperCase()}}</h1>
-		<div *ngFor="let question of models[0].questions" class="form-row">
+		<div *ngFor="let question of questions" class="form-row">
 			<input-component [label]="question.label" [control]="controls[question.key]" [(model)]="question.value"></input-component>
 		</div>
 		<div class="form-row">
@@ -39,20 +40,21 @@ export class SmartFormComponent implements OnInit, OnDestroy {
 	constructor(
 		private modelService: ModelService,
 		public toastr: ToastsManager,
-		private questionService: QuestionService,
+		private questionService: FormsService,
 		private socketService: SocketService,
 		private userServices: UsersService,
-		private router: Router
+		private router: Router,
 		){}
 
 	public ngOnInit(): void {
 		this.twtSub = this.userServices.userState$
 			.subscribe(twt => {
 				this.twt = twt;
-				this.models =  this.questionService.initQuestions([this.modelService.newModel(this.twt.viewContext)]);
-				this.controls = this.questionService.initControlsFromQuestions(this.models[0].questions);
+				this.questions =  this.questionService.QuestionsFactory([<CRMType>this.modelService.newModel(this.twt.viewContext)]).questions;
+				this.controls = this.questionService.ControlsFactory(this.questions);
 				this.form = new FormGroup(this.controls);
 				console.log('controls', this.controls, this.models);
+
 				this.dataReady = true;
 			});
 	}
@@ -71,7 +73,7 @@ export class SmartFormComponent implements OnInit, OnDestroy {
 				} else {
 					console.log('hit toastr');
 					this.toastr.success('Successfully Created!');
-					this.router.navigate([`/${this.twt.viewContext}`])
+					this.router.navigate([`/main`])
 				}
 		})
 	}

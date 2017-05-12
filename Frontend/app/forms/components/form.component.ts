@@ -25,8 +25,8 @@ export class FormComponent implements OnInit {
 		return `${this.parentContext}.create`
 	};
 
-	@Input()
-	public controls: {} = {};
+	// @Input()
+	// public controls: {} = {};
 	@Input()
 	public questions: any[] = [];
 	@Input()
@@ -40,7 +40,7 @@ export class FormComponent implements OnInit {
 		){}
 
 	public ngOnInit(): void {
-			this.form = new FormGroup(this.controls);
+			// this.form = new FormGroup(this.controls);
 			this.dataReady = true;
 	}
 

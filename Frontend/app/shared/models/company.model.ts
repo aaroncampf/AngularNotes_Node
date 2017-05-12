@@ -1,5 +1,6 @@
-import {CRMType} from './crm-models.type';
-export interface Company {
+import {_baseListItem} from './base-model.model';
+
+export interface Company extends _baseListItem{
 	id: string
 	name: string;
 	addressOne: string;

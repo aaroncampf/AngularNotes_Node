@@ -1,3 +1,4 @@
+import {_baseListItem} from './base-model.model';
 /**
  * Created by aaron on 3/14/2017.
  * edited by RD on 4/17/2017
@@ -7,7 +8,7 @@ export interface _Contact {
 	id?: string;
 }
 
-export interface Contact extends _Contact {
+export interface Contact extends _Contact, _baseListItem {
 	name: string;
 	phone: string;
 	email: string;

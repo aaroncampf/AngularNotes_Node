@@ -1,9 +1,10 @@
+import {_baseListItem} from './base-model.model';
 /**
  * Created by aaron on 3/14/2017.
  * edited by Rd
  */
 
-export interface Note {
+export interface Note extends _baseListItem{
 	id: string;
 	contactId: string;
 	name: string
