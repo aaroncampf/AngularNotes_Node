@@ -5,7 +5,7 @@ import {Action} from '../helpers/util';
 	template: `
 	<div class="row">
 		<small class="pull-right">Angular Bros <strong>CRM</strong></small>
-		<button [routerLink]="['/forms/create']" class="add btn btn-block" (click)="action.emit('CREATE_CONTEXT', {formContext: viewContext})">Add New {{viewContext}} </button>
+		<button [routerLink]="['/create']" class="add btn btn-block" (click)="action.emit('CREATE_CONTEXT', {formContext: viewContext})">Add New {{viewContext}} </button>
 		<h6 *ngIf="!!selected" class="pull-right" (click)="action.emit({type: 'NAVIGATE_DETAILS', payload: selected})"><strong>Current:</strong> {{selected.name}}</h6>
 		<div>
 			<i (click)="action.emit($emit)" class="glyphicon glyphicon-cog pull-right"></i>
