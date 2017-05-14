@@ -5,6 +5,7 @@ import {RouterModule, Routes} from '@angular/router';
 import {SharedModule} from '../shared/shared.module';
 import {UsersService} from './users.services';
 import {DynamicFormsModule} from '../forms/dynamic-forms.module';
+import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 
 const COMPONENTS = [
 	MyAccountComponent,
@@ -20,6 +21,8 @@ const ROUTES: Routes = [
 	],
 	imports: [
 		DynamicFormsModule,
+		FormsModule,
+		ReactiveFormsModule,
 		SharedModule,
 		CommonModule,
 		RouterModule.forChild(ROUTES)

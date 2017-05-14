@@ -1,9 +1,9 @@
 import {Injectable} from '@angular/core';
-import {newQuote} from '../models/quote.model';
-import {newCompany} from '../models/company.model';
-import {newContact} from '../models/contact.model';
-import {newNote} from '../models/note.model';
-import {CRMType} from '../models/crm-models.type';
+import {newQuote} from '../../main/models/quote.model';
+import {newCompany} from '../../main/models/company.model';
+import {newContact} from '../../main/models/contact.model';
+import {newNote} from '../../main/models/note.model';
+import {CRMType} from '../../main/models/crm-models.type';
 
 @Injectable()
 export class ModelService {

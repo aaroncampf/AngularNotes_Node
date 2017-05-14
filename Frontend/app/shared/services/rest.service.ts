@@ -1,6 +1,6 @@
 import {Injectable, OnInit} from '@angular/core';
 import {Http, RequestOptions, Headers, Response}from '@angular/http';
-import {CRMType} from '../models/crm-models.type';
+import {CRMType} from '../../main/models/crm-models.type';
 import {Observable} from 'rxjs/Observable';
 import 'rxjs/add/operator/map'
 import 'rxjs/add/operator/catch'

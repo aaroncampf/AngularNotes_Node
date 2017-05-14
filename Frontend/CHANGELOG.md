@@ -3,8 +3,13 @@
 
 ##unreleased
 
+##version 0.10.0 - 05/06/2017
+[code] created `dynamic-forms.module` and `WrittableStateTokenService` and `Store.Module`
+[refactor] upgraded twt into WritableStateToken and made a one data flow from smart components to structural components 
+[code] built `session.reducer`, `user.reducer`, `crm.reducer`
+[library] added implemented NGRX Store
 
-##version0.9.0 - 05/06/2017
+##version 0.9.0 - 05/06/2017
 [code] implemented `sockets-service` globally
 [refactor] TypeScript Writable Token syncd with data feeds and smart components and made to be PointOfTruth
 [code] `list.component` built and implemented with generics 

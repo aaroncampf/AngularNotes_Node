@@ -7,7 +7,6 @@ import {UsersService} from '../users/users.services';
 import {ToTitleCaseKeys} from './pipes/toTitleCase.pipe';
 import {DiamondLoaderComponent} from './animations/loading-screen.animation';
 import {ModelService} from './services/model.service';
-import {TWSTStore} from './typescript-writable-state-tokens/twst.component';
 
 const COMPONENTS = [
 	DiamondLoaderComponent,
@@ -32,7 +31,6 @@ const MODULES = [
 		RESTService,
 		UsersService,
 		ModelService,
-		TWSTStore
 	],
 	schemas: [
 		CUSTOM_ELEMENTS_SCHEMA

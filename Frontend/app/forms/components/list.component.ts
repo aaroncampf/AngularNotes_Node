@@ -1,12 +1,10 @@
 import {Component, EventEmitter, Input, OnChanges, OnInit, Output} from '@angular/core';
-import {UsersService} from '../../users/users.services';
-import {CRMType} from '../../shared/models/crm-models.type';
-import {ListItems, TWT} from '../../users/user.model';
+import {CRMType} from '../../main/models/crm-models.type';
 import {ToTitleCaseKeys} from '../../shared/pipes/toTitleCase.pipe';
 import {ModelService} from '../../shared/services/model.service';
-import {QuestionBase} from '../base-question.class';
 import {FormControl, FormGroup} from '@angular/forms';
 import {List} from '../services/forms.service';
+import {WritableStateTokenService} from '../../store/state-token/wst.service';
 
 //Todo take off collapses
 @Component({
@@ -31,13 +29,13 @@ import {List} from '../services/forms.service';
 								   [class.option]="(optionOne || optionTwo) && !(optionOne && optionTwo)"
 								   [class.options]="optionOne && optionTwo">{{entry.name}}
 						</slide-top>
-						<slide-details-option (click)="action.emit('touched', {type: 'details-toggle', entry})">
+						<slide-details-option (click)="(details = !details) && action.emit({type: 'SELECT_DETAILS', payload: entry})">
 							<i class="glyphicon glyphicon-info-sign"></i>
 						</slide-details-option>
-						<slide-option *ngIf="optionTwo" (click)="action.emit('touched', {type: optionOne, entry})">
+						<slide-option *ngIf="optionTwo" (click)="action.emit({type: 'SELECT_OPTION_TWO', payload: entry})">
 							<b>{{optionTwo}}</b>
 						</slide-option>
-						<slide-option *ngIf="optionOne" (click)="action.emit('touched', {type: optionTwo, entry})">
+						<slide-option *ngIf="optionOne" (click)="action.emit({type: 'SELECT_OPTION_ONE', payload: entry})">
 							<b>{{optionOne}}</b>
 						</slide-option>
 					</list-item-slide>
@@ -51,13 +49,13 @@ import {List} from '../services/forms.service';
 							</div>
 						</div>
 					</item-details>
-					<list-group *ngIf="!!listItems.subLists">
-						<h2>SubLists</h2>
-						<div *ngFor="let subList of listItems.subLists" >
-							{{subList.title}}
-							<list-component [createContext]="subList.title" *ngFor="let subList of listItems.subLists" [listItems]="subList.items" [controls]="subList.controls"></list-component>
-						</div>
-					</list-group>
+					<!--<list-group *ngIf="!!listItems.subLists">-->
+						<!--<h2>SubLists</h2>-->
+						<!--<div *ngFor="let subList of listItems.subLists" >-->
+							<!--{{subList.title}}-->
+							<!--<list-component [createContext]="subList.title" *ngFor="let subList of listItems.subLists" [listItems]="subList.items" [controls]="subList.controls"></list-component>-->
+						<!--</div>-->
+					<!--</list-group>-->
 				</div>
 			</list-group>
 		</div>
@@ -92,7 +90,7 @@ export class ListComponent implements OnInit, OnChanges {
 	public detailsForm: FormGroup;
 
 	constructor(
-		private userServices: UsersService,
+		private wstService: WritableStateTokenService,
 		public toTitleCase: ToTitleCaseKeys,
 		private modelService: ModelService,
 	) {};
@@ -110,11 +108,11 @@ export class ListComponent implements OnInit, OnChanges {
 		switch (type) {
 			case'slide-open':
 				this.slide = true;
-				this.userServices.setTWTProp({selected:  model});
+				this.wstService.setTWTProp({selected:  model});
 				this.modelService.selectedUpdate( model);
 				break;
 			case'slide-close':
-				this.userServices.setTWTProp({selected: {}});
+				this.wstService.setTWTProp({selected: {}});
 				this.slide = false;
 				break;
 			case 'details-pressed':
@@ -138,7 +136,7 @@ export class ListComponent implements OnInit, OnChanges {
 				break;
 			case'swiperight':
 				this.onSelect('slide-close', <CRMType>question);
-				this.userServices.setTWTProp(<TWT>{selected: {}});
+				this.wstService.setTWTProp({selected: {}});
 		}
 	}
 

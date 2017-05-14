@@ -1,37 +1,48 @@
-import {Component, NgZone, OnInit, ViewContainerRef} from '@angular/core';
+import {Component, NgZone, OnDestroy, OnInit, ViewContainerRef} from '@angular/core';
 import {ToastsManager} from 'ng2-toastr/ng2-toastr';
 import '../styles/main.scss';
-import {UsersService, } from '../users/users.services';
-import {FIXTURE_USER_ID} from '../shared/models/FIXTURE_ID';
-import {Subscription} from 'rxjs/Subscription';
-import {TWT} from '../users/user.model';
+import {UsersService,} from '../users/users.services';
+import {FIXTURE_USER_ID} from './models/FIXTURE_ID';
 import {Router} from '@angular/router';
-import {TWSTStore} from '../shared/typescript-writable-state-tokens/twst.component';
-import {Observable} from 'rxjs/Observable';
+import {Store} from '@ngrx/store';
+import {SocketService} from '../shared/services/socket.service';
+import {User} from '../users/user.model';
+import 'rxjs/rx';
+import {Subscription} from 'rxjs/Subscription';
+import {Session} from '../store/reducers/session.reducer';
+import {FormsService} from '../forms/services/forms.service';
+import {StateProjections} from '../store/reducers/state.projector';
+import {WST, WST_INITIAL_STATE} from '../store/state-token/wst.model';
+import {WritableStateTokenService} from '../store/state-token/wst.service';
 
 @Component({
 	selector: 'main',
 	template: `
-	<div class="container">
-		<div *ngIf="!!MOBILE">
-			<m-dashboard-component (toggleMenu)="actionsDispatch($event)" (newTouched)="actionsDispatch($event)" [viewContext]="twt.viewContext"></m-dashboard-component>			
-			<!--<mobile-navigation-component></mobile-navigation-component>-->
-			<router-outlet></router-outlet>
-			<side-menu [twtRef]="twst.ui | async" (action)="actionsDispatch($event)"></side-menu>
+		<div class="container">
+			<div *ngIf="!!MOBILE">
+				<mobile-dashboard-component (toggleMenu)="action($event)" (action)="action($event)"
+											[viewContext]='wst.viewContext'></mobile-dashboard-component>
+				<router-outlet></router-outlet>
+				<side-menu [details]="wst.details" *ngIf="wst.listItems?.controls" [selected]="wst.selected"
+						   [listItems]="wst.listItems" [formContext]="wst.viewContext"
+						   [controls]="wst.listItems?.controls" (action)="action($event)"></side-menu>
+			</div>
+			<div *ngIf="!MOBILE">
+				<h1>Wide dashboard coming soon</h1>
+				<h1>nav</h1>
+				<h1 class="pull-left">side-panel</h1>
+				<router-outlet name="wide-screen"></router-outlet>
+			</div>
 		</div>
-		<div *ngIf="!MOBILE">
-			<h1>Wide dashboard coming soon</h1>
-			<h1>nav</h1>
-			<h1 class="pull-left">side-panel</h1>
-		<router-outlet name="wide-screen"></router-outlet>
-		</div>
-	</div>
 	`,
-	})
+})
 
-export class MainComponent implements OnInit {
+export class MainComponent implements OnInit, OnDestroy {
 	private windowWidth: number = void 0;
-	public state: TWSTStore = <{}>{};
+	public wstSub: Subscription = new Subscription();
+	public storeSub: Subscription = new Subscription();
+	public wst: WST = <WST>WST_INITIAL_STATE;
+
 	public get MOBILE(): boolean {
 		return this.windowWidth < 768;
 	}
@@ -40,52 +51,107 @@ export class MainComponent implements OnInit {
 				public router: Router,
 				public vcr: ViewContainerRef,
 				public ngZone: NgZone,
-				private twstService: TWSTStore,
-				private twst: Observable<any>,
-				private userServices: UsersService,) {
+				private wstService: WritableStateTokenService,
+				private formsService: FormsService,
+				private socketService: SocketService,
+				private _store: Store<Session>,
+				private userServices: UsersService,
+				private state: StateProjections) {
 		this.toastr.setRootViewContainerRef(vcr);
+	}
+
+	public ngOnDestroy(): void {
+		this.storeSub.unsubscribe();
+		this.wstSub.unsubscribe();
 	}
 
 	public ngOnInit(): void {
 		this.detectWindowSize();
-		this.initializeUserState();
-		this.twst = this.twstService.twst;
-		// this.twst.ui = this.twst.;
+		//todo Subscribe to state and events
+		this.wstSub = this.wstService.userState$.subscribe(wst => this.wst = wst);
+		this.storeSub = this._store.subscribe((res: any) => {
+			console.log('store hit', res);
+			if (!Array.isArray(res)) {
+				if (Object.keys(res)[0] === 'crm') {
+					console.log('store hit crm', res);
+					this.state.setState('crm', this._store);
+				}
+				if (Object.keys(res)[0] === 'user') {
+					console.log('store hit user', res);
+					this.state.setState('user', this._store);
+				}
+				if (Object.keys(res)[0] === 'session') {
+
+					console.log('store hit session', res);
+					this.state.setState('session', this._store);
+				}
+			} else {
+				for (let cat of res) {
+					for (let key of Object.keys[cat])
+						this.state.setState(key, this._store);
+				}
+			}
+		});
+
+	//todo INIT Chain
+	this.initializeUserState()
+		.then(user => {
+			this._store.dispatch({
+				type: 'USER_LOGGED_IN',
+				payload: user
+			});
+			this.state.setState('user', this._store);
+			this.socketService.responseSocket('comapanies.get', {}).subscribe(res => {
+				this.wstService.setTWTProp(Object.assign(this.wst, {crm: {companies: res}}));
+				this.socketService.responseSocket('contacts.get', {}).subscribe(contacts => {
+					this.socketService.responseSocket('notes.get', {}).subscribe(res => {
+						this.wstService.setTWTProp(Object.assign(this.wst, {crm: {companies: res}}));
+						this.socketService.responseSocket('quotes.get', {}).subscribe(contacts => {
+
+						})
+					});
+				})
+			});
+			//todo init Forms and Lists
+			//todo fix: reversed state and event
+			this.state.setState('session', this._store);
+		});
 	}
 
-	public actionsDispatch(action: string, payload: any): void {
+	// private buildListAndFormData(models): void{
+	// 	console.log('crm hit', models);
+	// 	for (let key of models){
+	// 		console.log('crm', models[models.key]);
+	// 		const payload = this.formsService.ListBuilder(models[models.key]);
+	// 		this._store.dispatch({type: 'FORM_LIST_BUILD', payload: payload});
+	// 	}
+	// }
 
-		switch(action) {
-			case'menuToggle':
-			case'newcompanies':
-				this.router.navigate(['/forms/create']);
-			case'touched':
-				this.twstService.reduceToState({type: action, payload: payload});
-			case'swiped-left':
-				this.twstService.reduceToState({type: action.split('-')[0], payload: payload});
-			case'swiped-right':
-				this.twstService.reduceToState({type: action.split('-')[0], payload: payload});
-			case'entered':
-		}
-	}
+	// private initializeCRMTypes(socketService: SocketService, endPoints: string[]): Promise<CRMType[]> {
+	// 	return new Promise((resolve) => {
+	// 		let responses = [];
+	// 		for(let endPoint of endPoints){
+	// 			socketService.responseSocket(endPoint, {}).subscribe(response => {
+	// 				const action: string = endPoint.split('.')[0].toUpperCase().concat('_GET');
+	// 				console.log('action',action);
+	// 				this._store.dispatch({type: action, payload: {updated: action.toLowerCase().split('_')[0], [action.split('_')[0].toLowerCase()]: response}})
+	// 				this.state.setState('crm', this._store);
+	// 				// this.wstService.setTWTProp({listItems:this.formsService.ListBuilder(response)});
+	// 				// responses.push(response);
+	// 			});
+	// 		}
+	// 		resolve(responses);
+	// 	}).catch(err => this.toastr.error('Oh No! There was an error getting data.  ' + err))
+	// }
 
-
-	private stateReducer(): void {
-		// Object.assign(this.twt, this.twt.
-	}
-
-
-
-	private initializeUserState(): void {
+	private initializeUserState(): Promise<User> {
 		//todo login or register
-		this.userServices.tokenFactory().then(token => {
-			this.userServices.setTWTProp(token);
+		return new Promise((resolve, reject) => {
 			this.userServices.getCurrentUserData(FIXTURE_USER_ID)
-				.subscribe(user => {
-					this.userServices.setTWTProp({user: user});
-				});
+				.subscribe((user: User) => {
+					resolve(user);
+				}, error => reject(error))
 		})
-		// update twt with user info
 	}
 
 	private detectWindowSize(): void {
@@ -94,7 +160,19 @@ export class MainComponent implements OnInit {
 			this.ngZone.run(() => {
 				this.windowWidth = window.innerWidth;
 			})
-		};
+		}
+	}
 
+	public action(event): void {
+		switch (event.type) {
+			case('SIDE_MENU_TOGGLE'):
+				this._store.dispatch({type: event.type, payload: event.payload});
+				break;
+			case('CREATE_CONTEXT'):
+				this._store.dispatch({type: event.type, payload: event.payload});
+				break;
+		}
 	}
 }
+
+

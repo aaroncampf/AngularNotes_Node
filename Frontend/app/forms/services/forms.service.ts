@@ -1,7 +1,7 @@
 import {Injectable} from '@angular/core';
 import {FormControl, Validators} from '@angular/forms';
 import {REPLACMENT_LABELS, REQUIRED, RESTRICTED_KEYS} from '../settings/dynamic-forms.config';
-import {ListItems} from '../../users/user.model';
+import {ListItems} from '../../store/state-token/wst.model';
 
 export interface ListControls {
 	[name: string]: FormControl;
@@ -29,21 +29,23 @@ export class FormsService {
 		return key;
 	}
 
-
-	public ListBuilder(models: {}[]): List {
-			let list: List = <List>this.QuestionsFactory(models);
+	public ListBuilder(models: any[] = []): List {
+		console.log('FORMS !!! hit', models);
+			let list: List;
+			list = this.QuestionsFactory(models);
 			list.controls = this.ControlsFactory(list.questions);
 			list.subLists = this.buildSubLists(list);
 		return list;
 	}
 
-	public QuestionsFactory(models: {}[]): List {
+	public QuestionsFactory(models: any[] = []): List {
+			console.log('hit', models);
 		let list:List = <List>{};
-
 		if(Array.isArray(models)) {
+		console.log('forms models',models);
 			// todo refactor select condition
 			let questions: any[] = [];
-			if(models && models.length > 0) {
+			if(!!models) {
 				list.items = models;
 				for (let model of models) {
 					for (let key of Object.keys(model)) {
@@ -73,7 +75,6 @@ export class FormsService {
 	public ControlsFactory(questions: any ): {[name: string]: FormControl} {
 		let group: { [name: string]: FormControl} = {};
 		for(let item of questions) {
-
 			//todo Controls Assignments
 				Object.assign(group, {[item.key]: item.required
 					? new FormControl(item.key || '', Validators.required)
@@ -82,7 +83,6 @@ export class FormsService {
 		}
 		return group;
 	}
-
 
 	public buildSubLists(list: List): ListItems[] {
 		const MODELS = ['contacts', 'quotes', 'notes', 'companies'];
