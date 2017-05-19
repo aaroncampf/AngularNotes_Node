@@ -1,27 +1,28 @@
-import {Component, EventEmitter, Input, Output} from '@angular/core';
-import {Action} from '../helpers/util';
+import {Component, EventEmitter, Input, OnChanges, Output,} from '@angular/core';
+import {CRMState, STATE_INITIAL_STATE} from '../../store/models/state.model';
+
 @Component({
 	selector: 'mobile-dashboard-component',
 	template: `
-	<div class="row">
+	<div class="row" *ngIf="state$.dataReady">
 		<small class="pull-right">Angular Bros <strong>CRM</strong></small>
-		<button [routerLink]="['/create']" class="add btn btn-block" (click)="action.emit('CREATE_CONTEXT', {formContext: viewContext})">Add New {{viewContext}} </button>
-		<h6 *ngIf="!!selected" class="pull-right" (click)="action.emit({type: 'NAVIGATE_DETAILS', payload: selected})"><strong>Current:</strong> {{selected.name}}</h6>
+		<button [routerLink]="['/create']" class="add btn btn-block" (click)="action.emit('CREATE_CONTEXT', {formContext: state$.viewContext})">Add New {{state$.viewContext}} </button>
+		<h6 *ngIf="!!state$.focused" class="pull-right" (click)="action.emit({type: 'NAVIGATE_DETAILS', payload: {selected: state$.selected}})"><strong>Current:</strong> {{state$.selected.name}}</h6>
 		<div>
-			<i (click)="action.emit($emit)" class="glyphicon glyphicon-cog pull-right"></i>
+			<i (click)="action.emit({type: 'MY_ACCOUNT_TOGGLE', payload: {}})" class="glyphicon glyphicon-cog pull-right"></i>
 		</div>
-		<button class="back pull-left btn btn-lg" (click)="toggleMenu.emit({type: 'SIDE_MENU_TOGGLE', payload: {}})">Menu</button>
+		<button class="back pull-left btn btn-lg" (click)="action.emit({type: 'SIDE_MENU_TOGGLE', payload: {}})">Menu</button>
 	</div>
 	`
 })
 
-export class MobileDashboardComponent {
+export class MobileDashboardComponent implements OnChanges {
 	@Input()
-	public viewContext;
-	@Input()
-	public selected;
+	public state$: CRMState = <CRMState>STATE_INITIAL_STATE;
 	@Output()
-	public toggleMenu: EventEmitter<string> = new EventEmitter<string>();
-	@Output()
-	public action: EventEmitter<Action> = new EventEmitter<Action>();
+	public action: EventEmitter<any> = new EventEmitter<any>();
+
+	public ngOnChanges(): void {
+		console.log('changed');
+	}
 }

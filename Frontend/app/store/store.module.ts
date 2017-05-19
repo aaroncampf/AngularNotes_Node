@@ -1,27 +1,24 @@
 import {NgModule} from '@angular/core';
-import {SessionReducer} from './reducers/session.reducer';
-
-const COMPONENTS = [
-
-];
-
-const MODULES = [
-
-]
+import {StateService} from './service/state.service';
+import {crmReducer, userReducer, engagementsReducer} from './reducers/action.reducer';
+import {StoreModule as NGStoreModule} from '@ngrx/store';
 
 @NgModule({
 	declarations: [
-		COMPONENTS
+
 	],
 	providers: [
-		SessionReducer
+		StateService,
 	],
 	imports: [
-		MODULES
+		NGStoreModule.provideStore({
+			'crm': crmReducer,
+			'user': userReducer,
+			'engagements': engagementsReducer
+		})
 	],
 	exports: [
-		COMPONENTS
 	]
 })
 
-export class StoreModule {}
+export class CRMStoreModule {}

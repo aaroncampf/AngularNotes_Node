@@ -3,23 +3,25 @@ import {CRMType} from '../../models/crm-models.type';
 import {Company} from '../../models/company.model';
 import {ModelService} from '../../../shared/services/model.service';
 import {SocketService} from '../../../shared/services/socket.service';
-import {FormControl, FormGroup} from '@angular/forms';
+import {FormGroup} from '@angular/forms';
+import {RDCache} from '../../../store/models/typescript-cache.model';
+import {CRMState} from '../../../store/models/state.model';
 
 @Component({
 	selector: 'side-menu',
 	template: `
-	<div [formGroup]="form">
+	<div *ngIf="formReady" [formGroup]="form">
 		<div class="row">
 			<strong>Company Select</strong>
 		</div>
-		<select ([ngSelect])="model">
-			<option *ngFor="let company of companies" >{{company.name}}</option>
+		<select class="form-control" [(ngModel)]="select">
+			<option *ngFor="let company of rdc.companiesList.items" [ngValue]="company.key" >{{company.name}}</option>
 		</select><i class="glyphicon glyphicon-plus-sign" (click)="newCompany()"></i>
-		<input-component [model]="model.name" [control]="controls['name']" label="Name"></input-component>
-		<input-component [model]="model.addressOne" [control]="controls['addressOne']" label="Address"></input-component>
-		<input-component [model]="model.city" [control]="controls['city']" label="City"></input-component>
-		<input-component [model]="model.zipCode" [control]="controls['zipCode']" label="Zip Code"></input-component>
-		<input-component [model]="model.phone" [control]="controls['phone']" label="Phone"></input-component>
+		<input-component [model]="model.name" [control]="rdc.companiesList.controls['name']" label="Name"></input-component>
+		<input-component [model]="model.addressOne" [control]="rdc.companiesList.controls['addressOne']" label="Address"></input-component>
+		<input-component [model]="model.city" [control]="rdc.companiesList.controls['city']" label="City"></input-component>
+		<input-component [model]="model.zip" [control]="rdc.companiesList.controls['zip']" label="Zip Code"></input-component>
+		<input-component [model]="model.phone" [control]="rdc.companiesList.controls['phone']" label="Phone"></input-component>
 		<div class="row">
 			<notes-label class="col-xs-4"><strong>≈Misc.</strong></notes-label>
 			<notes-view class="col-xs-8">
@@ -34,30 +36,24 @@ import {FormControl, FormGroup} from '@angular/forms';
 })
 
 export class SideMenuComponent implements OnChanges {
+	@Input()
+	public state$: CRMState = <CRMState>{};
+	@Input()
+	public rdc: RDCache = <RDCache>{};
+	@Output()
+	public action: EventEmitter<{}> = new EventEmitter<{}>();
+	public select: string = null;
 	public model: Company = <Company>{};
 	public formReady: boolean = false;
 	public form: FormGroup;
-	@Input()
-	public details: boolean = false;
-	@Input()
-	public companies?: any = <any>{};
-	@Input()
-	public contacts?: any = <any>{};
-	@Input()
-	public controls: {[name:string]: FormControl} = <{[name:string]: FormControl}>{};
-	@Input()
-	public formContext: string;
-	@Input()
-	public selected: CRMType;
-	@Output()
-	public action: EventEmitter<{}> = new EventEmitter<{}>();
 	constructor(private modelService: ModelService, private socketService: SocketService){}
 
 	public ngOnChanges(simpleChanges: SimpleChanges): void {
+		console.log('OnChanges', simpleChanges);
 		for(let key of Object.keys(simpleChanges)) {
-			if ( key === 'controls' ) {
-				console.log(simpleChanges[key]);
-				this.form = new FormGroup(this.controls);
+			if ( key === 'rdc' && simpleChanges[key].currentValue !== (void 0)) {
+				console.log('currentValue', key, simpleChanges[key].currentValue);
+				this.form = new FormGroup(this.rdc.companiesList.controls);
 				this.formReady = true;
 			}
 		}

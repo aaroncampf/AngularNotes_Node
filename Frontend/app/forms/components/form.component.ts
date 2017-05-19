@@ -7,15 +7,21 @@ import {Router} from '@angular/router';
 @Component({
 	selector: 'form-component',
 	template: `
-	<div *ngIf="dataReady === true" [formGroup]="form">
-		<h1><small>CREATE</small>{{this.twt.viewContext.toUpperCase()}}</h1>
-		<div *ngFor="let question of models[0].questions" class="form-row">
-			<input-component [label]="question.label" [control]="controls[question.key]" [(model)]="question.value"></input-component>
+		<div *ngIf="dataReady === true" [formGroup]="form">
+			<h1>
+				<small>CREATE</small>
+				{{this.tc.viewContext.toUpperCase()}}
+			</h1>
+			<div *ngFor="let question of models[0].questions" class="form-row">
+				<input-component [label]="question.label" [control]="controls[question.key]"
+								 [(model)]="question.value"></input-component>
+			</div>
+			<div class="form-row">
+				<button (click)="onSubmit(form.value)" class="btn btn-lg" role="button" type="submit"
+						[disabled]="form.invalid" [class.disabled]="form.invalid">Create
+				</button>
+			</div>
 		</div>
-		<div class="form-row">
-			<button (click)="onSubmit(form.value)" class="btn btn-lg" role="button" type="submit" [disabled]="form.invalid" [class.disabled]="form.invalid">Create</button>
-		</div>
-	</div>
 	`,
 })
 

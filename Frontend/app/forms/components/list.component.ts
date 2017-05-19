@@ -4,7 +4,8 @@ import {ToTitleCaseKeys} from '../../shared/pipes/toTitleCase.pipe';
 import {ModelService} from '../../shared/services/model.service';
 import {FormControl, FormGroup} from '@angular/forms';
 import {List} from '../services/forms.service';
-import {WritableStateTokenService} from '../../store/state-token/wst.service';
+import {StateService} from '../../store/service/state.service';
+import {RDCache} from '../../store/models/typescript-cache.model';
 
 //Todo take off collapses
 @Component({
@@ -90,13 +91,12 @@ export class ListComponent implements OnInit, OnChanges {
 	public detailsForm: FormGroup;
 
 	constructor(
-		private wstService: WritableStateTokenService,
+		private TwtService: StateService,
 		public toTitleCase: ToTitleCaseKeys,
 		private modelService: ModelService,
 	) {};
 
-	public ngOnInit(): void {
-	}
+	public ngOnInit(): void {}
 
 	public ngOnChanges(): void {
 		this.detailsForm = new FormGroup(this.controls);
@@ -108,11 +108,11 @@ export class ListComponent implements OnInit, OnChanges {
 		switch (type) {
 			case'slide-open':
 				this.slide = true;
-				this.wstService.setTWTProp({selected:  model});
+				this.TwtService.setTCProp({selected:  model});
 				this.modelService.selectedUpdate( model);
 				break;
 			case'slide-close':
-				this.wstService.setTWTProp({selected: {}});
+				this.TwtService.setTCProp({selected: {}});
 				this.slide = false;
 				break;
 			case 'details-pressed':
@@ -136,7 +136,7 @@ export class ListComponent implements OnInit, OnChanges {
 				break;
 			case'swiperight':
 				this.onSelect('slide-close', <CRMType>question);
-				this.wstService.setTWTProp({selected: {}});
+				this.TwtService.setTCProp({selected: {}});
 		}
 	}
 

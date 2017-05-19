@@ -1,6 +1,6 @@
 // import {Component, OnDestroy, OnInit} from '@angular/core';
 // import {UsersService} from '../users/users.services';
-// import {ListItems, TWT} from '../users/user.model';
+// import {ListItems, RDCache} from '../users/user.model';
 // import {CRMType} from './models/crm-models.type';
 // import {ActivatedRoute} from '@angular/router';
 // import {SocketService} from '../shared/services/socket.service';
@@ -12,7 +12,7 @@
 // 	template: `
 // 		<div *ngIf="twt.viewMode === 'list'">
 // 			<h1>{{twt.viewContext}}<small>by Angular Bros</small></h1>
-// 			<list-component [listItems]="twt.listItems.items" [selected]="twt.selected" [control]="twt.controls" (onSave)="onSaveProps($event)" [optionOne]=""></list-component>
+// 			<list-component [listItems]="tc.listItems.items" [selected]="tc.selected" [control]="tc.controls" (onSave)="onSaveProps($event)" [optionOne]=""></list-component>
 // 			<div class="container-fluid" >
 // 				<div class="row">
 // 					<div class="col-lg-12">
@@ -42,7 +42,7 @@
 // })
 //
 // export class ViewEditComponent implements OnInit, OnDestroy{
-// 	private twt: TWT = <TWT>{};
+// 	private twt: RDCache = <RDCache>{};
 // 	public twtSub: Subscription;
 // 	constructor(
 // 				private socketService: SocketService,
@@ -57,20 +57,20 @@
 //
 // 	public ngOnInit(): void {
 // 		this.twtSub = this.userService.userState$
-// 			.subscribe((twt: TWT) => {
-// 			if (this.twt.selected !==  twt.selected) {
-// 				this.twt = twt;
+// 			.subscribe((twt: RDCache) => {
+// 			if (this.tc.selected !==  tc.selected) {
+// 				this.tc = tc;
 // 			}
 // 		});
-// 		this.userService.setTWTProp({viewMode: 'list'});
+// 		this.userService.setTCProp({viewMode: 'list'});
 // 		this.activatedRoute.url.subscribe(url => {
-// 			this.userService.setTWTProp({viewContext: url[0].path});
+// 			this.userService.setTCProp({viewContext: url[0].path});
 // 		});
 // 		this.initData().then((items: any[]) => {
 // 			// let list = this.questionService.ListBuilder(items);
-// 			// this.userService.setTWTProp({listItems:items});
+// 			// this.userService.setTCProp({listItems:items});
 // 			// Object.assign(this.twt, list);
-// 			// this.userService.setTWTProp(this.twt);
+// 			// this.userService.setTCProp(this.twt);
 // 		})
 //
 // 	}
@@ -100,7 +100,7 @@
 // 				}
 // 				newList.push(item);
 // 			}
-// 			this.userService.setTWTProp({listItems: {items:  newList}});
+// 			this.userService.setTCProp({listItems: {items:  newList}});
 // 		});
 // 	}
 //

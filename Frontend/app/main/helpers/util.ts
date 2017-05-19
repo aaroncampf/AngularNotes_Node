@@ -1,15 +1,15 @@
-const typeCache: {[label: string]: boolean} = {};
-
-export function type<T>(label:T | ''): T {
-	if (typeCache[<string>label]) {
-		throw new Error(`Action type ${label} is not unique`)
-	}
-	typeCache[<string>label] = true;
-
-	return<T>label;
-}
-
-export interface Action {
-	type: string;
-	payload?: any;
-}
+// const typeCache: {[label: string]: boolean} = {};
+//
+// export function type<T>(label:T | ''): T {
+// 	if (typeCache[<string>label]) {
+// 		throw new Error(`Action type ${label} is not unique`)
+// 	}
+// 	typeCache[<string>label] = true;
+//
+// 	return<T>label;
+// }
+//
+// export interface Action {
+// 	type: string;
+// 	payload?: any;
+// }

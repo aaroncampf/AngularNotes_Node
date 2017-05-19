@@ -1,7 +1,6 @@
 import {Injectable} from '@angular/core';
 import {FormControl, Validators} from '@angular/forms';
 import {REPLACMENT_LABELS, REQUIRED, RESTRICTED_KEYS} from '../settings/dynamic-forms.config';
-import {ListItems} from '../../store/state-token/wst.model';
 
 export interface ListControls {
 	[name: string]: FormControl;
@@ -14,6 +13,14 @@ export interface List {
 	groupName?: string;
 	title?: string;
 	subLists?: ListItems[];
+}
+
+export interface ListItems {
+	items: ListItems[];
+	controls: {[name: string]: FormControl};
+	questions: any[];
+	title: string;
+	key: string;
 }
 
 @Injectable()
@@ -30,7 +37,6 @@ export class FormsService {
 	}
 
 	public ListBuilder(models: any[] = []): List {
-		console.log('FORMS !!! hit', models);
 			let list: List;
 			list = this.QuestionsFactory(models);
 			list.controls = this.ControlsFactory(list.questions);
@@ -39,10 +45,8 @@ export class FormsService {
 	}
 
 	public QuestionsFactory(models: any[] = []): List {
-			console.log('hit', models);
 		let list:List = <List>{};
 		if(Array.isArray(models)) {
-		console.log('forms models',models);
 			// todo refactor select condition
 			let questions: any[] = [];
 			if(!!models) {
