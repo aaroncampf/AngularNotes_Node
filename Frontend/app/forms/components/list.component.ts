@@ -65,8 +65,8 @@ import {RDCache} from '../../store/models/typescript-cache.model';
 
 export class ListComponent implements OnInit, OnChanges {
 	public dataReady: boolean = false;
-	@Input()
-	public details: boolean = false;
+	// @Input()
+	public details: boolean = true;
 	@Input()
 	public createContext: string;
 	@Input()

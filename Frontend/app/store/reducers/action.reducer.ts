@@ -1,21 +1,22 @@
-import {Action} from '@ngrx/store';
+import {Action, INITIAL_STATE} from '@ngrx/store';
 import {CRMState, STATE_INITIAL_STATE} from '../models/state.model';
 import 'rxjs/add/operator/scan'
 import {Observable} from 'rxjs/Observable';
 
 function currentState(states) {
 	console.log(states);
-	let lastIndex = states.length - 1;
-	return states[lastIndex];
-	// Observable.from(states).scan((acc, state) => {
-	// 	return Object.assign({}, acc, state);
-	// }, STATE_INITIAL_STATE).subscribe((response: any) => {
-	// 	 return response;
-	// });
+	// let lastIndex = states.length - 1;
+	// return states[lastIndex];
+	Observable.from(states).scan((acc, state) => {
+		return Object.assign({}, acc, state);
+	}, STATE_INITIAL_STATE).subscribe((response: any) => {
+		 return response;
+	});
 };
 
-export const engagementsReducer = (states: CRMState[] = [], action: Action) => {
-	let state = currentState(states);
+export const reducer = (states: CRMState[] = [STATE_INITIAL_STATE], action: Action) => {
+	let lastIndex = states.length - 1;
+	let state =  states[lastIndex];
 	switch (action.type) {
 		// Options
 		case 'OPTIONS_TOGGLE':
@@ -27,14 +28,6 @@ export const engagementsReducer = (states: CRMState[] = [], action: Action) => {
 			return states.concat(Object.assign(state, {
 				sideMenu: !state.sideMenu,
 			}));
-		default:
-			return states;
-	}
-};
-
-export const crmReducer = (states: CRMState[] = [], action: Action) => {
-	let state = currentState(states);
-	switch (action.type) {
 		case 'OPTIONS_DOWNLOAD':
 			return states.concat(Object.assign(state, {
 				errorMessage: null
@@ -290,9 +283,6 @@ export const crmReducer = (states: CRMState[] = [], action: Action) => {
 				loading: false,
 				errorMessage: 'Could not update Quote'
 			}));
-
-//todo NOTES
-
 		case'NOTES_UNSELECTED':
 			return states.concat(Object.assign(state, {
 				noteSelected: false
@@ -370,15 +360,6 @@ export const crmReducer = (states: CRMState[] = [], action: Action) => {
 				loading: false,
 				errorMessage: 'Could not update Note'
 			}));
-		default:
-			return states;
-	}
-};
-
-export const userReducer = (states: CRMState[] = [], action: Action) => {
-	let state = currentState(states);
-	switch (action.type) {
-
 		case'USER_LOG_IN':
 			return states.concat(Object.assign(state, {
 				loading: true,

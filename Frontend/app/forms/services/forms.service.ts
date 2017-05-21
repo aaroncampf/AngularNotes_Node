@@ -1,6 +1,7 @@
 import {Injectable} from '@angular/core';
 import {FormControl, Validators} from '@angular/forms';
 import {REPLACMENT_LABELS, REQUIRED, RESTRICTED_KEYS} from '../settings/dynamic-forms.config';
+import {StateService} from '../../store/service/state.service';
 
 export interface ListControls {
 	[name: string]: FormControl;
@@ -25,7 +26,7 @@ export interface ListItems {
 
 @Injectable()
 export class FormsService {
-	constructor(){}
+	constructor(private stateService: StateService){}
 
 	private labelMaker(key, replacmentLabels): string {
 		for (let item of replacmentLabels){
@@ -36,12 +37,15 @@ export class FormsService {
 		return key;
 	}
 
-	public ListBuilder(models: any[] = []): List {
-			let list: List;
+	public ListBuilder(models: any[] = []): Promise<List> {
+		this.stateService.dispatch('FORM_DATA_BUILD', {});
+		return new Promise((resolve) => {
+		let list: List;
 			list = this.QuestionsFactory(models);
 			list.controls = this.ControlsFactory(list.questions);
 			list.subLists = this.buildSubLists(list);
-		return list;
+		resolve(list);
+		})
 	}
 
 	public QuestionsFactory(models: any[] = []): List {

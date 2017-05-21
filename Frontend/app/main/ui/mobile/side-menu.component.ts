@@ -14,22 +14,21 @@ import {CRMState} from '../../../store/models/state.model';
 		<div class="row">
 			<strong>Company Select</strong>
 		</div>
-		<select class="form-control" [(ngModel)]="select">
-			<option *ngFor="let company of rdc.companiesList.items" [ngValue]="company.key" >{{company.name}}</option>
-		</select><i class="glyphicon glyphicon-plus-sign" (click)="newCompany()"></i>
-		<input-component [model]="model.name" [control]="rdc.companiesList.controls['name']" label="Name"></input-component>
-		<input-component [model]="model.addressOne" [control]="rdc.companiesList.controls['addressOne']" label="Address"></input-component>
-		<input-component [model]="model.city" [control]="rdc.companiesList.controls['city']" label="City"></input-component>
-		<input-component [model]="model.zip" [control]="rdc.companiesList.controls['zip']" label="Zip Code"></input-component>
-		<input-component [model]="model.phone" [control]="rdc.companiesList.controls['phone']" label="Phone"></input-component>
 		<div class="row">
-			<notes-label class="col-xs-4"><strong>≈Misc.</strong></notes-label>
+			<select class="form-control" [(ngModel)]="selected" [ngModelOptions]="{standalone: true}">
+				<option *ngFor="let company of rdc.companiesList.items" [ngValue]="company" >{{company.name}}</option>
+			</select>
+			<i class="glyphicon glyphicon-plus-sign" (click)="newCompany()"></i>
+		</div>
+		<input-component *ngFor="let question of rdc.companiesList.questions" [model]="selected[question.key]" [label]="question.label" [control]="form.controls[key]"></input-component>
+		<div class="row">
+			<notes-label class="col-xs-4"><strong>Misc.</strong></notes-label>
 			<notes-view class="col-xs-8">
-				<text-area class="form-control" type="text" placeholder="Notes Here . ."></text-area>
+				<text-area class="form-control" type="text" editable="true" placeholder="Notes Here . ."></text-area>
 			</notes-view>
 		</div>
 		<div class="row">
-			<list-component [listItems]="contacts" [details]="details" [selected]="selected" [controls]="controls" createContext="contacts" ></list-component>
+			<!--<list-component [listItems]="rdc.contactsList.items" [selected]="selected" [controls]="rdc.contactsList.controls" createContext="contacts" ></list-component>-->
 		</div>
 	</div>
 	`,
@@ -42,7 +41,7 @@ export class SideMenuComponent implements OnChanges {
 	public rdc: RDCache = <RDCache>{};
 	@Output()
 	public action: EventEmitter<{}> = new EventEmitter<{}>();
-	public select: string = null;
+	public selected: any;
 	public model: Company = <Company>{};
 	public formReady: boolean = false;
 	public form: FormGroup;
