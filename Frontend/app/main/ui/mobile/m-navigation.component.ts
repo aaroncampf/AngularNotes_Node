@@ -1,16 +1,22 @@
 import {Component} from '@angular/core';
 import {Router} from '@angular/router';
-import {Store} from '@ngrx/store';
+import {StateService} from '../../../store/service/state.service';
 
 @Component({
 	selector: 'mobile-navigation-component',
 	template: `
 	<ul class="nav nav-tabs">
 		<li class="tab" role="tab">
-			<a (click)="changeView('main')">Home</a>
+			<a (click)="navTo('/home')">Home</a>
 		</li>
 		<li class="tab" role="tab">
-			<a (click)="changeView('crm')" >CRM</a>
+			<a (click)="navTo('/Companies')" >Companies</a>
+		</li>
+		<li class="tab" role="tab">
+			<a (click)="navTo('/Contacts')" >Contacts</a>
+		</li>
+		<li class="tab" role="tab">
+			<a (click)="navTo('/Quotes')" >Quotes</a>
 		</li>
 	</ul>
 	`
@@ -19,15 +25,13 @@ import {Store} from '@ngrx/store';
 export class MobileNavigationComponent {
 	constructor(
 		private router: Router,
-		private _store: Store<any>
+		private stateService: StateService
 	){}
 
-	public changeView(viewName: string): void {
-		this._store.dispatch({
-			type:'CHANGE_VIEW',
-			payload: {
-				view: viewName}
-		});
-		this.router.navigate([`/${viewName}`]);
+	public navTo(url: string): void {
+		this.stateService.dispatch(
+			'NAVIGATION_GOTO', {
+				view: url
+			});
 	}
 }

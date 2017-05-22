@@ -8,9 +8,7 @@ import {StateService} from '../../store/service/state.service';
 import {RDCache} from '../../store/models/typescript-cache.model';
 import {Router} from '@angular/router';
 import {CRMState} from '../../store/models/state.model';
-import {Subject} from 'rxjs/Subject';
 import {Subscription} from 'rxjs/Subscription';
-import {Store} from '@ngrx/store';
 
 @Component({
 	selector: 'smart-form-component',
@@ -19,7 +17,7 @@ import {Store} from '@ngrx/store';
 			<div *ngIf="dataReady === true" [formGroup]="form" (ngSubmit)="onSubmit(form.value)">
 				<h1>
 					<small>CREATE</small>
-					{{this.state$.viewContext.toUpperCase()}}
+					<!--{{this.state$.viewContext.toUpperCase()}}-->
 				</h1>
 				<div *ngFor="let question of tc.questions" class="form row">
 					<input-component [label]="question.label" [control]="tc.listItems.controls[question.key]"
@@ -52,7 +50,6 @@ export class SmartFormComponent implements OnInit, OnDestroy {
 	public dataReady: boolean = false;
 	constructor(
 
-		private _store: Store<any>,
 		private modelService: ModelService,
 		private stateService: StateService,
 		public toastr: ToastsManager,
@@ -62,8 +59,8 @@ export class SmartFormComponent implements OnInit, OnDestroy {
 		){}
 
 	public ngOnInit(): void {
-			this.stateSub = this._store.subscribe(update => this.state$ = update);
-			this.cacheSub = this.stateService.tc$.subscribe( update => {
+			// this.stateSub = this._store.subscribe(update => this.state$ = update);
+			this.cacheSub = this.stateService.cache$.subscribe( update => {
 				this.rdCache$ = update;
 				console.log('this rdCache', this.rdCache$);
 			});

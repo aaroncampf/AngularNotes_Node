@@ -19,9 +19,7 @@ var webpackConfig = {
 
 	module: {
 		loaders: [
-
 			// .ts files for TypeScript
-
 			{
 				test: /\.ts$/,
 				loaders: [

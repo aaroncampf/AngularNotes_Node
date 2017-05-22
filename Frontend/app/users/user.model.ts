@@ -1,11 +1,3 @@
-import {CRMType} from '../main/models/crm-models.type';
-import {QuestionBase} from '../forms/base-question.class';
-import {FormControl} from '@angular/forms';
-import {CRMStore} from '../crm.module';
-import {Company} from '../main/models/company.model';
-import {Note} from '../main/models/note.model';
-import {Quote} from '../main/models/quote.model';
-import {Contact} from '../main/models/contact.model';
 export interface User extends _User {
 	id?: string;
 	firstName?: string;

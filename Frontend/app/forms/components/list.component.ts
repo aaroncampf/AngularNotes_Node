@@ -4,8 +4,6 @@ import {ToTitleCaseKeys} from '../../shared/pipes/toTitleCase.pipe';
 import {ModelService} from '../../shared/services/model.service';
 import {FormControl, FormGroup} from '@angular/forms';
 import {List} from '../services/forms.service';
-import {StateService} from '../../store/service/state.service';
-import {RDCache} from '../../store/models/typescript-cache.model';
 
 //Todo take off collapses
 @Component({
@@ -45,7 +43,7 @@ import {RDCache} from '../../store/models/typescript-cache.model';
 						<div *ngFor="let question of entry.questions">
 							<div [formGroup]="detailsForm">
 								<input-component [label]="question.label"
-												 (onBlur)="blurrySave(entry.id, question.key, $event)"
+												 (onBlur)="blurrySave($event, entry, question.key)"
 												 [(model)]="question.value"></input-component>
 							</div>
 						</div>
@@ -64,9 +62,10 @@ import {RDCache} from '../../store/models/typescript-cache.model';
 })
 
 export class ListComponent implements OnInit, OnChanges {
-	public dataReady: boolean = false;
-	// @Input()
-	public details: boolean = true;
+	@Input()
+	public state;
+	@Input()
+	public data;
 	@Input()
 	public createContext: string;
 	@Input()
@@ -85,13 +84,15 @@ export class ListComponent implements OnInit, OnChanges {
 	public action: EventEmitter<any> = new EventEmitter<any>();
 	@Output()
 	public onSave: EventEmitter<any> = new EventEmitter<any>();
+	public dataReady: boolean = false;
+	public details: boolean = true;
 	public slide: boolean = false;
 	public SWIPE_ACTION = {RIGHT: 'swipe-right', LEFT: 'swipe-left'};
 	public xVal: number;
+	@Input()
 	public detailsForm: FormGroup;
 
 	constructor(
-		private TwtService: StateService,
 		public toTitleCase: ToTitleCaseKeys,
 		private modelService: ModelService,
 	) {};
@@ -99,8 +100,9 @@ export class ListComponent implements OnInit, OnChanges {
 	public ngOnInit(): void {}
 
 	public ngOnChanges(): void {
-		this.detailsForm = new FormGroup(this.controls);
-		this.dataReady= true;
+		if (this.detailsForm){
+			this.dataReady= true;
+		}
 		console.log('list component', this.listItems);
 	}
 
@@ -108,23 +110,27 @@ export class ListComponent implements OnInit, OnChanges {
 		switch (type) {
 			case'slide-open':
 				this.slide = true;
-				this.TwtService.setTCProp({selected:  model});
-				this.modelService.selectedUpdate( model);
+				this.action.emit({type: 'STATE_SELECTED_ITEM', payload: {item: model}});
 				break;
 			case'slide-close':
-				this.TwtService.setTCProp({selected: {}});
+				this.action.emit({type: 'STATE_UNSELECTED_ITEM', payload: {item: model}});
 				this.slide = false;
 				break;
 			case 'details-pressed':
-				this.details = !this.details;
+				this.action.emit({type: 'STATE_DETAILS_PRESSED', payload: {item: model}});
 				break;
 		}
 	}
 
-	public blurrySave(id, key, event): void {
-		this.onSave.emit({id: id, prop: {
-			[key]: event}
-		});
+	public blurrySave(event, form, key): void {
+		this.action.emit({
+			type: 'SERVICE_SET_' + this.state.contextFocus,
+			payload: {
+				model: form,
+				key: key,
+				newVal: event
+			}
+		})
 	}
 
 	//todo Gesture Tuning and Implementation
@@ -136,7 +142,6 @@ export class ListComponent implements OnInit, OnChanges {
 				break;
 			case'swiperight':
 				this.onSelect('slide-close', <CRMType>question);
-				this.TwtService.setTCProp({selected: {}});
 		}
 	}
 

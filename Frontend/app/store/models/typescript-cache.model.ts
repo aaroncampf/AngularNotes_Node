@@ -17,13 +17,5 @@ export const RD_CACHE_INITIAL_STATE = {
 };
 
 export interface RDCache {
-	companies:Company[];
-	notes: Note[];
-	quotes: Quote[];
-	contacts: Contact[];
-	user?: any;
-	companiesList: List;
-	notesList: List;
-	quotesList: List;
-	contactsList: List;
+	[name: string]: any
 }

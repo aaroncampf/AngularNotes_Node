@@ -4,7 +4,6 @@ import {SocketService} from '../shared/services/socket.service';
 import {FormControl, FormGroup, Validators} from '@angular/forms';
 import {EmailRegEx} from '../shared/regex/email.regex';
 import {FIXTURE_USER_ID} from '../main/models/FIXTURE_ID';
-import {Store} from '@ngrx/store';
 
 @Component({
 	selector: 'my-account-component',
@@ -56,7 +55,7 @@ export class MyAccountComponent implements OnInit {
 	public getPath: string = 'user.get';
 	constructor(
 				private socketService: SocketService,
-				private _store: Store<any>){}
+	){}
 
 	public ngOnInit(): void {
 		this.socketService.responseSocket('user.get', {id: FIXTURE_USER_ID})
@@ -74,10 +73,11 @@ export class MyAccountComponent implements OnInit {
 			})
 			.subscribe((response: User) => {
 				console.log('value key', response);
-				this._store.dispatch({type:'USER_UPDATED', payload:{user: response}})
-		}, error => this._store.dispatch({type:'USER_UPDATED_ERROR', payload: {error: error}}))
-	}
+		// 		this._store.dispatch({type:'USER_UPDATED', payload:{user: response}})
+		// }, error => this._store.dispatch({type:'USER_UPDATED_ERROR', payload: {error: error}}))
+		});
 
+	}
 }
 
 export interface UpdateObject {

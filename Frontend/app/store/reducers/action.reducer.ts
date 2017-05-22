@@ -1,12 +1,9 @@
-import {Action, INITIAL_STATE} from '@ngrx/store';
 import {CRMState, STATE_INITIAL_STATE} from '../models/state.model';
 import 'rxjs/add/operator/scan'
 import {Observable} from 'rxjs/Observable';
 
 function currentState(states) {
 	console.log(states);
-	// let lastIndex = states.length - 1;
-	// return states[lastIndex];
 	Observable.from(states).scan((acc, state) => {
 		return Object.assign({}, acc, state);
 	}, STATE_INITIAL_STATE).subscribe((response: any) => {
@@ -14,7 +11,7 @@ function currentState(states) {
 	});
 };
 
-export const reducer = (states: CRMState[] = [STATE_INITIAL_STATE], action: Action) => {
+export const reducer = (states: CRMState[] = [STATE_INITIAL_STATE], action: any) => {
 	let lastIndex = states.length - 1;
 	let state =  states[lastIndex];
 	switch (action.type) {

@@ -3,7 +3,6 @@ import {User} from './user.model';
 import {Observable} from 'rxjs/Observable';
 import {SocketService} from '../shared/services/socket.service';
 import {FIXTURE_USER_ID} from '../main/models/FIXTURE_ID';
-import {State} from '@ngrx/store';
 import {StateService} from '../store/service/state.service';
 
 @Injectable()
