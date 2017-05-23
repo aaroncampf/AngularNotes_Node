@@ -1,10 +1,20 @@
 # ChangeLog 
->To make sense of all your busy-ness to other developers please log changes and use sem-ver. 
+>To make sense of all your awesome busy-nes to other developers please log changes and use sem-ver. 
 
 ##unreleased
+[code] built a simpler cache and state system from the NGRX and Redux patterns and examples, `StateService`.
+[refactor] removed NGRX Store
+[code] established a pattern and convention for producing Actions and persisting state history chains
+[style] Added icon svg sprites `sprite.svg`, `sprite.css` and imported into `main.scss`
+[code] built `contacts.component` 
 
+##version 0.10.0 - 05/06/2017
+[code] created `dynamic-forms.module` and `WrittableStateTokenService` and `Store.Module`
+[refactor] upgraded twt into WritableStateToken and made a one data flow from smart components to structural components 
+[code] built `session.reducer`, `user.reducer`, `crm.reducer`
+[library] added implemented NGRX Store
 
-##version0.9.0 - 05/06/2017
+##version 0.9.0 - 05/06/2017
 [code] implemented `sockets-service` globally
 [refactor] TypeScript Writable Token syncd with data feeds and smart components and made to be PointOfTruth
 [code] `list.component` built and implemented with generics 
