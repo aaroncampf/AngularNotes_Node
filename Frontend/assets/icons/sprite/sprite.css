@@ -8,64 +8,104 @@
   height: 32px;
   background-position: 0 0;
 }
-.icon-undo2 {
+.icon-file-text {
   width: 32px;
   height: 32px;
   background-position: -48px 0;
 }
-.icon-redo2 {
+.icon-coin-dollar {
   width: 32px;
   height: 32px;
   background-position: -96px 0;
 }
-.icon-bubble2 {
+.icon-printer {
   width: 32px;
   height: 32px;
   background-position: -144px 0;
 }
-.icon-user-tie {
+.icon-undo {
   width: 32px;
   height: 32px;
   background-position: -192px 0;
 }
-.icon-quotes-left {
+.icon-redo {
   width: 32px;
   height: 32px;
   background-position: -240px 0;
 }
-.icon-quotes-right {
+.icon-undo2 {
   width: 32px;
   height: 32px;
   background-position: -288px 0;
 }
-.icon-cog {
+.icon-redo2 {
   width: 32px;
   height: 32px;
   background-position: -336px 0;
 }
-.icon-meter {
+.icon-bubble2 {
   width: 32px;
   height: 32px;
   background-position: -384px 0;
 }
-.icon-menu {
+.icon-user-tie {
   width: 32px;
   height: 32px;
   background-position: -432px 0;
 }
+.icon-quotes-left {
+  width: 32px;
+  height: 32px;
+  background-position: -480px 0;
+}
+.icon-quotes-right {
+  width: 32px;
+  height: 32px;
+  background-position: -528px 0;
+}
+.icon-cog {
+  width: 32px;
+  height: 32px;
+  background-position: -576px 0;
+}
+.icon-meter {
+  width: 32px;
+  height: 32px;
+  background-position: -624px 0;
+}
+.icon-menu {
+  width: 32px;
+  height: 32px;
+  background-position: -672px 0;
+}
 .icon-menu2 {
   width: 44px;
   height: 32px;
-  background-position: -480px 0;
+  background-position: 0 -48px;
 }
 .icon-menu3 {
   width: 44px;
   height: 32px;
-  background-position: -576px 0;
+  background-position: -96px -48px;
 }
 .icon-menu4 {
   width: 44px;
   height: 32px;
-  background-position: -672px 0;
+  background-position: -192px -48px;
+}
+.icon-download3 {
+  width: 32px;
+  height: 32px;
+  background-position: -288px -48px;
+}
+.icon-plus {
+  width: 32px;
+  height: 32px;
+  background-position: -336px -48px;
+}
+.icon-minus {
+  width: 32px;
+  height: 32px;
+  background-position: -384px -48px;
 }
 

@@ -30,6 +30,139 @@
     {
       "icon": {
         "paths": [
+          "M864 0h-768c-52.8 0-96 43.2-96 96v832c0 52.8 43.2 96 96 96h768c52.8 0 96-43.2 96-96v-832c0-52.8-43.2-96-96-96zM832 896h-704v-768h704v768zM256 448h448v64h-448zM256 576h448v64h-448zM256 704h448v64h-448zM256 320h448v64h-448z"
+        ],
+        "tags": [
+          "file-text",
+          "file",
+          "document",
+          "list",
+          "paper"
+        ],
+        "defaultCode": 59682,
+        "grid": 16,
+        "attrs": []
+      },
+      "attrs": [],
+      "properties": {
+        "ligatures": "file-text, file",
+        "name": "file-text",
+        "order": 22,
+        "id": 35,
+        "prevSize": 32
+      },
+      "setIdx": 0,
+      "setId": 1,
+      "iconIdx": 34
+    },
+    {
+      "icon": {
+        "paths": [
+          "M480 64c-265.096 0-480 214.904-480 480 0 265.098 214.904 480 480 480 265.098 0 480-214.902 480-480 0-265.096-214.902-480-480-480zM480 928c-212.078 0-384-171.922-384-384s171.922-384 384-384c212.078 0 384 171.922 384 384s-171.922 384-384 384zM512 512v-128h128v-64h-128v-64h-64v64h-128v256h128v128h-128v64h128v64h64v-64h128.002l-0.002-256h-128zM448 512h-64v-128h64v128zM576.002 704h-64.002v-128h64.002v128z"
+        ],
+        "tags": [
+          "coin-dollar",
+          "money",
+          "cash",
+          "currency-dollar"
+        ],
+        "defaultCode": 59707,
+        "grid": 16,
+        "attrs": []
+      },
+      "attrs": [],
+      "properties": {
+        "ligatures": "coin-dollar, money",
+        "name": "coin-dollar",
+        "order": 21,
+        "id": 60,
+        "prevSize": 32
+      },
+      "setIdx": 0,
+      "setId": 1,
+      "iconIdx": 59
+    },
+    {
+      "icon": {
+        "paths": [
+          "M256 64h512v128h-512v-128z",
+          "M960 256h-896c-35.2 0-64 28.8-64 64v320c0 35.2 28.794 64 64 64h192v256h512v-256h192c35.2 0 64-28.8 64-64v-320c0-35.2-28.8-64-64-64zM128 448c-35.346 0-64-28.654-64-64s28.654-64 64-64 64 28.654 64 64-28.652 64-64 64zM704 896h-384v-320h384v320z"
+        ],
+        "tags": [
+          "printer",
+          "print"
+        ],
+        "defaultCode": 59732,
+        "grid": 16,
+        "attrs": []
+      },
+      "attrs": [],
+      "properties": {
+        "ligatures": "printer, print",
+        "name": "printer",
+        "order": 19,
+        "id": 85,
+        "prevSize": 32
+      },
+      "setIdx": 0,
+      "setId": 1,
+      "iconIdx": 84
+    },
+    {
+      "icon": {
+        "paths": [
+          "M512 64c-141.384 0-269.376 57.32-362.032 149.978l-149.968-149.978v384h384l-143.532-143.522c69.496-69.492 165.492-112.478 271.532-112.478 212.068 0 384 171.924 384 384 0 114.696-50.292 217.636-130.018 288l84.666 96c106.302-93.816 173.352-231.076 173.352-384 0-282.77-229.23-512-512-512z"
+        ],
+        "tags": [
+          "undo",
+          "ccw",
+          "arrow"
+        ],
+        "defaultCode": 59749,
+        "grid": 16,
+        "attrs": []
+      },
+      "attrs": [],
+      "properties": {
+        "ligatures": "undo, ccw",
+        "name": "undo",
+        "order": 20,
+        "id": 102,
+        "prevSize": 32
+      },
+      "setIdx": 0,
+      "setId": 1,
+      "iconIdx": 101
+    },
+    {
+      "icon": {
+        "paths": [
+          "M0 576c0 152.924 67.048 290.184 173.35 384l84.666-96c-79.726-70.364-130.016-173.304-130.016-288 0-212.076 171.93-384 384-384 106.042 0 202.038 42.986 271.53 112.478l-143.53 143.522h384v-384l-149.97 149.978c-92.654-92.658-220.644-149.978-362.030-149.978-282.77 0-512 229.23-512 512z"
+        ],
+        "tags": [
+          "redo",
+          "cw",
+          "arrow"
+        ],
+        "defaultCode": 59750,
+        "grid": 16,
+        "attrs": []
+      },
+      "attrs": [],
+      "properties": {
+        "ligatures": "redo, cw",
+        "name": "redo",
+        "order": 15,
+        "id": 103,
+        "prevSize": 32
+      },
+      "setIdx": 0,
+      "setId": 1,
+      "iconIdx": 102
+    },
+    {
+      "icon": {
+        "paths": [
           "M761.862 1024c113.726-206.032 132.888-520.306-313.862-509.824v253.824l-384-384 384-384v248.372c534.962-13.942 594.57 472.214 313.862 775.628z"
         ],
         "tags": [
@@ -358,6 +491,85 @@
       "setIdx": 0,
       "setId": 1,
       "iconIdx": 192
+    },
+    {
+      "icon": {
+        "paths": [
+          "M736 448l-256 256-256-256h160v-384h192v384zM480 704h-480v256h960v-256h-480zM896 832h-128v-64h128v64z"
+        ],
+        "tags": [
+          "download",
+          "save",
+          "store"
+        ],
+        "defaultCode": 59847,
+        "grid": 16,
+        "attrs": []
+      },
+      "attrs": [],
+      "properties": {
+        "ligatures": "download3, save5",
+        "name": "download3",
+        "order": 18,
+        "id": 200,
+        "prevSize": 32
+      },
+      "setIdx": 0,
+      "setId": 1,
+      "iconIdx": 199
+    },
+    {
+      "icon": {
+        "paths": [
+          "M992 384h-352v-352c0-17.672-14.328-32-32-32h-192c-17.672 0-32 14.328-32 32v352h-352c-17.672 0-32 14.328-32 32v192c0 17.672 14.328 32 32 32h352v352c0 17.672 14.328 32 32 32h192c17.672 0 32-14.328 32-32v-352h352c17.672 0 32-14.328 32-32v-192c0-17.672-14.328-32-32-32z"
+        ],
+        "tags": [
+          "plus",
+          "add",
+          "sum"
+        ],
+        "defaultCode": 59914,
+        "grid": 16,
+        "attrs": []
+      },
+      "attrs": [],
+      "properties": {
+        "ligatures": "plus, add",
+        "name": "plus",
+        "order": 16,
+        "id": 267,
+        "prevSize": 32
+      },
+      "setIdx": 0,
+      "setId": 1,
+      "iconIdx": 266
+    },
+    {
+      "icon": {
+        "paths": [
+          "M0 416v192c0 17.672 14.328 32 32 32h960c17.672 0 32-14.328 32-32v-192c0-17.672-14.328-32-32-32h-960c-17.672 0-32 14.328-32 32z"
+        ],
+        "tags": [
+          "minus",
+          "subtract",
+          "minimize",
+          "line"
+        ],
+        "defaultCode": 59915,
+        "grid": 16,
+        "attrs": []
+      },
+      "attrs": [],
+      "properties": {
+        "ligatures": "minus, subtract",
+        "name": "minus",
+        "order": 17,
+        "id": 268,
+        "prevSize": 32
+      },
+      "setIdx": 0,
+      "setId": 1,
+      "iconIdx": 267
     }
   ],
   "height": 1024,
@@ -387,7 +599,8 @@
       "classSelector": ".icon",
       "height": 32,
       "columns": 16,
-      "margin": 16
+      "margin": 16,
+      "sprite": true
     },
     "historySize": 50,
     "showCodes": true,

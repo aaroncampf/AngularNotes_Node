@@ -74,7 +74,7 @@ export class SmartFormComponent implements OnInit, OnDestroy {
 		}
 
 	public ngOnDestroy(): void {
-		this.stateSub.unsubscribe();
+		// this.stateSub.unsubscribe();
 	}
 
 	public onSubmit(data: any): void {

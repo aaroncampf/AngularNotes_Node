@@ -1,7 +1,7 @@
 import {NgModule, CUSTOM_ELEMENTS_SCHEMA} from '@angular/core';
 import {CommonModule} from '@angular/common';
 import {BrowserAnimationsModule, NoopAnimationsModule} from '@angular/platform-browser/animations';
-import {BrowserModule, HAMMER_GESTURE_CONFIG, HammerGestureConfig} from '@angular/platform-browser';
+import {BrowserModule} from '@angular/platform-browser';
 import {HttpModule} from '@angular/http';
 import {ToastModule} from 'ng2-toastr';
 import {MainComponent} from './main/main.component';
@@ -16,29 +16,26 @@ import {DynamicFormsModule} from './forms/dynamic-forms.module';
 import {SideMenuComponent} from './main/ui/mobile/side-menu.component';
 import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 import {CRMService} from './main/services/crm.service';
-import {CompaniesComponent} from './main/components/companies.component';
 import {ContactComponent} from './main/components/contacts.component';
 import {QuotesComponent} from './main/components/quotes.component';
 import {NotesComponent} from './main/components/notes.component';
-import {ViewComponent} from './main/view.component';
-import {FormsService} from './forms/services/forms.service';
 import {UIService} from './main/services/ui.service';
 import {BottomMenuComponent} from './main/ui/bottom-menu.component';
 
 const MAIN_ROUTES: Routes = [
 	{path:'main', component: MainComponent},
-	{path:'', redirectTo: '/main', pathMatch: 'full'},
+	{path:'Contacts', component: ContactComponent},
+	{path:'Quotes', component: QuotesComponent},
+	{path:'', redirectTo: '/Contacts', pathMatch: 'full'},
 	{path: '**', component: NotFoundComponent}
 ];
 
 const COMPONENTS = [
-	ViewComponent,
 	SideMenuComponent,
 	MainComponent,
 	MobileNavigationComponent,
 	MobileDashboardComponent,
 	NotFoundComponent,
-	CompaniesComponent,
 	ContactComponent,
 	QuotesComponent,
 	NotesComponent,
@@ -79,8 +76,8 @@ const MODULES = [
 	exports: [
 		COMPONENTS
 	],
-	entryComponents: [MainComponent],
-	bootstrap: [ViewComponent]
+	entryComponents: [ContactComponent],
+	bootstrap: [MainComponent]
 })
 
 export class CRMModule {}

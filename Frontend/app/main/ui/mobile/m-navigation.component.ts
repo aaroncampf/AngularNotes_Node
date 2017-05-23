@@ -1,4 +1,4 @@
-import {Component} from '@angular/core';
+import {Component, EventEmitter, Output} from '@angular/core';
 import {Router} from '@angular/router';
 import {StateService} from '../../../store/service/state.service';
 
@@ -7,28 +7,28 @@ import {StateService} from '../../../store/service/state.service';
 	template: `
 	<ul class="nav nav-tabs">
 		<li class="tab" role="tab">
-			<a (click)="navTo('/home')">Home</a>
+			<a (click)="action.emit({type: 'STATE_COMPANIES_PRESSED', payload: {sideMenu: true, viewContext: 'companies', modelContext: 'companies'}})"><span class="icon icon-office"></span></a>
 		</li>
 		<li class="tab" role="tab">
-			<a (click)="navTo('/Companies')" >Companies</a>
+			<a (click)="navTo('/Contacts')" ><span class="icon icon-user-tie"></span></a>
 		</li>
 		<li class="tab" role="tab">
-			<a (click)="navTo('/Contacts')" >Contacts</a>
-		</li>
-		<li class="tab" role="tab">
-			<a (click)="navTo('/Quotes')" >Quotes</a>
+			<a (click)="navTo('/Quotes')" ><span class="icon icon-bubble2"></span></a>
 		</li>
 	</ul>
 	`
 })
 
 export class MobileNavigationComponent {
+	@Output()
+	action: EventEmitter<any> = new EventEmitter<any>();
 	constructor(
 		private router: Router,
 		private stateService: StateService
 	){}
 
 	public navTo(url: string): void {
+			this.router.navigate([url]);
 		this.stateService.dispatch(
 			'NAVIGATION_GOTO', {
 				view: url

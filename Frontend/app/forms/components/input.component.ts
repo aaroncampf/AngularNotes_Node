@@ -16,19 +16,19 @@ import {BehaviorSubject} from 'rxjs/BehaviorSubject';
 				<input [formControl]="control" [type]="password ? 'password' : 'text'" [(ngModel)]="model" (ngModelChange)="modelChange.emit($event); store.next({value: $event}); seeker = []" class="form-control" [formControl]="control"  (blur)="blurred($event); store.next({value: $event})" [placeholder]="placeholder"/>
 			</div>
 			<div *ngIf="!!label" class="col-xs-2">
-				<button (click)="action.emit({type: 'STATE_FORMS_INPUT_UNDO', payload: {}})"><i class="glyphicon glyphicon-backward"></i></button>
-				<button (click)="action.emit({type: 'STATE_FORMS_INPUT_REDO', payload: {}}); reDo()"><i class="glyphicon glyphicon-fast-forward"></i></button>
+				<button (click)="action.emit({type: 'STATE_FORMS_INPUT_UNDO', payload: {}})"><span class="icon icon-undo2"></span></button>
+				<button (click)="action.emit({type: 'STATE_FORMS_INPUT_REDO', payload: {}}); reDo()"><span class="icon icon-redo2"></span></button>
 			</div>
 			<div *ngIf="!label" class="col-xs-10">
 				<input [formControl]="control" [type]="password ? 'password' : 'text'" [(ngModel)]="model" (ngModelChange)="modelChange.emit($event); store.next({value: $event}); seeker = []" class="form-control"  (blur)="blurred($event); store.next({value: $event})" [placeholder]="placeholder"/>
 				{{model}}
 			</div>
 			<div *ngIf="!label" class="col-xs-2">
-				<button (click)="action.emit({type: 'STATE_FORMS_INPUT_UNDO', payload: {}})"><i class="glyphicon glyphicon-backward"></i></button>
-				<button (click)="action.emit({type: 'STATE_FORMS_INPUT_REDO', payload: {}}); reDo()"><i class="glyphicon glyphicon-fast-forward"></i></button>
+				<button (click)="action.emit({type: 'STATE_FORMS_INPUT_UNDO', payload: {}})"><span class="icon icon-undo2"></span></button>
+				<button (click)="action.emit({type: 'STATE_FORMS_INPUT_REDO', payload: {}}); reDo()"><span class="icon icon-redo2"></span></button>
 			</div>
 		</div>
-	`
+	`,
 })
 
 export class InputComponent implements OnInit, OnDestroy {

@@ -25,7 +25,7 @@ export class CRMService {
 		return new Promise((resolve) => {
 			payload.hasOwnProperty('id')
 				?
-				this.sockets.responseSocket('companies.get', {id: payload.id}).subscribe(companies => {
+				this.sockets.responseSocket('company.get', {id: payload.id}).subscribe(companies => {
 					// this.stateService.dispatch('COMPANIES_GET', {companies: companies});
 					resolve(companies);
 				})

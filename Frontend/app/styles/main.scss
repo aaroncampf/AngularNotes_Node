@@ -41,7 +41,6 @@ main {
   .toast-success {
     background: #16d11c;
   }
-
 }
   @import './dashboard.scss';
   @import 'side-panel';
@@ -49,4 +48,6 @@ main {
   @import 'quote';
   @import 'input';
   @import 'notes';
+  @import 'navigation';
+  @import '../../assets/icons/sprite/sprite.css';
   @import '../shared/shared.styles';

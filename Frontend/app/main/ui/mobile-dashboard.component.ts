@@ -7,13 +7,13 @@ import {CRMType} from '../models/crm-models.type';
 		<div class="row" *ngIf="dashboardReady">
 			<small class="pull-right">Angular Bros <strong>CRM</strong></small>
 			<button [routerLink]="['/create']" class="add btn btn-block"
-					(click)="action.emit('CREATE_CONTEXT', {formContext: viewContext})">Add New {{viewContext}}
+					(click)="action.emit({type: 'STATE_TOGGLE_BOTTOM_MENU', payload: {bottomMenu: true, viewContext: 'menu'}})">More Options . . 
 			</button>
 			<h6 *ngIf="!!selected" class="pull-right"
 				(click)="action.emit({type: 'NAVIGATE_DETAILS', payload: {selected: selected}})">
 				<strong>Current:</strong> {{selected.name}}</h6>
 			<div>
-				<i (click)="action.emit({type: 'MY_ACCOUNT_TOGGLE', payload: {bottomMenu: !bottomMenu, viewContext: 'accounts'}})"
+				<i (click)="action.emit({type: 'STATE_MY_ACCOUNT_TOGGLE', payload: {bottomMenu: !bottomMenu, viewContext: 'account'}})"
 				   class="glyphicon glyphicon-cog pull-right"></i>
 			</div>
 			<button class="back pull-left btn btn-lg"
