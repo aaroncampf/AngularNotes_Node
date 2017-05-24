@@ -4,11 +4,14 @@ import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 import {SocketService} from './services/socket.service';
 import {RESTService} from './services/rest.service';
 import {UsersService} from '../users/users.services';
-import {ToTitleCaseKeys} from './pipes/toTitleCase.pipe';
+import {Capitalize} from './pipes/toTitleCase.pipe';
 import {DiamondLoaderComponent} from './animations/loading-screen.animation';
 import {ModelService} from './services/model.service';
+import {LastIndexed} from './pipes/lastIndex.pipe';
 
 const COMPONENTS = [
+	LastIndexed,
+	Capitalize,
 	DiamondLoaderComponent,
 ];
 
@@ -26,7 +29,8 @@ const MODULES = [
 		MODULES
 	],
 	providers: [
-		ToTitleCaseKeys,
+		LastIndexed,
+		Capitalize,
 		SocketService,
 		RESTService,
 		UsersService,

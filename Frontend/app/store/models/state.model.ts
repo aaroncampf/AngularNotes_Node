@@ -1,8 +1,4 @@
-import {CRMType} from '../../main/models/crm-models.type';
-import {timestamp} from 'rxjs/operator/timestamp';
-
 export const STATE_INITIAL_STATE = {
-	viewContext: 'companies',
 	viewMode: null,
 	focused: false,
 	details: false,
@@ -24,7 +20,6 @@ export const STATE_INITIAL_STATE = {
 };
 
 export interface CRMState  {
-	viewContext: string;
 	viewMode: string;
 	focused: boolean;
 	details: boolean;
@@ -43,12 +38,12 @@ export interface CRMState  {
 
 }
 
-export interface StateAction {
+export interface StateInstance {
 	[name: string]: any;
 }
 
 export function newStateAction(type, payload, currentState?) {
-	const newStateAction =  <StateAction>{
+	const newStateAction =  <StateInstance>{
 		//todo make serializable UUID
 		// id: currentState[currentState.length - 1].id  ?  currentState[currentState.length - 1].id + 1 : 0,
 		timeStamp: Date.now(),

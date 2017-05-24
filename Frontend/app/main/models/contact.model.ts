@@ -15,7 +15,8 @@ export interface Contact extends _Contact, _baseListItem {
 	position: string;
 	updated_at?: string;
 	created_at?: string;
-	modelType: 'contact'
+	modelType: 'contacts';
+	singular: 'Contact';
 }
 
 export function newContact(): Contact {
@@ -28,7 +29,7 @@ export function newContact(): Contact {
 			position: null,
 			updated_at: null,
 			created_at: null,
-			modelType: 'contact'
+			modelType: 'contacts',
+			singular: 'Contact'
 		}
-
 }

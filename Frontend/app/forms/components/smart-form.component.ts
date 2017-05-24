@@ -1,27 +1,24 @@
-import {Component, OnDestroy, OnInit} from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 import {FormGroup} from '@angular/forms';
 import {ToastsManager} from 'ng2-toastr';
 import {SocketService} from '../../shared/services/socket.service';
-import {FormsService} from '../services/forms.service';
-import {ModelService} from '../../shared/services/model.service';
 import {StateService} from '../../store/service/state.service';
-import {RDCache} from '../../store/models/typescript-cache.model';
 import {Router} from '@angular/router';
-import {CRMState} from '../../store/models/state.model';
-import {Subscription} from 'rxjs/Subscription';
-
+import {LastIndexed} from '../../shared/pipes/lastIndex.pipe';
+import {StateInstance} from '../../store/models/state.model';
+import {AsyncPipe} from '@angular/common';
 @Component({
 	selector: 'smart-form-component',
 	template: `
 		<div class="row">
-			<div *ngIf="dataReady === true" [formGroup]="form" (ngSubmit)="onSubmit(form.value)">
+			<div *ngIf="!!state$.dataReady" [formGroup]="form" (ngSubmit)="onSubmit(form.value)">
 				<h1>
-					<small>CREATE</small>
+					<small>CREATE {{state$.modelContext}} </small>
 					<!--{{this.state$.viewContext.toUpperCase()}}-->
 				</h1>
-				<div *ngFor="let question of tc.questions" class="form row">
+				<div *ngFor="let question of cache$[state$.modelContext + 'List']questions" class="form row">
 					<input-component [label]="question.label" [control]="tc.listItems.controls[question.key]"
-									 [(model)]="question.value"></input-component>
+									 [(model)]="question.model"></input-component>
 				</div>
 				<div class="form-row">
 					<button (click)="onSubmit(form.value)" class="btn btn-lg" role="button" type="submit"
@@ -33,59 +30,34 @@ import {Subscription} from 'rxjs/Subscription';
 	`,
 })
 
-export class SmartFormComponent implements OnInit, OnDestroy {
-	public models: any[] = [];
-
+export class SmartFormComponent implements OnInit {
 	public get endpoint(): string {
-		return `${this.state$.viewContext}.create`
+		return `${this.state$.modelContext}.create`
 	};
-
-	public controls: {} = {};
-	public questions: any;
-	public state$: CRMState;
-	public form: FormGroup;
-	public stateSub: Subscription;
-	public rdCache$: RDCache;
-	public cacheSub: Subscription;
-	public dataReady: boolean = false;
+	public state$: StateInstance;
+	public cache$: any;
+	public form: FormGroup = new FormGroup(this.cache$.companiesList.controls);
 	constructor(
-
-		private modelService: ModelService,
+		private lastIndexed: LastIndexed,
+		private asyncPipe: AsyncPipe,
 		private stateService: StateService,
 		public toastr: ToastsManager,
-		private formsService: FormsService,
 		private socketService: SocketService,
 		private router: Router,
 		){}
 
 	public ngOnInit(): void {
-			// this.stateSub = this._store.subscribe(update => this.state$ = update);
-			this.cacheSub = this.stateService.cache$.subscribe( update => {
-				this.rdCache$ = update;
-				console.log('this rdCache', this.rdCache$);
-			});
-			// .subscribe((state) => {
-			// 	this.state$ = state;
-			// 	this.formsService.QuestionsFactory([this.modelService.newModel(this.state$.viewContext)]);
-			// 				this.form = new FormGroup(this.tc$[this.state$.viewContext].controls);
-			// 				console.log('controls', this.form, this.models);
-			// 	this.dataReady = true;
-			// });
-		}
-
-	public ngOnDestroy(): void {
-		// this.stateSub.unsubscribe();
+		this.cache$ = this.asyncPipe.transform(this.stateService.cache$);
+		this.state$ = this.lastIndexed.transform(this.asyncPipe.transform(this.stateService.state$));
 	}
 
 	public onSubmit(data: any): void {
 		let payload = {props: data};
-		console.log('payload', payload);
 		this.socketService.responseSocket(this.endpoint, payload)
 			.subscribe(response => {
 				if (response.error) {
 					this.toastr.error('Error with creation: ' + response.error);
 				} else {
-					console.log('hit toastr');
 					this.toastr.success('Successfully Created!');
 					this.router.navigate([`/main`])
 				}

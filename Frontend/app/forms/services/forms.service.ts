@@ -4,27 +4,8 @@ import {REPLACMENT_LABELS, REQUIRED, RESTRICTED_KEYS} from '../settings/dynamic-
 import {StateService} from '../../store/service/state.service';
 import {Subject} from 'rxjs/Subject';
 import {InputStore} from '../../main/ui/mobile/side-menu.component';
+import {List, ListItems} from '../models/lists.model';
 
-export interface ListControls {
-	[name: string]: FormControl;
-}
-
-export interface List {
-	items: any[];
-	questions: any[];
-	controls?: ListControls;
-	groupName?: string;
-	title?: string;
-	subLists?: ListItems[];
-}
-
-export interface ListItems {
-	items: ListItems[];
-	controls: {[name: string]: FormControl};
-	questions: any[];
-	title: string;
-	key: string;
-}
 
 @Injectable()
 export class FormsService {

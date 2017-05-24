@@ -1,20 +1,27 @@
-import {Component, Input} from '@angular/core';
+import {Component, Input, OnChanges, OnInit, SimpleChanges} from '@angular/core';
 
 @Component({
 	selector: 'bottom-menu',
 	template: `
 		<h2>Bottom Menu</h2>
-		<main-context *ngIf="viewContext === 'menu'">
-			<button class="btn btn-block">Add</button>
+		<main-context *ngIf="state.bottomMenuContext === 'options'">
+			<button class="btn btn-block" [routerLink]="['/create']">Add</button>
 			<button class="btn btn-block">Remove</button>
-		</main-context>
-		<my-account-context *ngIf="viewContext === 'account'">
+		</main-context>s
+		<my-account-context *ngIf="state.bottomMenuContext === 'account'">
 			<my-account-component></my-account-component>
 		</my-account-context>
 	`
 })
 
-export class BottomMenuComponent {
+export class BottomMenuComponent implements OnChanges {
 	@Input()
-	viewContext: string;
+	public state: any;
+
+	public ngOnChanges( simpleChanges: SimpleChanges){
+		console.log('BOTTOM MENU',this.state, simpleChanges);
+
+	}
+
+	//todo Action Navigation
 }

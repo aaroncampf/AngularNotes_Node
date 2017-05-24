@@ -10,7 +10,8 @@ export interface Note extends _baseListItem{
 	name: string
 	title: string;
 	text: string;
-	modelType: 'note'
+	modelType: 'notes';
+	singular: 'Note';
 }
 
 export function newNote(): Note {
@@ -20,7 +21,8 @@ export function newNote(): Note {
 		name: null,
 		title: null,
 		text: null,
-		modelType: null,
+		modelType: 'notes',
+		singular: 'Note'
 	};
 	return note;
 }

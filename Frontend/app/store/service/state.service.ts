@@ -3,7 +3,7 @@ import {Observable} from 'rxjs/Observable';
 import {BehaviorSubject} from 'rxjs/BehaviorSubject';
 import { RDCache} from '../models/typescript-cache.model';
 import 'rxjs/add/operator/reduce';
-import {newStateAction, StateAction} from '../models/state.model';
+import {newStateAction, StateInstance} from '../models/state.model';
 import {CRMService} from '../../main/services/crm.service';
 
 export const STATE_INITIAL_STATE = {
@@ -18,7 +18,7 @@ export class StateService {
 		cacheInitialized: true,
 
 	});
-	private stateSource: BehaviorSubject<StateAction[]> = new BehaviorSubject<StateAction[]>(<StateAction[]>[{created_at: Date.now()}]);
+	private stateSource: BehaviorSubject<StateInstance[]> = new BehaviorSubject<StateInstance[]>(<StateInstance[]>[{created_at: Date.now()}]);
 	public cache$: Observable<RDCache> = this.cacheSource.asObservable();
 	public state$: Observable<any> = this.stateSource.asObservable();
 
@@ -32,12 +32,10 @@ export class StateService {
 					this.dispatch('STATE_SERVICE_CALLED', {loading: true});
 					this.crmService.dispatched(type, payload)
 						.subscribe(response => {
-							console.log('crmService response', response);
 							resolve(response);
 						}, err => console.log('State Service CRM Service Dispatch', err));
 					break;
 				case'CACHE':
-					console.log('CACHE', type, payload);
 					let response = this.updateCache(newStateAction(type, payload));
 					resolve(response);
 					break;
@@ -46,7 +44,8 @@ export class StateService {
 					resolve(response);
 					break;
 				case'NAVIGATION':
-					//todo BreadCrumbs
+					response = this.updateState(this.stateSource.getValue(), newStateAction(type, payload, this.currentState(this.stateSource.getValue())));
+					resolve(response);
 					break;
 				default:
 					console.log('default dispatched with', type, payload);
@@ -55,26 +54,59 @@ export class StateService {
 		});
 	}
 
-	public updateCache(stateAction: StateAction, sessionCredentials?: any): any {
+	public updateCache(stateAction: StateInstance, sessionCredentials?: any): any {
 		//todo decrypt
 		const newCache = Object.assign({}, this.cacheSource.getValue(), stateAction.payload);
 
 		//todo encrypt
 		this.cacheSource.next(newCache);
-		console.log('cache', this.cacheSource.getValue() );
+		console.log('UPDATED CACHE : ', this.cacheSource.getValue() );
 		return this.cacheSource.getValue();
 	}
 
-	public updateState(states, action: StateAction): any {
-			const newState = Object.assign({}, this.currentState(this.stateSource.getValue()),
-				{type: action.type}, action.payload);
+	public updateState(states, action: StateInstance): any {
+			const newState = Object.assign(
+				{},
+				this.currentState(this.stateSource.getValue()),
+				{id: Date.now()},
+				{type: action.type},
+				action.payload);
 			const updatedStates = states.concat(newState);
 			this.stateSource.next(updatedStates);
-			console.log(this.stateSource.getValue());
+			console.log('UPDATED STATES : ', this.stateSource.getValue());
 			return this.stateSource.getValue();
 		};
 
+
 	public currentState(states): {} {
 		return states.reduce((acc, cur) => Object.assign(acc, cur), STATE_INITIAL_STATE);
+	}
+
+	public nextState(states: StateInstance[], currentState: StateInstance): StateInstance {
+		let i = 0;
+		return Observable.from([...states]).map(val => {
+			if(val.id === currentState.id) {
+				if(i < states.length){
+					return states[i + 1];
+				}
+			}
+			i++;
+		}).subscribe(state => {
+			return state;
+		});
+	}
+
+	public previousState(states: StateInstance[], currentState: StateInstance): StateInstance {
+		let i = 0;
+		return Observable.from([...states]).map(val => {
+			if(val.id === currentState.id) {
+				if(i > 0){
+					return states[i - 1];
+				}
+			}
+			i++;
+		}).subscribe(state => {
+			return state;
+		});
 	}
 }

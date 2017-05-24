@@ -1,9 +1,10 @@
 import {Pipe, PipeTransform} from '@angular/core';
+
 @Pipe({
-	name: 'toTitleCase'
+	name: 'Capitalize'
 })
-export class ToTitleCaseKeys implements PipeTransform {
-	public transform(value: string): any {
+export class Capitalize implements PipeTransform {
+	public transform(value: string, args: string[]): any {
 		return value.charAt(0).toUpperCase() + value.slice(1)
 	}
 }

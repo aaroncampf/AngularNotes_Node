@@ -8,20 +8,23 @@ import {CRMType} from '../../main/models/crm-models.type';
 @Injectable()
 export class ModelService {
 
-	public selectedUpdate(crmModel: CRMType): void {
-
-	}
 	public newModel(tab): CRMType {
 		console.log(tab);
+		let response;
 		switch (tab) {
 			case'companies':
-				return newCompany();
+				response =  newCompany();
+				break;
 			case'contacts':
-				return newContact();
+				response =  newContact();
+				break;
 			case'notes':
-				return newNote();
+				response =  newNote();
+				break;
 			case'quotes':
-				return newQuote();
+				response =  newQuote();
+				break;
 		}
+		return response;
 	}
 }

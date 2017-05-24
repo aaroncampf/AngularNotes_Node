@@ -22,7 +22,8 @@ export interface Quote extends _baseListItem {
 	quoteLines: QuoteLine[];
 	updated_at?: string;
 	created_at?: string;
-	modelType: 'quote';
+	modelType: 'quotes';
+	singular: 'Quote';
 }
 
 export function newQuote(): Quote {
@@ -31,7 +32,8 @@ export function newQuote(): Quote {
 		companyId: null,
 		name: null,
 		quoteLines: [],
-		modelType: 'quote'
+		modelType: 'quotes',
+		singular: 'Quote'
 	}
 
 }

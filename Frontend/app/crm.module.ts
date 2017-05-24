@@ -1,5 +1,5 @@
-import {NgModule, CUSTOM_ELEMENTS_SCHEMA} from '@angular/core';
-import {CommonModule} from '@angular/common';
+import {NgModule, CUSTOM_ELEMENTS_SCHEMA, ChangeDetectorRef} from '@angular/core';
+import {AsyncPipe, CommonModule} from '@angular/common';
 import {BrowserAnimationsModule, NoopAnimationsModule} from '@angular/platform-browser/animations';
 import {BrowserModule} from '@angular/platform-browser';
 import {HttpModule} from '@angular/http';
@@ -21,9 +21,14 @@ import {QuotesComponent} from './main/components/quotes.component';
 import {NotesComponent} from './main/components/notes.component';
 import {UIService} from './main/services/ui.service';
 import {BottomMenuComponent} from './main/ui/bottom-menu.component';
+import {LastIndexed} from './shared/pipes/lastIndex.pipe';
+import {Capitalize} from './shared/pipes/toTitleCase.pipe';
+import {SmartFormComponent} from './forms/components/smart-form.component';
 
 const MAIN_ROUTES: Routes = [
 	{path:'main', component: MainComponent},
+	{path:'create', component: SmartFormComponent},
+	{path:'details', component: SmartFormComponent},
 	{path:'Contacts', component: ContactComponent},
 	{path:'Quotes', component: QuotesComponent},
 	{path:'', redirectTo: '/Contacts', pathMatch: 'full'},
@@ -68,7 +73,6 @@ const MODULES = [
 	providers: [
 		CRMService,
 		UIService,
-
 	],
 	schemas: [
 		CUSTOM_ELEMENTS_SCHEMA

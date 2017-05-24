@@ -8,6 +8,7 @@ import {RouterModule, Routes} from '@angular/router';
 import {SmartFormComponent} from './components/smart-form.component';
 import {FormsService} from './services/forms.service';
 import {HAMMER_GESTURE_CONFIG, HammerGestureConfig} from '@angular/platform-browser';
+import {SharedModule} from '../shared/shared.module';
 
 const ROUTES: Routes = [
 	{path: 'create', component: SmartFormComponent},
@@ -18,10 +19,11 @@ const COMPONENTS = [
 	ListComponent,
 	InputComponent,
 	FormComponent,
-	SmartFormComponent
+	SmartFormComponent,
 ];
 
 const MODULES = [
+	SharedModule,
 	CommonModule,
 	FormsModule,
 	ReactiveFormsModule,
@@ -33,7 +35,7 @@ const MODULES = [
 		COMPONENTS
 	],
 	imports: [
-		MODULES
+		MODULES,
 	],
 	exports: [
 		COMPONENTS

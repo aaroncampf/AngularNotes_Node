@@ -11,7 +11,9 @@ export interface Company extends _baseListItem{
 	web: string;
 	misc: string;
 	fax: string;
-	modelType: 'company'
+	modelType: 'companies';
+	singular: 'Company';
+
 }
 
 
@@ -27,6 +29,7 @@ export function newCompany(): Company {
 			web: null,
 			misc: null,
 			fax: null,
-			modelType: 'company'
+			modelType: 'companies',
+			singular: 'Company'
 		}
 }

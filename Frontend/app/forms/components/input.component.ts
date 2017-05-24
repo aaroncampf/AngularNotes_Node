@@ -1,9 +1,23 @@
-import {Component, Input, Output, EventEmitter, OnInit, OnDestroy} from '@angular/core';
+import {Component, Input, Output, EventEmitter, OnInit, OnDestroy, OnChanges, SimpleChanges} from '@angular/core';
 import {FormControl} from '@angular/forms';
-import {StateAction} from '../../store/models/state.model';
-import {Subscription} from 'rxjs/Subscription';
-import {InputStore} from '../../main/ui/mobile/side-menu.component';
+import {StateInstance} from '../../store/models/state.model';
 import {BehaviorSubject} from 'rxjs/BehaviorSubject';
+import {StateService} from '../../store/service/state.service';
+import {LastIndexed} from '../../shared/pipes/lastIndex.pipe';
+import 'rxjs/operator/reduce';
+import {Subscription} from 'rxjs/Subscription';
+
+export const INPUT_INITIAL_STATE = (model: string) => {
+	return <InputInstance>{
+		value: model,
+		id: Date.now()
+	}
+};
+
+export interface InputInstance {
+	value: string;
+	id: string | number;
+}
 
 @Component({
 	selector: 'input-component',
@@ -13,25 +27,34 @@ import {BehaviorSubject} from 'rxjs/BehaviorSubject';
 				<strong>{{label}}</strong>
 			</div>
 			<div *ngIf="!!label" class="col-xs-7">
-				<input [formControl]="control" [type]="password ? 'password' : 'text'" [(ngModel)]="model" (ngModelChange)="modelChange.emit($event); store.next({value: $event}); seeker = []" class="form-control" [formControl]="control"  (blur)="blurred($event); store.next({value: $event})" [placeholder]="placeholder"/>
+				<input [formControl]="control" [type]="password ? 'password' : 'text'" [ngModel]="(storeSource | async | lastIndexed)?.value"
+					   (ngModelChange)="modelChanged($event)" class="form-control"
+					   (blur)="onBlur.emit($event.target.value)"
+					   [placeholder]="placeholder"/>
 			</div>
 			<div *ngIf="!!label" class="col-xs-2">
-				<button (click)="action.emit({type: 'STATE_FORMS_INPUT_UNDO', payload: {}})"><span class="icon icon-undo2"></span></button>
-				<button (click)="action.emit({type: 'STATE_FORMS_INPUT_REDO', payload: {}}); reDo()"><span class="icon icon-redo2"></span></button>
+				<button (click)="action.emit({type: 'STATE_FORMS_INPUT_UNDO', payload: {}}); unDo(model)"><span
+						class="icon icon-undo2"></span></button>
+				<button (click)="action.emit({type: 'STATE_FORMS_INPUT_REDO', payload: {}}); reDo()"><span
+						class="icon icon-redo2"></span></button>
 			</div>
 			<div *ngIf="!label" class="col-xs-10">
-				<input [formControl]="control" [type]="password ? 'password' : 'text'" [(ngModel)]="model" (ngModelChange)="modelChange.emit($event); store.next({value: $event}); seeker = []" class="form-control"  (blur)="blurred($event); store.next({value: $event})" [placeholder]="placeholder"/>
-				{{model}}
+				<input [formControl]="control" [type]="password ? 'password' : 'text'" [ngModel]="(storeSource | async | lastIndexed)?.value"
+					   (ngModelChange)="modelChanged($event)" class="form-control"
+					   (blur)="onBlur.emit($event.target.value)"
+					   [placeholder]="placeholder"/>{{model}}
 			</div>
 			<div *ngIf="!label" class="col-xs-2">
-				<button (click)="action.emit({type: 'STATE_FORMS_INPUT_UNDO', payload: {}})"><span class="icon icon-undo2"></span></button>
-				<button (click)="action.emit({type: 'STATE_FORMS_INPUT_REDO', payload: {}}); reDo()"><span class="icon icon-redo2"></span></button>
+				<button (click)="action.emit({type: 'STATE_FORMS_INPUT_UNDO', payload: {}}); unDo(model)"><span
+						class="icon icon-undo2"></span></button>
+				<button (click)="action.emit({type: 'STATE_FORMS_INPUT_REDO', payload: {}}); reDo()"><span
+						class="icon icon-redo2"></span></button>
 			</div>
 		</div>
 	`,
 })
 
-export class InputComponent implements OnInit, OnDestroy {
+export class InputComponent implements OnInit, OnDestroy, OnChanges{
 	@Output()
 	public onBlur: EventEmitter<string> = new EventEmitter<string>();
 	@Input()
@@ -47,46 +70,69 @@ export class InputComponent implements OnInit, OnDestroy {
 	@Output()
 	public modelChange: EventEmitter<any> = new EventEmitter<any>();
 	@Output()
-	public action: EventEmitter<StateAction> = new EventEmitter<StateAction>();
+	public action: EventEmitter<StateInstance> = new EventEmitter<StateInstance>();
 	@Input()
-	public store: BehaviorSubject<InputStore[]> = new BehaviorSubject<InputStore[]>([{initialState: 0}]);
- 	public storeSource =  this.store.asObservable().concat(this.store
-		.asObservable().scan((acc: InputStore[], cur: InputStore[]) => acc.concat(cur,[{value: this.model}])));
-	public storeSourceSub: Subscription;
-	public seeker: any[] = [];
+	public store: BehaviorSubject<InputInstance[]> = new BehaviorSubject<InputInstance[]>([INPUT_INITIAL_STATE(this.model)]);
+	public storeSource = this.store.asObservable().reduce((acc, cur) => acc.concat(cur), [INPUT_INITIAL_STATE(this.model)]);
+	public storeSub: Subscription = new Subscription();
 
-	public ngOnInit(): void {
-		this.store = new BehaviorSubject<InputStore[]>([{value: this.model}]);
-		this.storeSourceSub = this.storeSource.subscribe(res => {
-			console.log('store subscribe', res);
+	constructor(public stateService: StateService) {
+	}
+
+	public modelChanged(event): void {
+		console.log('modelChanged', this.storeSource.subscribe(res => res));
+		let states;
+		this.storeSource.subscribe(res => {
+			states = res;
+			this.modelChange.emit(event);
+			this.store.next(states.concat([{value: event.target.value, id: Date.now()}]));
 		});
 	}
 
+	public ngOnChanges(simpleChanges: SimpleChanges) {
+		if(simpleChanges['model'] && simpleChanges['model'].firstChange) {
+
+		console.log('hit firstCHANGES : ', simpleChanges);
+			this.store.next([{id: Date.now(), value: this.model}]);
+		}
+		console.log('input component CHANGES : ', simpleChanges);
+	}
+
+	public ngOnInit(): void {
+		this.storeSub = this.storeSource.subscribe(res => res);
+	}
+
 	public ngOnDestroy(): void {
-		this.storeSourceSub.unsubscribe();
+		this.storeSub.unsubscribe();
 	}
 
 	public blurred(event): void {
-		this.onBlur.emit(event.target.value);
-	}
-
-	public unDo(currentVal): void {
-		const currentStates: InputStore[] = <InputStore[]>this.storeSource.valueOf();
-		if(Array.isArray(currentStates)){
-			const newState = { value: currentVal };
-			this.seeker.concat(newState);
-			const newStates = currentStates.splice(-1);
-			this.model = newStates[newStates.length - 1].value
-		}
+		this.onBlur.emit(event);
 	}
 
 	public reDo(): void {
-		const currentStates: InputStore[] = <InputStore[]>this.storeSource.valueOf();
-		if(Array.isArray(currentStates)) {
-			const newStates = currentStates.concat(this.seeker[this.seeker.length - 1]);
-			this.seeker.splice(-1);
-			this.model =  newStates[newStates.length -1 ].value;
-		}
+		let states;
+		this.store.subscribe(statesInstance => {
+			states = statesInstance;
+			const currentState = this.stateService.nextState(states, states[states.length - 1]).value;
+			const newState: InputInstance = {
+				value: currentState.value,
+				id: Date.now() + '-' + currentState.id
+			};
+			this.store.next([newState]);
+		});
 	}
 
+	public unDo(): void {
+		let states;
+		this.store.subscribe(statesInstance => {
+			states = statesInstance;
+			const currentState = this.stateService.previousState(states, states[states.length - 1]).value;
+			const newState: InputInstance = {
+				value: currentState.value,
+				id: Date.now() + '-' + currentState.id
+			};
+			this.store.next([newState]);
+		})
+	}
 }

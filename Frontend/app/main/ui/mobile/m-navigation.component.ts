@@ -7,7 +7,7 @@ import {StateService} from '../../../store/service/state.service';
 	template: `
 	<ul class="nav nav-tabs">
 		<li class="tab" role="tab">
-			<a (click)="action.emit({type: 'STATE_COMPANIES_PRESSED', payload: {sideMenu: true, viewContext: 'companies', modelContext: 'companies'}})"><span class="icon icon-office"></span></a>
+			<a (click)="action.emit({type: 'NAVIGATION_COMPANIES_FROM_NAV', payload: {sideMenu: true, modelContext: 'companies'}})"><span class="icon icon-office"></span></a>
 		</li>
 		<li class="tab" role="tab">
 			<a (click)="navTo('/Contacts')" ><span class="icon icon-user-tie"></span></a>
