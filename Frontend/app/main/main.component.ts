@@ -1,21 +1,20 @@
-import {Component, NgZone, OnDestroy, OnInit, ViewContainerRef} from '@angular/core';
+import {Component, NgZone, OnInit, ViewContainerRef} from '@angular/core';
 import {Router} from '@angular/router';
 import {FormGroup} from '@angular/forms';
 import {ToastsManager} from 'ng2-toastr';
 import {StateService} from '../store/service/state.service';
-import {Observable} from 'rxjs/Observable';
 import {UIService} from './services/ui.service';
-import {FormsService} from '../forms/services/forms.service';
+import {Observable} from 'rxjs/Observable';
+import {Observer} from 'rxjs/Observer';
 import 'rxjs/rx';
 import '../styles/main.scss';
-import {Observer} from 'rxjs/Observer';
 
 @Component({
 	selector: 'main',
 	template: `
 		<div class="container">
 			<div *ngIf="!!MOBILE">
-				<mobile-dashboard-component [state]="(state$ | async| lastIndexed)"
+				<mobile-dashboard-component [state]="(state$ | async | lastIndexed)"
 											(action)="action($event)"
 											[selected]="(cache$ | async | lastIndexed).selected"
 				></mobile-dashboard-component>
@@ -56,7 +55,6 @@ export class MainComponent implements OnInit {
 
 	constructor(public router: Router,
 				private ui: UIService,
-				private forms: FormsService,
 				public ngZone: NgZone,
 				public stateService: StateService,
 				public toastr: ToastsManager,
@@ -96,11 +94,18 @@ export class MainComponent implements OnInit {
 	public action(event): void {
 		console.log('action', event.type, event.payload);
 		this.actionResponse = Observable.create((observer: Observer<any>)=> {
-			this.stateService.dispatch(event.type, event.payload)
-			.then(res => {
-				observer.next(res);
-				this.toastr.success('action success')
-			}).catch(err => console.log('error with action', err));
+			if(!event.response){
+				this.stateService.dispatch(event.type, event.payload, event.response)
+				.then(res => {
+					observer.next(res);
+					this.toastr.success('action response success')
+				}).catch(err => console.log('error with action', err));
+			} else {
+				this.stateService.dispatch(event.type, event.payload)
+				.then(res => {
+					this.toastr.success('action success')
+				}).catch(err => console.log('error with action', err));
+			}
 		});
 	}
 }

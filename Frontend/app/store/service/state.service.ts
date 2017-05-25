@@ -13,6 +13,13 @@ export const STATE_INITIAL_STATE = {
 	sideMenu: false
 };
 
+export interface ActionResponse {
+	success: any[];
+	error: any[];
+	response: any;
+	status: string;
+}
+
 @Injectable()
 export class StateService {
 	private cacheSource: BehaviorSubject<RDCache> = new BehaviorSubject<RDCache>(<RDCache>{
@@ -27,19 +34,22 @@ export class StateService {
 
 	//todo update for sessions
 
-	public dispatch(type: string, payload: any, sessionToken?: any): Promise<any> {
-		return new Promise((resolve) => {
+	public dispatch(type: string, payload: any, actionResponse?: ActionResponse, sessionToken?: any): Promise<any> {
+		return new Promise((resolve, reject) => {
 			switch (type.split('_')[0]) {
 				case 'SERVICE':
 					this.dispatch('STATE_SERVICE_CALLED', {loading: true});
 					this.crmService.dispatched(type, payload)
 						.subscribe(response => {
-							this.dispatch('CACHE_LAST_SERVICE_RESPONSE', {lastResponse: response});
-							if(type.split('_')[2] !== 'GET'){
-								this.dispatch('SERVICE_' + type.split('_')[1] + '_GET_REFRESH', {});
-							}
-							resolve(response);
-						}, err => console.log('State Service CRM Service Dispatch', err));
+							actionResponse.response = response;
+							actionResponse.status = 'success';
+							resolve(actionResponse);
+						}, err => {
+							actionResponse.error.concat(console.log('State Service CRM Service Dispatch'));
+							actionResponse.response = err;
+							actionResponse.status = 'error';
+							reject(actionResponse)
+						});
 					break;
 				case'CACHE':
 					let response = this.updateCache(newStateAction(type, payload));

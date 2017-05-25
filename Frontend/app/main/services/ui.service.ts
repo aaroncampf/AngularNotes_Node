@@ -7,24 +7,6 @@ import * as _ from 'lodash';
 @Injectable()
 export class UIService {
 	constructor(private stateService: StateService, private forms: FormsService){}
-	// public initSideMenu(): Promise<any> {
-	// 	return new Promise((resolve) => {
-	// 		this.stateService.dispatch('SERVICE_COMPANIES_GET', {}).then(companies => {
-	// 			this.stateService.dispatch('STATE_SERVICE_SUCCESS', {loading: false});
-	// 			this.stateService.dispatch('CACHE_COMPANIES', {companies: companies});
-	// 			resolve();
-	// 		}).then(() => {
-	// 			this.stateService.dispatch('SERVICE_CONTACTS_GET', {})
-	// 				.then(contacts => {
-	// 					this.stateService.dispatch('STATE_SERVICE_SUCCESS', {loading: false});
-	// 					this.stateService.dispatch('CACHE_CONTACTS', {contacts: contacts});
-	// 					resolve();
-	// 			}).catch(() => {
-	// 					this.stateService.dispatch('SET_UI_SERVICE_ERROR', {loading: false});
-	// 			});
-	// 		});
-	// 	});
-	// }
 
 	public contactsListUpdate(): void {
 		this.stateService.dispatch('STATE_CONTACTS_LOADING', {contactsListReady: false});

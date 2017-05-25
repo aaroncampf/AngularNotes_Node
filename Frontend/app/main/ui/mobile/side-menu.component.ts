@@ -1,9 +1,7 @@
 import {Component, EventEmitter, Input, OnChanges, OnInit, Output, SimpleChanges} from '@angular/core';
-import {FormGroup} from '@angular/forms';
 import {Company} from '../../models/company.model';
 import {ModelService} from '../../../shared/services/model.service';
 import {StateInstance} from '../../../store/models/state.model';
-import {Observable} from 'rxjs/Observable';
 import {UIService} from '../../services/ui.service';
 
 export interface Selectable {
@@ -35,9 +33,9 @@ export interface ObjState {
 								 [control]="companiesForm.controls[question.key]" (onBlur)="onBlur($event, question.key)"></input-component>
 				<div *ngIf="!!state$.contactsListReady" class="row">
 					<h6>Contacts:</h6>
-					<list-component *ngIf="!!state$.contactsReady" [itemsList]="cache$.contactsList"
-									[listItemsReady]="state$.contactsReady"
-									[form]="contactsForm" title="Contacts" listContext="contacts"
+					<list-component [itemsList]="cache$.contactsList"
+									[listItemsReady]="state$.contactsListReady"
+									[form]="cache$.contactsList.form" title="Contacts" listContext="contacts"
 					></list-component>
 				</div>
 			</div>
@@ -50,10 +48,6 @@ export class SideMenuComponent implements OnChanges, OnInit {
 	public state$: StateInstance;
 	@Input()
 	public cache$: any;
-	@Input()
-	public companiesForm: FormGroup;
-	@Input()
-	public contactsForm: FormGroup;
 	@Input()
 	public actionResponse: any;
 	@Output()
@@ -70,7 +64,15 @@ export class SideMenuComponent implements OnChanges, OnInit {
 	public ngOnChanges(simpleChanges: SimpleChanges): void {
 		console.log('SIDEMENU CHANGES', simpleChanges);
 		if(simpleChanges['actionResponse']){
-			console.log()
+			if(this.actionResponse && this.actionResponse.status === 'error') {
+				for (let error of this.actionResponse.error) {
+					error();
+				}
+			} else if (this.actionResponse && this.actionResponse.status === 'success') {
+				for (let success of this.actionResponse.success) {
+					success();
+				}
+			}
 		}
 	}
 
@@ -81,10 +83,29 @@ export class SideMenuComponent implements OnChanges, OnInit {
 
 	public onBlur(event, key): void {
 		// this.action.emit({type: 'SET_COMPANIES_REFRESHING', payload: {companiesReady: false}})
-		this.action.emit({type: 'SERVICE_COMPANY_SET', payload: {prop: {[key]: event}, id: this.selectedCompany.id}});
-		this.ui.companiesListUpdate();
+		this.action.emit({
+			type: 'SERVICE_COMPANY_SET', payload: {
+				prop: {[key]: event},
+				id: this.selectedCompany.id
+			},
+			response: {
+				response: null,
+				status: 'pristine',
+				success: [
+					()=> {
+						this.ui.companiesListUpdate()
+					}
+				], error: [
+					() => {
+						this.action.emit({
+							type: 'STATE_SERVICE_COMPANY_SET_ERROR',
+							payload: {}
+						})
+					}
+				]
+			}
+		});
 		this.action.emit({type: 'CACHE_UPDATED_COMPANY', payload: {companiesList: { items: [this.selectedCompany]}}})
-
 	}
 }
 
