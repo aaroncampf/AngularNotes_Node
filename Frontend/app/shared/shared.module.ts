@@ -8,10 +8,12 @@ import {Capitalize} from './pipes/toTitleCase.pipe';
 import {DiamondLoaderComponent} from './animations/loading-screen.animation';
 import {ModelService} from './services/model.service';
 import {LastIndexed} from './pipes/lastIndex.pipe';
+import {SelectByID} from './pipes/selectByID.pipe';
 
 const COMPONENTS = [
 	LastIndexed,
 	Capitalize,
+	SelectByID,
 	DiamondLoaderComponent,
 ];
 
@@ -31,6 +33,7 @@ const MODULES = [
 	providers: [
 		LastIndexed,
 		Capitalize,
+		SelectByID,
 		SocketService,
 		RESTService,
 		UsersService,

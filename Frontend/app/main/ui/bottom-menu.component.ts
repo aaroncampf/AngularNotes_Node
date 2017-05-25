@@ -19,7 +19,7 @@ export class BottomMenuComponent implements OnChanges {
 	public state: any;
 
 	public ngOnChanges( simpleChanges: SimpleChanges){
-		console.log('BOTTOM MENU',this.state, simpleChanges);
+		// console.log('BOTTOM MENU',this.state, simpleChanges);
 
 	}
 

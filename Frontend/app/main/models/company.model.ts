@@ -1,7 +1,7 @@
 import {_baseListItem} from './base-model.model';
 
 export interface Company extends _baseListItem{
-	id: string
+	id?: string
 	name: string;
 	addressOne: string;
 	addressTwo: string;

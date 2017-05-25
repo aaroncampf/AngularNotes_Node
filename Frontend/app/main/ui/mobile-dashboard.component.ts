@@ -22,7 +22,7 @@ import {CRMState, StateInstance} from '../../store/models/state.model';
 	`
 })
 
-export class MobileDashboardComponent implements OnChanges {
+export class MobileDashboardComponent {
 	@Input()
 	public bottomMenu: boolean = false;
 	@Input()
@@ -34,7 +34,4 @@ export class MobileDashboardComponent implements OnChanges {
 	@Output()
 	public action: EventEmitter<any> = new EventEmitter<any>();
 
-	public ngOnChanges(): void {
-		console.log('ASYNC ', this.state, this.state.dashboardReady);
-	}
 }

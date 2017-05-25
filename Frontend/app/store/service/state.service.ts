@@ -5,6 +5,7 @@ import { RDCache} from '../models/typescript-cache.model';
 import 'rxjs/add/operator/reduce';
 import {newStateAction, StateInstance} from '../models/state.model';
 import {CRMService} from '../../main/services/crm.service';
+import * as _ from 'lodash'
 
 export const STATE_INITIAL_STATE = {
 	type: 'initial state',
@@ -25,6 +26,7 @@ export class StateService {
 	constructor(private crmService: CRMService) {}
 
 	//todo update for sessions
+
 	public dispatch(type: string, payload: any, sessionToken?: any): Promise<any> {
 		return new Promise((resolve) => {
 			switch (type.split('_')[0]) {
@@ -32,6 +34,10 @@ export class StateService {
 					this.dispatch('STATE_SERVICE_CALLED', {loading: true});
 					this.crmService.dispatched(type, payload)
 						.subscribe(response => {
+							this.dispatch('CACHE_LAST_SERVICE_RESPONSE', {lastResponse: response});
+							if(type.split('_')[2] !== 'GET'){
+								this.dispatch('SERVICE_' + type.split('_')[1] + '_GET_REFRESH', {});
+							}
 							resolve(response);
 						}, err => console.log('State Service CRM Service Dispatch', err));
 					break;
@@ -39,7 +45,7 @@ export class StateService {
 					let response = this.updateCache(newStateAction(type, payload));
 					resolve(response);
 					break;
-				case'STATE':
+				case'STATE'||'SET':
 					response = this.updateState(this.stateSource.getValue(), newStateAction(type, payload, this.currentState(this.stateSource.getValue())));
 					resolve(response);
 					break;
@@ -56,7 +62,9 @@ export class StateService {
 
 	public updateCache(stateAction: StateInstance, sessionCredentials?: any): any {
 		//todo decrypt
-		const newCache = Object.assign({}, this.cacheSource.getValue(), stateAction.payload);
+		const currentCache = this.cacheSource.getValue();
+		let newCache = _.merge(currentCache, stateAction.payload);
+		// const newCache = Object.assign({}, this.cacheSource.getValue(), stateAction.payload);
 
 		//todo encrypt
 		this.cacheSource.next(newCache);
@@ -84,7 +92,7 @@ export class StateService {
 
 	public nextState(states: StateInstance[], currentState: StateInstance): StateInstance {
 		let i = 0;
-		return Observable.from([...states]).map(val => {
+		return Observable.from(states).map(val => {
 			if(val.id === currentState.id) {
 				if(i < states.length){
 					return states[i + 1];
@@ -98,7 +106,7 @@ export class StateService {
 
 	public previousState(states: StateInstance[], currentState: StateInstance): StateInstance {
 		let i = 0;
-		return Observable.from([...states]).map(val => {
+		return Observable.from(states).map(val => {
 			if(val.id === currentState.id) {
 				if(i > 0){
 					return states[i - 1];

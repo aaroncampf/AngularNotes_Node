@@ -87901,13 +87901,13 @@ var InputComponent = (function () {
         this.modelChange = new core_1.EventEmitter();
         this.action = new core_1.EventEmitter();
         this.store = new BehaviorSubject_1.BehaviorSubject([{ initialState: 0 }]);
-        this.storeSource = this.store.asObservable().concat(this.store
+        this.store$ = this.store.asObservable().concat(this.store
             .asObservable().scan(function (acc, cur) { return acc.concat(cur, [{ value: _this.model }]); }));
         this.seeker = [];
     }
     InputComponent.prototype.ngOnInit = function () {
         this.store = new BehaviorSubject_1.BehaviorSubject([{ value: this.model }]);
-        this.storeSourceSub = this.storeSource.subscribe(function (res) {
+        this.storeSourceSub = this.store$.subscribe(function (res) {
             console.log('store subscribe', res);
         });
     };
@@ -87918,7 +87918,7 @@ var InputComponent = (function () {
         this.onBlur.emit(event.target.value);
     };
     InputComponent.prototype.unDo = function (currentVal) {
-        var currentStates = this.storeSource.valueOf();
+        var currentStates = this.store$.valueOf();
         if (Array.isArray(currentStates)) {
             var newState = { value: currentVal };
             this.seeker.concat(newState);
@@ -87927,7 +87927,7 @@ var InputComponent = (function () {
         }
     };
     InputComponent.prototype.reDo = function () {
-        var currentStates = this.storeSource.valueOf();
+        var currentStates = this.store$.valueOf();
         if (Array.isArray(currentStates)) {
             var newStates = currentStates.concat(this.seeker[this.seeker.length - 1]);
             this.seeker.splice(-1);

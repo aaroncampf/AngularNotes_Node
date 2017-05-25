@@ -8,6 +8,7 @@ import {UIService} from './services/ui.service';
 import {FormsService} from '../forms/services/forms.service';
 import 'rxjs/rx';
 import '../styles/main.scss';
+import {Observer} from 'rxjs/Observer';
 
 @Component({
 	selector: 'main',
@@ -28,11 +29,11 @@ import '../styles/main.scss';
 			</div>
 			<div *ngIf="!!MOBILE">
 				<side-menu *ngIf="(state$ | async | lastIndexed).sideMenuReady"
-						   [state]="state$ | async | lastIndexed"
-						   [cache]="cache$| async | lastIndexed"
+						   [state$]="state$ | async | lastIndexed"
+						   [cache$]="cache$ | async"
 						   [class.collapse]="!(state$| async | lastIndexed).sideMenu"
-						   [companiesForm]="companiesForm" 
-						   [contactsForm]="contactsForm" (action)="action($event)"></side-menu>
+						   [companiesForm]="(cache$ | async).companiesList?.form" [actionResponse]="actionResponse | async"
+						   [contactsForm]="(cache$ | async).contactsList?.form" (action)="action($event)"></side-menu>
 				<bottom-menu [class.collapse]="!(state$ | async | lastIndexed).bottomMenu"
 							 [state]="state$ | async | lastIndexed"></bottom-menu>
 			</div>
@@ -46,6 +47,7 @@ export class MainComponent implements OnInit {
 	public cache$: Observable<any>;
 	public companiesForm: FormGroup;
 	public contactsForm: FormGroup;
+	public actionResponse: Observable<any>;
 
 	public get MOBILE(): boolean {
 		this.detectWindowSize();
@@ -63,18 +65,23 @@ export class MainComponent implements OnInit {
 	}
 
 	public ngOnInit(): void {
-		this.cache$ = this.stateService.cache$;
-		this.state$ = this.stateService.state$;
-		this.detectWindowSize();
-
 		this.stateService.dispatch('STATE_MAIN_INIT', {
 			dataReady: false,
 			sideMenuReady: false,
 			dashboardReady: false,
 			bottomMenu: false
-		}).then(() => this.stateService.dispatch('STATE_MAIN_INIT_SUCCESS', {dashboardReady: true}));
-		this.companiesListUpdate();
-		this.contactsListUpdate();
+		});
+		this.cache$ = this.stateService.cache$;
+		this.state$ = this.stateService.state$;
+		this.detectWindowSize();
+		this.ui.companiesListUpdate();
+		this.ui.contactsListUpdate();
+		this.stateService.dispatch('STATE_MAIN_INIT_DONE', {
+			dataReady: true,
+			dashboardReady: true,
+			sideMenuReady: true,
+			bottomMenu: true
+		});
 	}
 
 	private detectWindowSize(): void {
@@ -87,54 +94,13 @@ export class MainComponent implements OnInit {
 	}
 
 	public action(event): void {
-		console.log('action', event);
-		this.stateService.dispatch(event.type, event.payload)
-			.then(res =>
-				this.toastr.success('action success'))
-			.catch(err => console.log('error with action', err));
-	}
-
-	private contactsListUpdate(): void {
-		this.stateService.dispatch('STATE_CONTACTS_LOADING', {companiesReady: false});
-		this.stateService.dispatch('SERVICE_CONTACTS_GET', {}).then(contacts => {
-			this.ui.initSideMenu()
-				.then(() => {
-					this.forms.ListBuilder(contacts)
-						.then(list => {
-							this.stateService.dispatch('CACHE_CONTACTS_LIST', {contactsList: list});
-							this.contactsForm = new FormGroup(list.controls);
-							this.stateService.dispatch('STATE_LIST_BUILD_SUCCESS', {
-								contactsReady: true,
-								dataReady: true
-							});
-							this.stateService.dispatch('STATE_SIDE_MENU_INIT_SUCCESS', {
-								sideMenuReady: true,
-								loading: false
-							});
-						});
-				});
-		});
-	}
-
-	private companiesListUpdate(): void {
-		this.stateService.dispatch('STATE_COMPANIES_LOADING', {companiesReady: false});
-		this.stateService.dispatch('SERVICE_COMPANIES_GET', {}).then(companies => {
-			this.ui.initSideMenu()
-				.then(() => {
-					this.forms.ListBuilder(companies)
-						.then(list => {
-							this.stateService.dispatch('CACHE_COMPANIES_LIST', {companiesList: list});
-							this.companiesForm = new FormGroup(list.controls);
-							this.stateService.dispatch('STATE_LIST_BUILD_SUCCESS', {
-								companiesReady: true,
-								dataReady: true
-							});
-							this.stateService.dispatch('STATE_SIDE_MENU_INIT_SUCCESS', {
-								sideMenuReady: true,
-								loading: false
-							});
-						});
-				})
+		console.log('action', event.type, event.payload);
+		this.actionResponse = Observable.create((observer: Observer<any>)=> {
+			this.stateService.dispatch(event.type, event.payload)
+			.then(res => {
+				observer.next(res);
+				this.toastr.success('action success')
+			}).catch(err => console.log('error with action', err));
 		});
 	}
 }
