@@ -14,7 +14,8 @@ export class CRMService {
 			this.sockets.responseSocket(type.split('_')[1].toLowerCase() + '.' + type.split('_')[2].toLowerCase(), payload)
 				 .subscribe(res => {
 				 	console.log('SOCKET RESPONSE FROM SERVICE CALL', res);
-					observer.next(res);
+					observer.next(res)
+					return res;
 			});
 
 		})

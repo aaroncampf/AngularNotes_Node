@@ -28,7 +28,6 @@ export class FormsService {
 			list.controls = this.ControlsFactory(list.questions);
 			list.subLists = this.buildSubLists(list);
 			if(list){
-				console.log('list builder controls', list);
 				resolve(list)
 			}
 		})

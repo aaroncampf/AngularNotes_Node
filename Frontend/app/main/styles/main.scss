@@ -42,12 +42,12 @@ main {
     background: #16d11c;
   }
 }
-  @import './dashboard.scss';
+  @import 'dashboard';
   @import 'side-panel';
   @import 'quote-details';
   @import 'quote';
-  @import 'input';
+  @import '../../forms/styles/input';
   @import 'notes';
   @import 'navigation';
-  @import '../../assets/icons/sprite/sprite.css';
-  @import '../shared/shared.styles';
+  @import '../../../assets/icons/sprite/sprite.css';
+  @import '../../shared/shared.styles';

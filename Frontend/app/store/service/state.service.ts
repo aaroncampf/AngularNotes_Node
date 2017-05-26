@@ -24,7 +24,6 @@ export interface ActionResponse {
 export class StateService {
 	private cacheSource: BehaviorSubject<RDCache> = new BehaviorSubject<RDCache>(<RDCache>{
 		cacheInitialized: true,
-
 	});
 	private stateSource: BehaviorSubject<StateInstance[]> = new BehaviorSubject<StateInstance[]>(<StateInstance[]>[{created_at: Date.now()}]);
 	public cache$: Observable<RDCache> = this.cacheSource.asObservable();
@@ -39,23 +38,28 @@ export class StateService {
 			switch (type.split('_')[0]) {
 				case 'SERVICE':
 					this.dispatch('STATE_SERVICE_CALLED', {loading: true});
-					this.crmService.dispatched(type, payload)
-						.subscribe(response => {
-							actionResponse.response = response;
-							actionResponse.status = 'success';
-							resolve(actionResponse);
+					this.crmService.dispatched(type, payload).subscribe(response => {
+							if (actionResponse){
+								actionResponse.response = response;
+								actionResponse.status = 'success';
+								resolve(actionResponse);
+							}
+							resolve(response);
 						}, err => {
-							actionResponse.error.concat(console.log('State Service CRM Service Dispatch'));
-							actionResponse.response = err;
-							actionResponse.status = 'error';
-							reject(actionResponse)
-						});
+							if (actionResponse){
+								actionResponse.error.concat(console.log('State Service CRM Service Dispatch'));
+								actionResponse.response = err;
+								actionResponse.status = 'error';
+								reject(actionResponse)
+							}
+						reject(err);
+					});
 					break;
 				case'CACHE':
 					let response = this.updateCache(newStateAction(type, payload));
 					resolve(response);
 					break;
-				case'STATE'||'SET':
+				case'STATE':
 					response = this.updateState(this.stateSource.getValue(), newStateAction(type, payload, this.currentState(this.stateSource.getValue())));
 					resolve(response);
 					break;
@@ -78,7 +82,7 @@ export class StateService {
 
 		//todo encrypt
 		this.cacheSource.next(newCache);
-		console.log('UPDATED CACHE : ', this.cacheSource.getValue() );
+		// console.log('UPDATED CACHE : ', this.cacheSource.getValue() );
 		return this.cacheSource.getValue();
 	}
 
@@ -91,10 +95,9 @@ export class StateService {
 				action.payload);
 			const updatedStates = states.concat(newState);
 			this.stateSource.next(updatedStates);
-			console.log('UPDATED STATES : ', this.stateSource.getValue());
+			// console.log('UPDATED STATES : ', this.stateSource.getValue());
 			return this.stateSource.getValue();
 		};
-
 
 	public currentState(states): {} {
 		return states.reduce((acc, cur) => Object.assign(acc, cur), STATE_INITIAL_STATE);

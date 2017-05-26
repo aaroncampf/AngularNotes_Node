@@ -9,7 +9,6 @@ import {CRMType} from '../../main/models/crm-models.type';
 export class ModelService {
 
 	public newModel(tab): CRMType {
-		console.log(tab);
 		let response;
 		switch (tab) {
 			case'companies':

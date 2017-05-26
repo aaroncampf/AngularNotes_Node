@@ -7,7 +7,7 @@ import {UIService} from './services/ui.service';
 import {Observable} from 'rxjs/Observable';
 import {Observer} from 'rxjs/Observer';
 import 'rxjs/rx';
-import '../styles/main.scss';
+import './styles/main.scss';
 
 @Component({
 	selector: 'main',
@@ -16,9 +16,10 @@ import '../styles/main.scss';
 			<div *ngIf="!!MOBILE">
 				<mobile-dashboard-component [state]="(state$ | async | lastIndexed)"
 											(action)="action($event)"
-											[selected]="(cache$ | async | lastIndexed).selected"
-				></mobile-dashboard-component>
-				<mobile-navigation-component (action)="action($event)"></mobile-navigation-component>
+											[selected]="(cache$ | async | lastIndexed).selected">
+				</mobile-dashboard-component>
+				<mobile-navigation-component (action)="action($event)">
+				</mobile-navigation-component>
 			</div>
 			<router-outlet></router-outlet>
 			<div *ngIf="!MOBILE">
@@ -32,9 +33,13 @@ import '../styles/main.scss';
 						   [cache$]="cache$ | async"
 						   [class.collapse]="!(state$| async | lastIndexed).sideMenu"
 						   [companiesForm]="(cache$ | async).companiesList?.form" [actionResponse]="actionResponse | async"
-						   [contactsForm]="(cache$ | async).contactsList?.form" (action)="action($event)"></side-menu>
+						   [contactsForm]="(cache$ | async).contactsList?.form" (action)="action($event)">
+					
+				</side-menu>
 				<bottom-menu [class.collapse]="!(state$ | async | lastIndexed).bottomMenu"
-							 [state]="state$ | async | lastIndexed"></bottom-menu>
+							 [state]="state$ | async | lastIndexed">
+					
+				</bottom-menu>
 			</div>
 		</div>
 	`,
@@ -92,21 +97,21 @@ export class MainComponent implements OnInit {
 	}
 
 	public action(event): void {
+		console.log('action hit');
 		console.log('action', event.type, event.payload);
-		this.actionResponse = Observable.create((observer: Observer<any>)=> {
-			if(!event.response){
-				this.stateService.dispatch(event.type, event.payload, event.response)
-				.then(res => {
+		if(event.response){
+			this.actionResponse = Observable.create((observer: Observer<any>)=> {
+				console.log('response', event);
+				this.stateService.dispatch(event.type, event.payload, event.response).then(res => {
 					observer.next(res);
 					this.toastr.success('action response success')
 				}).catch(err => console.log('error with action', err));
-			} else {
-				this.stateService.dispatch(event.type, event.payload)
-				.then(res => {
-					this.toastr.success('action success')
-				}).catch(err => console.log('error with action', err));
-			}
-		});
+			});
+		} else {
+			this.stateService.dispatch(event.type, event.payload).then(res => {
+				this.toastr.success('action success')
+			}).catch(err => console.log('error with action', err));
+		}
 	}
 }
 

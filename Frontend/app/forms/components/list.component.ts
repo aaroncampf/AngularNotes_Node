@@ -83,11 +83,10 @@ export class ListComponent implements OnInit, OnChanges {
 	public SWIPE_ACTION = {RIGHT: 'swipe-right', LEFT: 'swipe-left'};
 	public xVal: number;
 
-	constructor(public toTitleCase: Capitalize,) {
+	constructor(public toTitleCase: Capitalize) {
 	};
 
 	public ngOnInit(): void {
-		console.log('listItemsready',this.listItemsReady);
 	}
 
 	public ngOnChanges(simpleChanges: SimpleChanges): void {
@@ -95,7 +94,6 @@ export class ListComponent implements OnInit, OnChanges {
 		if (simpleChanges['itemsList'].currentValue) {
 			this.listItemsReady = true;
 		}
-		console.log('list component', this.itemsList);
 	}
 
 	public onSelect(type: string, model: CRMType = <CRMType>{}): void {

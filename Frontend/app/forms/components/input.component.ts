@@ -1,24 +1,24 @@
 import {Component, Input, Output, EventEmitter, OnInit, OnDestroy, OnChanges, SimpleChanges} from '@angular/core';
 import {FormControl} from '@angular/forms';
 import {StateInstance} from '../../store/models/state.model';
-import {Observable} from 'rxjs/Observable';
 import {BehaviorSubject} from 'rxjs/BehaviorSubject';
-import {StateService} from '../../store/service/state.service';
 import 'rxjs/add/operator/reduce';
+import 'rxjs/add/operator/debounce';
 import 'rxjs/operator/';
 import {Subscription} from 'rxjs/Subscription';
+import {Observable} from 'rxjs/Observable';
 
-export const INPUT_INITIAL_STATE = (model: string) => {
-	return <InputInstance>{
-		value: model,
-		id: Date.now()
-	}
-};
-
-export interface InputInstance {
-	value: string;
-	id: string | number;
+export interface InputState {
+	past: string[];
+	present: string;
+	future: string[];
 }
+
+export const TEXT_INPUT_INITIAL_STATE = {
+		past: [],
+		present: null,
+		future: []
+};
 
 @Component({
 	selector: 'input-component',
@@ -27,49 +27,28 @@ export interface InputInstance {
 			<div *ngIf="!!label" class="col-xs-3">
 				<strong>{{label}}</strong>
 			</div>
-			<div *ngIf="!!label" class="col-xs-7">
-
-				<input [formControl]="control" [type]="password ? 'password' : 'text'" [ngModel]="model"
-					   (ngModelChange)="updateStore($event)" class="form-control"
-					   (blur)="onBlur.emit($event.target.value)"
-					   [placeholder]="placeholder"/>{{model}}
-
+			<div [ngClass]="{'col-xs-12':!allowBack && !label, 'col-xs-9':!allowBack && !!label, 'col-xs-7':!!label && allowBack}">
+				<input class="form-control" [formControl]="control" [type]="password ? 'password' : 'text'"
+					   [ngModel]="model" (ngModelChange)="onInput($event)"
+					   [placeholder]="placeholder"/>
 			</div>
-			<div *ngIf="!!label" class="col-xs-2">
-				<button (click)="action.emit({type: 'STATE_FORMS_INPUT_UNDO', payload: {}}); unDo(model)"><span
-						class="icon icon-undo2"></span></button>
-				<button (click)="action.emit({type: 'STATE_FORMS_INPUT_REDO', payload: {}}); reDo()"><span
-						class="icon icon-redo2"></span></button>
-			</div>
-			<div *ngIf="!label" class="col-xs-10">
-				
-			
-					<input [formControl]="control" [type]="password ? 'password' : 'text'" [ngModel]="model"
-					   (ngModelChange)="updateStore($event.target.value)" class="form-control"
-					   (blur)="onBlur.emit($event.target.value)"
-					   [placeholder]="placeholder"/>{{model}}
-			
-			
-			</div>
-			<div *ngIf="!label" class="col-xs-2">
-				<button (click)="action.emit({type: 'STATE_FORMS_INPUT_UNDO', payload: {}}); unDo(model)"><span
-						class="icon icon-undo2"></span></button>
-				<button (click)="action.emit({type: 'STATE_FORMS_INPUT_REDO', payload: {}}); reDo()"><span
-						class="icon icon-redo2"></span></button>
+			<div *ngIf="allowBack" class="col-xs-2">
+				<span class="icon icon-undo2" (click)="onNewState({type: 'UNDO', payload:{}})"></span>
+				<span class="icon icon-redo2" (click)="onNewState({type: 'REDO', payload:{}})"></span>
 			</div>
 		</div>
 	`,
 })
 
 export class InputComponent implements OnInit, OnDestroy, OnChanges{
-	@Output()
-	public onBlur: EventEmitter<string> = new EventEmitter<string>();
+	@Input()
+	public allowBack: boolean = true;
+	@Input()
+	public context: string = 'not stated';
 	@Input()
 	public password: boolean;
 	@Input()
-	public modelUpdate: string;
-	@Input()
-	public model: string;
+	public model: string = '';
 	@Input()
 	public placeholder: string = '';
 	@Input()
@@ -77,62 +56,102 @@ export class InputComponent implements OnInit, OnDestroy, OnChanges{
 	@Input()
 	public control: FormControl = new FormControl;
 	@Output()
-	public modelChange: EventEmitter<any> = new EventEmitter<any>();
+	public modelChange: EventEmitter<string> = new EventEmitter<string>();
 	@Output()
 	public action: EventEmitter<StateInstance> = new EventEmitter<StateInstance>();
-	public storeSource: BehaviorSubject<InputInstance[]> = new BehaviorSubject<InputInstance[]>([INPUT_INITIAL_STATE(this.model)]);
+	public storeSource: BehaviorSubject<InputState> = new BehaviorSubject<InputState>({past: [], present: this.model, future:[]});
 	public store$ = this.storeSource.asObservable();
 	public storeSub: Subscription = new Subscription();
 
-	constructor(public stateService: StateService) {
-	}
-
-	public updateStore(val) {
-		this.storeSource.next(this.storeSource.getValue().concat([{id: Date.now(), value: val}]));
-	}
-
-	public modelChanged(event): void {
-		console.log('modelChanged', this.storeSource.getValue());
-
-	}
-
 	public ngOnChanges(simpleChanges: SimpleChanges) {
-		if(simpleChanges['modelUpdate']) {
-		console.log('modelUpdate : ', simpleChanges);
-			this.storeSource.next([{id: Date.now(), value: this.modelUpdate}]);
-		}
-		console.log('input component CHANGES : ', simpleChanges);
+		if(simpleChanges['context'] && this.context)this.context.toUpperCase();
 	}
 
 	public ngOnInit(): void {
-		this.storeSub = this.store$.subscribe(res => res);
+		this.storeSub = this.store$.subscribe(newState => this.modelChange.emit(newState.present));
 	}
 
 	public ngOnDestroy(): void {
 		this.storeSub.unsubscribe();
 	}
 
-	public reDo(): void {
-		let states;
-		this.storeSource.subscribe(statesInstance => {
-			states = statesInstance;
-			const currentState = this.stateService.nextState(states, states[states.length - 1]).value;
-			const newState: InputInstance = {
-				value: currentState.value,
-				id: Date.now() + '-' + currentState.id
-			};
-			this.storeSource.next([newState]);
-		});
+	public onInput(event) {
+		Observable.of(event)
+			.debounce(() => Observable.timer(500))
+			.subscribe(batchVal => {
+				this.onNewState({
+					type: 'DEFAULT',
+					payload: {
+						value: batchVal
+					}
+				})
+			});
 	}
 
-	public unDo(): void {
-		let states = this.storeSource.getValue();
-			const currentState = this.stateService.previousState(states, states[states.length - 1]).value;
-			const newState: InputInstance = {
-				value: currentState.value,
-				id: Date.now() + '-' + currentState.id
-			};
-			console.log('undo', newState);
-			this.storeSource.next([newState]);
+	public onNewState(action): void {
+		const state = this.storeSource.getValue();
+		const newState = this.undoableInputReducer(state, action);
+		this.storeSource.next(newState);
+	}
+
+	public undoableInputReducer(state, action) {
+		return this.undoable(this.inputReducer)(state, action);
+	}
+
+	public inputReducer(state, action): InputState {
+		const past = state.past;
+		const present = state.present;
+		const future = state.future;
+		switch(action.type){
+			default:
+				return {
+					past: [...past, present],
+					present: action.payload.value,
+					future: []
+				}
+		}
+	}
+
+	public undoable(reducer): (state, action) => {past: string[]; present: string; future: string[]} {
+		const initialState = TEXT_INPUT_INITIAL_STATE;
+
+		return function (state = initialState, action) {
+			const past = state.past;
+			const present = state.present;
+			const future = state.future;
+			switch(action.type){
+				case'UNDO':
+					const previous = past[past.length - 1];
+					const newPast = past.slice(-1);
+					console.log({
+						past: newPast,
+						present: previous,
+						future: [present, ...future]
+					});
+					return {
+						past: newPast,
+						present: previous,
+						future: [present, ...future]
+					};
+				case'REDO':
+					const next = future[0];
+					const newFuture = future.slice(1);
+					return {
+						past: [...past, present],
+						present: next,
+						future: newFuture
+					};
+				default:
+					const newPresent = reducer(state, action).present;
+					if (present === newPresent){
+						return state;
+					}
+					return {
+						past: [...past, present],
+						present: newPresent,
+						future: []
+					}
+			}
+		}
 	}
 }

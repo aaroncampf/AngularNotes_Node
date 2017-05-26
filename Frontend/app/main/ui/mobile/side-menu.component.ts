@@ -16,30 +16,31 @@ export interface ObjState {
 @Component({
 	selector: 'side-menu',
 	template: `
-		<div class="row">
-			<strong>Company Select</strong>
-		</div>
-		<div class="row" *ngIf="!!state$.companiesListReady" [formGroup]="cache$.companiesList.form">
-			<select class="form-control" [(ngModel)]="selectedCompany"
-					(ngModelChange)="action.emit({type: 'CACHE_SELECTED_COMPANY', payload:{selectedCompany: selectedCompany}}); action.emit({ type:'STATE_FORMS-READY_COMPANY-SELECTED', payload: { companiesFormsReady: true}})"
-					[ngModelOptions]="{standalone: true}">
-				<option *ngFor="let company of cache$.companiesList.items" [ngValue]="company">{{company.name}}</option>
-			</select>
-			<div *ngIf="!!state$.companiesFormsReady">
-				<span class="icon icon-plus"
-					  (click)="action.emit({ type: 'SERVICE_COMPANY_CREATE', payload: {}}); action.emit({type: 'SERVICE_COMPANIES_GET', payload: {}})"></span>
-				<input-component *ngFor="let question of cache$.companiesList.questions" (action)="action.emit($event)"
-								 [model]="([cache$.companiesList.items, selectedCompany.id] | selectByID)[question.key]" [label]="question.label"
-								 [control]="companiesForm.controls[question.key]" (onBlur)="onBlur($event, question.key)"></input-component>
-				<div *ngIf="!!state$.contactsListReady" class="row">
-					<h6>Contacts:</h6>
-					<list-component [itemsList]="cache$.contactsList"
-									[listItemsReady]="state$.contactsListReady"
-									[form]="cache$.contactsList.form" title="Contacts" listContext="contacts"
-					></list-component>
-				</div>
+	<div class="row">
+		<strong>Company Select</strong>
+	</div>
+	<div class="row" *ngIf="!!state$.companiesListReady" [formGroup]="cache$.companiesList.form">
+		<select class="form-control" [(ngModel)]="selectedCompany"
+				(ngModelChange)="action.emit({type: 'CACHE_SELECTED_COMPANY', payload:{selectedCompany: selectedCompany}}); action.emit({ type:'STATE_FORMS-READY_COMPANY-SELECTED', payload: { companiesFormsReady: true}})"
+				[ngModelOptions]="{standalone: true}"
+		><option *ngFor="let company of cache$.companiesList.items" [ngValue]="company">{{company.name}}</option>
+		</select>
+		<div *ngIf="!!state$.companiesFormsReady">
+			<span class="icon icon-plus" (click)="action.emit({ type: 'SERVICE_COMPANY_CREATE', payload: {}}); action.emit({type: 'SERVICE_COMPANIES_GET', payload: {}})"></span>
+			<input-component *ngFor="let question of cache$.companiesList.questions" (action)="action.emit($event)" 
+							 [model]="([cache$.companiesList.items, selectedCompany.id] | selectByID)[question.key]"
+							 (modelChange)="action.emit({type: 'SERVICE_COMPANY_SET', payload: { id: selectedCompany.id, prop: { key:question.key, value: $event}}})"
+							 [label]="question.label" [control]="cache$.companiesList.controls[question.key]">
+			</input-component>
+			<div *ngIf="!!state$.contactsListReady" class="row">
+				<h6>Contacts:</h6>
+				<list-component [itemsList]="cache$.contactsList"
+								[listItemsReady]="state$.contactsListReady"
+								[form]="cache$.contactsList.form" title="Contacts" listContext="contacts">
+				</list-component>
 			</div>
 		</div>
+	</div>
 	`,
 })
 
@@ -63,8 +64,8 @@ export class SideMenuComponent implements OnChanges, OnInit {
 
 	public ngOnChanges(simpleChanges: SimpleChanges): void {
 		console.log('SIDEMENU CHANGES', simpleChanges);
-		if(simpleChanges['actionResponse']){
-			if(this.actionResponse && this.actionResponse.status === 'error') {
+		if (simpleChanges['actionResponse']) {
+			if (this.actionResponse && this.actionResponse.status === 'error') {
 				for (let error of this.actionResponse.error) {
 					error();
 				}
@@ -81,32 +82,32 @@ export class SideMenuComponent implements OnChanges, OnInit {
 		this.action.emit({type: 'CACHE_SELECTED_NEW-COMPANY', payload: {selectedCompany: newModel}});
 	}
 
-	public onBlur(event, key): void {
-		// this.action.emit({type: 'SET_COMPANIES_REFRESHING', payload: {companiesReady: false}})
-		this.action.emit({
-			type: 'SERVICE_COMPANY_SET', payload: {
-				prop: {[key]: event},
-				id: this.selectedCompany.id
-			},
-			response: {
-				response: null,
-				status: 'pristine',
-				success: [
-					()=> {
-						this.ui.companiesListUpdate()
-					}
-				], error: [
-					() => {
-						this.action.emit({
-							type: 'STATE_SERVICE_COMPANY_SET_ERROR',
-							payload: {}
-						})
-					}
-				]
-			}
-		});
-		this.action.emit({type: 'CACHE_UPDATED_COMPANY', payload: {companiesList: { items: [this.selectedCompany]}}})
-	}
+	// public onAction(type, payload): void {
+	// 	// this.action.emit({type: 'SET_COMPANIES_REFRESHING', payload: {companiesReady: false}})
+	// 	this.action.emit({
+	// 		type: 'SERVICE_COMPANY_SET', payload: {
+	// 			prop: {[key]: event},
+	// 			id: this.selectedCompany.id
+	// 		},
+	// 		response: {
+	// 			response: null,
+	// 			status: 'pristine',
+	// 			success: [
+	// 				() => {
+	// 					this.ui.companiesListUpdate()
+	// 				}
+	// 			], error: [
+	// 				() => {
+	// 					this.action.emit({
+	// 						type: 'STATE_SERVICE_COMPANY_SET_ERROR',
+	// 						payload: {}
+	// 					})
+	// 				}
+	// 			]
+	// 		}
+	// 	});
+	// 	this.action.emit({type: 'CACHE_UPDATED_COMPANY', payload: {companiesList: {items: [this.selectedCompany]}}})
+	// }
 }
 
 export interface InputStore {
