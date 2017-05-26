@@ -2,7 +2,10 @@
 >To make sense of all your awesome busy-nes to other developers please log changes and use sem-ver. 
 
 ##unreleased
-[code] built a simpler cache and state system from the NGRX and Redux patterns and examples, `StateService`.
+
+##version 0.11.0
+[code] built a state management system for `input-components` that allows undos and redos
+[code] built a simpler cache and state system from the NGRX and Redux patterns and examples, `StateService`
 [refactor] removed NGRX Store
 [code] established a pattern and convention for producing Actions and persisting state history chains
 [style] Added icon svg sprites `sprite.svg`, `sprite.css` and imported into `main.scss`

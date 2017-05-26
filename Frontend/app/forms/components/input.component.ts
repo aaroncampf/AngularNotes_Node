@@ -7,17 +7,13 @@ import 'rxjs/add/operator/debounce';
 import 'rxjs/operator/';
 import {Subscription} from 'rxjs/Subscription';
 import {Observable} from 'rxjs/Observable';
-
-export interface InputState {
-	past: string[];
-	present: string;
-	future: string[];
-}
+import {Action} from '../../store/models/action.model';
+import {InputState} from '../models/input.model';
 
 export const TEXT_INPUT_INITIAL_STATE = {
-		past: [],
-		present: null,
-		future: []
+	past: <string[]>[],
+	present: this.model,
+	future: []
 };
 
 @Component({
@@ -29,12 +25,12 @@ export const TEXT_INPUT_INITIAL_STATE = {
 			</div>
 			<div [ngClass]="{'col-xs-12':!allowBack && !label, 'col-xs-9':!allowBack && !!label, 'col-xs-7':!!label && allowBack}">
 				<input class="form-control" [formControl]="control" [type]="password ? 'password' : 'text'"
-					   [ngModel]="model" (ngModelChange)="onInput($event)"
+					   [ngModel]="model" [value]="value" (ngModelChange)="modelChange.emit($event)"
 					   [placeholder]="placeholder"/>
 			</div>
 			<div *ngIf="allowBack" class="col-xs-2">
-				<span class="icon icon-undo2" (click)="onNewState({type: 'UNDO', payload:{}})"></span>
-				<span class="icon icon-redo2" (click)="onNewState({type: 'REDO', payload:{}})"></span>
+				<span class="icon icon-undo2" [class.disabled]="!undoOn" [disabled]="!undoOn" (click)="onNewState({type: 'UNDO'})"></span>
+				<span class="icon icon-redo2" [class.disabled]="!redoOn" [disabled]="!redoOn" (click)="onNewState({type: 'REDO'})"></span>
 			</div>
 		</div>
 	`,
@@ -58,8 +54,11 @@ export class InputComponent implements OnInit, OnDestroy, OnChanges{
 	@Output()
 	public modelChange: EventEmitter<string> = new EventEmitter<string>();
 	@Output()
+	public value;
+	public undoOn: boolean = false;
+	public redoOn: boolean = false;
 	public action: EventEmitter<StateInstance> = new EventEmitter<StateInstance>();
-	public storeSource: BehaviorSubject<InputState> = new BehaviorSubject<InputState>({past: [], present: this.model, future:[]});
+	public storeSource: BehaviorSubject<InputState> = new BehaviorSubject<InputState>(TEXT_INPUT_INITIAL_STATE);
 	public store$ = this.storeSource.asObservable();
 	public storeSub: Subscription = new Subscription();
 
@@ -68,40 +67,32 @@ export class InputComponent implements OnInit, OnDestroy, OnChanges{
 	}
 
 	public ngOnInit(): void {
-		this.storeSub = this.store$.subscribe(newState => this.modelChange.emit(newState.present));
+		this.modelChange.debounce(() => Observable.timer(500)).subscribe(res => {
+			this.onNewState({type: 'DEFAULT', payload:{value: res}});
+		});
+		this.storeSub = this.store$.subscribe(newState => {
+			newState.past.length > 0 ? 	this.undoOn = true : this.undoOn = false;
+			newState.future.length > 0 ? this.redoOn = true : this.redoOn = false;
+			this.value = newState.present;
+		});
 	}
 
 	public ngOnDestroy(): void {
 		this.storeSub.unsubscribe();
 	}
 
-	public onInput(event) {
-		Observable.of(event)
-			.debounce(() => Observable.timer(500))
-			.subscribe(batchVal => {
-				this.onNewState({
-					type: 'DEFAULT',
-					payload: {
-						value: batchVal
-					}
-				})
-			});
-	}
-
-	public onNewState(action): void {
+	public onNewState(action: Action): void {
 		const state = this.storeSource.getValue();
 		const newState = this.undoableInputReducer(state, action);
 		this.storeSource.next(newState);
 	}
 
-	public undoableInputReducer(state, action) {
+	public undoableInputReducer(state: InputState, action: Action) {
 		return this.undoable(this.inputReducer)(state, action);
 	}
 
-	public inputReducer(state, action): InputState {
-		const past = state.past;
-		const present = state.present;
-		const future = state.future;
+	public inputReducer(state: InputState, action): InputState {
+		const {past, present, future} = state;
 		switch(action.type){
 			default:
 				return {
@@ -112,22 +103,13 @@ export class InputComponent implements OnInit, OnDestroy, OnChanges{
 		}
 	}
 
-	public undoable(reducer): (state, action) => {past: string[]; present: string; future: string[]} {
-		const initialState = TEXT_INPUT_INITIAL_STATE;
-
-		return function (state = initialState, action) {
-			const past = state.past;
-			const present = state.present;
-			const future = state.future;
+	public undoable(reducer): (state: InputState, action: Action) => InputState {
+		return function (state: InputState, action: Action) {
+			const {past, present, future}: InputState = <InputState>state;
 			switch(action.type){
 				case'UNDO':
 					const previous = past[past.length - 1];
-					const newPast = past.slice(-1);
-					console.log({
-						past: newPast,
-						present: previous,
-						future: [present, ...future]
-					});
+					const newPast: string[] = past.slice(1, -1);
 					return {
 						past: newPast,
 						present: previous,
@@ -144,7 +126,7 @@ export class InputComponent implements OnInit, OnDestroy, OnChanges{
 				default:
 					const newPresent = reducer(state, action).present;
 					if (present === newPresent){
-						return state;
+						return reducer(state, action);
 					}
 					return {
 						past: [...past, present],

@@ -29,7 +29,7 @@ export interface ObjState {
 			<span class="icon icon-plus" (click)="action.emit({ type: 'SERVICE_COMPANY_CREATE', payload: {}}); action.emit({type: 'SERVICE_COMPANIES_GET', payload: {}})"></span>
 			<input-component *ngFor="let question of cache$.companiesList.questions" (action)="action.emit($event)" 
 							 [model]="([cache$.companiesList.items, selectedCompany.id] | selectByID)[question.key]"
-							 (modelChange)="action.emit({type: 'SERVICE_COMPANY_SET', payload: { id: selectedCompany.id, prop: { key:question.key, value: $event}}})"
+							 (modelChange)="action.emit({type:'SERVICE_COMPANY_SET', payload: { id: selectedCompany.id, prop: {key: question.key, value: $event}}})"
 							 [label]="question.label" [control]="cache$.companiesList.controls[question.key]">
 			</input-component>
 			<div *ngIf="!!state$.contactsListReady" class="row">
@@ -81,33 +81,6 @@ export class SideMenuComponent implements OnChanges, OnInit {
 		const newModel = this.models.newModel('companies');
 		this.action.emit({type: 'CACHE_SELECTED_NEW-COMPANY', payload: {selectedCompany: newModel}});
 	}
-
-	// public onAction(type, payload): void {
-	// 	// this.action.emit({type: 'SET_COMPANIES_REFRESHING', payload: {companiesReady: false}})
-	// 	this.action.emit({
-	// 		type: 'SERVICE_COMPANY_SET', payload: {
-	// 			prop: {[key]: event},
-	// 			id: this.selectedCompany.id
-	// 		},
-	// 		response: {
-	// 			response: null,
-	// 			status: 'pristine',
-	// 			success: [
-	// 				() => {
-	// 					this.ui.companiesListUpdate()
-	// 				}
-	// 			], error: [
-	// 				() => {
-	// 					this.action.emit({
-	// 						type: 'STATE_SERVICE_COMPANY_SET_ERROR',
-	// 						payload: {}
-	// 					})
-	// 				}
-	// 			]
-	// 		}
-	// 	});
-	// 	this.action.emit({type: 'CACHE_UPDATED_COMPANY', payload: {companiesList: {items: [this.selectedCompany]}}})
-	// }
 }
 
 export interface InputStore {
