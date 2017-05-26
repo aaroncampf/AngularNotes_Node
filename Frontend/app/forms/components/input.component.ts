@@ -6,7 +6,6 @@ import 'rxjs/add/operator/reduce';
 import 'rxjs/add/operator/debounce';
 import 'rxjs/operator/';
 import {Subscription} from 'rxjs/Subscription';
-import {Observable} from 'rxjs/Observable';
 import {Action} from '../../store/models/action.model';
 import {InputState} from '../models/input.model';
 
@@ -67,11 +66,11 @@ export class InputComponent implements OnInit, OnDestroy, OnChanges{
 	}
 
 	public ngOnInit(): void {
-		this.modelChange.debounce(() => Observable.timer(500)).subscribe(res => {
+		this.modelChange.subscribe(res => {
 			this.onNewState({type: 'DEFAULT', payload:{value: res}});
 		});
 		this.storeSub = this.store$.subscribe(newState => {
-			newState.past.length > 0 ? 	this.undoOn = true : this.undoOn = false;
+			newState.past.length > 1 ? 	this.undoOn = true : this.undoOn = false;
 			newState.future.length > 0 ? this.redoOn = true : this.redoOn = false;
 			this.value = newState.present;
 		});
@@ -106,10 +105,12 @@ export class InputComponent implements OnInit, OnDestroy, OnChanges{
 	public undoable(reducer): (state: InputState, action: Action) => InputState {
 		return function (state: InputState, action: Action) {
 			const {past, present, future}: InputState = <InputState>state;
+					console.log('start reduce');
 			switch(action.type){
 				case'UNDO':
+					console.log('undo', past);
 					const previous = past[past.length - 1];
-					const newPast: string[] = past.slice(1, -1);
+					const newPast: string[] = past.slice(0, -1);
 					return {
 						past: newPast,
 						present: previous,
@@ -124,6 +125,7 @@ export class InputComponent implements OnInit, OnDestroy, OnChanges{
 						future: newFuture
 					};
 				default:
+					console.log('default', past);
 					const newPresent = reducer(state, action).present;
 					if (present === newPresent){
 						return reducer(state, action);

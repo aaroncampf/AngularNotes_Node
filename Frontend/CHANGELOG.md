@@ -3,6 +3,10 @@
 
 ##unreleased
 
+
+##version 0.11.1 05/26/2017
+[bug] fixed `undoableInputReducer` bug with tracking input history
+
 ##version 0.11.0 05/26/2017
 [code] built a state management system for `input-components` that allows undos and redos
 [code] built a simpler cache and state system from the NGRX and Redux patterns and examples, `StateService`
