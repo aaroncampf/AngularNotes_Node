@@ -29,8 +29,8 @@ export const TEXT_INPUT_INITIAL_STATE = {
 					   [placeholder]="placeholder"/>
 			</div>
 			<div *ngIf="allowBack" class="col-xs-2">
-				<span class="icon icon-undo2" [class.disabled]="!undoOn" [disabled]="!undoOn" (click)="onNewState({type: 'UNDO'})"></span>
-				<span class="icon icon-redo2" [class.disabled]="!redoOn" [disabled]="!redoOn" (click)="onNewState({type: 'REDO'})"></span>
+				<button [class.disabled]="!undoOn" [disabled]="!undoOn" (click)="onNewState({type: 'UNDO'})"><span class="icon icon-undo2"></span></button>
+				<button [class.disabled]="!redoOn" [disabled]="!redoOn" (click)="onNewState({type: 'REDO'})"><span class="icon icon-redo2"></span></button>
 			</div>
 		</div>
 	`,
