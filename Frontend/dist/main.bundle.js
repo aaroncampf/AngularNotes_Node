@@ -46855,7 +46855,7 @@ var XHRConnection = (function () {
                         _xhr.responseType = 'blob';
                         break;
                     default:
-                        throw new Error('The selected responseType is not supported');
+                        throw new Error('The companySelected responseType is not supported');
                 }
             }
             _xhr.addEventListener('load', onLoad);
@@ -57816,7 +57816,7 @@ var AnimationTransitionNamespace = (function () {
         if (engine.totalAnimations) {
             var /** @type {?} */ currentPlayers = engine.players.length ? engine.playersByQueriedElement.get(element) : [];
             // when this `if statement` does not continue forward it means that
-            // a previous animation query has selected the current element and
+            // a previous animation query has companySelected the current element and
             // is animating it. In this situation want to continue fowards and
             // allow the element to be queued up for animation later.
             if (currentPlayers && currentPlayers.length) {
@@ -79727,7 +79727,7 @@ var SCHEMA = [
     'ol^[HTMLElement]|!compact,!reversed,#start,type',
     'object^[HTMLElement]|align,archive,border,code,codeBase,codeType,data,!declare,height,#hspace,name,standby,type,useMap,#vspace,width',
     'optgroup^[HTMLElement]|!disabled,label',
-    'option^[HTMLElement]|!defaultSelected,!disabled,label,!selected,text,value',
+    'option^[HTMLElement]|!defaultSelected,!disabled,label,!companySelected,text,value',
     'output^[HTMLElement]|defaultValue,%htmlFor,name,value',
     'p^[HTMLElement]|align',
     'param^[HTMLElement]|name,type,value,valueType',
@@ -88024,7 +88024,7 @@ var ListComponent = (function () {
         }
         console.log('list component', this.listItems);
     };
-    ListComponent.prototype.onSelect = function (type, model) {
+    ListComponent.prototype.listItemReducer = function (type, model) {
         if (model === void 0) { model = {}; }
         switch (type) {
             case 'slide-open':
@@ -88056,20 +88056,20 @@ var ListComponent = (function () {
         console.log('swiped', action);
         switch (action) {
             case 'swipeleft':
-                this.onSelect('slide-open', question);
+                this.listItemReducer('slide-open', question);
                 break;
             case 'swiperight':
-                this.onSelect('slide-close', question);
+                this.listItemReducer('slide-close', question);
         }
     };
     ListComponent.prototype.panning = function (event, question) {
         this.xVal = event.srcEvent.clientX;
         if (this.xVal === 50) {
-            this.onSelect('slide-close', question);
+            this.listItemReducer('slide-close', question);
             console.log(event);
         }
         else if (this.xVal === -50) {
-            this.onSelect('slide-open', question);
+            this.listItemReducer('slide-open', question);
             console.log(event);
         }
     };
@@ -88126,7 +88126,7 @@ __decorate([
 ListComponent = __decorate([
     core_1.Component({
         selector: 'list-component',
-        template: "\n\t\t<!--//master-->\n\t\t<div class=\"row\">\n\t\t\t<div>\n\t\t\t</div>\n\t\t\t<list-subheader class=\"col-xs-12\" *ngIf=\"title\">\n\t\t\t\t<h1>{{title}}</h1>\n\t\t\t</list-subheader>\n\t\t\t<list-group *ngIf=\"dataReady\" class=\"col-xs-12\">\n\t\t\t\t<div *ngFor=\"let entry of listItems.items\">\n\t\t\t\t\t<list-item-slide>\n\t\t\t\t\t\t<slide-top (click)=\"slide ? onSelect('slide-close', entry) : onSelect('slide-open', entry)\"\n\t\t\t\t\t\t\t\t   class=\"swipe-box\"\n\t\t\t\t\t\t\t\t   ng-style=\"{'transform': 'rotate('+number+'deg)', '-webkit-transform': 'rotate('+number+'deg)', '-ms-transform': 'rotate('+number+'deg)'}\"\n\t\t\t\t\t\t\t\t   (pan)=\"panning($event, entry)\" (swipeLeft)=\"swipe($event.type, entry)\"\n\t\t\t\t\t\t\t\t   (swipeRight)=\"swipe($event.type,  entry)\"\n\t\t\t\t\t\t\t\t   [class.active]=\"selected?.id === entry?.id\"\n\t\t\t\t\t\t\t\t   [class.option]=\"(optionOne || optionTwo) && !(optionOne && optionTwo)\"\n\t\t\t\t\t\t\t\t   [class.options]=\"optionOne && optionTwo\">{{entry.name}}\n\t\t\t\t\t\t</slide-top>\n\t\t\t\t\t\t<slide-details-option (click)=\"(details = !details) && action.emit({type: 'SELECT_DETAILS', payload: entry})\">\n\t\t\t\t\t\t\t<i class=\"glyphicon glyphicon-info-sign\"></i>\n\t\t\t\t\t\t</slide-details-option>\n\t\t\t\t\t\t<slide-option *ngIf=\"optionTwo\" (click)=\"action.emit({type: 'SELECT_OPTION_TWO', payload: entry})\">\n\t\t\t\t\t\t\t<b>{{optionTwo}}</b>\n\t\t\t\t\t\t</slide-option>\n\t\t\t\t\t\t<slide-option *ngIf=\"optionOne\" (click)=\"action.emit({type: 'SELECT_OPTION_ONE', payload: entry})\">\n\t\t\t\t\t\t\t<b>{{optionOne}}</b>\n\t\t\t\t\t\t</slide-option>\n\t\t\t\t\t</list-item-slide>\n\t\t\t\t\t<!--//details-->\n\t\t\t\t\t<item-details *ngIf=\"!!details && selected.id === entry.id\">\n\t\t\t\t\t\t<div *ngFor=\"let question of entry.questions\">\n\t\t\t\t\t\t\t<div [formGroup]=\"detailsForm\">\n\t\t\t\t\t\t\t\t<input-component [label]=\"question.label\"\n\t\t\t\t\t\t\t\t\t\t\t\t (onBlur)=\"blurrySave($event, entry, question.key)\"\n\t\t\t\t\t\t\t\t\t\t\t\t [(model)]=\"question.value\"></input-component>\n\t\t\t\t\t\t\t</div>\n\t\t\t\t\t\t</div>\n\t\t\t\t\t</item-details>\n\t\t\t\t\t<!--<list-group *ngIf=\"!!listItems.subLists\">-->\n\t\t\t\t\t\t<!--<h2>SubLists</h2>-->\n\t\t\t\t\t\t<!--<div *ngFor=\"let subList of listItems.subLists\" >-->\n\t\t\t\t\t\t\t<!--{{subList.title}}-->\n\t\t\t\t\t\t\t<!--<list-component [createContext]=\"subList.title\" *ngFor=\"let subList of listItems.subLists\" [listItems]=\"subList.items\" [controls]=\"subList.controls\"></list-component>-->\n\t\t\t\t\t\t<!--</div>-->\n\t\t\t\t\t<!--</list-group>-->\n\t\t\t\t</div>\n\t\t\t</list-group>\n\t\t</div>\n\t",
+        template: "\n\t\t<!--//master-->\n\t\t<div class=\"row\">\n\t\t\t<div>\n\t\t\t</div>\n\t\t\t<list-subheader class=\"col-xs-12\" *ngIf=\"title\">\n\t\t\t\t<h1>{{title}}</h1>\n\t\t\t</list-subheader>\n\t\t\t<list-group *ngIf=\"dataReady\" class=\"col-xs-12\">\n\t\t\t\t<div *ngFor=\"let entry of listItems.items\">\n\t\t\t\t\t<list-item-slide>\n\t\t\t\t\t\t<slide-top (click)=\"slide ? listItemReducer('slide-close', entry) : listItemReducer('slide-open', entry)\"\n\t\t\t\t\t\t\t\t   class=\"swipe-box\"\n\t\t\t\t\t\t\t\t   ng-style=\"{'transform': 'rotate('+number+'deg)', '-webkit-transform': 'rotate('+number+'deg)', '-ms-transform': 'rotate('+number+'deg)'}\"\n\t\t\t\t\t\t\t\t   (pan)=\"panning($event, entry)\" (swipeLeft)=\"swipe($event.type, entry)\"\n\t\t\t\t\t\t\t\t   (swipeRight)=\"swipe($event.type,  entry)\"\n\t\t\t\t\t\t\t\t   [class.active]=\"companySelected?.id === entry?.id\"\n\t\t\t\t\t\t\t\t   [class.option]=\"(optionOne || optionTwo) && !(optionOne && optionTwo)\"\n\t\t\t\t\t\t\t\t   [class.options]=\"optionOne && optionTwo\">{{entry.name}}\n\t\t\t\t\t\t</slide-top>\n\t\t\t\t\t\t<slide-details-option (click)=\"(details = !details) && action.emit({type: 'SELECT_DETAILS', payload: entry})\">\n\t\t\t\t\t\t\t<i class=\"glyphicon glyphicon-info-sign\"></i>\n\t\t\t\t\t\t</slide-details-option>\n\t\t\t\t\t\t<slide-option *ngIf=\"optionTwo\" (click)=\"action.emit({type: 'SELECT_OPTION_TWO', payload: entry})\">\n\t\t\t\t\t\t\t<b>{{optionTwo}}</b>\n\t\t\t\t\t\t</slide-option>\n\t\t\t\t\t\t<slide-option *ngIf=\"optionOne\" (click)=\"action.emit({type: 'SELECT_OPTION_ONE', payload: entry})\">\n\t\t\t\t\t\t\t<b>{{optionOne}}</b>\n\t\t\t\t\t\t</slide-option>\n\t\t\t\t\t</list-item-slide>\n\t\t\t\t\t<!--//details-->\n\t\t\t\t\t<item-details *ngIf=\"!!details && companySelected.id === entry.id\">\n\t\t\t\t\t\t<div *ngFor=\"let question of entry.questions\">\n\t\t\t\t\t\t\t<div [formGroup]=\"detailsForm\">\n\t\t\t\t\t\t\t\t<input-component [label]=\"question.label\"\n\t\t\t\t\t\t\t\t\t\t\t\t (onBlur)=\"blurrySave($event, entry, question.key)\"\n\t\t\t\t\t\t\t\t\t\t\t\t [(model)]=\"question.value\"></input-component>\n\t\t\t\t\t\t\t</div>\n\t\t\t\t\t\t</div>\n\t\t\t\t\t</item-details>\n\t\t\t\t\t<!--<list-group *ngIf=\"!!listItems.subLists\">-->\n\t\t\t\t\t\t<!--<h2>SubLists</h2>-->\n\t\t\t\t\t\t<!--<div *ngFor=\"let subList of listItems.subLists\" >-->\n\t\t\t\t\t\t\t<!--{{subList.title}}-->\n\t\t\t\t\t\t\t<!--<list-component [createContext]=\"subList.title\" *ngFor=\"let subList of listItems.subLists\" [listItems]=\"subList.items\" [controls]=\"subList.controls\"></list-component>-->\n\t\t\t\t\t\t<!--</div>-->\n\t\t\t\t\t<!--</list-group>-->\n\t\t\t\t</div>\n\t\t\t</list-group>\n\t\t</div>\n\t",
     }),
     __metadata("design:paramtypes", [toTitleCase_pipe_1.ToTitleCaseKeys,
         model_service_1.ModelService])
@@ -88472,7 +88472,7 @@ var MainComponent = (function () {
 MainComponent = __decorate([
     core_1.Component({
         selector: 'main',
-        template: "\n\t\t<div class=\"container\">\n\t\t\t<div *ngIf=\"!!MOBILE\">\n\t\t\t\t<router-outlet [name]=\"'mobile'\"></router-outlet>\n\t\t\t\t<mobile-dashboard-component [sideMenu]=\"state$.sideMenu\" [bottomMenu]=\"state$.bottomMenu\" (action)=\"action($event)\" [selected]=\"cache$.selected\" [createContext]=\"state$.createContext\" [viewContext]=\"state$.viewContext\" [dashboardReady]=\"state$.dashboardReady\"></mobile-dashboard-component>\n\t\t\t\t<mobile-navigation-component></mobile-navigation-component>\n\t\t\t\t<side-menu *ngIf=\"state$.sideMenuReady\" [companiesReady]=\"state$.companiesReady\" [contactsReady]=\"state$.contactsReady\" [class.collapse]=\"!state$.sideMenu\" [companiesList]=\"cache$.companiesList\" [companiesForm]=\"companiesForm\" [contactsList]=\"cache$.contactsList\" [contactsForm]=\"contactsForm\" (action)=\"action($event)\" ></side-menu>\n\t\t\t\t<bottom-menu></bottom-menu>\n\t\t\t</div>\n\t\t\t<div *ngIf=\"!MOBILE\">\n\t\t\t\t<h1>Wide dashboard coming soon</h1>\n\t\t\t\t<h1>nav</h1>\n\t\t\t\t<router-outlet [name]=\"'wideScreen'\"></router-outlet>\n\t\t\t\t<h1 class=\"pull-left\">side-panel</h1>\n\t\t\t</div>\n\t\t</div>\n\t",
+        template: "\n\t\t<div class=\"container\">\n\t\t\t<div *ngIf=\"!!MOBILE\">\n\t\t\t\t<router-outlet [name]=\"'mobile'\"></router-outlet>\n\t\t\t\t<mobile-dashboard-component [sideMenu]=\"state$.sideMenu\" [bottomMenu]=\"state$.bottomMenu\" (action)=\"action($event)\" [companySelected]=\"cache$.companySelected\" [createContext]=\"state$.createContext\" [viewContext]=\"state$.viewContext\" [dashboardReady]=\"state$.dashboardReady\"></mobile-dashboard-component>\n\t\t\t\t<mobile-navigation-component></mobile-navigation-component>\n\t\t\t\t<side-menu *ngIf=\"state$.sideMenuReady\" [companiesReady]=\"state$.companiesReady\" [contactsReady]=\"state$.contactsReady\" [class.collapse]=\"!state$.sideMenu\" [companiesList]=\"cache$.companiesList\" [companiesForm]=\"companiesForm\" [contactsList]=\"cache$.contactsList\" [contactsForm]=\"contactsForm\" (action)=\"action($event)\" ></side-menu>\n\t\t\t\t<bottom-menu></bottom-menu>\n\t\t\t</div>\n\t\t\t<div *ngIf=\"!MOBILE\">\n\t\t\t\t<h1>Wide dashboard coming soon</h1>\n\t\t\t\t<h1>nav</h1>\n\t\t\t\t<router-outlet [name]=\"'wideScreen'\"></router-outlet>\n\t\t\t\t<h1 class=\"pull-left\">side-panel</h1>\n\t\t\t</div>\n\t\t</div>\n\t",
     }),
     __metadata("design:paramtypes", [router_1.Router,
         ui_service_1.UIService,
@@ -88691,7 +88691,7 @@ __decorate([
 MobileDashboardComponent = __decorate([
     core_1.Component({
         selector: 'mobile-dashboard-component',
-        template: "\n\t\t<div class=\"row\" *ngIf=\"dashboardReady\">\n\t\t\t<small class=\"pull-right\">Angular Bros <strong>CRM</strong></small>\n\t\t\t<button [routerLink]=\"['/create']\" class=\"add btn btn-block\"\n\t\t\t\t\t(click)=\"action.emit('CREATE_CONTEXT', {formContext: viewContext})\">Add New {{viewContext}}\n\t\t\t</button>\n\t\t\t<h6 *ngIf=\"!!selected\" class=\"pull-right\"\n\t\t\t\t(click)=\"action.emit({type: 'NAVIGATE_DETAILS', payload: {selected: selected}})\">\n\t\t\t\t<strong>Current:</strong> {{selected.name}}</h6>\n\t\t\t<div>\n\t\t\t\t<i (click)=\"action.emit({type: 'MY_ACCOUNT_TOGGLE', payload: {bottomMenu: true, viewContext: 'account'}})\"\n\t\t\t\t   class=\"glyphicon glyphicon-cog pull-right\"></i>\n\t\t\t</div>\n\t\t\t<button class=\"back pull-left btn btn-lg\"\n\t\t\t\t\t(click)=\"action.emit({type: 'STATE_SIDE_MENU_TOGGLE', payload: {sideMenu: !sideMenu, viewContext: 'companies' }})\">\n\t\t\t\tMenu\n\t\t\t</button>\n\t\t</div>\n\t"
+        template: "\n\t\t<div class=\"row\" *ngIf=\"dashboardReady\">\n\t\t\t<small class=\"pull-right\">Angular Bros <strong>CRM</strong></small>\n\t\t\t<button [routerLink]=\"['/create']\" class=\"add btn btn-block\"\n\t\t\t\t\t(click)=\"action.emit('CREATE_CONTEXT', {formContext: viewContext})\">Add New {{viewContext}}\n\t\t\t</button>\n\t\t\t<h6 *ngIf=\"!!companySelected\" class=\"pull-right\"\n\t\t\t\t(click)=\"action.emit({type: 'NAVIGATE_DETAILS', payload: {companySelected: companySelected}})\">\n\t\t\t\t<strong>Current:</strong> {{companySelected.name}}</h6>\n\t\t\t<div>\n\t\t\t\t<i (click)=\"action.emit({type: 'MY_ACCOUNT_TOGGLE', payload: {bottomMenu: true, viewContext: 'account'}})\"\n\t\t\t\t   class=\"glyphicon glyphicon-cog pull-right\"></i>\n\t\t\t</div>\n\t\t\t<button class=\"back pull-left btn btn-lg\"\n\t\t\t\t\t(click)=\"action.emit({type: 'STATE_SIDE_MENU_TOGGLE', payload: {sideMenu: !sideMenu, viewContext: 'companies' }})\">\n\t\t\t\tMenu\n\t\t\t</button>\n\t\t</div>\n\t"
     })
 ], MobileDashboardComponent);
 exports.MobileDashboardComponent = MobileDashboardComponent;
@@ -89023,7 +89023,7 @@ exports.STATE_INITIAL_STATE = {
 function newStateAction(type, payload, currentState) {
     var newStateAction = {
         //todo make serializable UUID
-        // id: currentState[currentState.length - 1].id  ?  currentState[currentState.length - 1].id + 1 : 0,
+        // id: state$[state$.length - 1].id  ?  state$[state$.length - 1].id + 1 : 0,
         timeStamp: Date.now(),
         type: type,
         payload: payload

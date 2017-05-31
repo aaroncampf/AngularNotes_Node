@@ -22,14 +22,16 @@ export const TEXT_INPUT_INITIAL_STATE = {
 			<div *ngIf="!!label" class="col-xs-3">
 				<strong>{{label}}</strong>
 			</div>
-			<div [ngClass]="{'col-xs-12':!allowBack && !label, 'col-xs-9':!allowBack && !!label, 'col-xs-7':!!label && allowBack}">
+			<div [ngClass]="{'col-xs-12':!undoRedo && !label, 'col-xs-9':!undoRedo && !!label, 'col-xs-7':!!label && undoRedo}">
 				<input class="form-control" [formControl]="control" [type]="password ? 'password' : 'text'"
 					   [ngModel]="model" [value]="value" (ngModelChange)="modelChange.emit($event)"
 					   [placeholder]="placeholder"/>
 			</div>
-			<div *ngIf="allowBack" class="col-xs-2">
-				<button [class.disabled]="!undoOn" [disabled]="!undoOn" (click)="onNewState({type: 'UNDO'})"><span class="icon icon-undo2"></span></button>
-				<button [class.disabled]="!redoOn" [disabled]="!redoOn" (click)="onNewState({type: 'REDO'})"><span class="icon icon-redo2"></span></button>
+			<div *ngIf="undoRedo" class="col-xs-2">
+				<button [class.disabled]="!undoOn" [disabled]="!undoOn" (click)="onNewState({type: 'UNDO'})"><span
+						class="icon icon-undo2"></span></button>
+				<button [class.disabled]="!redoOn" [disabled]="!redoOn" (click)="onNewState({type: 'REDO'})"><span
+						class="icon icon-redo2"></span></button>
 			</div>
 		</div>
 	`,
@@ -37,7 +39,7 @@ export const TEXT_INPUT_INITIAL_STATE = {
 
 export class InputComponent implements OnInit, OnDestroy, OnChanges{
 	@Input()
-	public allowBack: boolean = true;
+	public undoRedo: boolean = true;
 	@Input()
 	public context: string = 'not stated';
 	@Input()
@@ -105,10 +107,8 @@ export class InputComponent implements OnInit, OnDestroy, OnChanges{
 	public undoable(reducer): (state: InputState, action: Action) => InputState {
 		return function (state: InputState, action: Action) {
 			const {past, present, future}: InputState = <InputState>state;
-					console.log('start reduce');
 			switch(action.type){
 				case'UNDO':
-					console.log('undo', past);
 					const previous = past[past.length - 1];
 					const newPast: string[] = past.slice(0, -1);
 					return {
@@ -125,7 +125,6 @@ export class InputComponent implements OnInit, OnDestroy, OnChanges{
 						future: newFuture
 					};
 				default:
-					console.log('default', past);
 					const newPresent = reducer(state, action).present;
 					if (present === newPresent){
 						return reducer(state, action);

@@ -3,6 +3,8 @@
 
 ##unreleased
 
+##version 0.11.2 05/29/2017
+[refactor] rebuilt `side-menu.component` with its own cache and reducer
 
 ##version 0.11.1 05/26/2017
 [bug] fixed `undoableInputReducer` bug with tracking input history

@@ -27,7 +27,7 @@ import './styles/main.scss';
 				<h1>nav</h1>
 				<h1 class="pull-left">side-panel</h1>
 			</div>
-			<div *ngIf="!!MOBILE">
+			<div [class.collapse]="!MOBILE">
 				<side-menu *ngIf="(state$ | async | lastIndexed).sideMenuReady"
 						   [state$]="state$ | async | lastIndexed"
 						   [cache$]="cache$ | async"
@@ -104,7 +104,7 @@ export class MainComponent implements OnInit {
 				console.log('response', event);
 				this.stateService.dispatch(event.type, event.payload, event.response).then(res => {
 					observer.next(res);
-					this.toastr.success('action response success')
+					this.toastr.success('action response ')
 				}).catch(err => console.log('error with action', err));
 			});
 		} else {

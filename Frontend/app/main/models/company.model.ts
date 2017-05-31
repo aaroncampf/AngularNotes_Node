@@ -1,4 +1,5 @@
 import {_baseListItem} from './base-model.model';
+import {Contact} from './contact.model';
 
 export interface Company extends _baseListItem{
 	id?: string
@@ -11,6 +12,7 @@ export interface Company extends _baseListItem{
 	web: string;
 	misc: string;
 	fax: string;
+	contacts: Contact[];
 	modelType: 'companies';
 	singular: 'Company';
 
@@ -29,6 +31,7 @@ export function newCompany(): Company {
 			web: null,
 			misc: null,
 			fax: null,
+			contacts: [],
 			modelType: 'companies',
 			singular: 'Company'
 		}

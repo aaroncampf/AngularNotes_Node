@@ -2,45 +2,53 @@ import {Component, EventEmitter, Input, OnChanges, OnInit, Output, SimpleChanges
 import {Company} from '../../models/company.model';
 import {ModelService} from '../../../shared/services/model.service';
 import {StateInstance} from '../../../store/models/state.model';
-import {UIService} from '../../services/ui.service';
+import {BehaviorSubject} from 'rxjs/BehaviorSubject';
+import {CRMService} from '../../services/crm.service';
+import * as _ from 'lodash';
+import {Contact} from '../../models/contact.model';
+import {CRMType} from '../../models/crm-models.type';
 
-export interface Selectable {
-	[id: string]: ObjState;
+export const SIDE_MENU_INITIAL_STATE = {
+	selected: {},
+	lastSelected: null
+};
+
+export interface ContactsState {
+	[ownerID: string]: Contact[];
 }
 
-export interface ObjState {
-	selected: boolean;
-	detailsShown: boolean;
+export interface SideMenuState {
+	lastSelected: CRMType;
+	selected: {
+		[id: string]: boolean;
+	};
 }
 
 @Component({
 	selector: 'side-menu',
 	template: `
-	<div class="row">
-		<strong>Company Select</strong>
-	</div>
-	<div class="row" *ngIf="!!state$.companiesListReady" [formGroup]="cache$.companiesList.form">
-		<select class="form-control" [(ngModel)]="selectedCompany"
-				(ngModelChange)="action.emit({type: 'CACHE_SELECTED_COMPANY', payload:{selectedCompany: selectedCompany}}); action.emit({ type:'STATE_FORMS-READY_COMPANY-SELECTED', payload: { companiesFormsReady: true}})"
-				[ngModelOptions]="{standalone: true}"
-		><option *ngFor="let company of cache$.companiesList.items" [ngValue]="company">{{company.name}}</option>
-		</select>
-		<div *ngIf="!!state$.companiesFormsReady">
-			<span class="icon icon-plus" (click)="action.emit({ type: 'SERVICE_COMPANY_CREATE', payload: {}}); action.emit({type: 'SERVICE_COMPANIES_GET', payload: {}})"></span>
-			<input-component *ngFor="let question of cache$.companiesList.questions" (action)="action.emit($event)" 
-							 [model]="([cache$.companiesList.items, selectedCompany.id] | selectByID)[question.key]"
-							 (modelChange)="action.emit({type:'SERVICE_COMPANY_SET', payload: { id: selectedCompany.id, prop: {key: question.key, value: $event}}})"
-							 [label]="question.label" [control]="cache$.companiesList.controls[question.key]">
-			</input-component>
-			<div *ngIf="!!state$.contactsListReady" class="row">
-				<h6>Contacts:</h6>
-				<list-component [itemsList]="cache$.contactsList"
-								[listItemsReady]="state$.contactsListReady"
-								[form]="cache$.contactsList.form" title="Contacts" listContext="contacts">
-				</list-component>
-			</div>
-		</div>
-	</div>
+		<table class="table table-bordered table-responsive table-hover">
+			<thead>
+				<strong>Company Select</strong>
+			</thead>
+			<tbody>
+				<tr *ngFor="let company of (companies$ | async)"
+					(click)="onSelect({type: 'COMPANY_SELECTED', payload: {company: company}})">
+					<td [class.active]="(sideMenuState | async).selected[company.id]">{{company.name || 'no name'}}</td>
+				</tr>
+			</tbody>
+		</table>
+		<table class="table table-bordered table-responsive table-hover">
+			<thead>
+				<strong>Contact Select</strong>
+			</thead>
+			<tbody>
+				<tr *ngFor="let contact of (contacts$ | async)"
+					(click)="onSelect({type: 'CONTACT_SELECT', payload: {company: company}})">
+					<td>{{contact.name}}</td>
+				</tr>
+			</tbody>
+		</table>
 	`,
 })
 
@@ -49,37 +57,87 @@ export class SideMenuComponent implements OnChanges, OnInit {
 	public state$: StateInstance;
 	@Input()
 	public cache$: any;
-	@Input()
-	public actionResponse: any;
 	@Output()
 	public action: EventEmitter<{}> = new EventEmitter<{}>();
 	public selectedCompany = <Company>{};
+	private companiesSource: BehaviorSubject<Company[]> = new BehaviorSubject<Company[]>([]);
+	private contactsSource: BehaviorSubject<Contact[]> = new BehaviorSubject<Contact[]>([]);
+	public companies$ = this.companiesSource.asObservable();
+	public contacts$ = this.contactsSource.asObservable();
+	public sideMenuState: BehaviorSubject<SideMenuState> = new BehaviorSubject<SideMenuState>(SIDE_MENU_INITIAL_STATE);
 
-	constructor(private models: ModelService, private ui: UIService) {
+	constructor(private models: ModelService, private crmService: CRMService) {
 	}
 
 	public ngOnInit(): void {
 		this.selectedCompany = <Company>this.models.newModel('companies');
+		this.crmService.getCompanies().then(companies => {
+			this.companiesSource.next(companies);
+		});
+		this.sideMenuState.subscribe(state => {
+			let contactsArray = [];
+			const companies = this.companiesSource.getValue();
+			for (let id of Object.keys(state.selected)){
+				for (let company of companies){
+					if (company.id === id){
+						contactsArray.concat(company.contacts);
+					}
+				}
+			}
+			this.contactsSource.next(contactsArray);
+			console.log('contacts', this.contactsSource.getValue());
+		})
 	}
 
 	public ngOnChanges(simpleChanges: SimpleChanges): void {
-		console.log('SIDEMENU CHANGES', simpleChanges);
-		if (simpleChanges['actionResponse']) {
-			if (this.actionResponse && this.actionResponse.status === 'error') {
-				for (let error of this.actionResponse.error) {
-					error();
+	}
+
+	public onSelect(action): void {
+		const currentState = this.sideMenuState.getValue();
+		const updatedState = this.sideMenuReducer(action, currentState);
+		this.action.emit({type: 'STATE_SELECTED_CRM_TYPE', payload: {selected: updatedState.lastSelected}})
+		this.sideMenuState.next(updatedState);
+	}
+
+	public sideMenuReducer(action, state) {
+		console.log('company selected', action.payload.company);
+		switch (action.type){
+			case'COMPANY_SELECTED':
+				if (state.selected[action.payload.company.id]) {
+					return _.merge(state, {
+						lastSelected: action.payload.company,
+						selected: {
+							[action.payload.company.id]: !state.selected[action.payload.company.id]
+						}
+					});
+				} else {
+					return _.merge(state, {
+						lastSelected: action.payload.company,
+						selected: {
+							[action.payload.company.id]: true
+						}
+					});
 				}
-			} else if (this.actionResponse && this.actionResponse.status === 'success') {
-				for (let success of this.actionResponse.success) {
-					success();
+		case'CONTACT_SELECTED':
+				if (state.selected[action.payload.contact.id]) {
+					return _.merge(state, {
+						lastSelected: action.payload.contact,
+						selected: {
+							[action.payload.contact.id]: !state.selected[action.payload.contact.id]
+						}
+					});
+				} else {
+					return _.merge(state, {
+						lastSelected: action.payload.contact,
+						selected: {
+							[action.payload.contact.id]: true
+						}
+					});
 				}
-			}
 		}
 	}
 
 	public newCompany(): void {
-		const newModel = this.models.newModel('companies');
-		this.action.emit({type: 'CACHE_SELECTED_NEW-COMPANY', payload: {selectedCompany: newModel}});
 	}
 }
 

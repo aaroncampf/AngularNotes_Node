@@ -95,7 +95,7 @@ export class StateService {
 				action.payload);
 			const updatedStates = states.concat(newState);
 			this.stateSource.next(updatedStates);
-			// console.log('UPDATED STATES : ', this.stateSource.getValue());
+			console.log('UPDATED STATE$ : ', this.stateSource.getValue());
 			return this.stateSource.getValue();
 		};
 
