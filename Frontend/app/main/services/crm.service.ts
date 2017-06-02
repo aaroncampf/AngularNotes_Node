@@ -4,6 +4,8 @@ import {Company} from '../models/company.model';
 import {CRMType} from '../models/crm-models.type';
 import {Observable} from 'rxjs/Observable';
 import {Observer} from 'rxjs/Observer';
+import {Contact} from '../models/contact.model';
+import {Quote, QuoteLine} from '../models/quote.model';
 
 @Injectable()
 export class CRMService {
@@ -14,11 +16,73 @@ export class CRMService {
 			this.sockets.responseSocket(type.split('_')[1].toLowerCase() + '.' + type.split('_')[2].toLowerCase(), payload)
 				 .subscribe(res => {
 				 	console.log('SOCKET RESPONSE FROM SERVICE CALL', res);
-					observer.next(res)
+					observer.next(res);
 					return res;
 			});
 
 		})
+	}
+
+	public newContact(payload): Promise<Contact> {
+		return new Promise((resolve, reject) => {
+			this.sockets.responseSocket('contact.create', payload).subscribe(contact => {
+				console.log('contact create response', contact);
+				if (typeof contact === 'string'){
+					reject(contact);
+				} else {
+					resolve(contact);
+				}
+			})
+		})
+	}
+
+
+	public newQuote(payload): Promise<Quote> {
+		return new Promise((resolve, reject) => {
+			this.sockets.responseSocket('quote.create', payload).subscribe(quote => {
+				console.log('quote create response', quote);
+				if (typeof quote === 'string'){
+					reject(quote);
+				} else {
+					resolve(quote);
+				}
+			})
+		})
+	}
+
+
+	public newQuoteLine(payload): Promise<QuoteLine> {
+		return new Promise((resolve, reject) => {
+			this.sockets.responseSocket('quoteLine.create', payload).subscribe(quoteLine => {
+				console.log('quoteLine create response', quoteLine);
+				if (typeof quoteLine === 'string'){
+					reject(quoteLine);
+				} else {
+					resolve(quoteLine);
+				}
+			})
+		})
+	}
+
+	public newCompany(payload): Promise<Company> {
+		return new Promise((resolve, reject) => {
+			this.sockets.responseSocket('company.create', payload).subscribe(company => {
+				if (typeof company === 'string'){
+					reject(company);
+				} else {
+					resolve(company);
+				}
+			})
+		})
+	}
+
+	public setCompany(payload): Promise<Company> {
+		return new Promise((resolve) => {
+			this.sockets.responseSocket('company.set', payload).subscribe(company => {
+				resolve(company);
+			})
+		})
+
 	}
 
 	public getCompanies(payload: any = {}): Promise<Company[]> {

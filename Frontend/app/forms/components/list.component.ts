@@ -2,9 +2,7 @@ import {Component, EventEmitter, Input, OnChanges, OnInit, Output, SimpleChanges
 import {Capitalize} from '../../shared/pipes/toTitleCase.pipe';
 import {FormGroup} from '@angular/forms';
 import {List} from '../models/lists.model';
-import {StateInstance} from '../../store/models/state.model';
 import {BehaviorSubject} from 'rxjs/BehaviorSubject';
-import {Action} from '../../store/models/action.model';
 import {Subscription} from 'rxjs/Subscription';
 import * as _ from 'lodash';
 
@@ -29,12 +27,12 @@ export interface ItemState {
 	hasOptionTwo: boolean;
 }
 
-export interface ItemAction extends Action {
-	type: string,
-	payload: {
-		index: number;
-	}
-}
+// export interface ItemAction extends Action {
+// 	type: string,
+// 	payload: {
+// 		index: number;
+// 	}
+// }
 
 @Component({
 	selector: 'list-component',
@@ -87,8 +85,8 @@ export interface ItemAction extends Action {
 })
 
 export class ListComponent implements OnInit, OnChanges {
-	@Input()
-	public state$: StateInstance = {};
+	// @Input()
+	// public state$: StateInstance = {};
 	@Input()
 	public listContext: string;
 	@Input()
@@ -135,7 +133,7 @@ export class ListComponent implements OnInit, OnChanges {
 		}
 	}
 
-	public itemPressed(action: ItemAction): void {
+	public itemPressed(action): void {
 		const listState = this.listStateSource.getValue();
 		const itemState = listState[action.payload.index];
 		console.log('Old State', itemState);
@@ -145,7 +143,7 @@ export class ListComponent implements OnInit, OnChanges {
 		this.listStateSource.next(updatedListState);
 	}
 
-	public itemReducer(action: Action, state: ItemState = ITEM_INITIAL_STATE): ItemState {
+	public itemReducer(action, state: ItemState = ITEM_INITIAL_STATE): ItemState {
 		console.log('ItemReducer', action, state);
 		switch (action.type){
 			case'ITEM_PRESSED':

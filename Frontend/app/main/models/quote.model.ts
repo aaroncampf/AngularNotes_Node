@@ -35,5 +35,4 @@ export function newQuote(): Quote {
 		modelType: 'quotes',
 		singular: 'Quote'
 	}
-
 }

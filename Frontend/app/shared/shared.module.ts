@@ -3,7 +3,6 @@ import {CommonModule as AngularCommonModule} from '@angular/common';
 import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 import {SocketService} from './services/socket.service';
 import {RESTService} from './services/rest.service';
-import {UsersService} from '../users/users.services';
 import {Capitalize} from './pipes/toTitleCase.pipe';
 import {DiamondLoaderComponent} from './animations/loading-screen.animation';
 import {ModelService} from './services/model.service';
@@ -36,7 +35,6 @@ const MODULES = [
 		SelectByID,
 		SocketService,
 		RESTService,
-		UsersService,
 		ModelService,
 	],
 	schemas: [

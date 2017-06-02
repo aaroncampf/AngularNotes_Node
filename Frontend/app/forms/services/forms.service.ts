@@ -1,15 +1,11 @@
 import {Injectable} from '@angular/core';
 import {FormControl, Validators} from '@angular/forms';
 import {REPLACMENT_LABELS, REQUIRED, RESTRICTED_KEYS} from '../settings/dynamic-forms.config';
-import {StateService} from '../../store/service/state.service';
-import {Subject} from 'rxjs/Subject';
-import {InputStore} from '../../main/ui/mobile/side-menu.component';
 import {List, ListItems} from '../models/lists.model';
 
 
 @Injectable()
 export class FormsService {
-	constructor(private stateService: StateService){}
 
 	private labelMaker(key, replacmentLabels): string {
 		for (let item of replacmentLabels){
@@ -21,7 +17,6 @@ export class FormsService {
 	}
 
 	public ListBuilder(models: any[] = []): Promise<List> {
-		this.stateService.dispatch('STATE_LIST_BUILD', {dataReady: false});
 		return new Promise((resolve) => {
 		let list: List;
 			list = this.QuestionsFactory(models);
@@ -49,7 +44,6 @@ export class FormsService {
 								label: label[0].toUpperCase() + label.slice(1),
 								required: REQUIRED.indexOf(key) !== -1,
 								value: model[key],
-								store: new Subject<InputStore[]>()
 							});
 							questions.push(question)
 						}

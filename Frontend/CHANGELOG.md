@@ -3,6 +3,11 @@
 
 ##unreleased
 
+##version 0.12.0 06/01/2017
+[refactor] removed `user.modules` and `ui.services` and `store.module` because of internalizing functionality and caching in components
+[refactor] rebuilt `side-menu` to be point of navigation and removed `m-navigation.component`
+[code] built `companies.component`, `add-company.component`, `add-contact.component`, `home-component`
+ 
 ##version 0.11.2 05/29/2017
 [refactor] rebuilt `side-menu.component` with its own cache and reducer
 [refactor] rebuilt `list.component` for `dynamic-forms.module` with cache and reducer

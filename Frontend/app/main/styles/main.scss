@@ -42,12 +42,13 @@ main {
     background: #16d11c;
   }
 }
-  @import 'dashboard';
-  @import 'side-panel';
-  @import 'quote-details';
-  @import 'quote';
+  @import './companies';
+  @import './dashboard';
+  @import './side-panel';
+  @import './quote-details';
+  @import './quote';
+  @import './notes';
+  @import './navigation';
   @import '../../forms/styles/input';
-  @import 'notes';
-  @import 'navigation';
-  @import '../../../assets/icons/sprite/sprite.css';
   @import '../../shared/shared.styles';
+  @import '../../../assets/icons/sprite/sprite.css';

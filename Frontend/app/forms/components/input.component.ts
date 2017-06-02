@@ -1,19 +1,18 @@
 import {Component, Input, Output, EventEmitter, OnInit, OnDestroy, OnChanges, SimpleChanges} from '@angular/core';
 import {FormControl} from '@angular/forms';
-import {StateInstance} from '../../store/models/state.model';
 import {BehaviorSubject} from 'rxjs/BehaviorSubject';
 import 'rxjs/add/operator/reduce';
 import 'rxjs/add/operator/debounce';
 import 'rxjs/operator/';
 import {Subscription} from 'rxjs/Subscription';
-import {Action} from '../../store/models/action.model';
 import {InputState} from '../models/input.model';
 
 export const TEXT_INPUT_INITIAL_STATE = {
 	past: <string[]>[],
-	present: this.model,
+	present: '',
 	future: []
 };
+
 
 @Component({
 	selector: 'input-component',
@@ -24,7 +23,7 @@ export const TEXT_INPUT_INITIAL_STATE = {
 			</div>
 			<div [ngClass]="{'col-xs-12':!undoRedo && !label, 'col-xs-9':!undoRedo && !!label, 'col-xs-7':!!label && undoRedo}">
 				<input class="form-control" [formControl]="control" [type]="password ? 'password' : 'text'"
-					   [ngModel]="model" [value]="value" (ngModelChange)="modelChange.emit($event)"
+					   [(ngModel)]="model" [value]="value" (ngModelChange)="modelChange.emit($event)"
 					   [placeholder]="placeholder"/>
 			</div>
 			<div *ngIf="undoRedo" class="col-xs-2">
@@ -54,14 +53,13 @@ export class InputComponent implements OnInit, OnDestroy, OnChanges{
 	public control: FormControl = new FormControl;
 	@Output()
 	public modelChange: EventEmitter<string> = new EventEmitter<string>();
-	@Output()
 	public value;
 	public undoOn: boolean = false;
 	public redoOn: boolean = false;
-	public action: EventEmitter<StateInstance> = new EventEmitter<StateInstance>();
-	public storeSource: BehaviorSubject<InputState> = new BehaviorSubject<InputState>(TEXT_INPUT_INITIAL_STATE);
-	public store$ = this.storeSource.asObservable();
-	public storeSub: Subscription = new Subscription();
+	public action: EventEmitter<any> = new EventEmitter<any>();
+	public inputHistorySource: BehaviorSubject<InputState> = new BehaviorSubject<InputState>(TEXT_INPUT_INITIAL_STATE);
+	public inputHistory$ = this.inputHistorySource.asObservable();
+	public inputHistorySub: Subscription = new Subscription();
 
 	public ngOnChanges(simpleChanges: SimpleChanges) {
 		if(simpleChanges['context'] && this.context)this.context.toUpperCase();
@@ -71,24 +69,25 @@ export class InputComponent implements OnInit, OnDestroy, OnChanges{
 		this.modelChange.subscribe(res => {
 			this.onNewState({type: 'DEFAULT', payload:{value: res}});
 		});
-		this.storeSub = this.store$.subscribe(newState => {
+		this.inputHistorySub = this.inputHistory$.subscribe(newState => {
 			newState.past.length > 1 ? 	this.undoOn = true : this.undoOn = false;
 			newState.future.length > 0 ? this.redoOn = true : this.redoOn = false;
 			this.value = newState.present;
+			// this.modelChange.emit(newState.present);
 		});
 	}
 
 	public ngOnDestroy(): void {
-		this.storeSub.unsubscribe();
+		this.inputHistorySub.unsubscribe();
 	}
 
-	public onNewState(action: Action): void {
-		const state = this.storeSource.getValue();
+	public onNewState(action: any): void {
+		const state = this.inputHistorySource.getValue();
 		const newState = this.undoableInputReducer(state, action);
-		this.storeSource.next(newState);
+		this.inputHistorySource.next(newState);
 	}
 
-	public undoableInputReducer(state: InputState, action: Action) {
+	public undoableInputReducer(state: InputState, action) {
 		return this.undoable(this.inputReducer)(state, action);
 	}
 
@@ -98,14 +97,14 @@ export class InputComponent implements OnInit, OnDestroy, OnChanges{
 			default:
 				return {
 					past: [...past, present],
-					present: action.payload.value,
+					present: action.payload.value || '',
 					future: []
 				}
 		}
 	}
 
-	public undoable(reducer): (state: InputState, action: Action) => InputState {
-		return function (state: InputState, action: Action) {
+	public undoable(reducer): (state: InputState, action) => InputState {
+		return function (state: InputState, action) {
 			const {past, present, future}: InputState = <InputState>state;
 			switch(action.type){
 				case'UNDO':
