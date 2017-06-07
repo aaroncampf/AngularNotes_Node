@@ -1,13 +1,14 @@
 import {Component, OnDestroy, OnInit} from '@angular/core';
-import {BehaviorSubject} from 'rxjs/BehaviorSubject';
-import {Company} from '../models/company.model';
-import {Observable} from 'rxjs/Observable';
-import {CRMService} from '../services/crm.service';
-import * as _ from 'lodash';
 import {FormControl, FormGroup} from '@angular/forms';
+import {BehaviorSubject} from 'rxjs/BehaviorSubject';
+import {Observable} from 'rxjs/Observable';
 import {Subscription} from 'rxjs/Subscription';
+import {CRMService} from '../services/crm.service';
 import {Contact} from '../models/contact.model';
 import {Quote} from '../models/quote.model';
+import {Company, newCompany} from '../models/company.model';
+import * as _ from 'lodash';
+import {ToastsManager} from 'ng2-toastr';
 
 export interface SelectedCompanyState {
 	showDetails: boolean;
@@ -25,7 +26,7 @@ export const INITIAL_COMPANIES_STATE = {
 	companySelected: false,
 	selectedCompany: {
 		index: null,
-		company: <Company>{}
+		company: newCompany()
 	}
 };
 
@@ -36,16 +37,16 @@ export const INITIAL_COMPANIES_STATE = {
 			<button class="btn btn-block" [routerLink]="['/Add-Company']">Add A Company</button>
 		</div>
 		<div class="row">
-			<div class="col-xs-3 dropdown-toggle" (click)="onSelect({type: 'ON_COMPANY_SELECTION'})"
+			<div class="col-xs-4 dropdown-toggle" (click)="onSelect({type: 'ON_COMPANY_SELECTION'})"
 				 id="companySelectDropDown" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"
 				>Select Company
 			</div>
-			<div class="col-xs-6" (click)="onSelect({type: 'ON_COMPANY_SELECTION'})">
+			<div class="col-xs-5" (click)="onSelect({type: 'ON_COMPANY_SELECTION'})">
 				<div *ngIf="companiesState.companySelected"
 					>{{companiesState.selectedCompany.company.name}}
 				</div>
 				<div *ngIf="!companiesState.companySelected"
-					>Please Select Company
+					>-No company selected-
 				</div>
 			</div>
 			<div class="col-xs-3">
@@ -90,17 +91,16 @@ export const INITIAL_COMPANIES_STATE = {
 							 (modelChange)="updateModel({type:'UPDATE_COMPANY_PROP', payload: { id: companiesState.selectedCompany.company.id, prop: { key: 'web', value: $event}}})"
 							 [model]="companiesState.selectedCompany.company.web"
 							 [control]="webControl"></input-component>
+			<button class="btn-danger" (click)="onRemove({type: 'REMOVE_COMPANY', payload: {name: companiesState.selectedCompany.company.name, id: companiesState.selectedCompany.company.id}})">Remove Company</button>
 		</companies-details>
 		<company-contacts *ngIf="companiesState.companySelected">
 			<button class="btn btn-block"
 			[routerLink]="['/Add-Contact', companiesState.selectedCompany.company.id]">Add Contact
 			</button>
-			<table>
-				<thead>
-					<h1>Your Contacts for {{companiesState.selectedCompany.company.name}}</h1>
-				</thead>
+				<h4>{{companiesState.selectedCompany.company.name}}'s Contacts</h4>
+			<table class="table table-bordered table-responsive table-hover">
 				<tbody>
-					<tr *ngFor="let contact of (contacts$ | async)" (click)="onSelect({type: 'CONTACT_SELECTED', payload: {contact: contact}})">
+					<tr [routerLink]="['/Contact-Details', contact.id]" *ngFor="let contact of (contacts$ | async)">
 						<td>{{contact.name}}</td>
 					</tr>
 				</tbody>
@@ -112,7 +112,7 @@ export const INITIAL_COMPANIES_STATE = {
 			</button>
 			<table>
 				<thead>
-				<h1>Your Quotes for {{companiesState.selectedCompany.company.name}}</h1>
+				<h1>{{companiesState.selectedCompany.company.name}}'s Quotes</h1>
 				</thead>
 				<tbody>
 				<tr *ngFor="let quote of (quotes$ | async)" (click)="onSelect({type: 'QUOTE_SELECTED', payload: {quote: quote}})">
@@ -133,7 +133,6 @@ export class CompaniesComponent implements OnInit, OnDestroy {
 	public companies$: Observable<Company[]> = this.companiesSource.asObservable();
 	public companiesState$: Observable<SelectedCompanyState> = this.companiesStateSource.asObservable();
 	public companiesStateSub: Subscription;
-	public contactsSub: Subscription;
 	public companiesState: SelectedCompanyState;
 
 	public nameControl: FormControl = new FormControl('', []);
@@ -157,7 +156,10 @@ export class CompaniesComponent implements OnInit, OnDestroy {
 		fax: this.faxControl,
 	});
 
-	constructor(private crmService: CRMService) {
+	constructor(
+		private crmService: CRMService,
+		public toastr: ToastsManager
+	) {
 	};
 
 	public ngOnInit(): void {
@@ -181,6 +183,17 @@ export class CompaniesComponent implements OnInit, OnDestroy {
 		})
 	}
 
+	public onRemove(action): void {
+		this.crmService.deleteCompany(action.payload).then(() => {
+			this.toastr.warning('Company ' + action.payload.name + ' has been deleted');
+			this.crmService.getCompanies().then(companies => {
+				console.log(companies);
+				this.companiesSource.next(companies);
+				this.onSelect(action);
+			})
+		})
+	}
+
 	public onSelect(action): void {
 		const state = this.companiesStateSource.getValue();
 		console.log('old state', state);
@@ -191,9 +204,21 @@ export class CompaniesComponent implements OnInit, OnDestroy {
 		this.quotesSource.next(newState.selectedCompany.company.quotes)
 	}
 
-
 	private companiesStateReducer(action, state): SelectedCompanyState {
 		switch (action.type) {
+			case'REMOVE_COMPANY':
+				return Object.assign({}, state, {
+					onSelection: false,
+					companySelected: false,
+					showDetails: false,
+					selectedCompany: {
+						index: null,
+						company: {
+							contacts: [],
+							quotes: []
+						}
+					}
+				});
 			case'TOGGLE_COMPANY_DETAILS':
 				return _.merge(state, {showDetails: !state.showDetails});
 			case'ON_COMPANY_SELECTION':

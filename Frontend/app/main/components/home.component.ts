@@ -2,7 +2,7 @@ import {Component} from '@angular/core';
 @Component({
 	selector: 'home-component',
 	template:`
-	<h1>Home Componnent</h1>
+	<h4>Home Componnent</h4>
 		Welcome to Angular Bros. CRM
 	`
 })

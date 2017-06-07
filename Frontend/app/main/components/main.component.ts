@@ -2,20 +2,6 @@ import {Component, OnDestroy, OnInit, ViewContainerRef} from '@angular/core';
 import {ToastsManager} from 'ng2-toastr';
 import 'rxjs/rx';
 import '../styles/main.scss';
-import {BehaviorSubject} from 'rxjs/BehaviorSubject';
-import * as _ from 'lodash';
-
-export interface NavigationState {
-	outlet: string;
-	sideMenu: boolean;
-	bottomMenu: boolean;
-}
-
-export const INITIAL_NAVIGATION_STATE = {
-	outlet: 'Home',
-	sideMenu: false,
-	bottomMenu: false
-};
 
 @Component({
 	selector: 'main',

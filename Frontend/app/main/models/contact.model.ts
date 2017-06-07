@@ -1,4 +1,5 @@
 import {_baseListItem} from './base-model.model';
+import {Note} from './note.model';
 /**
  * Created by aaron on 3/14/2017.
  * edited by RD on 4/17/2017
@@ -17,6 +18,7 @@ export interface Contact extends _Contact, _baseListItem {
 	created_at?: string;
 	modelType: 'contacts';
 	singular: 'Contact';
+	notes: Note[];
 }
 
 export function newContact(): Contact {
@@ -30,6 +32,7 @@ export function newContact(): Contact {
 			updated_at: null,
 			created_at: null,
 			modelType: 'contacts',
-			singular: 'Contact'
+			singular: 'Contact',
+			notes: []
 		}
 }

@@ -3,6 +3,10 @@
 
 ##unreleased
 
+##version 0.13.0 06/06/2017
+[code] finished wiring up `contact.component`
+[code] built `notes.component` a reusable part smart component
+
 ##version 0.12.0 06/01/2017
 [refactor] removed `user.modules` and `ui.services` and `store.module` because of internalizing functionality and caching in components
 [refactor] rebuilt `side-menu` to be point of navigation and removed `m-navigation.component`

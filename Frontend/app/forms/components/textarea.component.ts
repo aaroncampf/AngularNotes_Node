@@ -14,17 +14,16 @@ export const TEXT_INPUT_INITIAL_STATE = {
 };
 
 @Component({
-	selector: 'input-component',
+	selector: 'textarea-component',
 	template: `
 		<div class="row">
 			<div *ngIf="!!label" class="col-xs-3">
 				<strong>{{label}}</strong>
 			</div>
 			<div [ngClass]="{'col-xs-12':!undoRedo && !label, 'col-xs-9':!undoRedo && !!label, 'col-xs-7':!!label && undoRedo}">
-				<input class="form-control" [formControl]="control" [type]="password ? 'password' : 'text'"
-					   [(ngModel)]="model" [value]="value" (ngModelChange)="modelChange.emit(model)"
-					   (blur)="onChange.emit($event.target.value)"
-					   [placeholder]="placeholder"/>
+				<textarea class="form-control" [formControl]="control"
+						  [(ngModel)]="model" [value]="value" (ngModelChange)="modelChange.emit($event)"
+						  [placeholder]="placeholder" (change)="onChange.emit($event.target.value)"></textarea>
 			</div>
 			<div *ngIf="undoRedo" class="col-xs-2">
 				<button [class.disabled]="!undoOn" [disabled]="!undoOn" (click)="onNewState({type: 'UNDO'})"><span
@@ -36,7 +35,7 @@ export const TEXT_INPUT_INITIAL_STATE = {
 	`,
 })
 
-export class InputComponent implements OnInit, OnDestroy, OnChanges{
+export class TextareaComponent implements OnInit, OnDestroy, OnChanges{
 	@Input()
 	public undoRedo: boolean = true;
 	@Input()

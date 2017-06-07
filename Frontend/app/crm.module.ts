@@ -12,7 +12,7 @@ import {NotFoundComponent} from './main/routes/not-found.component';
 import {DynamicFormsModule} from './forms/dynamic-forms.module';
 import {SideMenuComponent} from './main/components/side-menu.component';
 import {CRMService} from './main/services/crm.service';
-import {ContactComponent} from './main/components/contacts.component';
+import {ContactComponent} from './main/components/contact-details.component';
 import {QuotesComponent} from './main/components/quotes.component';
 import {NotesComponent} from './main/components/notes.component';
 import {BottomMenuComponent} from './main/ui/bottom-menu.component';
@@ -28,7 +28,7 @@ const MAIN_ROUTES: Routes = [
 	{path: 'Companies', component: CompaniesComponent},
 	{path: 'Add-Company', component: AddCompanyComponent},
 	{path: 'Add-Contact/:owner_id', component: AddContactComponent},
-	{path: 'Contacts', component: ContactComponent},
+	{path: 'Contact-Details/:contact_id', component: ContactComponent},
 	{path: 'Quotes', component: QuotesComponent},
 	{path: '', redirectTo: '/Home', pathMatch: 'full'},
 	{path: '**', component: NotFoundComponent}

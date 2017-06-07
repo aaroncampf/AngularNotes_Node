@@ -6,6 +6,7 @@ import {Observable} from 'rxjs/Observable';
 import {Observer} from 'rxjs/Observer';
 import {Contact} from '../models/contact.model';
 import {Quote, QuoteLine} from '../models/quote.model';
+import {Note} from '../models/note.model';
 
 @Injectable()
 export class CRMService {
@@ -23,6 +24,7 @@ export class CRMService {
 		})
 	}
 
+
 	public newContact(payload): Promise<Contact> {
 		return new Promise((resolve, reject) => {
 			this.sockets.responseSocket('contact.create', payload).subscribe(contact => {
@@ -36,6 +38,36 @@ export class CRMService {
 		})
 	}
 
+
+	public newNote(payload): Promise<Note> {
+		return new Promise((resolve, reject) => {
+			this.sockets.responseSocket('note.create', payload).subscribe(note => {
+				console.log('note create response', note);
+				if (typeof note === 'string'){
+					reject(note);
+				} else {
+					resolve(note);
+				}
+			})
+		})
+	}
+
+	public setNote(payload): Promise<Note> {
+		return new Promise((resolve) => {
+			this.sockets.responseSocket('note.set', payload).subscribe(note => {
+				resolve(note);
+			})
+		})
+
+	}
+
+	public removeNote(payload): Promise<any> {
+		return new Promise((resolve) => {
+			this.sockets.responseSocket('note.destroy', payload).subscribe(res => {
+				resolve(res);
+			})
+		})
+	}
 
 	public newQuote(payload): Promise<Quote> {
 		return new Promise((resolve, reject) => {
@@ -85,6 +117,24 @@ export class CRMService {
 
 	}
 
+	public setContact(payload): Promise<Company> {
+		return new Promise((resolve) => {
+			this.sockets.responseSocket('contact.set', payload).subscribe(contact => {
+				resolve(contact);
+			})
+		})
+
+	}
+
+	public deleteCompany(payload): Promise<Company> {
+		return new Promise((resolve) => {
+			this.sockets.responseSocket('company.delete', payload).subscribe(company => {
+				resolve(company);
+			})
+		})
+
+	}
+
 	public getCompanies(payload: any = {}): Promise<Company[]> {
 		return new Promise((resolve) => {
 			payload.hasOwnProperty('id')
@@ -101,19 +151,12 @@ export class CRMService {
 		})
 	}
 
-	public getNotes(payload: any = {}): Promise<Company[]> {
+	public getNotes(payload: any = {}): Promise<Note[]> {
 		return new Promise((resolve, reject) => {
-
-			payload.hasOwnProperty('id')
-				?
-				this.sockets.responseSocket('notes.get', {id: payload.id}).subscribe(notes => {
-					// this.stateService.dispatch('NOTES_GET', {notes: notes});
-					resolve(notes);
-				})
-				:
-				this.sockets.responseSocket('notes.get', {}).subscribe(notes => {
-					// this.stateService.dispatch('NOTES_GET', {notes: notes});
-					resolve(notes);
+			console.log('GetNotes', payload);
+				this.sockets.responseSocket('notes.get', payload).subscribe(notes => {
+						console.log('NOTES GET RESPONSE', notes);
+						resolve(notes);
 				});
 		})
 	}
@@ -134,7 +177,19 @@ export class CRMService {
 		});
 	}
 
-	public getContacts(payload: any = {}): Promise<Company[]> {
+	public getContact(payload): Promise<Contact> {
+		return new Promise((resolve, reject) => {
+				this.sockets.responseSocket('contact.get', payload).subscribe(company => {
+				if (typeof company === 'string'){
+					reject(company);
+				} else {
+					resolve(company);
+				}
+			})
+		})
+	}
+
+	public getContacts(payload: any = {}): Promise<Contact[] | Contact> {
 		return new Promise((resolve, reject) => {
 			payload.hasOwnProperty('id')
 				?

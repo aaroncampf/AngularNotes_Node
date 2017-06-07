@@ -8,6 +8,7 @@ import {RouterModule, Routes} from '@angular/router';
 import {FormsService} from './services/forms.service';
 import {HAMMER_GESTURE_CONFIG, HammerGestureConfig} from '@angular/platform-browser';
 import {SharedModule} from '../shared/shared.module';
+import {TextareaComponent} from './components/textarea.component';
 
 const ROUTES: Routes = [
 ];
@@ -16,6 +17,7 @@ const COMPONENTS = [
 	ListComponent,
 	InputComponent,
 	FormComponent,
+	TextareaComponent
 ];
 
 const MODULES = [

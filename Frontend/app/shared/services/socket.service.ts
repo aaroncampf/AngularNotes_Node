@@ -10,7 +10,7 @@ export class SocketService {
 		this.io.emit(pathVerb, payload);
 		// this.io = IO('52.55.177.110:1729', {transport: ['polling', 'websocket']});
 		return Observable.create(observer => {
-			this.io.on(pathVerb + '.response', payload =>{
+			this.io.on(pathVerb + '.response', payload => {
 				observer.next(payload);
 				observer.complete();
 				observer.error('There was an error with socket service.')
