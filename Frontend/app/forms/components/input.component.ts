@@ -20,16 +20,16 @@ export const TEXT_INPUT_INITIAL_STATE = {
 			<div *ngIf="!!label" class="col-xs-3">
 				<strong>{{label}}</strong>
 			</div>
-			<div [ngClass]="{'col-xs-12':!undoRedo && !label, 'col-xs-9':!undoRedo && !!label, 'col-xs-7':!!label && undoRedo}">
+			<div [ngClass]="{'col-xs-12':!undoRedo && !label, 'col-xs-9':!undoRedo && !!label, 'col-xs-7':!!label && undoRedo, 'col-xs-10':!label && undoRedo}">
 				<input class="form-control" [formControl]="control" [type]="password ? 'password' : 'text'"
-					   [(ngModel)]="model" [value]="value" (ngModelChange)="modelChange.emit(model)"
+					   [ngModel]="model" [value]="value" (ngModelChange)="modelChange.emit(model)"
 					   (blur)="onChange.emit($event.target.value)"
 					   [placeholder]="placeholder"/>
 			</div>
 			<div *ngIf="undoRedo" class="col-xs-2">
-				<button [class.disabled]="!undoOn" [disabled]="!undoOn" (click)="onNewState({type: 'UNDO'})"><span
+				<button [class.disabled]="!undoOn" [disabled]="!undoOn" (click)="undo({type: 'UNDO'})"><span
 						class="icon icon-undo2"></span></button>
-				<button [class.disabled]="!redoOn" [disabled]="!redoOn" (click)="onNewState({type: 'REDO'})"><span
+				<button [class.disabled]="!redoOn" [disabled]="!redoOn" (click)="undo({type: 'REDO'})"><span
 						class="icon icon-redo2"></span></button>
 			</div>
 		</div>
@@ -74,13 +74,20 @@ export class InputComponent implements OnInit, OnDestroy, OnChanges{
 		this.inputHistorySub = this.inputHistory$.subscribe(newState => {
 			newState.past.length > 1 ? 	this.undoOn = true : this.undoOn = false;
 			newState.future.length > 0 ? this.redoOn = true : this.redoOn = false;
-			this.value = newState.present;
-			// this.modelChange.emit(newState.present);
 		});
 	}
 
 	public ngOnDestroy(): void {
 		this.inputHistorySub.unsubscribe();
+	}
+
+	public undo(action): void {
+		const state = this.inputHistorySource.getValue();
+		const newState = this.undoableInputReducer(state, action);
+		this.inputHistorySource.next(newState);
+		this.value = newState.present;
+
+
 	}
 
 	public onNewState(action: any): void {

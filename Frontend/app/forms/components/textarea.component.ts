@@ -20,7 +20,7 @@ export const TEXT_INPUT_INITIAL_STATE = {
 			<div *ngIf="!!label" class="col-xs-3">
 				<strong>{{label}}</strong>
 			</div>
-			<div [ngClass]="{'col-xs-12':!undoRedo && !label, 'col-xs-9':!undoRedo && !!label, 'col-xs-7':!!label && undoRedo}">
+			<div [ngClass]="{'col-xs-12':!undoRedo && !label, 'col-xs-9':!undoRedo && !!label, 'col-xs-7':!!label && undoRedo, 'col-xs-10':!label && undoRedo}">
 				<textarea class="form-control" [formControl]="control"
 						  [(ngModel)]="model" [value]="value" (ngModelChange)="modelChange.emit($event)"
 						  [placeholder]="placeholder" (change)="onChange.emit($event.target.value)"></textarea>

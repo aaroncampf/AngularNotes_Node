@@ -10,10 +10,10 @@ import '../styles/main.scss';
 		<div class="row">
 			<mobile-dashboard-component class="col-xs-12"> 
 			</mobile-dashboard-component>
+			<side-menu class="col-xs-12"></side-menu>
 		</div>
 		<div class="row">
-			<side-menu class="col-xs-2"></side-menu>
-			<div class="col-xs-10">
+			<div class="col-xs-12">
 				<router-outlet></router-outlet>
 			</div>
 		</div>

@@ -8,22 +8,22 @@ import {Subscription} from 'rxjs/Subscription';
 	selector: 'contact-component',
 	template: `
 		<h6>CONTACT</h6>
-		<input-component label="Name"
+		<textarea-component label="Name"
 						 (onChange)="setContact({id: contact.id, prop: { key: 'name', value: $event}})"
 						 (modelChange)="setContact({id: contact.id, prop: { key: 'name', value: $event}})"
-						 [model]="contact.name"></input-component>
-		<input-component label="Phone"
+						 [model]="contact.name"></textarea-component>
+		<textarea-component label="Phone"
 						 (onChange)="setContact({id: contact.id, prop: { key: 'phone', value: $event}})"
 						 (modelChange)="setContact({id: contact.id, prop: { key: 'phone', value: $event}})"
-						 [model]="contact.phone"></input-component>
-		<input-component label="Email"
+						 [model]="contact.phone"></textarea-component>
+		<textarea-component label="Email"
 						 (onChange)="setContact({id: contact.id, prop: { key: 'email', value: $event}})"
 						 (modelChange)="setContact({id: contact.id, prop: { key: 'email', value: $event}})"
-						 [model]="contact.email"></input-component>
-		<input-component label="Position"
+						 [model]="contact.email"></textarea-component>
+		<textarea-component label="Position"
 						 (onChange)="setContact({id: contact.id, prop: { key: 'position', value: $event}})"
 						 (modelChange)="setContact({id: contact.id, prop: { key: 'position', value: $event}})"
-						 [model]="contact.position"></input-component>
+						 [model]="contact.position"></textarea-component>
 		<notes-component [contactID]="contact.id"></notes-component>
 	`
 })
@@ -48,7 +48,7 @@ export class ContactComponent implements OnInit, OnDestroy {
 	}
 
 	public setContact(payload): void {
-			this.crmService.setContact(payload).then(res => console.log(res));
+			this.crmService.setContact(payload);
 	}
 
 }

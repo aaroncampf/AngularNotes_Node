@@ -37,21 +37,19 @@ export const INITIAL_COMPANIES_STATE = {
 			<button class="btn btn-block" [routerLink]="['/Add-Company']">Add A Company</button>
 		</div>
 		<div class="row">
-			<div class="col-xs-4 dropdown-toggle" (click)="onSelect({type: 'ON_COMPANY_SELECTION'})"
-				 id="companySelectDropDown" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"
-				>Select Company
-			</div>
-			<div class="col-xs-5" (click)="onSelect({type: 'ON_COMPANY_SELECTION'})">
-				<div *ngIf="companiesState.companySelected"
-					>{{companiesState.selectedCompany.company.name}}
+			<button class="btn-lg btn-info col-xs-10 dropdown-toggle" (click)="onSelect({type: 'ON_COMPANY_SELECTION'})"
+				 id="companySelectDropDown" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+				<span>Select Company: </span>
+			</button>
+				<div class="row">
+					<div class="col-xs-12" (click)="onSelect({type: 'ON_COMPANY_SELECTION'})">
+						<strong *ngIf="companiesState.companySelected">{{companiesState.selectedCompany.company.name}}</strong>
+						<strong *ngIf="!companiesState.companySelected">-No company selected-</strong>
+					</div>
+					<div class="col-xs-2" *ngIf="companiesState.companySelected">
+						<span class="icon icon-info" (click)="onSelect({type:'TOGGLE_COMPANY_DETAILS'})"></span>
+					</div>
 				</div>
-				<div *ngIf="!companiesState.companySelected"
-					>-No company selected-
-				</div>
-			</div>
-			<div class="col-xs-3">
-				<span class="icon icon-info" (click)="onSelect({type:'TOGGLE_COMPANY_DETAILS'})"></span>
-			</div>
 			<ul class="dropdown-menu companies-dropdown" aria-labelledby="companySelectDropDown">
 				<li *ngFor="let company of (companies$ | async); let i = index"
 					(click)="onSelect({type: 'COMPANY_SELECTED', payload: {index: i, company: company}})"
@@ -62,42 +60,40 @@ export const INITIAL_COMPANIES_STATE = {
 		</div>
 		<companies-details *ngIf="companiesState.companySelected && companiesState.showDetails"
 						   [formGroup]="companyForm">
-			<h1>{{companiesState.selectedCompany.company.name}}'s Details</h1>
-			<input-component label="Name"
+			<h5>{{companiesState.selectedCompany.company.name}}'s Details</h5>
+			<textarea-component label="Name"
 							 (modelChange)="updateModel({ type:'UPDATE_COMPANY_PROP', payload: { id: companiesState.selectedCompany.company.id, prop: { key: 'name', value: $event}}})"
 							 [(model)]="companiesState.selectedCompany.company.name"
-							 [control]="nameControl"></input-component>
-			<input-component label="Address"
+							 [control]="nameControl"></textarea-component>
+			<textarea-component label="Address"
 							 (modelChange)="updateModel({type:'UPDATE_COMPANY_PROP', payload: { id: companiesState.selectedCompany.company.id, prop: { key: 'addressOne', value: $event}}})"
 							 [(model)]="companiesState.selectedCompany.company.addressOne"
-							 [control]="addressOneControl"></input-component>
-			<input-component label="City"
+							 [control]="addressOneControl"></textarea-component>
+			<textarea-component label="City"
 							 (modelChange)="updateModel({type:'UPDATE_COMPANY_PROP', payload: { id: companiesState.selectedCompany.company.id, prop: { key: 'city', value: $event}}})"
 							 [(model)]="companiesState.selectedCompany.company.city"
-							 [control]="cityControl"></input-component>
-			<input-component label="Zip"
+							 [control]="cityControl"></textarea-component>
+			<textarea-component label="Zip"
 							 (modelChange)="updateModel({type:'UPDATE_COMPANY_PROP', payload: { id: companiesState.selectedCompany.company.id, prop: { key: 'zip', value: $event}}})"
 							 [model]="companiesState.selectedCompany.company.zip"
-							 [control]="zipControl"></input-component>
-			<input-component label="Phone"
+							 [control]="zipControl"></textarea-component>
+			<textarea-component label="Phone"
 							 (modelChange)="updateModel({type:'UPDATE_COMPANY_PROP', payload: { id: companiesState.selectedCompany.company.id, prop: { key: 'phone', value: $event}}})"
 							 [model]="companiesState.selectedCompany.company.phone"
-							 [control]="phoneControl"></input-component>
-			<input-component label="Fax"
+							 [control]="phoneControl"></textarea-component>
+			<textarea-component label="Fax"
 							 (modelChange)="updateModel({type:'UPDATE_COMPANY_PROP', payload: { id: companiesState.selectedCompany.company.id, prop: { key: 'fax', value: $event}}})"
 							 [model]="companiesState.selectedCompany.company.fax"
-							 [control]="faxControl"></input-component>
-			<input-component label="Web Site"
+							 [control]="faxControl"></textarea-component>
+			<textarea-component label="Web Site"
 							 (modelChange)="updateModel({type:'UPDATE_COMPANY_PROP', payload: { id: companiesState.selectedCompany.company.id, prop: { key: 'web', value: $event}}})"
 							 [model]="companiesState.selectedCompany.company.web"
-							 [control]="webControl"></input-component>
+							 [control]="webControl"></textarea-component>
 			<button class="btn-danger" (click)="onRemove({type: 'REMOVE_COMPANY', payload: {name: companiesState.selectedCompany.company.name, id: companiesState.selectedCompany.company.id}})">Remove Company</button>
 		</companies-details>
 		<company-contacts *ngIf="companiesState.companySelected">
-			<button class="btn btn-block"
-			[routerLink]="['/Add-Contact', companiesState.selectedCompany.company.id]">Add Contact
+			<button class="btn btn-block" [routerLink]="['/Add-Contact', companiesState.selectedCompany.company.id]">Add Contact
 			</button>
-				<h4>{{companiesState.selectedCompany.company.name}}'s Contacts</h4>
 			<table class="table table-bordered table-responsive table-hover">
 				<tbody>
 					<tr [routerLink]="['/Contact-Details', contact.id]" *ngFor="let contact of (contacts$ | async)">
@@ -105,22 +101,8 @@ export const INITIAL_COMPANIES_STATE = {
 					</tr>
 				</tbody>
 			</table>
-			</company-contacts>
-		<company-quotes *ngIf="companiesState.companySelected">
-			<button class="btn btn-block"
-					[routerLink]="['/Add-Quote', companiesState.selectedCompany.company.id]">Add Quote
-			</button>
-			<table>
-				<thead>
-				<h1>{{companiesState.selectedCompany.company.name}}'s Quotes</h1>
-				</thead>
-				<tbody>
-				<tr *ngFor="let quote of (quotes$ | async)" (click)="onSelect({type: 'QUOTE_SELECTED', payload: {quote: quote}})">
-					<td>{{quote.name}}</td>
-				</tr>
-				</tbody>
-			</table>
-		</company-quotes>
+		</company-contacts>
+		<quotes-component></quotes-component>
 	`
 })
 export class CompaniesComponent implements OnInit, OnDestroy {
@@ -187,7 +169,6 @@ export class CompaniesComponent implements OnInit, OnDestroy {
 		this.crmService.deleteCompany(action.payload).then(() => {
 			this.toastr.warning('Company ' + action.payload.name + ' has been deleted');
 			this.crmService.getCompanies().then(companies => {
-				console.log(companies);
 				this.companiesSource.next(companies);
 				this.onSelect(action);
 			})
@@ -196,9 +177,7 @@ export class CompaniesComponent implements OnInit, OnDestroy {
 
 	public onSelect(action): void {
 		const state = this.companiesStateSource.getValue();
-		console.log('old state', state);
 		const newState = this.companiesStateReducer(action, state);
-		console.log('new state', newState);
 		this.companiesStateSource.next(newState);
 		this.contactsSource.next(newState.selectedCompany.company.contacts);
 		this.quotesSource.next(newState.selectedCompany.company.quotes)

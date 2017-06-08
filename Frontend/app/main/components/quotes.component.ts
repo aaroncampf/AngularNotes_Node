@@ -2,32 +2,20 @@ import {Component} from '@angular/core';
 @Component({
 	selector: 'quotes-component',
 	template: `
-	<h1>QUOTES</h1>
+	<h4>QUOTES</h4>
 	<div class="row">
-		
-	</div>
-	<div class="row">
-		<div class="col-xs-4">
-			<table class="table table-bordered table-hover">
-				<thead>
-					<tr>
-						<th>Quotes</th>
-					</tr>
-				</thead>
-				<tbody>
-					<tr>
-						<td>Quote Items</td>
-					</tr>
-				</tbody>
-			</table>
-		</div>
-		<div class="col-xs-8"></div>
-		
-	</div>
-	<div class="row">
-		<input-component label="Description"></input-component>
-		<input-component label="Unit"></input-component>
-		<input-component label="Cost"></input-component>
+		<quote-header>
+			<div class="pull-left">Quote Date</div>
+			<button class="btn-danger pull-right">Remove</button>
+			<div class="text-center">Quote Title</div>
+		</quote-header>
+		<quote-body>
+			<quote-line class="row">
+				<quote-line-description class="col-xs-12">Quote Line Description</quote-line-description>
+				<quote-line-qty class="col-xs-4">42</quote-line-qty>
+				<quote-line-price class="col-xs-8">$163.00</quote-line-price>
+			</quote-line>
+		</quote-body>
 	</div>
 	`
 })
