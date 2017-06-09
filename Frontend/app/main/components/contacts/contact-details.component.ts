@@ -1,11 +1,11 @@
 import {Component, OnDestroy, OnInit} from '@angular/core';
 import {ActivatedRoute} from '@angular/router';
-import {Contact} from '../models/contact.model';
-import {CRMService} from '../services/crm.service';
+import {Contact} from '../../models/contact.model';
+import {CRMService} from '../../services/crm.service';
 import {Subscription} from 'rxjs/Subscription';
 
 @Component({
-	selector: 'contact-component',
+	selector: 'contact-details-component',
 	template: `
 		<h6>CONTACT</h6>
 		<textarea-component label="Name"
@@ -27,7 +27,7 @@ import {Subscription} from 'rxjs/Subscription';
 		<notes-component [contactID]="contact.id"></notes-component>
 	`
 })
-export class ContactComponent implements OnInit, OnDestroy {
+export class ContactDetailsComponent implements OnInit, OnDestroy {
 	public contact: Contact = <Contact>{};
 	public paramsSub: Subscription;
 	constructor(

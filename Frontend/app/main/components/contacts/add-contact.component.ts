@@ -1,20 +1,20 @@
 import {Component, OnInit} from '@angular/core';
 import {FormControl, FormGroup} from '@angular/forms';
 import {ActivatedRoute, Router} from '@angular/router';
-import {CRMService} from '../services/crm.service';
-import {Contact} from '../models/contact.model';
+import {CRMService} from '../../services/crm.service';
+import {Contact} from '../../models/contact.model';
 import {ToastsManager} from 'ng2-toastr';
 @Component({
 	selector: 'create-contact-component',
 	template: `
 		<h1>Add Contact</h1>
 		<form [formGroup]="addForm">
-			<input-component label="Name" [(model)]="newContact.name"  [control]="nameControl"></input-component>
-			<input-component label="Phone" [(model)]="newContact.phone" [control]="phoneControl"></input-component>
-			<input-component label="Email" [(model)]="newContact.email" [control]="emailControl"></input-component>
-			<input-component label="Position" [(model)]="newContact.position" [control]="positionControl"></input-component>
-			<button type="button" class="btn pull-right" (click)="onSubmit(addForm.value)">Submit</button>
-			<button type="reset" class="btn-warning pull-right">Clear</button>
+			<textarea-component label="Name" [(model)]="newContact.name"  [control]="nameControl"></textarea-component>
+			<textarea-component label="Phone" [(model)]="newContact.phone" [control]="phoneControl"></textarea-component>
+			<textarea-component label="Email" [(model)]="newContact.email" [control]="emailControl"></textarea-component>
+			<textarea-component label="Position" [(model)]="newContact.position" [control]="positionControl"></textarea-component>
+			<button type="button" class="btn-success btn-lg pull-right" (click)="onSubmit(addForm.value)">Submit</button>
+			<button type="reset" class="btn-warning btn-lg pull-right" [routerLink]="['/Contacts/company_id']">Cancel</button>
 		</form>
 	`
 })

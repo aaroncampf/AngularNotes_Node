@@ -20,16 +20,12 @@ export const TEXT_INPUT_INITIAL_STATE = {
 			<div *ngIf="!!label" class="col-xs-3">
 				<strong>{{label}}</strong>
 			</div>
-			<div [ngClass]="{'col-xs-12':!undoRedo && !label, 'col-xs-9':!undoRedo && !!label, 'col-xs-7':!!label && undoRedo, 'col-xs-10':!label && undoRedo}">
-				<textarea class="form-control" [formControl]="control"
+			<div class="textarea-wrapper" [ngClass]="{'col-xs-12':!undoRedo && !label, 'col-xs-9':!undoRedo && !!label, 'col-xs-9':!!label && undoRedo, 'col-xs-11':!label && undoRedo}">
+				<textarea rows="1" class="form-control" [formControl]="control"
 						  [(ngModel)]="model" [value]="value" (ngModelChange)="modelChange.emit($event)"
 						  [placeholder]="placeholder" (change)="onChange.emit($event.target.value)"></textarea>
-			</div>
-			<div *ngIf="undoRedo" class="col-xs-2">
-				<button [class.disabled]="!undoOn" [disabled]="!undoOn" (click)="onNewState({type: 'UNDO'})"><span
-						class="icon icon-undo2"></span></button>
-				<button [class.disabled]="!redoOn" [disabled]="!redoOn" (click)="onNewState({type: 'REDO'})"><span
-						class="icon icon-redo2"></span></button>
+				<img *ngIf="undoRedo" class="pull-right undo" src="../../../assets/icons/SVG/undo2.svg" (click)="onNewState({type: 'UNDO'})"/>
+				<img *ngIf="undoRedo" class="pull-right redo" src="../../../assets/icons/SVG/redo2.svg" (click)="onNewState({type: 'REDO'})"/>
 			</div>
 		</div>
 	`,
@@ -40,8 +36,6 @@ export class TextareaComponent implements OnInit, OnDestroy, OnChanges{
 	public undoRedo: boolean = true;
 	@Input()
 	public context: string = 'not stated';
-	@Input()
-	public password: boolean;
 	@Input()
 	public model: string = '';
 	@Input()
@@ -107,9 +101,13 @@ export class TextareaComponent implements OnInit, OnDestroy, OnChanges{
 
 	public undoable(reducer): (state: InputState, action) => InputState {
 		return function (state: InputState, action) {
+			console.log('State', state);
 			const {past, present, future}: InputState = <InputState>state;
 			switch(action.type){
 				case'UNDO':
+					if(past.length < 1) {
+						return state;
+					}
 					const previous = past[past.length - 1];
 					const newPast: string[] = past.slice(0, -1);
 					return {
@@ -118,6 +116,9 @@ export class TextareaComponent implements OnInit, OnDestroy, OnChanges{
 						future: [present, ...future]
 					};
 				case'REDO':
+					if(future.length < 1){
+						return state;
+					}
 					const next = future[0];
 					const newFuture = future.slice(1);
 					return {
@@ -128,7 +129,7 @@ export class TextareaComponent implements OnInit, OnDestroy, OnChanges{
 				default:
 					const newPresent = reducer(state, action).present;
 					if (present === newPresent){
-						return reducer(state, action);
+						return state;
 					}
 					return {
 						past: [...past, present],

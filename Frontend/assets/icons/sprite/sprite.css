@@ -48,69 +48,89 @@
   height: 32px;
   background-position: -384px 0;
 }
-.icon-user-tie {
+.icon-user-minus {
   width: 32px;
   height: 32px;
   background-position: -432px 0;
 }
-.icon-quotes-left {
+.icon-user-tie {
   width: 32px;
   height: 32px;
   background-position: -480px 0;
 }
-.icon-quotes-right {
+.icon-quotes-left {
   width: 32px;
   height: 32px;
   background-position: -528px 0;
 }
-.icon-cog {
+.icon-quotes-right {
   width: 32px;
   height: 32px;
   background-position: -576px 0;
 }
-.icon-meter {
+.icon-cog {
   width: 32px;
   height: 32px;
   background-position: -624px 0;
 }
-.icon-menu {
+.icon-meter {
   width: 32px;
   height: 32px;
   background-position: -672px 0;
 }
+.icon-bin {
+  width: 32px;
+  height: 32px;
+  background-position: -720px 0;
+}
+.icon-menu {
+  width: 32px;
+  height: 32px;
+  background-position: 0 -48px;
+}
 .icon-menu2 {
   width: 44px;
   height: 32px;
-  background-position: 0 -48px;
+  background-position: -48px -48px;
 }
 .icon-menu3 {
   width: 44px;
   height: 32px;
-  background-position: -96px -48px;
+  background-position: -144px -48px;
 }
 .icon-menu4 {
   width: 44px;
   height: 32px;
-  background-position: -192px -48px;
+  background-position: -240px -48px;
 }
 .icon-download3 {
   width: 32px;
   height: 32px;
-  background-position: -288px -48px;
+  background-position: -336px -48px;
 }
 .icon-plus {
   width: 32px;
   height: 32px;
-  background-position: -336px -48px;
+  background-position: -384px -48px;
 }
 .icon-minus {
   width: 32px;
   height: 32px;
-  background-position: -384px -48px;
+  background-position: -432px -48px;
 }
 .icon-info {
   width: 32px;
   height: 32px;
-  background-position: -432px -48px;
+  background-position: -480px -48px;
+}
+.icon-cancel-circle {
+  width: 32px;
+  height: 32px;
+  background-position: -528px -48px;
+}
+.icon-cross {
+  width: 32px;
+  height: 32px;
+  background-position: -576px -48px;
 }
 

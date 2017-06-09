@@ -1,6 +1,6 @@
 import {Component} from '@angular/core';
 @Component({
-	selector: 'side-menu',
+	selector: 'navbar',
 	template: `
 	<div class="row">
 		<ul class="nav nav-tabs nav-tabs-justified">
@@ -8,16 +8,19 @@ import {Component} from '@angular/core';
 				<a [routerLink]="['/Companies']"><span class="icon icon-office"></span></a>
 			</li>
 			<li class="tab" role="tab">
-				<a [routerLink]="['/Contacts']" ><span class="icon icon-user-tie"></span></a>
+				<a [routerLink]="['/Contacts/All']" ><span class="icon icon-user-tie"></span></a>
 			</li>
 			<li class="tab" role="tab">
-				<a [routerLink]="['/Quotes']" ><span class="icon icon-bubble2"></span></a>
+				<a [routerLink]="['/Quotes/All']" ><span class="icon icon-bubble2"></span></a>
+			</li>
+			<li class="tab" role="tab">
+				<a [routerLink]="['/Settings']" ><span class="icon icon-cog"></span></a>
 			</li>
 		</ul>
 	</div>
 	`
 
 })
-export class SideMenuComponent {
+export class NavbarComponent {
 
 }

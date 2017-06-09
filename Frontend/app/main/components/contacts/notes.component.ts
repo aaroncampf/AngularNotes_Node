@@ -1,7 +1,7 @@
 import {Component, Input, OnChanges, OnInit, SimpleChanges} from '@angular/core';
-import {CRMService} from '../services/crm.service';
+import {CRMService} from '../../services/crm.service';
 import {BehaviorSubject} from 'rxjs/BehaviorSubject';
-import {Note} from '../models/note.model';
+import {Note} from '../../models/note.model';
 import {Observable} from 'rxjs/Observable';
 import {ToastsManager} from 'ng2-toastr';
 import * as _ from 'lodash';

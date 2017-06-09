@@ -1,23 +1,24 @@
 import {Component} from '@angular/core';
 import {FormControl, FormGroup} from '@angular/forms';
 import {Router} from '@angular/router';
-import {CRMService} from '../services/crm.service';
-import {Company} from '../models/company.model';
+import {CRMService} from '../../services/crm.service';
+import {Company} from '../../models/company.model';
 import {ToastsManager} from 'ng2-toastr';
 @Component({
 	selector: 'create-company-component',
 	template: `
-	<h1>Add Company</h1>
+	<h4>Add Company</h4>
+	<hr>
 	<form [formGroup]="addForm">
-		<input-component label="Name" [(model)]="newCompany.name"  [control]="nameControl"></input-component>
-		<input-component label="Address" [(model)]="newCompany.addressOne" [control]="addressOneControl"></input-component>
-		<input-component label="City" [(model)]="newCompany.city" [control]="cityControl"></input-component>
-		<input-component label="Zip" [(model)]="newCompany.zip" [control]="zipControl"></input-component>
-		<input-component label="Phone" [(model)]="newCompany.phone" [control]="phoneControl"></input-component>
-		<input-component label="Fax" [(model)]="newCompany.fax" [control]="faxControl"></input-component>
-		<input-component label="Web Site" [(model)]="newCompany.web" [control]="webControl"></input-component>
-		<button type="button" class="btn pull-right" (click)="onSubmit(addForm.value)">Submit</button>
-		<button type="reset" class="btn-warning pull-right">Clear</button>
+		<textarea-component label="Name" [(model)]="newCompany.name"  [control]="nameControl"></textarea-component>
+		<textarea-component label="Address" [(model)]="newCompany.addressOne" [control]="addressOneControl"></textarea-component>
+		<textarea-component label="City" [(model)]="newCompany.city" [control]="cityControl"></textarea-component>
+		<textarea-component label="Zip" [(model)]="newCompany.zip" [control]="zipControl"></textarea-component>
+		<textarea-component label="Phone" [(model)]="newCompany.phone" [control]="phoneControl"></textarea-component>
+		<textarea-component label="Fax" [(model)]="newCompany.fax" [control]="faxControl"></textarea-component>
+		<textarea-component label="Web Site" [(model)]="newCompany.web" [control]="webControl"></textarea-component>
+		<button type="button" class="btn-success btn-lg pull-right" (click)="onSubmit(addForm.value)">Submit</button>
+		<button type="button" class="btn-warning btn-lg pull-right" [routerLink]="['/Companies']">Cancel</button>
 	</form>
 	`
 })

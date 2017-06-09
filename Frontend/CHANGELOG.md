@@ -3,6 +3,9 @@
 
 ##unreleased
 
+##version 0.14.0 06/08/2017
+[refactor] Rebuilt all components and built details and creation components, no wiring yet  
+
 ##version 0.13.0 06/06/2017
 [code] finished wiring up `contact.component`
 [code] built `notes.component` a reusable part smart component

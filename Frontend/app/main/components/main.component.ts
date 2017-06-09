@@ -6,18 +6,18 @@ import '../styles/main.scss';
 @Component({
 	selector: 'main',
 	template: `
-	<div class="container">
-		<div class="row">
-			<mobile-dashboard-component class="col-xs-12"> 
-			</mobile-dashboard-component>
-			<side-menu class="col-xs-12"></side-menu>
-		</div>
-		<div class="row">
-			<div class="col-xs-12">
-				<router-outlet></router-outlet>
+		<div class="container">
+			<div class="row">
+				<mobile-dashboard-component class="col-xs-12">
+				</mobile-dashboard-component>
+				<navbar class="col-xs-12"></navbar>
+			</div>
+			<div class="row">
+				<div class="col-xs-12">
+					<router-outlet></router-outlet>
+				</div>
 			</div>
 		</div>
-	</div>
 	`,
 })
 
