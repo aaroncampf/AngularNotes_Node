@@ -1,0 +1,9 @@
+input-component {
+  .ng-invalid {
+    border-bottom-color: red;
+  }
+
+  .icon-undo2, .icon-redo2 {
+    transform: scale(.5);
+  }
+}

@@ -1,0 +1,8 @@
+mobile-navigation-component {
+  display: flex;
+  flex-direction: column;
+
+  li {
+    flex-grow: 1;
+  }
+}
