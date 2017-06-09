@@ -7,11 +7,11 @@ import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 import {RouterModule, Routes} from '@angular/router';
 import {ToastModule} from 'ng2-toastr';
 import {MainComponent} from './main/components/main.component';
-import {MobileDashboardComponent} from './main/components/dashboard.component';
+import {DashboardComponent} from './main/components/dashboard.component';
 import {NotFoundComponent} from './main/routes/not-found.component';
 import {DynamicFormsModule} from './forms/dynamic-forms.module';
 import {NavbarComponent} from './main/components/navbar.component';
-import {CRMService} from './main/services/crm.service';
+import {CRMDataService} from './main/services/crm-data.service';
 import {ContactDetailsComponent} from './main/components/contacts/contact-details.component';
 import {QuotesComponent} from './main/components/quotes/quotes.component';
 import {NotesComponent} from './main/components/contacts/notes.component';
@@ -26,6 +26,7 @@ import {CompanyDetailsComponent} from './main/components/companies/companies-det
 import {QuoteTemplateComponent} from './main/components/quotes/template.component';
 import {UserSettingsComponent} from './main/components/user/user-settings.component';
 import {AddQuoteComponent} from './main/components/quotes/add-quote.component';
+import {CRMStoreService} from './main/services/crm-store.service';
 
 const MAIN_ROUTES: Routes = [
 	{path: 'main', component: MainComponent},
@@ -33,14 +34,14 @@ const MAIN_ROUTES: Routes = [
 	{path: 'Settings', component: UserSettingsComponent},
 	{path: 'Companies', component: CompaniesComponent},
 	{path: 'Add-Company', component: AddCompanyComponent},
-	{path: 'Company-Details/:company_id', component: CompanyDetailsComponent},
-	{path: 'Contacts/:company_id', component: ContactsComponent},
-	{path: 'Add-Contact/:owner_id', component: AddContactComponent},
-	{path: 'Contact-Details/:contact_id', component: ContactDetailsComponent},
-	{path: 'Add-Quote/:contact_id', component: AddQuoteComponent},
-	{path: 'Quotes/:contact_id', component: QuotesComponent},
-	{path: 'Quote/:quote_id', component: QuoteComponent},
-	{path: 'Quote-Template/:contact_id/:quote_id', component: QuoteTemplateComponent},
+	{path: 'Company-Details', component: CompanyDetailsComponent},
+	{path: 'Contacts', component: ContactsComponent},
+	{path: 'Add-Contact', component: AddContactComponent},
+	{path: 'Contact-Details', component: ContactDetailsComponent},
+	{path: 'Add-Quote', component: AddQuoteComponent},
+	{path: 'Quotes', component: QuotesComponent},
+	{path: 'Quote', component: QuoteComponent},
+	{path: 'Quote-Template', component: QuoteTemplateComponent},
 	{path: '', redirectTo: '/Home', pathMatch: 'full'},
 	{path: '**', component: NotFoundComponent}
 ];
@@ -58,7 +59,7 @@ const COMPONENTS = [
 	CompaniesComponent,
 	NavbarComponent,
 	MainComponent,
-	MobileDashboardComponent,
+	DashboardComponent,
 	NotFoundComponent,
 	ContactDetailsComponent,
 	QuotesComponent,
@@ -86,7 +87,8 @@ const MODULES = [
 		MODULES,
 	],
 	providers: [
-		CRMService,
+		CRMDataService,
+		CRMStoreService,
 	],
 	schemas: [
 		CUSTOM_ELEMENTS_SCHEMA

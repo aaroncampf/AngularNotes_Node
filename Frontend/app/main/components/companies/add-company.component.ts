@@ -1,7 +1,7 @@
 import {Component} from '@angular/core';
 import {FormControl, FormGroup} from '@angular/forms';
 import {Router} from '@angular/router';
-import {CRMService} from '../../services/crm.service';
+import {CRMDataService} from '../../services/crm-data.service';
 import {Company} from '../../models/company.model';
 import {ToastsManager} from 'ng2-toastr';
 @Component({
@@ -23,9 +23,7 @@ import {ToastsManager} from 'ng2-toastr';
 	`
 })
 export class AddCompanyComponent {
-	public newCompany: Company = <Company>{
-		name: 'This should be default'
-	};
+	public newCompany: Company = <Company>{};
 	public nameControl: FormControl = new FormControl('', []);
 	public addressOneControl: FormControl = new FormControl('', []);
 	public addressTwoControl: FormControl = new FormControl('', []);
@@ -49,7 +47,7 @@ export class AddCompanyComponent {
 	constructor(
 		public toastr: ToastsManager,
 		private router: Router,
-		private crmService: CRMService
+		private crmService: CRMDataService
 	){}
 
 	public onSubmit(values): void {

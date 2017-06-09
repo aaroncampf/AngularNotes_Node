@@ -8,9 +8,9 @@ import '../styles/main.scss';
 	template: `
 		<div class="container">
 			<div class="row">
-				<mobile-dashboard-component class="col-xs-12">
-				</mobile-dashboard-component>
-				<navbar class="col-xs-12"></navbar>
+				<dashboard-component class="col-xs-12">
+				</dashboard-component>
+				<navbar-component class="col-xs-12"></navbar-component>
 			</div>
 			<div class="row">
 				<div class="col-xs-12">

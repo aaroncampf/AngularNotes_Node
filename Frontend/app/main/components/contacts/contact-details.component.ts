@@ -1,54 +1,64 @@
 import {Component, OnDestroy, OnInit} from '@angular/core';
-import {ActivatedRoute} from '@angular/router';
 import {Contact} from '../../models/contact.model';
-import {CRMService} from '../../services/crm.service';
+import {CRMDataService} from '../../services/crm-data.service';
 import {Subscription} from 'rxjs/Subscription';
+import {CRMStoreService} from '../../services/crm-store.service';
+import {FormControl, FormGroup} from '@angular/forms';
+import {ToastsManager} from 'ng2-toastr';
+import {Router} from '@angular/router';
 
 @Component({
 	selector: 'contact-details-component',
 	template: `
-		<h6>CONTACT</h6>
-		<single-line-text-input-component label="Name"
-										  (onChange)="setContact({id: contact.id, prop: { key: 'name', value: $event}})"
-										  (modelChange)="setContact({id: contact.id, prop: { key: 'name', value: $event}})"
-										  [model]="contact.name"></single-line-text-input-component>
-		<single-line-text-input-component label="Phone"
-										  (onChange)="setContact({id: contact.id, prop: { key: 'phone', value: $event}})"
-										  (modelChange)="setContact({id: contact.id, prop: { key: 'phone', value: $event}})"
-										  [model]="contact.phone"></single-line-text-input-component>
-		<single-line-text-input-component label="Email"
-										  (onChange)="setContact({id: contact.id, prop: { key: 'email', value: $event}})"
-										  (modelChange)="setContact({id: contact.id, prop: { key: 'email', value: $event}})"
-										  [model]="contact.email"></single-line-text-input-component>
-		<single-line-text-input-component label="Position"
-										  (onChange)="setContact({id: contact.id, prop: { key: 'position', value: $event}})"
-										  (modelChange)="setContact({id: contact.id, prop: { key: 'position', value: $event}})"
-										  [model]="contact.position"></single-line-text-input-component>
-		<notes-component [contactID]="contact.id"></notes-component>
+		<h4>Contact Details</h4>
+		<form [formGroup]="contactForm">
+			<single-line-text-input-component label="Name" [model]="contact.name" [control]="nameControl"></single-line-text-input-component>
+			<single-line-text-input-component label="Phone" [model]="contact.phone" [control]="phoneControl"></single-line-text-input-component>
+			<single-line-text-input-component label="Email" [model]="contact.email" [control]="emailControl"></single-line-text-input-component>
+			<single-line-text-input-component label="Position" [model]="contact.position" [control]="positionControl"></single-line-text-input-component>
+			<notes-component [contactID]="contact.id"></notes-component>
+			<button class="btn-warning btn-lg pull-right" [routerLink]="['/Contacts']">Cancel</button>
+			<button class="btn-success btn-lg pull-right" (click)="onSave()">Save</button>
+		</form>
 	`
 })
 export class ContactDetailsComponent implements OnInit, OnDestroy {
 	public contact: Contact = <Contact>{};
-	public paramsSub: Subscription;
+	private stateSub: Subscription;
+	nameControl: FormControl = new FormControl('', []);
+	phoneControl: FormControl = new FormControl('', []);
+	emailControl: FormControl = new FormControl('', []);
+	positionControl: FormControl = new FormControl('', []);
+	contactForm: FormGroup = new FormGroup({
+		name: this.nameControl,
+		phone: this.phoneControl,
+		email: this.emailControl,
+		position: this.positionControl,
+	});
+
 	constructor(
-		private crmService: CRMService,
-		private route: ActivatedRoute
+		private router: Router,
+		public toastr: ToastsManager,
+		private crmData: CRMDataService,
+		private crmStore: CRMStoreService,
 	){}
 
 	public ngOnDestroy(): void {
-		this.paramsSub.unsubscribe();
+			this.stateSub.unsubscribe();
 	}
 
 	public ngOnInit(): void {
-		this.paramsSub = this.route.params.subscribe(params => {
-			this.crmService.getContacts({id: params.contact_id}).then((contact: Contact) => {
-				this.contact = contact;
-			});
-		});
+		this.stateSub = this.crmStore.crmStore$.subscribe(state => {
+			this.contact = state.selectedContact;
+		})
 	}
 
-	public setContact(payload): void {
-			this.crmService.setContact(payload);
+	public onSave(): void {
+			this.crmData.setContact({id: this.contact.id, props: this.contactForm.value})
+				.then(() => {
+					this.toastr.success(this.contact.name  + ' has been saved!');
+					this.router.navigate(['/Contacts']);
+			})
 	}
 
 }

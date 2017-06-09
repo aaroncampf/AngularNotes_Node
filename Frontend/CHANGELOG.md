@@ -3,7 +3,11 @@
 
 ##unreleased
 
+##version 0.16.0 06/09/2017
+[code] wired up `Companies.components`, `Contacts.components` and `UserSettings.component`
+
 ##version 0.15.0 06/09/2017
+[code] built cancel button system for `single-line-text-input.component`
 [refactor] rebuilt layout of `quotes.component` and `add-quotes.component`
 [style] added `icon-arrow-up` and `icon-arrow-down`
 [code] built `single-line-text-input.component`

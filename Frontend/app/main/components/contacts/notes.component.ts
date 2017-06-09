@@ -1,5 +1,5 @@
 import {Component, Input, OnChanges, OnInit, SimpleChanges} from '@angular/core';
-import {CRMService} from '../../services/crm.service';
+import {CRMDataService} from '../../services/crm-data.service';
 import {BehaviorSubject} from 'rxjs/BehaviorSubject';
 import {Note} from '../../models/note.model';
 import {Observable} from 'rxjs/Observable';
@@ -31,7 +31,7 @@ export class NotesComponent implements OnChanges {
 	public notes$: Observable<Note[]> = this.notesSource.asObservable();
 
 	constructor(
-		private crmService: CRMService,
+		private crmService: CRMDataService,
 		public toastr: ToastsManager
 	){}
 

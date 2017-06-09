@@ -7,9 +7,10 @@ import {Observer} from 'rxjs/Observer';
 import {Contact} from '../models/contact.model';
 import {Quote, QuoteLine} from '../models/quote.model';
 import {Note} from '../models/note.model';
+import {User} from '../models/user.model';
 
 @Injectable()
-export class CRMService {
+export class CRMDataService {
 	constructor(private sockets: SocketService) {}
 
 	public dispatched(type: string, payload: any): Observable<CRMType | CRMType[]> {
@@ -24,7 +25,6 @@ export class CRMService {
 		})
 	}
 
-
 	public newContact(payload): Promise<Contact> {
 		return new Promise((resolve, reject) => {
 			this.sockets.responseSocket('contact.create', payload).subscribe(contact => {
@@ -37,7 +37,6 @@ export class CRMService {
 			})
 		})
 	}
-
 
 	public newNote(payload): Promise<Note> {
 		return new Promise((resolve, reject) => {
@@ -135,17 +134,15 @@ export class CRMService {
 
 	}
 
-	public getCompanies(payload: any = {}): Promise<Company[]> {
+	public getCompanies(payload:{}): Promise<(Company[] | Company)> {
 		return new Promise((resolve) => {
 			payload.hasOwnProperty('id')
 				?
-				this.sockets.responseSocket('company.get', {id: payload.id}).subscribe(companies => {
-					// this.stateService.dispatch('COMPANIES_GET', {companies: companies});
+				this.sockets.responseSocket('company.get', payload).subscribe(companies => {
 					resolve(companies);
 				})
 				:
 				this.sockets.responseSocket('companies.get', {}).subscribe(companies => {
-					// this.stateService.dispatch('COMPANIES_GET', {companies: companies});
 					resolve(companies);
 				});
 		})
@@ -189,19 +186,35 @@ export class CRMService {
 		})
 	}
 
-	public getContacts(payload: any = {}): Promise<Contact[] | Contact> {
-		return new Promise((resolve, reject) => {
-			payload.hasOwnProperty('id')
-				?
-				this.sockets.responseSocket('contacts.get', {id: payload.id}).subscribe(contacts => {
-					// this.stateService.dispatch('CONTACTS_GET', {contacts: contacts});
-					resolve(contacts);
-				})
-				:
-				this.sockets.responseSocket('contacts.get', {}).subscribe(contacts => {
-					// this.stateService.dispatch('CONTACTS_GET', {contacts: contacts});
-					resolve(contacts);
-				});
+	public getContacts(payload: {}): Promise<Contact[] | Contact> {
+		return new Promise((resolve) => {
+			this.sockets.responseSocket('contacts.get', payload).subscribe(contacts => {
+				resolve(contacts);
+			});
 		});
+	}
+
+	public deleteContact(payload): Promise<any> {
+		return new Promise((resolve) => {
+			this.sockets.responseSocket('contact.destroy', payload).subscribe(response => {
+				resolve(response);
+			})
+		})
+	}
+
+	public getUser(payload): Promise<User> {
+		return new Promise((resolve) => {
+			this.sockets.responseSocket('user.get', payload).subscribe(user => {
+				resolve(user);
+			})
+		})
+	}
+
+	public setUser(payload): Promise<User> {
+		return new Promise((resolve) => {
+			this.sockets.responseSocket('user.set', payload).subscribe(user => {
+				resolve(user);
+			})
+		})
 	}
 }
