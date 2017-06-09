@@ -7,23 +7,25 @@ import {ToastsManager} from 'ng2-toastr';
 @Component({
 	selector: 'create-company-component',
 	template: `
-	<h4>Add Company</h4>
-	<hr>
-	<form [formGroup]="addForm">
-		<textarea-component label="Name" [(model)]="newCompany.name"  [control]="nameControl"></textarea-component>
-		<textarea-component label="Address" [(model)]="newCompany.addressOne" [control]="addressOneControl"></textarea-component>
-		<textarea-component label="City" [(model)]="newCompany.city" [control]="cityControl"></textarea-component>
-		<textarea-component label="Zip" [(model)]="newCompany.zip" [control]="zipControl"></textarea-component>
-		<textarea-component label="Phone" [(model)]="newCompany.phone" [control]="phoneControl"></textarea-component>
-		<textarea-component label="Fax" [(model)]="newCompany.fax" [control]="faxControl"></textarea-component>
-		<textarea-component label="Web Site" [(model)]="newCompany.web" [control]="webControl"></textarea-component>
-		<button type="button" class="btn-success btn-lg pull-right" (click)="onSubmit(addForm.value)">Submit</button>
-		<button type="button" class="btn-warning btn-lg pull-right" [routerLink]="['/Companies']">Cancel</button>
-	</form>
+		<h4>Add Company</h4>
+		<hr>
+		<form [formGroup]="addForm">
+			<single-line-text-input-component label="Name" [(model)]="newCompany.name" [control]="nameControl"></single-line-text-input-component>
+			<single-line-text-input-component label="Address" [(model)]="newCompany.addressOne" [control]="addressOneControl"></single-line-text-input-component>
+			<single-line-text-input-component label="City" [(model)]="newCompany.city" [control]="cityControl"></single-line-text-input-component>
+			<single-line-text-input-component label="Zip" [(model)]="newCompany.zip" [control]="zipControl"></single-line-text-input-component>
+			<single-line-text-input-component label="Phone" [(model)]="newCompany.phone" [control]="phoneControl"></single-line-text-input-component>
+			<single-line-text-input-component label="Fax" [(model)]="newCompany.fax" [control]="faxControl"></single-line-text-input-component>
+			<single-line-text-input-component label="Web Site" [(model)]="newCompany.web" [control]="webControl"></single-line-text-input-component>
+			<button type="button" class="btn-warning btn-lg pull-right" [routerLink]="['/Companies']">Cancel</button>
+			<button type="button" class="btn-success btn-lg pull-right" (click)="onSubmit(addForm.value)">Submit</button>
+		</form>
 	`
 })
 export class AddCompanyComponent {
-	public newCompany: Company = <Company>{};
+	public newCompany: Company = <Company>{
+		name: 'This should be default'
+	};
 	public nameControl: FormControl = new FormControl('', []);
 	public addressOneControl: FormControl = new FormControl('', []);
 	public addressTwoControl: FormControl = new FormControl('', []);

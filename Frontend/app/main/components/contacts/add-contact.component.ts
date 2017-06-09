@@ -9,12 +9,16 @@ import {ToastsManager} from 'ng2-toastr';
 	template: `
 		<h1>Add Contact</h1>
 		<form [formGroup]="addForm">
-			<textarea-component label="Name" [(model)]="newContact.name"  [control]="nameControl"></textarea-component>
-			<textarea-component label="Phone" [(model)]="newContact.phone" [control]="phoneControl"></textarea-component>
-			<textarea-component label="Email" [(model)]="newContact.email" [control]="emailControl"></textarea-component>
-			<textarea-component label="Position" [(model)]="newContact.position" [control]="positionControl"></textarea-component>
-			<button type="button" class="btn-success btn-lg pull-right" (click)="onSubmit(addForm.value)">Submit</button>
+			<single-line-text-input-component label="Name" [(model)]="newContact.name"
+											  [control]="nameControl"></single-line-text-input-component>
+			<single-line-text-input-component label="Phone" [(model)]="newContact.phone"
+											  [control]="phoneControl"></single-line-text-input-component>
+			<single-line-text-input-component label="Email" [(model)]="newContact.email"
+											  [control]="emailControl"></single-line-text-input-component>
+			<single-line-text-input-component label="Position" [(model)]="newContact.position"
+											  [control]="positionControl"></single-line-text-input-component>
 			<button type="reset" class="btn-warning btn-lg pull-right" [routerLink]="['/Contacts/company_id']">Cancel</button>
+			<button type="button" class="btn-success btn-lg pull-right" (click)="onSubmit(addForm.value)">Submit</button>
 		</form>
 	`
 })

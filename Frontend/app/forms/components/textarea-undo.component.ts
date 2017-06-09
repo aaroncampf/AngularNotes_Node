@@ -14,7 +14,7 @@ export const TEXT_INPUT_INITIAL_STATE = {
 };
 
 @Component({
-	selector: 'textarea-component',
+	selector: 'textarea-undo-component',
 	template: `
 		<div class="row">
 			<div *ngIf="!!label" class="col-xs-3">
@@ -31,7 +31,7 @@ export const TEXT_INPUT_INITIAL_STATE = {
 	`,
 })
 
-export class TextareaComponent implements OnInit, OnDestroy, OnChanges{
+export class TextareaUndoComponent implements OnInit, OnDestroy, OnChanges{
 	@Input()
 	public undoRedo: boolean = true;
 	@Input()

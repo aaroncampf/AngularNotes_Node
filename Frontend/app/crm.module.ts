@@ -39,7 +39,7 @@ const MAIN_ROUTES: Routes = [
 	{path: 'Contact-Details/:contact_id', component: ContactDetailsComponent},
 	{path: 'Add-Quote/:contact_id', component: AddQuoteComponent},
 	{path: 'Quotes/:contact_id', component: QuotesComponent},
-	{path: 'Quote/:contact_id/:quote_id', component: QuoteComponent},
+	{path: 'Quote/:quote_id', component: QuoteComponent},
 	{path: 'Quote-Template/:contact_id/:quote_id', component: QuoteTemplateComponent},
 	{path: '', redirectTo: '/Home', pathMatch: 'full'},
 	{path: '**', component: NotFoundComponent}

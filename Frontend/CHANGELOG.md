@@ -3,6 +3,15 @@
 
 ##unreleased
 
+##version 0.15.0 06/09/2017
+[refactor] rebuilt layout of `quotes.component` and `add-quotes.component`
+[style] added `icon-arrow-up` and `icon-arrow-down`
+[code] built `single-line-text-input.component`
+[refactor] `single-line-text-input-component` replaced all form `textarea-component`s which were also `textarea-undo-component`
+[refactor] removed back button from `dashboard.component`
+[refactor] changed table data to flex `<ul>`
+[style] added `icon-bin` and `icon-share`
+
 ##version 0.14.0 06/08/2017
 [refactor] Rebuilt all components and built details and creation components, no wiring yet  
 

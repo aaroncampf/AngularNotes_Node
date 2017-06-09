@@ -10,16 +10,16 @@ import * as _ from 'lodash';
 	selector: 'notes-component',
 	template: `
 		<h6>NOTES</h6>
-		<button class="btn btn-block" (click)="addNote()" >Add A Note</button>
+		<button class="btn btn-block" (click)="addNote()">Add A Note</button>
 		<note-container *ngFor="let note of (notes$ | async)">
 			<note-header>
 				<button class="btn-danger" (click)="removeNote({payload: {id: note.id}})">Remove</button>
-				<textarea-component [model]="note.title"
-								 (onChange)="setNote({payload: {id: note.id, prop: {key: 'title', value: $event}}})"></textarea-component>
+				<single-line-text-input-component [model]="note.title"
+												  (onChange)="setNote({payload: {id: note.id, prop: {key: 'title', value: $event}}})"></single-line-text-input-component>
 			</note-header>
 			<note-body class="note-body">
-				<textarea-component [model]="note.text"
-									(onChange)="setNote({payload: {id: note.id, prop: {key: 'text', value: $event}}})"></textarea-component>
+				<single-line-text-input-component [model]="note.text"
+												  (onChange)="setNote({payload: {id: note.id, prop: {key: 'text', value: $event}}})"></single-line-text-input-component>
 			</note-body>
 		</note-container>
 	`

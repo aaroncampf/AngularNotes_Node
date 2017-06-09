@@ -8,22 +8,22 @@ import {Subscription} from 'rxjs/Subscription';
 	selector: 'contact-details-component',
 	template: `
 		<h6>CONTACT</h6>
-		<textarea-component label="Name"
-						 (onChange)="setContact({id: contact.id, prop: { key: 'name', value: $event}})"
-						 (modelChange)="setContact({id: contact.id, prop: { key: 'name', value: $event}})"
-						 [model]="contact.name"></textarea-component>
-		<textarea-component label="Phone"
-						 (onChange)="setContact({id: contact.id, prop: { key: 'phone', value: $event}})"
-						 (modelChange)="setContact({id: contact.id, prop: { key: 'phone', value: $event}})"
-						 [model]="contact.phone"></textarea-component>
-		<textarea-component label="Email"
-						 (onChange)="setContact({id: contact.id, prop: { key: 'email', value: $event}})"
-						 (modelChange)="setContact({id: contact.id, prop: { key: 'email', value: $event}})"
-						 [model]="contact.email"></textarea-component>
-		<textarea-component label="Position"
-						 (onChange)="setContact({id: contact.id, prop: { key: 'position', value: $event}})"
-						 (modelChange)="setContact({id: contact.id, prop: { key: 'position', value: $event}})"
-						 [model]="contact.position"></textarea-component>
+		<single-line-text-input-component label="Name"
+										  (onChange)="setContact({id: contact.id, prop: { key: 'name', value: $event}})"
+										  (modelChange)="setContact({id: contact.id, prop: { key: 'name', value: $event}})"
+										  [model]="contact.name"></single-line-text-input-component>
+		<single-line-text-input-component label="Phone"
+										  (onChange)="setContact({id: contact.id, prop: { key: 'phone', value: $event}})"
+										  (modelChange)="setContact({id: contact.id, prop: { key: 'phone', value: $event}})"
+										  [model]="contact.phone"></single-line-text-input-component>
+		<single-line-text-input-component label="Email"
+										  (onChange)="setContact({id: contact.id, prop: { key: 'email', value: $event}})"
+										  (modelChange)="setContact({id: contact.id, prop: { key: 'email', value: $event}})"
+										  [model]="contact.email"></single-line-text-input-component>
+		<single-line-text-input-component label="Position"
+										  (onChange)="setContact({id: contact.id, prop: { key: 'position', value: $event}})"
+										  (modelChange)="setContact({id: contact.id, prop: { key: 'position', value: $event}})"
+										  [model]="contact.position"></single-line-text-input-component>
 		<notes-component [contactID]="contact.id"></notes-component>
 	`
 })
