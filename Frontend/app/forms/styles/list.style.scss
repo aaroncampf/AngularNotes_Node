@@ -1,0 +1,82 @@
+@mixin transitionPrefixs($props, $time, $flow) {
+  -webkit-transition: $props $time $flow;
+  -moz-transition: $props  $time $flow;
+  -ms-transition: $props $time $flow;
+  -o-transition: $props $time $flow;
+  transition: $props $time $flow;
+}
+
+list-component {
+  list-group {
+    width: 100%;
+    height: auto;
+    margin: 0;
+    padding: 0;
+    display: inline-block;
+    position: absolute;
+    background-color: white;
+  }
+
+  list-item-slide {
+    position: relative;
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-start;
+    width: 100%;
+    height: 45px;
+    font-size: 18px;
+    background: lightblue;
+    margin-top: 1px;
+    & :nth-child(1n+2) {
+      background: lightsteelblue;
+      color: darkslategray;
+      font-size: 16px;
+    }
+    & :nth-child(2n+2) {
+      background: darkslategray;
+      color: lightsteelblue;
+      font-size: 16px;
+    }
+
+    slide-details-option {
+      width: 45px;
+      height: 100%;
+      padding: 8px 0px 0px 11px;
+      display: block;
+      background: lightgreen !important;
+      position: relative;
+      z-index: 10;
+    }
+
+    slide-option {
+      width: 82px;
+      height: 100%;
+      padding: 8px 0px 0px 11px;
+      display: block;
+      position: relative;
+      z-index: 10;
+    }
+
+    slide-top {
+      display: block;
+      position: absolute;
+      background: silver !important;
+      height: 100%;
+      z-index: 100;
+      width: 100%;
+      padding-left: 17px;
+      margin-left: 0px;
+      @include transitionPrefixs(all, .3s, linear);
+      &.active {
+        margin-left: 45px;
+       @include transitionPrefixs(all, .3s, linear);
+      }
+      &.active.option {
+        margin-left: 127px;
+      }
+      &.active.options {
+        margin-left: 209px;
+      }
+    }
+  }
+}

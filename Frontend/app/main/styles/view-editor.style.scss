@@ -1,0 +1,84 @@
+$prefixs: 'ms' 'webkit' 'o';
+@mixin prefix($prop, $value, $prefixes: ()){
+  @each $prefixe in $prefixes {
+    #{'-' + $prefixe + '-' + $prop}: $value;
+  }
+  #{$prop}: $value;
+}
+
+view-edit-component {
+  .accordion-wrapper {
+    display: block;
+    height: 350px;
+    max-height: 100%;
+  }
+
+  #accordion-company {
+    max-width: 36.125rem;
+  }
+  #accordion {
+    max-width: 36.125rem;
+  }
+
+  .panel-group {
+    -webkit-backface-visibility: hidden;
+    -webkit-transform: translateX(-98%) rotate(-90deg);
+    -webkit-transform-origin: right top;
+    -moz-transform: translateX(-98%) rotate(-90deg);
+    -moz-transform-origin: right top;
+    -o-transform: translateX(-98%) rotate(-90deg);
+    -o-transform-origin: right top;
+    transform: translateX(-98%) rotate(-90deg);
+    transform-origin: right top;
+    margin-bottom: 15px;
+  }
+
+  .panel-body div.content {
+    -webkit-backface-visibility: hidden;
+    -webkit-transform: translateX(0%) rotate(90deg);
+    -webkit-transform-origin: center center;
+    -moz-transform: translateX(0%) rotate(90deg);
+    -moz-transform-origin: center center;
+    -o-transform: translateX(0%) rotate(90deg);
+    -o-transform-origin: center center;
+    transform: translateX(0%) rotate(90deg);
+    transform-origin: center center;
+    height: 86.2rem;
+    max-height: 64vw;
+  }
+}
+//  .accordion-wrapper {
+//    position: relative;
+//    display: block;
+//    height: auto;
+//    //max-height: 100%;
+//  }
+//
+//  #accordion-company {
+//    max-height: 90vw;
+//    margin-left: 15px;
+//  }
+//  .panel {
+//    //display: flex;
+//    flex-direction: column;
+//    height: 100%;
+//    width: auto;
+//  }
+//
+//  .panel-heading {
+//  }
+//
+//  .panel-group {
+//    -webkit-backface-visibility: hidden;
+//    @include prefix(transform,  rotate(90deg), webkit ms o);
+//    //@include prefix(transform-origin, right top, webkit ms o);
+//    margin-bottom: 15px;
+//  }
+//
+//  .panel-body {
+//    -webkit-backface-visibility: hidden;
+//    @include prefix(transform, translateX(0%) rotate(90deg), webkit ms o);
+//    @include prefix(transform-origin, left top, webkit ms o);
+//    height: 86.2rem;
+//  }
+//}

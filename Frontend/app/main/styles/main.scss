@@ -1,0 +1,112 @@
+main {
+  background: lightgray;
+  min-height: 100vh;
+
+  .quote-list {
+    display: flex;
+    flex-direction: column;
+  }
+
+  .quote-list-line-title-wrapper {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+  }
+
+  .quote-list-line-details {
+    margin: 15px 0 15px 0;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+  }
+
+  quote-line-options {
+    display: flex;
+    flex-direction: row;
+  }
+
+  .dropdown-menu.quote {
+    top: 10%;
+    right: 10%;
+  }
+
+  .crm-list li {
+    margin: 20px 0 20px 0;
+  }
+
+  .crm-list-item {
+    display: flex;
+    flex-direction: row;
+  }
+
+  .crm-list-item-icons {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    flex-grow: 1;
+  }
+
+  .crm-list-item-title {
+    flex-grow: 15;
+  }
+
+  .crm-list-options{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-around;
+    flex-grow: 1;
+  }
+
+  .trash-bin-cell{
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-end;
+    &.trash-icon {
+      height: 34px;
+    }
+  }
+
+  textarea {
+    resize: none;
+  }
+
+  .textarea-wrapper {
+    display: flex;
+    flex-direction: row;
+  }
+  .undo, .redo {
+    width: 12px;
+    height: auto;
+  }
+  .container {
+    background: white;
+    padding-bottom: 35px;
+  }
+
+  toast-container div#toast-container {
+    bottom: inherit;
+    top: 0 !important;
+  }
+
+  .toast-error {
+    background: #f51616;
+  }
+
+  .toast-warning {
+    background: #f58e00;
+  }
+
+  .toast-success {
+    background: #16d11c;
+  }
+}
+  @import './companies';
+  @import './dashboard';
+  @import './side-panel';
+  @import './quote-details';
+  @import './quote';
+  @import './notes';
+  @import './navigation';
+  @import '../../forms/styles/input';
+  @import '../../shared/shared.styles';
+  @import '../../../assets/icons/sprite/sprite.css';
