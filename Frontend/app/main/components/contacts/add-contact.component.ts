@@ -23,7 +23,7 @@ import {Subscription} from 'rxjs/Subscription';
 												  [control]="emailControl"></single-line-text-input-component>
 				<single-line-text-input-component label="Position" [(model)]="newContact.position"
 												  [control]="positionControl"></single-line-text-input-component>
-				<button type="reset" class="btn-warning btn-lg pull-right" [routerLink]="['/Contacts']">Cancel</button>
+				<button type="reset" class="btn-warning btn-lg pull-left" [routerLink]="['/Contacts']">Cancel</button>
 				<button type="button" class="btn-success btn-lg pull-right" (click)="onSubmit(addForm.value)">Submit</button>
 			</form>
 		</div>

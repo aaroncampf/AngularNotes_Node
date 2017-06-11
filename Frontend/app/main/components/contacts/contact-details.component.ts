@@ -17,12 +17,21 @@ import {Router} from '@angular/router';
 			<single-line-text-input-component label="Email" [model]="contact.email" [control]="emailControl"></single-line-text-input-component>
 			<single-line-text-input-component label="Position" [model]="contact.position" [control]="positionControl"></single-line-text-input-component>
 			<notes-component [contactID]="contact.id"></notes-component>
-			<button class="btn-warning btn-lg pull-right" [routerLink]="['/Contacts']">Cancel</button>
-			<button class="btn-success btn-lg pull-right" (click)="onSave()">Save</button>
+			<div *ngIf="!checkRemove">
+				<button type="button" class="btn-success btn-lg pull-left" (click)="onSave()">Save</button>
+				<button type="button" class="btn-warning btn-lg pull-left" [routerLink]="['/Contacts']">Cancel</button>
+				<button type="button" class="btn-danger pull-right" (click)="onCheckRemove()">REMOVE</button>
+			</div>
 		</form>
+		<div class="check-remove" *ngIf="!!checkRemove">
+			<h4>Are you sure you want to remove {{contact.name}}?</h4>
+			<button type="button" class="btn-warning btn-lg pull-right" (click)="onCheckRemove()">Cancel</button>
+			<button type="button" class="btn-danger btn-lg pull-right" (click)="onRemove()">REMOVE</button>
+		</div>
 	`
 })
 export class ContactDetailsComponent implements OnInit, OnDestroy {
+	public checkRemove: boolean = false;
 	public contact: Contact = <Contact>{};
 	private stateSub: Subscription;
 	nameControl: FormControl = new FormControl('', []);
@@ -59,6 +68,21 @@ export class ContactDetailsComponent implements OnInit, OnDestroy {
 					this.toastr.success(this.contact.name  + ' has been saved!');
 					this.router.navigate(['/Contacts']);
 			})
+	}
+
+
+	public onRemove(): void {
+		this.crmData.deleteContact({id: this.contact.id})
+			.then(res => {
+				console.log(res);
+				this.toastr.warning(this.contact.name + ' has been removed!');
+				this.crmStore.crmStoreDispatcher({type: 'CONTACT_SELECTED', payload: {contact: {}, company: {}}});
+				this.router.navigate(['/Contacts']);
+			})
+	}
+
+	public onCheckRemove(): void {
+		this.checkRemove = !this.checkRemove;
 	}
 
 }

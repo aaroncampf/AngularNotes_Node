@@ -27,13 +27,6 @@ export interface ItemState {
 	hasOptionTwo: boolean;
 }
 
-// export interface ItemAction extends Action {
-// 	type: string,
-// 	payload: {
-// 		index: number;
-// 	}
-// }
-
 @Component({
 	selector: 'list-component',
 	template: `

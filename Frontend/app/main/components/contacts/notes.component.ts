@@ -13,7 +13,9 @@ import * as _ from 'lodash';
 		<button class="btn btn-block" (click)="addNote()">Add A Note</button>
 		<note-container *ngFor="let note of (notes$ | async)">
 			<note-header>
-				<button class="btn-danger" (click)="removeNote({payload: {id: note.id}})">Remove</button>
+				<button class="btn-danger pull-right" (click)="removeNote({payload: {id: note.id}})">
+					<span class="icon icon-cross"></span>
+				</button>
 				<single-line-text-input-component [model]="note.title"
 												  (onChange)="setNote({payload: {id: note.id, prop: {key: 'title', value: $event}}})"></single-line-text-input-component>
 			</note-header>

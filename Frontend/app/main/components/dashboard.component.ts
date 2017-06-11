@@ -12,15 +12,14 @@ import {Subscription} from 'rxjs/Subscription';
 	<div class="row">
 		<small class="pull-right">Angular Bros <strong>CRM</strong></small>
 		<div class="pull-left">
-			<strong [routerLink]="['/Company-Details', selectedCompany?.id]">{{selectedCompany.name || 'No Company Selected'}}</strong>
 			<button class="btn btn-sm btn-default dropdown-toggle" type="button" id="companyDropDown" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
 				<span class="icon icon-office"></span>
-				<span class="caret"></span>
 			</button>
 			<ul class="dropdown-menu" aria-labelledby="companyDropDown">
 				<li (click)="companySelectDispatch({})">All Companies</li>
 				<li *ngFor="let company of (companies$ | async)" (click)="companySelectDispatch(company)">{{company.name}}</li>
 			</ul>	
+			<strong [routerLink]="['/Company-Details']">{{selectedCompany.name || 'No Company Selected'}}</strong>
 		</div>
 	</div>
 	`

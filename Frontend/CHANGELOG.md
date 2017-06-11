@@ -1,12 +1,15 @@
 # ChangeLog 
 >To make sense of all your awesome busy-nes to other developers please log changes and use sem-ver. 
 
-##unreleased
+## unreleased
 
-##version 0.16.0 06/09/2017
+## version 0.17.0 06/11/2017
+[code] wired up `quote.component` and `quote-details.component` and `add-quote`
+
+## version 0.16.0 06/09/2017
 [code] wired up `Companies.components`, `Contacts.components` and `UserSettings.component`
 
-##version 0.15.0 06/09/2017
+## version 0.15.0 06/09/2017
 [code] built cancel button system for `single-line-text-input.component`
 [refactor] rebuilt layout of `quotes.component` and `add-quotes.component`
 [style] added `icon-arrow-up` and `icon-arrow-down`
@@ -16,26 +19,26 @@
 [refactor] changed table data to flex `<ul>`
 [style] added `icon-bin` and `icon-share`
 
-##version 0.14.0 06/08/2017
+## version 0.14.0 06/08/2017
 [refactor] Rebuilt all components and built details and creation components, no wiring yet  
 
-##version 0.13.0 06/06/2017
+## version 0.13.0 06/06/2017
 [code] finished wiring up `contact.component`
 [code] built `notes.component` a reusable part smart component
 
-##version 0.12.0 06/01/2017
+## version 0.12.0 06/01/2017
 [refactor] removed `user.modules` and `ui.services` and `store.module` because of internalizing functionality and caching in components
 [refactor] rebuilt `side-menu` to be point of navigation and removed `m-navigation.component`
 [code] built `companies.component`, `add-company.component`, `add-contact.component`, `home-component`
  
-##version 0.11.2 05/29/2017
+## version 0.11.2 05/29/2017
 [refactor] rebuilt `side-menu.component` with its own cache and reducer
 [refactor] rebuilt `list.component` for `dynamic-forms.module` with cache and reducer
 
-##version 0.11.1 05/26/2017
+## version 0.11.1 05/26/2017
 [bug] fixed `undoableInputReducer` bug with tracking input history
 
-##version 0.11.0 05/26/2017
+## version 0.11.0 05/26/2017
 [code] built a state management system for `input-components` that allows undos and redos
 [code] built a simpler cache and state system from the NGRX and Redux patterns and examples, `StateService`
 [refactor] removed NGRX Store
@@ -43,13 +46,13 @@
 [style] Added icon svg sprites `sprite.svg`, `sprite.css` and imported into `main.scss`
 [code] built `contacts.component` 
 
-##version 0.10.0 - 05/06/2017
+## version 0.10.0 - 05/06/2017
 [code] created `dynamic-forms.module` and `WrittableStateTokenService` and `Store.Module`
 [refactor] upgraded twt into WritableStateToken and made a one data flow from smart components to structural components 
 [code] built `session.reducer`, `user.reducer`, `crm.reducer`
 [library] added implemented NGRX Store
 
-##version 0.9.0 - 05/06/2017
+## version 0.9.0 - 05/06/2017
 [code] implemented `sockets-service` globally
 [refactor] TypeScript Writable Token syncd with data feeds and smart components and made to be PointOfTruth
 [code] `list.component` built and implemented with generics 
@@ -62,7 +65,7 @@
 [refactor] removed API calls from `list.component`
 [code] updated `list.component` and `company.component` with twt authority
 
-##version 0.8.0
+## version 0.8.0
 [refactor] routes redone for lazy loading of modules
 [test] fixed mocha.. kindof. needs to have services faked, I think...
 [code] created a `form-create-component` and `list-compoennt`

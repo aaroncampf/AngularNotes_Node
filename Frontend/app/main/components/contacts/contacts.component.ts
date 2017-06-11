@@ -12,18 +12,16 @@ import {ToastsManager} from 'ng2-toastr';
 	selector:'contacts-component',
 	template: `
 		<button class="btn btn-block" [routerLink]="['/Add-Contact']">Add A Contact</button>
-		<ul class="crm-list">
-			<li class="crm-list-item" *ngFor="let contact of (contacts$ | async)">
-				<contact-icons class="crm-list-item-icons">
-					<span (click)="routeWithDispatch(contact, ['/Quotes'])" class="icon icon-bubble2"></span>
-				</contact-icons>
-				<contact-name class="crm-list-item-title" (click)="routeWithDispatch(contact, ['/Contact-Details'])">{{contact.name}}
-				</contact-name>
-				<contact-options-icons class="trash-bin-cell">
-					<span (click)="remove(contact)" class="icon icon-bin"></span>
-				</contact-options-icons>
-			</li>
-		</ul>
+		<table class="table table-bordered">
+			<tbody>
+				<tr class="crm-list-item" *ngFor="let contact of (contacts$ | async)">
+					<td class="crm-list-item-title" (click)="routeWithDispatch(contact, ['/Contact-Details'])">{{contact.name}}</td>
+					<td>
+						<span class="icon icon-share"(click)="routeWithDispatch(contact, ['/Quotes'])"></span>
+					</td>
+				</tr>
+			</tbody>
+		</table>
 	`
 })
 export class ContactsComponent implements OnInit, OnDestroy{

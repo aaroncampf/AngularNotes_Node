@@ -24,13 +24,22 @@ import {ToastsManager} from 'ng2-toastr';
 				<single-line-text-input-component label="Phone" [model]="company.phone" [control]="phoneControl"></single-line-text-input-component>
 				<single-line-text-input-component label="Web" [model]="company.web" [control]="webControl"></single-line-text-input-component>
 				<single-line-text-input-component label="Misc" [model]="company.misc" [control]="miscControl"></single-line-text-input-component>
-				<button type="button" class="btn-success btn-lg pull-right" (click)="onSave()">Save</button>
-				<button type="button" class="btn-warning btn-lg pull-right" [routerLink]="['/Companies']">Cancel</button>
+				<div *ngIf="!checkRemove">
+					<button type="button" class="btn-success btn-lg pull-left" (click)="onSave()">Save</button>
+					<button type="button" class="btn-warning btn-lg pull-left" [routerLink]="['/Companies']">Cancel</button>
+					<button type="button" class="btn-danger pull-right" (click)="onCheckRemove()">REMOVE</button>
+				</div>
 			</form>
+		</div>
+		<div class="check-remove" *ngIf="!!checkRemove">
+			<h4>Are you sure you want to remove {{company.name}}?</h4>
+			<button type="button" class="btn-warning btn-lg pull-right" (click)="onCheckRemove()">Cancel</button>
+			<button type="button" class="btn-danger btn-lg pull-left" (click)="onRemove()">REMOVE</button>
 		</div>
 	`
 })
 export class CompanyDetailsComponent implements OnInit, OnDestroy {
+	public checkRemove: boolean = false
 	public company: Company = <Company>{};
 	private stateSub: Subscription;
 	public nameControl: FormControl = new FormControl('', []);
@@ -74,5 +83,19 @@ export class CompanyDetailsComponent implements OnInit, OnDestroy {
 				this.toastr.success(this.company.name + ' updated!');
 				this.router.navigate(['/Companies']);
 		})
+	}
+
+	public onRemove(): void {
+		this.crmData.deleteCompany({id: this.company.id})
+			.then(res => {
+				console.log(res);
+				this.crmStore.crmStoreDispatcher({type: 'COMPANY_SELECTED', payload: {company: {}}});
+				this.toastr.warning(this.company.name + ' has been removed!');
+				this.router.navigate(['/Companies']);
+		})
+	}
+
+	public onCheckRemove(): void {
+			this.checkRemove = !this.checkRemove;
 	}
 }

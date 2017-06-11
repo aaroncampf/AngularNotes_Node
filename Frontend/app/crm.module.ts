@@ -15,13 +15,12 @@ import {CRMDataService} from './main/services/crm-data.service';
 import {ContactDetailsComponent} from './main/components/contacts/contact-details.component';
 import {QuotesComponent} from './main/components/quotes/quotes.component';
 import {NotesComponent} from './main/components/contacts/notes.component';
-import * as _ from 'lodash';
 import {HomeComponent} from './main/components/home.component';
 import {CompaniesComponent} from './main/components/companies/companies.component';
 import {AddCompanyComponent} from './main/components/companies/add-company.component';
 import {AddContactComponent} from './main/components/contacts/add-contact.component';
 import {ContactsComponent} from './main/components/contacts/contacts.component';
-import {QuoteComponent} from './main/components/quotes/quote.component';
+import {QuoteDetailsComponent} from './main/components/quotes/quote-details.component';
 import {CompanyDetailsComponent} from './main/components/companies/companies-details.component';
 import {QuoteTemplateComponent} from './main/components/quotes/template.component';
 import {UserSettingsComponent} from './main/components/user/user-settings.component';
@@ -40,7 +39,7 @@ const MAIN_ROUTES: Routes = [
 	{path: 'Contact-Details', component: ContactDetailsComponent},
 	{path: 'Add-Quote', component: AddQuoteComponent},
 	{path: 'Quotes', component: QuotesComponent},
-	{path: 'Quote', component: QuoteComponent},
+	{path: 'Quote', component: QuoteDetailsComponent},
 	{path: 'Quote-Template', component: QuoteTemplateComponent},
 	{path: '', redirectTo: '/Home', pathMatch: 'full'},
 	{path: '**', component: NotFoundComponent}
@@ -52,7 +51,7 @@ const COMPONENTS = [
 	QuoteTemplateComponent,
 	ContactsComponent,
 	CompanyDetailsComponent,
-	QuoteComponent,
+	QuoteDetailsComponent,
 	HomeComponent,
 	AddContactComponent,
 	AddCompanyComponent,

@@ -24,6 +24,16 @@ export class CRMDataService {
 
 		})
 	}
+	//
+	// public async newContact(payload): Promise<any> {
+	// 	let v;
+	// 	v = await this.sockets.responseSocket('contact.create', payload).subscribe(contact => {
+	// 			console.log('contact create response', contact);
+	// 				return contact;
+	// 		});
+	// 	return v;
+	//
+	// }
 
 	public newContact(payload): Promise<Contact> {
 		return new Promise((resolve, reject) => {
@@ -158,30 +168,28 @@ export class CRMDataService {
 		})
 	}
 
-	public getQuotes(payload: any = {}): Promise<Company[]> {
+	public getQuote(payload): Promise<Quote> {
 		return new Promise((resolve, reject) => {
-			payload.hasOwnProperty('id')
-				?
-				this.sockets.responseSocket('quotes.get', {id: payload.id}).subscribe(quotes => {
-					// this.stateService.dispatch('QUOTES_GET', {quotes: quotes});
-					resolve(quotes);
-				})
-				:
-				this.sockets.responseSocket('quotes.get', {}).subscribe(quotes => {
-					// this.stateService.dispatch('QUOTES_GET', {quotes: quotes});
-					resolve(quotes);
-				});
+			this.sockets.responseSocket('quote.get', payload).subscribe(quotes => {
+				console.log(quotes);
+				resolve(quotes);
+			})
 		});
 	}
 
-	public getContact(payload): Promise<Contact> {
+	public getQuotes(payload: any = {}): Promise<Quote[]> {
 		return new Promise((resolve, reject) => {
-				this.sockets.responseSocket('contact.get', payload).subscribe(company => {
-				if (typeof company === 'string'){
-					reject(company);
-				} else {
-					resolve(company);
-				}
+			this.sockets.responseSocket('quotes.get', payload).subscribe(quotes => {
+				// this.stateService.dispatch('QUOTES_GET', {quotes: quotes});
+				resolve(quotes);
+			})
+		});
+	}
+
+	public deleteQuote(payload): Promise<any> {
+		return new Promise((resolve) => {
+			this.sockets.responseSocket('quote.destroy', payload).subscribe(response => {
+				resolve(response);
 			})
 		})
 	}
@@ -201,6 +209,7 @@ export class CRMDataService {
 			})
 		})
 	}
+
 
 	public getUser(payload): Promise<User> {
 		return new Promise((resolve) => {
