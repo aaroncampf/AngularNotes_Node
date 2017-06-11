@@ -105,6 +105,43 @@ export class CRMDataService {
 		})
 	}
 
+	public setQuote(payload): Promise<Quote> {
+		return new Promise((resolve, reject) => {
+			this.sockets.responseSocket('quote.set', payload).subscribe(quote => {
+				console.log('quote set response', quote);
+				if (typeof quote === 'string'){
+					reject(quote);
+				} else {
+					resolve(quote);
+				}
+			})
+		})
+	}
+
+
+	public setQuoteLine(payload): Promise<QuoteLine> {
+		return new Promise((resolve, reject) => {
+			this.sockets.responseSocket('quoteLine.set', payload).subscribe(quoteLine => {
+				console.log('quoteLine create response', quoteLine);
+				if (typeof quoteLine === 'string'){
+					reject(quoteLine);
+				} else {
+					resolve(quoteLine);
+				}
+			})
+		})
+	}
+
+	public deleteQuoteLine(payload): Promise<Company> {
+		return new Promise((resolve) => {
+			this.sockets.responseSocket('quoteLine.destroy', payload).subscribe(company => {
+				resolve(company);
+			})
+		})
+
+	}
+
+
 	public newCompany(payload): Promise<Company> {
 		return new Promise((resolve, reject) => {
 			this.sockets.responseSocket('company.create', payload).subscribe(company => {

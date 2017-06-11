@@ -134,21 +134,35 @@ export class QuoteDetailsComponent implements OnInit , OnDestroy{
 	}
 
 	public removeLine(lineIndex): void {
-		_.pullAt(this.quoteLinesSource.getValue(), [lineIndex]);
+		const lineID = this.quoteLinesSource.getValue()[lineIndex].id;
+		this.crmData.deleteQuoteLine({id: lineID})
+			.then(() => {
+				_.pullAt(this.quoteLinesSource.getValue(), [lineIndex]);
+		})
 	}
 
 	public addLine(): void {
-		this.newQuoteLine.weight = this.quoteLinesSource.getValue().length;
-		const updatedLine = this.quoteLinesSource.getValue().concat(this.newQuoteLine);
-		this.quoteLinesSource.next(updatedLine);
-		this.newQuoteLine = <QuoteLine>{};
+		this.crmData.newQuoteLine({owner_id: this.quote.id, props: this.newQuoteLine})
+			.then(() => {
+				const updatedLine = this.quoteLinesSource.getValue().concat(this.newQuoteLine);
+				this.quoteLinesSource.next(updatedLine);
+				this.newQuoteLine = <QuoteLine>{};
+		})
 	}
 
 	public onSave(): void {
-	}
-
-	public test(): void {
-		console.log(this.quoteLinesSource.getValue());
+		this.crmData.setQuote({id: this.quote.id, props: this.quote})
+			.then(quote => {
+				for(let quoteLine of this.quoteLinesSource.getValue()){
+					this.crmData.setQuoteLine({
+						id: quoteLine.id,
+						owner_id: quote.id,
+						props: quote
+					})
+				}
+				this.toastr.success(this.quote.name + ' has been saved!');
+				this.router.navigate(['/Quotes']);
+			})
 	}
 
 	public onRemove(): void {

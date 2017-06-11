@@ -149,6 +149,7 @@ export class AddQuoteComponent implements OnInit , OnDestroy{
 				for(let quoteLine of this.quoteLines){
 					this.crmData.newQuoteLine({owner_id: quote.id, props: quoteLine});
 				}
+					this.toastr.success(this.quote.name + ' has been saved!');
 					this.crmStore.crmStoreDispatcher({type: 'QUOTE_SELECTED', payload: {quote: quote}});
 					this.router.navigate(['/Quotes']);
 			})

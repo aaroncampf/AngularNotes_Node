@@ -1,8 +1,7 @@
-import {_baseListItem} from './base-model.model';
 import {Contact} from './contact.model';
 import {Quote} from './quote.model';
 
-export interface Company extends _baseListItem{
+export interface Company {
 	id?: string
 	name: string;
 	addressOne: string;

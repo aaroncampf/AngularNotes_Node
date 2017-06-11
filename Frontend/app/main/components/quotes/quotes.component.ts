@@ -43,28 +43,32 @@ export class QuotesComponent implements OnInit, OnDestroy {
 		public crmData: CRMDataService
 	){}
 
-	public async TestAsync(quote) {
-		let val = await quote + ' it worked!';
+	public async TestAsync(quote): Promise<string> {
+		let val = await quote + ' it worked with Async!';
+		console.log('stuff!!');
+		console.log('stuff!!');
+		console.log('stuff!!');
+		let val2 = await quote + 'It Worked again!';
 		return val;
 	}
 
+	public TestPromise(quote): Promise<string> {
+		return new Promise((resolve) => {
+			Promise.resolve().then(() => {
+				console.log('this resolves first');
+			});
+			resolve(quote + ' it worked with new Promise!' )
+		})
+	}
+
 	public ngOnInit(): void {
-
-		//It still has a .then,
-		// let val = await  this.TestAsync('Holy Crap!');
-		// console.log('val', val);
-		// 	.then(res => {
-		// 		this.toastr.success(res);
-		// 		for (let i = 0; i < 3; i++){
-		// 			this.TestAsync('Tick' + i)
-		// 				.then( resTwo => {
-		// 					// hacky stuff
-		// 					this.toastr.success(resTwo);
-		// 			})
-		// 		}
-		// });
-
-
+		//
+		// let asyncThing = this.TestAsync('Holy Crap!');
+		// asyncThing.then(res => this.toastr.success(res));
+		//
+		// let promiseThing = this.TestPromise('Holy Crap!');
+		// promiseThing.then(res => this.toastr.warning(res));
+		//
 
 		this.stateSub = this.crmStore.crmStore$.subscribe(state => {
 			this.quotesSource.next([]);
