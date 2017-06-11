@@ -1,15 +1,11 @@
-import {_baseListItem} from './base-model.model';
 import {Note} from './note.model';
 /**
  * Created by aaron on 3/14/2017.
  * edited by RD on 4/17/2017
  */
-export interface _Contact {
-	companyId: string;
-	id?: string;
-}
 
-export interface Contact extends _Contact, _baseListItem {
+export interface Contact {
+	id: string;
 	name: string;
 	phone: string;
 	email: string;
@@ -25,7 +21,6 @@ export interface Contact extends _Contact, _baseListItem {
 export function newContact(): Contact {
 		return {
 			id: null,
-			companyId: null,
 			name: null,
 			phone: null,
 			email: null,

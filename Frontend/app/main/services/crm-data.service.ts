@@ -24,16 +24,6 @@ export class CRMDataService {
 
 		})
 	}
-	//
-	// public async newContact(payload): Promise<any> {
-	// 	let v;
-	// 	v = await this.sockets.responseSocket('contact.create', payload).subscribe(contact => {
-	// 			console.log('contact create response', contact);
-	// 				return contact;
-	// 		});
-	// 	return v;
-	//
-	// }
 
 	public newContact(payload): Promise<Contact> {
 		return new Promise((resolve, reject) => {
@@ -67,7 +57,6 @@ export class CRMDataService {
 				resolve(note);
 			})
 		})
-
 	}
 
 	public removeNote(payload): Promise<any> {
@@ -90,7 +79,6 @@ export class CRMDataService {
 			})
 		})
 	}
-
 
 	public newQuoteLine(payload): Promise<QuoteLine> {
 		return new Promise((resolve, reject) => {
