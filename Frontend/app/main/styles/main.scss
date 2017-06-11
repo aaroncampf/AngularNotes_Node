@@ -2,6 +2,13 @@ main {
   background: lightgray;
   min-height: 100vh;
 
+  .icon-cancel-circle {
+    width: 37px;
+    height: 32px;
+    background-position: -576px -48px;
+    transform: scale(.5);
+  }
+
   .check-remove {
     position: fixed;
     bottom: 135px;

@@ -12,7 +12,7 @@ import {FormControl} from '@angular/forms';
 				<textarea rows="1" class="form-control" [formControl]="control"
 						  [(ngModel)]="model" (ngModelChange)="modelChange.emit($event)"
 						  [placeholder]="placeholder" (change)="onChange.emit($event.target.value)"></textarea>
-				<img class="pull-right redo" src="../../../assets/icons/SVG/cancel-circle.svg" (click)="onCancel()"/>
+				<span *ngIf="!!control.dirty" class="icon icon-cancel-circle pull-right" (click)="onCancel()"></span>
 			</div>
 		</div>
 	`,
@@ -42,5 +42,6 @@ export class SingleLineTextInputComponent implements OnChanges {
 	public onCancel(): void {
 		console.log('onCancel called', this.initialValue );
 		this.model = this.initialValue;
+		this.control.markAsPristine();
 	}
 }
