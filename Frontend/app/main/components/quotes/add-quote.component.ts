@@ -102,8 +102,15 @@ export class AddQuoteComponent implements OnInit , OnDestroy{
 			}
 		});
 		this.quoteLinesSub = this.quoteLine$.subscribe(newLines => {
-			this.quoteLines = newLines;
-		})
+			this.quoteLines = newLines.sort((a, b) => {
+				if ( a.weight > b.weight ) {
+					return 1;
+				}
+				if (a.weight < b.weight) {
+					return -1;
+				}
+			});
+		});
 	}
 
 	public ngOnDestroy(): void {
@@ -111,24 +118,36 @@ export class AddQuoteComponent implements OnInit , OnDestroy{
 	}
 
 	public onDown(lineIndex): void {
-		const lines = this.quoteLinesSource.getValue();
-		if(lines.length - 1 > lineIndex){
-			const newLines = lines.slice(0, lineIndex).concat(lines[lineIndex + 1]).concat(lines[lineIndex]).concat(lines.slice(lineIndex + 2));
-			this.quoteLinesSource.next(newLines)
+		let lines = this.quoteLines;
+		if (lines[lineIndex].weight < lines.length - 1){
+			lines[lineIndex].weight++;
+			lines[lineIndex + 1].weight--;
+			this.quoteLinesSource.next(lines);
 		}
+
 	}
 
 	public onUp(lineIndex): void {
-		const lines = this.quoteLinesSource.getValue();
-		if(lineIndex > 0){
-			const newLines = lines
-				.slice(0, lineIndex - 1).concat(lines[lineIndex]).concat(lines.slice(lineIndex - 1, lineIndex)).concat(lines.slice(lineIndex + 1));
-			this.quoteLinesSource.next(newLines);
+		let lines = this.quoteLines;
+		if (lines[lineIndex].weight > 0){
+			lines[lineIndex].weight--;
+			lines[lineIndex - 1].weight++;
+			this.quoteLinesSource.next(lines);
 		}
 	}
 
 	public removeLine(lineIndex): void {
-		_.pullAt(this.quoteLinesSource.getValue(), [lineIndex]);
+		const lines = this.quoteLines;
+		if (lineIndex < this.quoteLines.length - 1){
+			for (let i = lineIndex + 1, k = this.quoteLines.length; i < k; i++) {
+				lines[i].weight--;
+			}
+		}
+		this.crmData.deleteQuoteLine({id: lines[lineIndex].id})
+			.then(() => {
+				_.pullAt(lines, [lineIndex]);
+				this.quoteLinesSource.next(lines);
+			})
 	}
 
 	public addLine(): void {
@@ -153,9 +172,5 @@ export class AddQuoteComponent implements OnInit , OnDestroy{
 					this.crmStore.crmStoreDispatcher({type: 'QUOTE_SELECTED', payload: {quote: quote}});
 					this.router.navigate(['/Quotes']);
 			})
-	}
-
-	public test(): void {
-			console.log(this.quoteLinesSource.getValue());
 	}
 }

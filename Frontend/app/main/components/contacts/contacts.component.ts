@@ -12,7 +12,7 @@ import {ToastsManager} from 'ng2-toastr';
 	selector:'contacts-component',
 	template: `
 		<button class="btn btn-block" [routerLink]="['/Add-Contact']">Add A Contact</button>
-		<table class="table table-bordered">
+		<table class="table table-bordered table-justified table-hover">
 			<tbody>
 				<tr class="crm-list-item" *ngFor="let contact of (contacts$ | async)">
 					<td class="crm-list-item-title" (click)="routeWithDispatch(contact, ['/Contact-Details'])">{{contact.name}}</td>

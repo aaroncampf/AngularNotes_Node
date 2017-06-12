@@ -12,6 +12,7 @@ import {Subscription} from 'rxjs/Subscription';
 		<h4>Add Contact</h4>
 		<div *ngIf="!ownerID">
 			<h5>Please Select A Company First</h5>
+			<hr>
 		</div>
 		<div *ngIf="!!ownerID">
 			<form [formGroup]="addForm">

@@ -6,7 +6,7 @@ import {CRMStoreService} from '../services/crm-store.service';
 	<div class="row">
 		<ul class="nav nav-tabs nav-tabs-justified">
 			<li class="tab" role="tab">
-				<a [routerLink]="['/Companies']"><span class="icon icon-office"></span></a>
+				<a [routerLink]="['/Companies']"><img src="../../../assets/icons/SVG/office.svg"></a>
 			</li>
 			<li class="tab" role="tab">
 				<a [routerLink]="['/Contacts']" ><span class="icon icon-user-tie"></span></a>

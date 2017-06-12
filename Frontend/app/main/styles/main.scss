@@ -52,9 +52,13 @@ main {
   }
 
   .crm-list li {
-    margin: 20px 0 20px 0;
+    margin: 20px 20px 20px 20px;
   }
 
+  .crm-list {
+    display: flex;
+    flex-direction: column;
+  }
   .crm-list-item {
     display: flex;
     flex-direction: row;
@@ -145,6 +149,7 @@ main {
   @import './quote';
   @import './notes';
   @import './navigation';
+  @import './quote-template';
   @import '../../forms/styles/input';
   @import '../../shared/shared.styles';
   @import '../../../assets/icons/sprite/sprite.css';

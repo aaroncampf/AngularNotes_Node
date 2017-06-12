@@ -37,8 +37,6 @@ export class QuotesComponent implements OnInit, OnDestroy {
 	private quotesSource: BehaviorSubject<Quote[]> = new BehaviorSubject<Quote[]>([]);
 	public quotes$: Observable<Quote[]> = this.quotesSource.asObservable();
 	private contactsSource: BehaviorSubject<Contact[]> = new BehaviorSubject<Contact[]>([]);
-	public contact$: Observable<Contact[]> = this.contactsSource.asObservable();
-	private contactSub: Subscription;
 	private stateSub: Subscription;
 	constructor(
 		private router: Router,

@@ -3,6 +3,9 @@
 
 ## unreleased
 
+## version 0.17.2 06/11/2017
+[bug:fix] rebuilt weighting system for `add-quote.component` and `quote-details.component`
+
 ## version 0.17.1 06/11/2017
 [bug:fix] fixed `quotes.component` to display contacts only related to quotes.
 

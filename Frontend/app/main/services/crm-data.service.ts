@@ -109,9 +109,10 @@ export class CRMDataService {
 
 
 	public setQuoteLine(payload): Promise<QuoteLine> {
+				console.log('quoteLine set ', payload);
 		return new Promise((resolve, reject) => {
 			this.sockets.responseSocket('quoteLine.set', payload).subscribe(quoteLine => {
-				console.log('quoteLine create response', quoteLine);
+				console.log('quoteLine set response', quoteLine);
 				if (typeof quoteLine === 'string'){
 					reject(quoteLine);
 				} else {

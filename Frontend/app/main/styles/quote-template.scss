@@ -1,0 +1,52 @@
+quote-template {
+  template-wrapper {
+    display: flex;
+    flex-direction: column;
+  }
+
+  template-header {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+  }
+
+  template-sender-info, template-contact-info {
+    display: flex;
+    flex-direction: column;
+  }
+
+  template-sender-info {
+    flex-grow: 3;
+  }
+
+  template-contact-info {
+    flex-grow: 1;
+  }
+
+  template-body {
+    display: flex;
+    flex-direction: column;
+  }
+
+  quote-list {
+    display: flex;
+    flex-direction: column;
+  }
+
+  quote-line {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+  }
+
+  quote-line-details {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: nowrap;
+  }
+
+  quote-details {
+    display: flex;
+    flex-direction: row;
+  }
+}

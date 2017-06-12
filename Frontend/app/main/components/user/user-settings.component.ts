@@ -4,6 +4,7 @@ import {FormControl, FormGroup} from '@angular/forms';
 import {User} from '../../models/user.model';
 import {ToastsManager} from 'ng2-toastr';
 import {Router} from '@angular/router';
+import {CRMStoreService} from '../../services/crm-store.service';
 
 export const FIXTURE_USER_ID = 'd4cc9f0d-3c8c-4e3e-8493-c34abc46ec1d';
 
@@ -54,6 +55,7 @@ export class UserSettingsComponent implements OnInit {
 		private router: Router,
 		public toastr: ToastsManager,
 		private crmData: CRMDataService,
+		private crmStore: CRMStoreService,
 	){}
 
 	public ngOnInit(): void {
@@ -66,6 +68,7 @@ export class UserSettingsComponent implements OnInit {
 	public onSave(): void {
 		this.crmData.setUser({id: this.user.id, props: this.userForm.value})
 			.then(user => {
+			this.crmStore.crmUserDispatcher({type: 'USER_UPDATED', payload: {user: user}});
 			this.toastr.success(user.firstName + ' is saved!');
 			this.router.navigate(['/Home']);
 		})
