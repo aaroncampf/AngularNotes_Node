@@ -35,12 +35,11 @@ export class SingleLineTextInputComponent implements OnChanges {
 
 	public ngOnChanges(simpleChanges: SimpleChanges): void {
 		if (simpleChanges['model'] && simpleChanges['model'].isFirstChange()){
-			this.initialValue = simpleChanges['model'].currentValue
+			this.initialValue = simpleChanges['model'].currentValue;
 		}
 	}
 
 	public onCancel(): void {
-		console.log('onCancel called', this.initialValue );
 		this.model = this.initialValue;
 		this.control.markAsPristine();
 	}

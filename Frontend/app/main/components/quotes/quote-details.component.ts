@@ -18,7 +18,7 @@ import {ToastsManager} from 'ng2-toastr';
 		<quote-header [formGroup]="quoteForm">
 			<div class="row">
 				<h5>Quote Title: </h5>
-				<single-line-text-input-component class="col-xs-12 text-center" [(model)]="quote.name"></single-line-text-input-component>
+				<single-line-text-input-component *ngIf="!!quote.name" class="col-xs-12 text-center" [(model)]="quote.name"></single-line-text-input-component>
 				<hr/>
 			</div>
 		</quote-header>
@@ -76,7 +76,10 @@ export class QuoteDetailsComponent implements OnInit , OnDestroy{
 	public quoteLines: QuoteLine[] = [];
 	public newQuoteLine: QuoteLine = <QuoteLine>{};
 	private stateSub: Subscription;
-	public quote: Quote = <Quote>{};
+	public quoteSource: BehaviorSubject<Quote> = new BehaviorSubject<Quote>(<Quote>{});
+	public quote$: Observable<Quote> = this.quoteSource.asObservable();
+	public quote: Quote;
+	public quoteSub: Subscription;
 	public unitControl: FormControl = new FormControl('', []);
 	public costControl: FormControl = new FormControl('', []);
 	public descControl: FormControl = new FormControl('', []);
@@ -96,12 +99,15 @@ export class QuoteDetailsComponent implements OnInit , OnDestroy{
 	){}
 
 	public ngOnInit(): void {
+		this.quoteSub = this.quote$.subscribe(quote => {
+			this.quote = quote;
+		});
 		this.stateSub = this.crmStore.crmStore$.subscribe(state => {
 			if(state.selectedQuote && state.selectedQuote.id){
 				console.log(state.selectedQuote.id);
 				this.crmData.getQuote({id: state.selectedQuote.id})
 					.then((quote: Quote) => {
-						this.quote = quote;
+						this.quoteSource.next(quote);
 						console.log(quote);
 						this.quoteLinesSource.next(quote.quoteLines);
 					})
@@ -114,10 +120,11 @@ export class QuoteDetailsComponent implements OnInit , OnDestroy{
 
 	public ngOnDestroy(): void {
 		this.stateSub.unsubscribe();
+		this.quoteSub.unsubscribe();
 	}
 
 	public onDown(lineIndex): void {
-		const lines = this.quoteLinesSource.getValue();
+		const lines = this.quoteLinesSource.value;
 		if(lines.length - 1 > lineIndex){
 			const newLines = lines.slice(0, lineIndex).concat(lines[lineIndex + 1]).concat(lines[lineIndex]).concat(lines.slice(lineIndex + 2));
 			this.quoteLinesSource.next(newLines)
@@ -125,7 +132,7 @@ export class QuoteDetailsComponent implements OnInit , OnDestroy{
 	}
 
 	public onUp(lineIndex): void {
-		const lines = this.quoteLinesSource.getValue();
+		const lines = this.quoteLinesSource.value;
 		if(lineIndex > 0){
 			const newLines = lines
 				.slice(0, lineIndex - 1).concat(lines[lineIndex]).concat(lines.slice(lineIndex - 1, lineIndex)).concat(lines.slice(lineIndex + 1));
@@ -134,43 +141,44 @@ export class QuoteDetailsComponent implements OnInit , OnDestroy{
 	}
 
 	public removeLine(lineIndex): void {
-		const lineID = this.quoteLinesSource.getValue()[lineIndex].id;
+		const lineID = this.quoteLinesSource.value[lineIndex].id;
 		this.crmData.deleteQuoteLine({id: lineID})
 			.then(() => {
-				_.pullAt(this.quoteLinesSource.getValue(), [lineIndex]);
+				_.pullAt(this.quoteLinesSource.value, [lineIndex]);
 		})
 	}
 
 	public addLine(): void {
-		this.crmData.newQuoteLine({owner_id: this.quote.id, props: this.newQuoteLine})
+		this.crmData.newQuoteLine({owner_id: this.quoteSource.value.id, props: this.newQuoteLine})
 			.then(() => {
-				const updatedLine = this.quoteLinesSource.getValue().concat(this.newQuoteLine);
+				const updatedLine = this.quoteLinesSource.value.concat(this.newQuoteLine);
 				this.quoteLinesSource.next(updatedLine);
 				this.newQuoteLine = <QuoteLine>{};
 		})
 	}
 
 	public onSave(): void {
-		this.crmData.setQuote({id: this.quote.id, props: this.quote})
+		console.log('saveHit', this.quoteSource.value);
+		this.crmData.setQuote({id: this.quoteSource.value.id, props: this.quoteSource.value})
 			.then(quote => {
-				for(let quoteLine of this.quoteLinesSource.getValue()){
+				for(let quoteLine of this.quoteLinesSource.value){
 					this.crmData.setQuoteLine({
 						id: quoteLine.id,
 						owner_id: quote.id,
 						props: quote
 					})
 				}
-				this.toastr.success(this.quote.name + ' has been saved!');
+				this.toastr.success(this.quoteSource.value.name + ' has been saved!');
 				this.router.navigate(['/Quotes']);
 			})
 	}
 
 	public onRemove(): void {
-		this.crmData.deleteQuote({id: this.quote.id})
+		this.crmData.deleteQuote({id: this.quoteSource.value.id})
 			.then(res => {
 				console.log(res);
 				this.crmStore.crmStoreDispatcher({type: 'QUOTE_SELECTED', payload: {quote: {}}});
-				this.toastr.warning(this.quote.name + ' has been removed!');
+				this.toastr.warning(this.quoteSource.value.name + ' has been removed!');
 				this.router.navigate(['/Quotes']);
 			})
 	}

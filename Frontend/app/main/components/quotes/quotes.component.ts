@@ -9,6 +9,7 @@ import {Quote} from '../../models/quote.model';
 import {Subscription} from 'rxjs/Subscription';
 import * as _ from 'lodash';
 import {Contact} from '../../models/contact.model';
+import {CRMType} from '../../models/crm-models.type';
 
 @Component({
 	selector: 'quotes-component',
@@ -22,7 +23,7 @@ import {Contact} from '../../models/contact.model';
 					</button>
 					<ul class="dropdown-menu contact" aria-labelledby="contactDropDown">
 						Share With:
-						<li *ngFor="let contact of quote.contacts" (click)="routeWithContactDispatch(contact, quote, ['/Quote-Template'])"><strong>{{contact.name}}</strong></li>
+						<li *ngFor="let contact of contactsWithCompanyID(quote.company_id)" (click)="routeWithContactDispatch(contact, quote, ['/Quote-Template'])"><strong>{{contact.name}}</strong></li>
 					</ul>
 					
 				</quote-icons>
@@ -35,6 +36,9 @@ import {Contact} from '../../models/contact.model';
 export class QuotesComponent implements OnInit, OnDestroy {
 	private quotesSource: BehaviorSubject<Quote[]> = new BehaviorSubject<Quote[]>([]);
 	public quotes$: Observable<Quote[]> = this.quotesSource.asObservable();
+	private contactsSource: BehaviorSubject<Contact[]> = new BehaviorSubject<Contact[]>([]);
+	public contact$: Observable<Contact[]> = this.contactsSource.asObservable();
+	private contactSub: Subscription;
 	private stateSub: Subscription;
 	constructor(
 		private router: Router,
@@ -43,59 +47,22 @@ export class QuotesComponent implements OnInit, OnDestroy {
 		public crmData: CRMDataService
 	){}
 
-	public async TestAsync(quote): Promise<string> {
-		let val = await quote + ' it worked with Async!';
-		console.log('stuff!!');
-		console.log('stuff!!');
-		console.log('stuff!!');
-		let val2 = await quote + 'It Worked again!';
-		return val;
-	}
-
-	public TestPromise(quote): Promise<string> {
-		return new Promise((resolve) => {
-			Promise.resolve().then(() => {
-				console.log('this resolves first');
-			});
-			resolve(quote + ' it worked with new Promise!' )
-		})
-	}
-
 	public ngOnInit(): void {
-		//
-		// let asyncThing = this.TestAsync('Holy Crap!');
-		// asyncThing.then(res => this.toastr.success(res));
-		//
-		// let promiseThing = this.TestPromise('Holy Crap!');
-		// promiseThing.then(res => this.toastr.warning(res));
-		//
 
+		this.crmData.getContacts({})
+			.then((contacts: Contact[])=> this.contactsSource.next(contacts));
 		this.stateSub = this.crmStore.crmStore$.subscribe(state => {
+			// cleared in case of user reselecting
 			this.quotesSource.next([]);
 			if(state.selectedCompany && state.selectedCompany.id){
 				this.crmData.getQuotes({owner_id: state.selectedCompany.id})
 					.then((quotes: Quote[] )=> {
-						for (let quote of quotes){
-							this.crmData.getContacts({owner_id: quote.company_id})
-								.then(contacts => {
-									_.merge(quote, {contacts: contacts});
-									const updatedQuotes = _.concat(this.quotesSource.getValue(), quote);
-									this.quotesSource.next(updatedQuotes);
-							});
-						}
-					})
+						this.quotesSource.next(quotes);
+				})
 			} else {
 				this.crmData.getQuotes({})
 					.then((quotes: Quote[]) => {
-						for (let quote of quotes){
-							this.crmData.getContacts({owner_id: quote.company_id})
-								.then(contacts => {
-									_.merge(quote, {contacts: contacts});
-									const updatedQuotes = _.concat(this.quotesSource.getValue(), quote);
-									this.quotesSource.next(updatedQuotes);
-									console.log('quoteSource', this.quotesSource.getValue());
-								});
-						}
+						this.quotesSource.next(quotes);
 				});
 			}
 		});
@@ -103,6 +70,17 @@ export class QuotesComponent implements OnInit, OnDestroy {
 
 	public ngOnDestroy(){
 		this.stateSub.unsubscribe();
+	}
+
+	public contactsWithCompanyID(companyID: string): Quote[] {
+		let responseArray = [];
+		const contacts = this.contactsSource.value;
+		for(let contact of contacts){
+			if(contact.company_id === companyID){
+				responseArray.push(contact);
+			}
+		}
+		return responseArray;
 	}
 
 	public routeWithDispatch(quote, route): void {

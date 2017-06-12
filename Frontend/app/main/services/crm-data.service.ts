@@ -14,9 +14,10 @@ export class CRMDataService {
 	constructor(private sockets: SocketService) {}
 
 	public dispatched(type: string, payload: any): Observable<CRMType | CRMType[]> {
+		console.log('dispatched', payload);
 		return Observable.create((observer: Observer<any>) => {
-			this.sockets.responseSocket(type.split('_')[1].toLowerCase() + '.' + type.split('_')[2].toLowerCase(), payload)
-				 .subscribe(res => {
+			this.sockets.responseSocket(type.split('_')[0].toLowerCase() + '.' + type.split('_')[1].toLowerCase(), payload)
+				.subscribe(res => {
 				 	console.log('SOCKET RESPONSE FROM SERVICE CALL', res);
 					observer.next(res);
 					return res;

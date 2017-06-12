@@ -3,6 +3,9 @@
 
 ## unreleased
 
+## version 0.17.1 06/11/2017
+[bug:fix] fixed `quotes.component` to display contacts only related to quotes.
+
 ## version 0.17.0 06/11/2017
 [code] wired up `quote.component` and `quote-details.component` and `add-quote`
 
