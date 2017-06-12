@@ -6,7 +6,7 @@
     "build": "webpack --display-error-details --progress",
     "watch": "npm run build -- --watch",
     "server": "webpack-dev-server --inline --progress --port 3000",
-    "start": "npm run server",
+    "start": "npm run clean && npm run server",
     "test": "tsc  && mocha --require ./mocha-test-shim.js ./dist/src/test/*.test.js ",
     "clean": "rm -rf dist/"
   },
