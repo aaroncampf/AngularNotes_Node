@@ -2,6 +2,7 @@
 >To make sense of all your awesome busy-nes to other developers please log changes and use sem-ver. 
 
 ## unreleased
+[style] implemented 
 
 ## version 0.17.2 06/11/2017
 [bug:fix] rebuilt weighting system for `add-quote.component` and `quote-details.component`

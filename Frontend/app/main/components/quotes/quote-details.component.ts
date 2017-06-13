@@ -49,8 +49,8 @@ import {ToastsManager} from 'ng2-toastr';
 		<quote-footer [formGroup]="newQuoteLineForm">
 			<div class="row">
 				<hr/>
+				<single-line-text-input-component label="Unit" [(model)]="newQuoteLine.unit"></single-line-text-input-component>
 				<single-line-text-input-component label="Desc." [(model)]="newQuoteLine.desc"></single-line-text-input-component>
-				<single-line-text-input-component label="Unit Qty." [(model)]="newQuoteLine.unit"></single-line-text-input-component>
 				<single-line-text-input-component label="Cost" [(model)]="newQuoteLine.cost"></single-line-text-input-component>
 				<button class="btn btn-lg" (click)="addLine()">Add Line</button>
 			</div>

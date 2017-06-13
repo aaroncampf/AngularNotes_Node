@@ -4,8 +4,8 @@ import {Contact} from '../models/contact.model';
 import {Quote} from '../models/quote.model';
 import {BehaviorSubject} from 'rxjs/BehaviorSubject';
 import {Observable} from 'rxjs/Observable';
-import {CRMDataService} from './crm-data.service';
 import {User} from '../models/user.model';
+import * as _ from 'lodash';
 
 export interface CRMUserStore {
 	currentUser: User
@@ -15,6 +15,10 @@ export interface CRMStore {
 	selectedCompany: Company;
 	selectedContact: Contact;
 	selectedQuote: Quote;
+	companySelected: boolean;
+	contactSelected: boolean;
+	quoteSelected: boolean;
+	activeRoute: string;
 }
 
 export const INITIAL_STATE_USER_STORE = {
@@ -24,7 +28,11 @@ export const INITIAL_STATE_USER_STORE = {
 export const INITIAL_STATE_CRM_STORE = {
 	selectedCompany: <Company>{},
 	selectedContact: <Contact>{},
-	selectedQuote: <Quote>{}
+	selectedQuote: <Quote>{},
+	companySelected: false,
+	contactSelected: false,
+	quoteSelected: false,
+	activeRoute: 'MAIN'
 };
 
 @Injectable()
@@ -35,7 +43,6 @@ export class CRMStoreService {
 	public crmUser$: Observable<CRMUserStore> = this.crmUserSource.asObservable();
 
 	constructor(
-		private crmData: CRMDataService
 	){}
 
 	public crmStoreDispatcher(action): void {
@@ -62,31 +69,43 @@ export class CRMStoreService {
 	}
 
 	private crmStoreReducer(action, state): CRMStore {
-		const {selectedCompany, selectedContact, selectedQuote} = state;
+		// const {selectedCompany, selectedContact, selectedQuote} = state;
 		switch (action.type){
+			case'ROUTE_NAVIGATED':
+				return _.merge(state, {
+					activeRoute: action.payload.route
+				});
 			case'COMPANY_SELECTED':
 				const newCompany = action.payload.company;
-				return {
-					selectedCompany: newCompany,
-					selectedContact: selectedContact,
-					selectedQuote: selectedQuote
-				};
+				if(action.payload.company.id){
+					return _.merge(state,{
+						selectedCompany: newCompany,
+						companySelected: true
+					});
+				} else {
+					return _.merge(state, {
+						selectedCompany: {},
+						selectedContact: {},
+						selectedQuote: {},
+						companySelected: false,
+						contactSelected: false,
+						quoteSelected: false
+					})
+				}
 			case'CONTACT_SELECTED':
 				const newContact = action.payload.contact;
 				const contactCompany = action.payload.company;
-				console.log(contactCompany);
-				return {
+				return _.merge(state, {
 					selectedCompany: contactCompany,
 					selectedContact: newContact,
-					selectedQuote: selectedQuote
-				};
+					contactSelected: true
+				});
 			case'QUOTE_SELECTED':
 				const newQuote = action.payload.quote;
-				return {
-					selectedCompany: selectedCompany,
-					selectedContact: selectedContact,
-					selectedQuote: newQuote
-				};
+				return _.merge(state, {
+					selectedQuote: newQuote,
+					contactSelected: true,
+				});
 			default:
 				return state;
 		}

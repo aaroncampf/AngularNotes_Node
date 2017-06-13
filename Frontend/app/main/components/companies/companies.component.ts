@@ -6,6 +6,15 @@ import {Observable} from 'rxjs/Observable';
 import {ToastsManager} from 'ng2-toastr';
 import {Router} from '@angular/router';
 import {CRMStore, CRMStoreService} from '../../services/crm-store.service';
+import {
+	trigger,
+	state,
+	style,
+	animate,
+	transition
+} from '@angular/animations';
+import {slideLeft} from '../../../shared/animations/transitions.animation';
+
 
 @Component({
 	selector: 'companies-component',
@@ -18,7 +27,18 @@ import {CRMStore, CRMStoreService} from '../../services/crm-store.service';
 				</tr>
 			</tbody>
 		</table>
-	`
+	`,
+	animations: [ trigger('flyInOut', [
+		state('in', style({transform: 'translateX(0)'})),
+		transition('void => *', [
+			style({transform: 'translateX(-100%)'}),
+			animate(1000)
+		]),
+		transition('* => void', [
+			animate(1000, style({transform: 'translateX(100%)'}))
+		])
+	])]
+
 })
 export class CompaniesComponent implements OnInit {
 	private companiesSource: BehaviorSubject<Company[]> = new BehaviorSubject<Company[]>([]);

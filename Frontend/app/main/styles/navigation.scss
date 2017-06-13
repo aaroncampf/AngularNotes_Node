@@ -1,8 +1,52 @@
-mobile-navigation-component {
-  display: flex;
-  flex-direction: column;
+navbar-component {
+  ul {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-around;
+    flex-wrap: wrap;
+  }
 
   li {
+    -webkit-transition: all .6s linear;
+    -moz-transition: all .6s linear;
+    -ms-transition: all .6s linear;
+    -o-transition: all .6s linear;
+    transition: all .6s linear;
     flex-grow: 1;
+    border-bottom: solid;
+    border-color: transparent;
+
+    a:hover, a:focus {
+      color: #62d0e5;
+      background-color: transparent;
+      text-decoration: none;
+      -webkit-transition: all .6s linear;
+      -moz-transition: all .6s linear;
+      -ms-transition: all .6s linear;
+      -o-transition: all .6s linear;
+      transition: all .6s linear;
+    }
+
+    &.active {
+      border-bottom: solid;
+      border-width: 1px;
+      border-color: #16d11c;
+      -webkit-transition: all .6s linear;
+      -moz-transition: all .6s linear;
+      -ms-transition: all .6s linear;
+      -o-transition: all .6s linear;
+      transition: all .6s linear;
+     }
+
+    &.selected {
+      a {
+        color: #16d11c;
+        -webkit-transition: all .6s linear;
+        -moz-transition: all .6s linear;
+        -ms-transition: all .6s linear;
+        -o-transition: all .6s linear;
+        transition: all .6s linear;
+      }
+    }
   }
 }
