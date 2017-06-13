@@ -69,7 +69,7 @@ export class CRMStoreService {
 	}
 
 	private crmStoreReducer(action, state): CRMStore {
-		// const {selectedCompany, selectedContact, selectedQuote} = state;
+		const {selectedCompany, selectedContact, selectedQuote, companySelected, contactSelected, quoteSelected} = state;
 		switch (action.type){
 			case'ROUTE_NAVIGATED':
 				return _.merge(state, {
@@ -83,14 +83,15 @@ export class CRMStoreService {
 						companySelected: true
 					});
 				} else {
-					return _.merge(state, {
-						selectedCompany: {},
-						selectedContact: {},
-						selectedQuote: {},
+					return  {
+						selectedCompany: <Company>{},
+						selectedContact: <Contact>{},
+						selectedQuote: <Quote>{},
 						companySelected: false,
 						contactSelected: false,
-						quoteSelected: false
-					})
+						quoteSelected: false,
+						activeRoute: state.activeRoute
+					}
 				}
 			case'CONTACT_SELECTED':
 				const newContact = action.payload.contact;
