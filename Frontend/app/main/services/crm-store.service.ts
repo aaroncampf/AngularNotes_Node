@@ -80,7 +80,10 @@ export class CRMStoreService {
 				if(action.payload.company.id){
 					return _.merge(state,{
 						selectedCompany: newCompany,
+						selectedContact: <Contact>{},
+						contactSelected: false,
 						companySelected: true
+
 					});
 				} else {
 					return  {
@@ -105,7 +108,7 @@ export class CRMStoreService {
 				const newQuote = action.payload.quote;
 				return _.merge(state, {
 					selectedQuote: newQuote,
-					contactSelected: true,
+					quoteSelected: true,
 				});
 			default:
 				return state;

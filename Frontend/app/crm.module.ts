@@ -26,6 +26,7 @@ import {QuoteTemplateComponent} from './main/components/quotes/template.componen
 import {UserSettingsComponent} from './main/components/user/user-settings.component';
 import {AddQuoteComponent} from './main/components/quotes/add-quote.component';
 import {CRMStoreService} from './main/services/crm-store.service';
+import {SharedModule} from './shared/shared.module';
 
 const MAIN_ROUTES: Routes = [
 	{path: 'main', component: MainComponent},
@@ -76,6 +77,7 @@ const MODULES = [
 	FormsModule,
 	ReactiveFormsModule,
 	DynamicFormsModule,
+	SharedModule
 ];
 
 @NgModule({

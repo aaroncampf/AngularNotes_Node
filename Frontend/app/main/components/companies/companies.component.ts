@@ -19,28 +19,24 @@ import {slideLeft} from '../../../shared/animations/transitions.animation';
 @Component({
 	selector: 'companies-component',
 	template: `
-		<button class="btn btn-block" [routerLink]="['/Add-Company']">Add A Company</button>
-		<table class="table table-bordered table-responsive table-hover">
-			<tbody>
-				<tr class="crm-list-item" *ngFor="let company of (companies$ | async)">
-					<td class="crm-list-item-title text-center" (click)="routeWithDispatch(company, ['/Company-Details'])">{{company.name}}</td>
-				</tr>
-			</tbody>
-		</table>
+		<div *ngIf="!dataReady">
+			<data-loading-screen></data-loading-screen>
+		</div>
+		<div *ngIf="!!dataReady">
+			<button class="btn btn-block" [routerLink]="['/Add-Company']">Add A Company</button>
+			<table class="table table-bordered table-responsive table-hover">
+				<tbody>
+					<tr class="crm-list-item" *ngFor="let company of (companies$ | async)">
+						<td class="crm-list-item-title text-center" (click)="routeWithDispatch(company, ['/Company-Details'])">{{company.name}}</td>
+					</tr>
+				</tbody>
+			</table>
+		</div>
 	`,
-	animations: [ trigger('flyInOut', [
-		state('in', style({transform: 'translateX(0)'})),
-		transition('void => *', [
-			style({transform: 'translateX(-100%)'}),
-			animate(1000)
-		]),
-		transition('* => void', [
-			animate(1000, style({transform: 'translateX(100%)'}))
-		])
-	])]
 
 })
 export class CompaniesComponent implements OnInit {
+	public dataReady: boolean = false;
 	private companiesSource: BehaviorSubject<Company[]> = new BehaviorSubject<Company[]>([]);
 	public companies$: Observable<Company[]> = this.companiesSource.asObservable();
 	constructor(
@@ -56,7 +52,10 @@ export class CompaniesComponent implements OnInit {
 
 	private updateCompanies(): void {
 		this.crmService.getCompanies({})
-			.then((companies: Company[] )=> this.companiesSource.next(companies));
+			.then((companies: Company[]) => {
+				this.companiesSource.next(companies);
+				this.dataReady = true;
+			});
 
 	}
 

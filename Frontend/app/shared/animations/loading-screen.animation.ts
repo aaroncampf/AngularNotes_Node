@@ -9,7 +9,6 @@ import {Component} from '@angular/core';
 		<div class="diamond diamond-3"></div>
 		<div class="diamond diamond-4"></div>
 	</div>
-		<div class="loading">LOADING DATA</div>
 	`,
 })
 

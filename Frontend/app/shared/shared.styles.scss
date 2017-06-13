@@ -1,4 +1,111 @@
 //@import 'material-theme.style';
+body {
+  background: darkgray;
+}
 
-@import '../forms/styles/list.style';
-@import '../main/styles/view-editor.style';
+.loading {
+  width: 100vw;
+  margin-top: 70px;
+  text-align: center;
+  span:nth-child(2n + 1) {
+    color: yellow;
+    font-size: 3em;
+  }
+  .load {
+    color: white;
+    font-size: 2em;
+    font-family: Mono;
+  }
+}
+
+$loader-size: 9rem;
+$animation-duration: 2.4s;
+
+.diamonds {
+  :nth-child(1) {
+    background: blueviolet;
+  }
+  :nth-child(2) {
+    background: greenyellow;
+  }
+  :nth-child(3) {
+    background: orangered;
+  }
+  :nth-child(4) {
+    background: blue;
+  }
+  display: flex;
+  flex-flow: row wrap;
+  width: $loader-size;
+  height: $loader-size;
+  transform: rotateZ(45deg);
+  margin: 65px auto 0 auto;
+  .diamond {
+    position: relative;
+    height: 50%;
+    flex-basis: 50%;
+    transform: scale(1.1);
+    &::before {
+      position: absolute;
+      content: '';
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background-color: whitesmoke;
+      animation: diamond $animation-duration infinite linear both;
+      transform-origin: 100% 100%;
+    }
+    &-2 {
+      transform: scale(1.1) rotateZ(90deg);
+      &::before {
+        animation-delay: 300ms;
+      }
+    }
+    &-3 {
+      transform: scale(1.1) rotateZ(180deg);
+      &::before {
+        animation-delay: 600ms;
+      }
+    }
+    &-4 {
+      transform: scale(1.1) rotateZ(270deg);
+      &::before {
+        animation-delay: 900ms;
+      }
+    }
+  }
+}
+
+@keyframes diamond {
+  0%,
+  10% {
+    transform: perspective(14rem) rotateX(-180deg);
+    opacity: 0
+  }
+  25%,
+  75% {
+    transform: perspective(14rem) rotateX(0deg);
+    opacity: 1
+  }
+  90%,
+  100% {
+    transform: perspective(14rem) rotateY(180deg);
+    opacity: 0
+  }
+}
+
+@keyframes load {
+  0%,
+  10% {
+    transform: scale(2em);
+  }
+  25%,
+  75% {
+    transform: scale(1em);
+  }
+  90%,
+  100% {
+    transform: scale(2em);
+  }
+}
