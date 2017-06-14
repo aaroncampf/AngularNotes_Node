@@ -4,6 +4,7 @@ import {Router} from '@angular/router';
 import {CRMDataService} from '../../services/crm-data.service';
 import {Company} from '../../models/company.model';
 import {ToastsManager} from 'ng2-toastr';
+import {slideTransitions} from '../../../shared/animations/transitions.animation';
 @Component({
 	selector: 'create-company-component',
 	template: `
@@ -20,7 +21,12 @@ import {ToastsManager} from 'ng2-toastr';
 			<button type="button" class="btn-warning btn-lg pull-right" [routerLink]="['/Companies']">Cancel</button>
 			<button type="button" class="btn-success btn-lg pull-right" (click)="onSubmit(addForm.value)">Submit</button>
 		</form>
-	`
+	`,
+	host: { '[@routeAnimation]': 'true' },
+	styles: [':host { display: block;}'],
+	animations: [
+		slideTransitions()
+	]
 })
 export class AddCompanyComponent {
 	public newCompany: Company = <Company>{};

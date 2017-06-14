@@ -1,11 +1,13 @@
 import {Component, OnDestroy, OnInit} from '@angular/core';
 import {FormControl, FormGroup} from '@angular/forms';
-import {ActivatedRoute, Router} from '@angular/router';
+import {Router} from '@angular/router';
 import {CRMDataService} from '../../services/crm-data.service';
 import {Contact} from '../../models/contact.model';
 import {ToastsManager} from 'ng2-toastr';
 import {CRMStoreService} from '../../services/crm-store.service';
 import {Subscription} from 'rxjs/Subscription';
+import {slideTransitions} from '../../../shared/animations/transitions.animation';
+
 @Component({
 	selector: 'create-contact-component',
 	template: `
@@ -28,7 +30,12 @@ import {Subscription} from 'rxjs/Subscription';
 				<button type="button" class="btn-success btn-lg pull-right" (click)="onSubmit(addForm.value)">Submit</button>
 			</form>
 		</div>
-	`
+	`,
+	host: { '[@routeAnimation]': 'true' },
+	styles: [':host { display: block;}'],
+	animations: [
+		slideTransitions()
+	]
 })
 export class AddContactComponent implements OnInit, OnDestroy {
 	public crmStateSub: Subscription;

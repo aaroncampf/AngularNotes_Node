@@ -8,26 +8,30 @@ import {Subscription} from 'rxjs/Subscription';
 import {Router} from '@angular/router';
 import {Company} from '../../models/company.model';
 import {ToastsManager} from 'ng2-toastr';
+import {slideTransitions} from '../../../shared/animations/transitions.animation';
 @Component({
 	selector:'contacts-component',
 	template: `
-		<div *ngIf="!dataReady">
-			<data-loading-screen></data-loading-screen>
-		</div>
-		<div *ngIf="!!dataReady">
+		<div *ngIf="!!dataReady" >
 			<button class="btn btn-block" [routerLink]="['/Add-Contact']">Add A Contact</button>
 			<table class="table table-bordered table-justified table-hover">
 				<tbody>
 					<tr class="crm-list-item" *ngFor="let contact of (contacts$ | async)">
 						<td class="crm-list-item-title" (click)="routeWithDispatch(contact, ['/Contact-Details'])">{{contact.name}}</td>
 						<td>
-							<span class="icon icon-share"(click)="routeWithDispatch(contact, ['/Quotes'])"></span>
+							<span class="icon icon-share" (click)="routeWithDispatch(contact, ['/Quotes'])"></span>
 						</td>
 					</tr>
 				</tbody>
 			</table>
 		</div>
-	`
+	`,
+	host: { '[@routeAnimation]': 'true' },
+	styles: [':host { display: block;}'],
+	animations: [
+		slideTransitions()
+	]
+
 })
 export class ContactsComponent implements OnInit, OnDestroy{
 	public dataReady: boolean = false;
@@ -62,7 +66,7 @@ export class ContactsComponent implements OnInit, OnDestroy{
 			} else {
 				this.crmData.getContacts({})
 					.then((contacts: Contact[])=> {
-						this.contactsSource.next(contacts);
+						this.contactsSource.next(contacts)
 						this.dataReady = true;
 					});
 			}

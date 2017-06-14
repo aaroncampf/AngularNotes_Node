@@ -5,6 +5,7 @@ import {User} from '../../models/user.model';
 import {ToastsManager} from 'ng2-toastr';
 import {Router} from '@angular/router';
 import {CRMStoreService} from '../../services/crm-store.service';
+import {animate, state, style, transition, trigger} from '@angular/animations';
 
 export const FIXTURE_USER_ID = 'd4cc9f0d-3c8c-4e3e-8493-c34abc46ec1d';
 
@@ -23,7 +24,24 @@ export const FIXTURE_USER_ID = 'd4cc9f0d-3c8c-4e3e-8493-c34abc46ec1d';
 		<single-line-text-input-component label="Biz Fax" [model]="user.businessFax" [control]="businessFaxControl"></single-line-text-input-component>
 		<button class="btn-warning btn-lg pull-right" [routerLink]="['/Home']">Cancel</button>
 		<button class="btn-success btn-lg pull-right" (click)="onSave()">Save</button>
-	`
+	`,
+	host: { '[@routeAnimation]': 'true' },
+	styles: [':host { display: block;}'],
+	animations: [
+		trigger('routeAnimation', [
+			state('*', style({transform: 'translateX(0)', opacity: 1})),
+			transition('void => *', [
+				style({transform: 'translateX(-100%)', opacity: 0}),
+				animate('0.5s cubic-bezier(0.215, 0.610, 0.355, 1.000)')
+			]),
+			transition('* => void',
+				animate('0.5s cubic-bezier(0.215, 0.610, 0.355, 1.000)', style({
+					transform: 'translateX(100%)',
+					opacity: 0
+				}))
+			)
+		])
+	]
 })
 export class UserSettingsComponent implements OnInit {
 	public user: User = <User>{};

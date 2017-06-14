@@ -7,9 +7,8 @@ import {Observable} from 'rxjs/Observable';
 import {BehaviorSubject} from 'rxjs/BehaviorSubject';
 import {Quote} from '../../models/quote.model';
 import {Subscription} from 'rxjs/Subscription';
-import * as _ from 'lodash';
 import {Contact} from '../../models/contact.model';
-import {CRMType} from '../../models/crm-models.type';
+import {slideTransitions} from '../../../shared/animations/transitions.animation';
 
 @Component({
 	selector: 'quotes-component',
@@ -36,7 +35,10 @@ import {CRMType} from '../../models/crm-models.type';
 				</li>
 			</ul>
 		</div>
-	`
+	`,
+	host: { '[@routeAnimation]': 'true' },
+	styles: [':host { display: block;}'],
+	animations: [slideTransitions()]
 })
 export class QuotesComponent implements OnInit, OnDestroy {
 	public dataReady: boolean = false;
@@ -68,7 +70,7 @@ export class QuotesComponent implements OnInit, OnDestroy {
 				this.crmData.getQuotes({})
 					.then((quotes: Quote[]) => {
 						this.quotesSource.next(quotes);
-						this.dataReady = true;
+						this.dataReady = true
 				});
 			}
 		});

@@ -3,6 +3,9 @@
 
 ## unreleased
 
+## version 0.19.0 06/14/2017
+[code] implemented emailer API
+
 ## version 0.18.0 06/11/2017
 [code] built loading screen
 [style] implemented navigation animations 

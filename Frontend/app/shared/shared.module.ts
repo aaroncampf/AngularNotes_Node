@@ -8,6 +8,7 @@ import {DiamondLoaderComponent} from './animations/loading-screen.animation';
 import {ModelService} from './services/model.service';
 import {LastIndexed} from './pipes/lastIndex.pipe';
 import {SelectByID} from './pipes/selectByID.pipe';
+import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
 
 const COMPONENTS = [
 	LastIndexed,
@@ -17,6 +18,8 @@ const COMPONENTS = [
 ];
 
 const MODULES = [
+	BrowserAnimationsModule,
+	// NoopAnimationsModule,
 	AngularCommonModule,
 	ReactiveFormsModule,
 	FormsModule,

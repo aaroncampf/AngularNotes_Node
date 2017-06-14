@@ -8,6 +8,7 @@ import {FormControl, FormGroup} from '@angular/forms';
 import {CRMStoreService} from '../../services/crm-store.service';
 import {Subscription} from 'rxjs/Subscription';
 import {ToastsManager} from 'ng2-toastr';
+import {slideTransitions} from '../../../shared/animations/transitions.animation';
 @Component({
 	selector: 'company-details-component',
 	template: `
@@ -36,7 +37,12 @@ import {ToastsManager} from 'ng2-toastr';
 			<button type="button" class="btn-warning btn-lg pull-right" (click)="onCheckRemove()">Cancel</button>
 			<button type="button" class="btn-danger btn-lg pull-left" (click)="onRemove()">REMOVE</button>
 		</div>
-	`
+	`,
+	host: { '[@routeAnimation]': 'true' },
+	styles: [':host { display: block;}'],
+	animations: [
+		slideTransitions()
+	]
 })
 export class CompanyDetailsComponent implements OnInit, OnDestroy {
 	public checkRemove: boolean = false
