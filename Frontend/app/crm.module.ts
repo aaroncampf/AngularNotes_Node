@@ -26,6 +26,8 @@ import {QuoteTemplateComponent} from './main/components/quotes/template.componen
 import {UserSettingsComponent} from './main/components/user/user-settings.component';
 import {AddQuoteComponent} from './main/components/quotes/add-quote.component';
 import {CRMStoreService} from './main/services/crm-store.service';
+import {SharedModule} from './shared/shared.module';
+import {EmailerService} from './main/services/emailer.service';
 
 const MAIN_ROUTES: Routes = [
 	{path: 'main', component: MainComponent},
@@ -69,13 +71,15 @@ const MODULES = [
 	RouterModule.forRoot(MAIN_ROUTES),
 	CommonModule,
 	BrowserAnimationsModule,
-	NoopAnimationsModule,
+	// NoopAnimationsModule,
 	BrowserModule,
 	HttpModule,
 	ToastModule.forRoot(),
 	FormsModule,
 	ReactiveFormsModule,
 	DynamicFormsModule,
+	SharedModule,
+
 ];
 
 @NgModule({
@@ -88,6 +92,7 @@ const MODULES = [
 	providers: [
 		CRMDataService,
 		CRMStoreService,
+		EmailerService
 	],
 	schemas: [
 		CUSTOM_ELEMENTS_SCHEMA

@@ -35,18 +35,32 @@ quote-template {
 
   quote-line {
     display: flex;
-    flex-direction: row;
-    flex-wrap: wrap;
+    flex-direction: column;
+    justify-content: space-between;
+    padding-bottom: 40px;
   }
 
   quote-line-details {
     display: flex;
     flex-direction: row;
     flex-wrap: nowrap;
+    justify-content: space-between;
   }
 
   quote-details {
     display: flex;
     flex-direction: row;
+    justify-content: space-between;
+  }
+
+  send-email-confirm {
+    display: block;
+    position: fixed;
+    bottom: 22vh;
+    height: 124px;
+    background: aliceblue;
+    left: -34px;
+    width: 100vw;
+    padding: 28px;
   }
 }

@@ -1,26 +1,41 @@
-import {Component} from '@angular/core';
-import {CRMStoreService} from '../services/crm-store.service';
+import {Component, EventEmitter, Input, OnChanges, Output, SimpleChanges} from '@angular/core';
+
 @Component({
 	selector: 'navbar-component',
 	template: `
 	<div class="row">
-		<ul class="nav nav-tabs nav-tabs-justified">
-			<li class="tab" role="tab">
-				<a [routerLink]="['/Companies']"><img src="../../../assets/icons/SVG/office.svg"></a>
+		<ul class="crm-nav-tabs">
+			<li class="text-center" [class.selected]="companySelected" [class.active]="activeRoute === '/Companies'" role="tab">
+				<a (click)="routeSelected.emit(['/Companies'])">Companies</a>
 			</li>
-			<li class="tab" role="tab">
-				<a [routerLink]="['/Contacts']" ><span class="icon icon-user-tie"></span></a>
+			<li class="text-center" [class.selected]="contactSelected" [class.active]="activeRoute === '/Contacts'" role="tab">
+				<a (click)="routeSelected.emit(['/Contacts'])">Contacts</a>
 			</li>
-			<li class="tab" role="tab">
-				<a [routerLink]="['/Quotes']" ><span class="icon icon-bubble2"></span></a>
+			<li class="text-center" [class.selected]="quoteSelected" [class.active]="activeRoute === '/Quotes'" role="tab">
+				<a (click)="routeSelected.emit(['/Quotes'])">Quotes</a>
 			</li>
-			<li class="tab" role="tab">
-				<a [routerLink]="['/Settings']" ><span class="icon icon-cog"></span></a>
+			<li class="text-center" [class.active]="activeRoute === '/Settings'" role="tab">
+				<a (click)="routeSelected.emit(['/Settings'])">Settings</a>
 			</li>
 		</ul>
+		<hr>
 	</div>
 	`
 
 })
-export class NavbarComponent {
+export class NavbarComponent implements OnChanges {
+	@Input()
+	public activeRoute: string = 'INIT';
+	@Input()
+	public companySelected: boolean = false;
+	@Input()
+	public contactSelected: boolean = false;
+	@Input()
+	public quoteSelected: boolean = false;
+	@Output()
+	public routeSelected: EventEmitter<any> = new EventEmitter<any>();
+
+	public ngOnChanges(simpleChanges: SimpleChanges): void {
+		console.log(simpleChanges);
+	}
 }

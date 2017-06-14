@@ -3,6 +3,13 @@
 
 ## unreleased
 
+## version 0.19.0 06/14/2017
+[code] implemented emailer API
+
+## version 0.18.0 06/11/2017
+[code] built loading screen
+[style] implemented navigation animations 
+
 ## version 0.17.2 06/11/2017
 [bug:fix] rebuilt weighting system for `add-quote.component` and `quote-details.component`
 

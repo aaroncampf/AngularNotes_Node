@@ -6,6 +6,7 @@ import {CRMStoreService} from '../../services/crm-store.service';
 import {FormControl, FormGroup} from '@angular/forms';
 import {ToastsManager} from 'ng2-toastr';
 import {Router} from '@angular/router';
+import {slideTransitions} from '../../../shared/animations/transitions.animation';
 
 @Component({
 	selector: 'contact-details-component',
@@ -28,7 +29,12 @@ import {Router} from '@angular/router';
 			<button type="button" class="btn-warning btn-lg pull-right" (click)="onCheckRemove()">Cancel</button>
 			<button type="button" class="btn-danger btn-lg pull-right" (click)="onRemove()">REMOVE</button>
 		</div>
-	`
+	`,
+	host: { '[@routeAnimation]': 'true' },
+	styles: [':host { display: block;}'],
+	animations: [
+		slideTransitions()
+	]
 })
 export class ContactDetailsComponent implements OnInit, OnDestroy {
 	public checkRemove: boolean = false;

@@ -5,6 +5,7 @@ import {Note} from '../../models/note.model';
 import {Observable} from 'rxjs/Observable';
 import {ToastsManager} from 'ng2-toastr';
 import * as _ from 'lodash';
+import {slideTransitions} from '../../../shared/animations/transitions.animation';
 
 @Component({
 	selector: 'notes-component',
@@ -24,7 +25,12 @@ import * as _ from 'lodash';
 												  (onChange)="setNote({payload: {id: note.id, prop: {key: 'text', value: $event}}})"></single-line-text-input-component>
 			</note-body>
 		</note-container>
-	`
+	`,
+	host: { '[@routeAnimation]': 'true' },
+	styles: [':host { display: block;}'],
+	animations: [
+		slideTransitions()
+	]
 })
 export class NotesComponent implements OnChanges {
 	@Input()

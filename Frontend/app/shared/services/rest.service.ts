@@ -23,7 +23,13 @@ export class RESTService implements OnInit {
 						return JSON.parse(response._body);
 					})
 					.catch((error: Response | any) => this.handleError(error));
-			case'post':
+			case'create':
+				return this.http.post(path, JSON.stringify(payload), this.options)
+					.map((response: any) => {
+						return JSON.parse(response._body);
+					})
+					.catch((error: Response | any) => this.handleError(error));
+			case'set':
 				return this.http.post(path, JSON.stringify(payload), this.options)
 					.map((response: any) => {
 						return JSON.parse(response._body);

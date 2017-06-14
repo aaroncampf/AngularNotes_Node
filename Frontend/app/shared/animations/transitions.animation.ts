@@ -1,29 +1,21 @@
 import {animate, state, style, transition, trigger} from '@angular/animations';
 
-export function liftOffTransitions() {
-
-	return liftOff();
-}
-
-function liftOff(){
+export const slideLeft = () =>  {
 	return trigger('contentState', [
-		state('in', style({
+		state('void => in', style({
 			opacity: '1',
-			transform: 'translateY(0%) scale(1)',
+			transform: 'translateY(-100%) scale(1)',
 		})),
-		state('out', style({
+		state('out => void', style({
 			opacity: '0',
-			transform: 'translateY(0%) scale(2)',
+			transform: 'translateY(100%) scale(1)',
 		})),
-		transition('out => in', animate('400ms, ease-out')),
-		transition('in => out', animate('400ms, ease-in')),
-		transition('void => in', [
-			style({transform: 'translateX(100%)', opacity: 0}),
+		transition('out => void', animate('400ms, ease-out')),
+		transition('void => in', animate('400ms, ease-in')),
+		transition('', [
+			style({transform: 'translateX(0%)', opacity: 0}),
 			animate('400ms, ease-out'),
 		]),
-		transition('in => void', [
-			animate(200, style({transform: 'translateX(-100%) scale(0)'}))
-		])
 	])
 }
 
@@ -32,22 +24,17 @@ export function slideTransitions() {
 }
 
 function slide() {
-	return trigger('contentState', [
-		state('in', style({
-			opacity: '1',
-			transform: 'translateY(0%)'
-		})),
-		state('out', style({
-			opacity: '0',
-			transform: 'translateY(200%)'
-		})),
-		transition('void => in', [
-			style({transform: 'translateY(-100%)'}),
-			animate('400ms, ease-out'),
+	return trigger('routeAnimation', [
+		state('*', style({transform: 'translateX(0)', opacity: 1})),
+		transition('void => *', [
+			style({transform: 'translateX(-100%)', opacity: 0}),
+			animate('0.8s cubic-bezier(0.215, 0.610, 0.355, 1.000)')
 		]),
-		transition('in => out', [
-			// style({transform: 'translateY(-200%)'}),
-			animate('400ms, ease-in'),
-		])
+		transition('* => void',
+			animate('0.1s cubic-bezier(0.215, 0.610, 0.355, 1.000)', style({
+				transform: 'translateX(100%)',
+				opacity: 0
+			}))
+		)
 	])
 }
