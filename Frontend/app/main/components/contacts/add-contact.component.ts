@@ -31,11 +31,6 @@ import {slideTransitions} from '../../../shared/animations/transitions.animation
 			</form>
 		</div>
 	`,
-	host: { '[@routeAnimation]': 'true' },
-	styles: [':host { display: block;}'],
-	animations: [
-		slideTransitions()
-	]
 })
 export class AddContactComponent implements OnInit, OnDestroy {
 	public crmStateSub: Subscription;
@@ -63,13 +58,13 @@ export class AddContactComponent implements OnInit, OnDestroy {
 	}
 
 	public ngOnInit(): void {
-			this.crmStateSub = this.crmStore.crmStore$.subscribe(state => {
-				if (state.selectedCompany && state.selectedCompany.id){
-					this.ownerID = state.selectedCompany.id;
-				} else {
-					this.ownerID = null;
-				}
-			});
+		this.crmStateSub = this.crmStore.crmStore$.subscribe(state => {
+			if (state.selectedCompany && state.selectedCompany.id){
+				this.ownerID = state.selectedCompany.id;
+			} else {
+				this.ownerID = null;
+			}
+		});
 	}
 
 	public onSubmit(values): void {

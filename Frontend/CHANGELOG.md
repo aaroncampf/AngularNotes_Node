@@ -3,6 +3,9 @@
 
 ## unreleased
 
+## version 0.19.1 06/15/2017
+[refactor] rebuilt loading screen
+
 ## version 0.19.0 06/14/2017
 [code] implemented emailer API
 

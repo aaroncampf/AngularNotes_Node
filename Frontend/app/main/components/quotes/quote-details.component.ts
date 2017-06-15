@@ -9,7 +9,6 @@ import {FormControl, FormGroup} from '@angular/forms';
 import * as _ from 'lodash';
 import {Router} from '@angular/router';
 import {ToastsManager} from 'ng2-toastr';
-import {slideTransitions} from '../../../shared/animations/transitions.animation';
 
 @Component({
 	selector: 'quote-details-component',
@@ -76,11 +75,6 @@ import {slideTransitions} from '../../../shared/animations/transitions.animation
 			<button type="button" class="btn-danger btn-lg pull-right" (click)="onRemove()">REMOVE</button>
 		</div>
 	`,
-	host: { '[@routeAnimation]': 'true' },
-	styles: [':host { display: block;}'],
-	animations: [
-		slideTransitions()
-	]
 })
 export class QuoteDetailsComponent implements OnInit , OnDestroy{
 	public checkRemove: boolean = false;

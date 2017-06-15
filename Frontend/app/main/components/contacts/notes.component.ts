@@ -1,11 +1,10 @@
-import {Component, Input, OnChanges, OnInit, SimpleChanges} from '@angular/core';
+import {Component, Input, OnChanges, SimpleChanges} from '@angular/core';
 import {CRMDataService} from '../../services/crm-data.service';
 import {BehaviorSubject} from 'rxjs/BehaviorSubject';
 import {Note} from '../../models/note.model';
 import {Observable} from 'rxjs/Observable';
 import {ToastsManager} from 'ng2-toastr';
 import * as _ from 'lodash';
-import {slideTransitions} from '../../../shared/animations/transitions.animation';
 
 @Component({
 	selector: 'notes-component',
@@ -26,11 +25,6 @@ import {slideTransitions} from '../../../shared/animations/transitions.animation
 			</note-body>
 		</note-container>
 	`,
-	host: { '[@routeAnimation]': 'true' },
-	styles: [':host { display: block;}'],
-	animations: [
-		slideTransitions()
-	]
 })
 export class NotesComponent implements OnChanges {
 	@Input()

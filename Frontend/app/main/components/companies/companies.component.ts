@@ -6,26 +6,22 @@ import {Observable} from 'rxjs/Observable';
 import {ToastsManager} from 'ng2-toastr';
 import {Router} from '@angular/router';
 import {CRMStoreService} from '../../services/crm-store.service';
-import {slideTransitions} from '../../../shared/animations/transitions.animation';
 
 @Component({
 	selector: 'companies-component',
 	template: `
-	<button class="btn btn-block" [routerLink]="['/Add-Company']">Add A Company</button>
-	<table  class="table table-bordered table-responsive table-hover">
-		<tbody *ngIf="!!dataReady">
-			<tr class="crm-list-item" *ngFor="let company of (companies$ | async)">
-				<td  class="crm-list-item-title text-center" (click)="routeWithDispatch(company, ['/Company-Details'])">{{company.name}}</td>
-			</tr>
-		</tbody>
-		
-	</table>
+	<data-loading-screen [dataReady]="!!dataReady"></data-loading-screen>
+	<div *ngIf="!!dataReady">
+		<button class="btn btn-block" [routerLink]="['/Add-Company']">Add A Company</button>
+		<table  class="table table-bordered table-responsive table-hover">
+			<tbody *ngIf="!!dataReady">
+				<tr class="crm-list-item" *ngFor="let company of (companies$ | async)">
+					<td  class="crm-list-item-title text-center" (click)="routeWithDispatch(company, ['/Company-Details'])">{{company.name}}</td>
+				</tr>
+			</tbody>
+		</table>
+	</div>
 	`,
-	host: { '[@routeAnimation]': 'true' },
-	styles: [':host { display: block;}'],
-	animations: [
-	slideTransitions()
-]
 })
 export class CompaniesComponent implements OnInit {
 	public dataReady: boolean = false;

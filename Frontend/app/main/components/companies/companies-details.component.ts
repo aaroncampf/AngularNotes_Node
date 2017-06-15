@@ -1,17 +1,17 @@
 import {Component, OnDestroy, OnInit} from '@angular/core';
-import {ActivatedRoute, Router} from '@angular/router';
+import {Router} from '@angular/router';
 import {CRMDataService} from '../../services/crm-data.service';
-import {BehaviorSubject} from 'rxjs/BehaviorSubject';
 import {Company} from '../../models/company.model';
-import {Observable} from 'rxjs/Observable';
 import {FormControl, FormGroup} from '@angular/forms';
 import {CRMStoreService} from '../../services/crm-store.service';
 import {Subscription} from 'rxjs/Subscription';
 import {ToastsManager} from 'ng2-toastr';
-import {slideTransitions} from '../../../shared/animations/transitions.animation';
+
 @Component({
 	selector: 'company-details-component',
 	template: `
+	<data-loading-screen [dataReady]="!!dataReady"></data-loading-screen>
+	<div *ngIf="!!dataReady">
 		<h4>Company Details</h4>
 		<div *ngIf="!company.id">
 			<h5>Please select a company, first.</h5>
@@ -37,15 +37,12 @@ import {slideTransitions} from '../../../shared/animations/transitions.animation
 			<button type="button" class="btn-warning btn-lg pull-right" (click)="onCheckRemove()">Cancel</button>
 			<button type="button" class="btn-danger btn-lg pull-left" (click)="onRemove()">REMOVE</button>
 		</div>
+	</div>
 	`,
-	host: { '[@routeAnimation]': 'true' },
-	styles: [':host { display: block;}'],
-	animations: [
-		slideTransitions()
-	]
 })
 export class CompanyDetailsComponent implements OnInit, OnDestroy {
-	public checkRemove: boolean = false
+	public dataReady: boolean = false;
+	public checkRemove: boolean = false;
 	public company: Company = <Company>{};
 	private stateSub: Subscription;
 	public nameControl: FormControl = new FormControl('', []);
@@ -80,6 +77,7 @@ export class CompanyDetailsComponent implements OnInit, OnDestroy {
 		this.stateSub = this.crmStore.crmStore$
 			.subscribe(state => {
 				this.company = state.selectedCompany;
+				this.dataReady = true;
 		})
 	}
 

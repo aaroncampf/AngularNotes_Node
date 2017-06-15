@@ -1,37 +1,6 @@
 main {
   background: lightgray;
   min-height: 100vh;
-  -webkit-transition: all .6s linear;
-  -moz-transition: all .6s linear;
-  -ms-transition: all .6s linear;
-  -o-transition: all .6s linear;
-  transition: all .6s linear;
-
-  .loader {
-    position: fixed;
-    width: 100vw;
-    //height: 100vh;
-    left: 0;
-    top: 0;
-  }
-
-  .hidden {
-    opacity: 0;
-    -webkit-transition: all .6s linear;
-    -moz-transition: all .6s linear;
-    -ms-transition: all .6s linear;
-    -o-transition: all .6s linear;
-    transition: all .6s linear;
-    animation:  moveOffAfterVanish 1s linear;
-  }
-
-  @keyframes moveOffAfterVanish{
-    0%   {transform: translateY(0)}
-    99% {transform: translateY(-100%)}
-    100% {transform: translateY(-200%)}
-  }
-
-
 
   .icon-cancel-circle {
     width: 37px;

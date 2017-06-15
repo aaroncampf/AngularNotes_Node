@@ -8,37 +8,30 @@ import {BehaviorSubject} from 'rxjs/BehaviorSubject';
 import {Quote} from '../../models/quote.model';
 import {Subscription} from 'rxjs/Subscription';
 import {Contact} from '../../models/contact.model';
-import {slideTransitions} from '../../../shared/animations/transitions.animation';
 
 @Component({
 	selector: 'quotes-component',
 	template: `
-		<div *ngIf="!dataReady">
-			<data-loading-screen></data-loading-screen>
-		</div>
-		<div *ngIf="!!dataReady">
-			<button class="btn btn-block" [routerLink]="['/Add-Quote']">Create A Quote</button>
-			<ul class="crm-list">
-				<li class="crm-list-item" *ngFor="let quote of (quotes$ | async)">
-					<quote-icons class="crm-list-item-icons">
-						<button class="btn btn-sm btn-default dropdown-toggle" type="button" id="contactDropDown" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
-							<span class="icon icon-share"></span>
-						</button>
-						<ul class="dropdown-menu contact" aria-labelledby="contactDropDown">
-							Share With:
-							<li *ngFor="let contact of contactsWithCompanyID(quote.company_id)" (click)="routeWithContactDispatch(contact, quote, ['/Quote-Template'])"><strong>{{contact.name}}</strong></li>
-						</ul>
-						
-					</quote-icons>
-					<quote-name class="crm-list-item-title" (click)="routeWithDispatch(quote, ['/Quote'])">{{quote.name}}
-					</quote-name>
-				</li>
-			</ul>
-		</div>
+	<data-loading-screen [dataReady]="!!dataReady"></data-loading-screen>
+	<div *ngIf="!!dataReady">
+		<button class="btn btn-block" [routerLink]="['/Add-Quote']">Create A Quote</button>
+		<ul class="crm-list">
+			<li class="crm-list-item" *ngFor="let quote of (quotes$ | async)">
+				<quote-icons class="crm-list-item-icons">
+					<button class="btn btn-sm btn-default dropdown-toggle" type="button" id="contactDropDown" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
+						<span class="icon icon-share"></span>
+					</button>
+					<ul class="dropdown-menu contact" aria-labelledby="contactDropDown">
+						Share With:
+						<li *ngFor="let contact of contactsWithCompanyID(quote.company_id)" (click)="routeWithContactDispatch(contact, quote, ['/Quote-Template'])"><strong>{{contact.name}}</strong></li>
+					</ul>
+				</quote-icons>
+				<quote-name class="crm-list-item-title" (click)="routeWithDispatch(quote, ['/Quote'])">{{quote.name}}
+				</quote-name>
+			</li>
+		</ul>
+	</div>
 	`,
-	host: { '[@routeAnimation]': 'true' },
-	styles: [':host { display: block;}'],
-	animations: [slideTransitions()]
 })
 export class QuotesComponent implements OnInit, OnDestroy {
 	public dataReady: boolean = false;

@@ -7,7 +7,6 @@ import {CommonModule} from '@angular/common';
 import {RouterModule, Routes} from '@angular/router';
 import {FormsService} from './services/forms.service';
 import {HAMMER_GESTURE_CONFIG, HammerGestureConfig} from '@angular/platform-browser';
-import {SharedModule} from '../shared/shared.module';
 import {TextareaUndoComponent} from './components/textarea-undo.component';
 import {SingleLineTextInputComponent} from './components/single-line-text-input.component';
 
@@ -23,7 +22,6 @@ const COMPONENTS = [
 ];
 
 const MODULES = [
-	SharedModule,
 	CommonModule,
 	FormsModule,
 	ReactiveFormsModule,

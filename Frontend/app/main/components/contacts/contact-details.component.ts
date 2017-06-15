@@ -6,11 +6,12 @@ import {CRMStoreService} from '../../services/crm-store.service';
 import {FormControl, FormGroup} from '@angular/forms';
 import {ToastsManager} from 'ng2-toastr';
 import {Router} from '@angular/router';
-import {slideTransitions} from '../../../shared/animations/transitions.animation';
 
 @Component({
 	selector: 'contact-details-component',
 	template: `
+	<data-loading-screen [dataReady]="dataReady"></data-loading-screen>
+	<div *ngIf="dataReady">
 		<h4>Contact Details</h4>
 		<form [formGroup]="contactForm">
 			<single-line-text-input-component label="Name" [model]="contact.name" [control]="nameControl"></single-line-text-input-component>
@@ -29,14 +30,11 @@ import {slideTransitions} from '../../../shared/animations/transitions.animation
 			<button type="button" class="btn-warning btn-lg pull-right" (click)="onCheckRemove()">Cancel</button>
 			<button type="button" class="btn-danger btn-lg pull-right" (click)="onRemove()">REMOVE</button>
 		</div>
+	</div>
 	`,
-	host: { '[@routeAnimation]': 'true' },
-	styles: [':host { display: block;}'],
-	animations: [
-		slideTransitions()
-	]
 })
 export class ContactDetailsComponent implements OnInit, OnDestroy {
+	public dataReady: boolean = false;
 	public checkRemove: boolean = false;
 	public contact: Contact = <Contact>{};
 	private stateSub: Subscription;
@@ -65,15 +63,16 @@ export class ContactDetailsComponent implements OnInit, OnDestroy {
 	public ngOnInit(): void {
 		this.stateSub = this.crmStore.crmStore$.subscribe(state => {
 			this.contact = state.selectedContact;
+			this.dataReady = true;
 		})
 	}
 
 	public onSave(): void {
-			this.crmData.setContact({id: this.contact.id, props: this.contactForm.value})
-				.then(() => {
-					this.toastr.success(this.contact.name  + ' has been saved!');
-					this.router.navigate(['/Contacts']);
-			})
+		this.crmData.setContact({id: this.contact.id, props: this.contactForm.value})
+			.then(() => {
+				this.toastr.success(this.contact.name  + ' has been saved!');
+				this.router.navigate(['/Contacts']);
+		})
 	}
 
 
