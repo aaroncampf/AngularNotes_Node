@@ -7,29 +7,16 @@ import {CRMStore, CRMStoreService} from '../services/crm-store.service';
 import {FIXTURE_USER_ID} from './user/user-settings.component';
 import {Router} from '@angular/router';
 import {Subscription} from 'rxjs/Subscription';
-import {
-	trigger,
-	state,
-	style,
-	animate,
-	transition
-} from '@angular/animations';
 
 @Component({
 	selector: 'main',
 	template: `
-		<div class="container">
-			<div class="row">
-				<dashboard-component class="col-xs-12">
-				</dashboard-component>
-				<navbar-component [activeRoute]="state.activeRoute" [companySelected]="state.companySelected" [contactSelected]="state.contactSelected" [quoteSelected]="state.quoteSelected" (routeSelected)="routeWithDispatch($event)" class="col-xs-12"></navbar-component>
-			</div>
-			<div class="row">
-				<div class="col-xs-12">
-					<router-outlet></router-outlet>
-				</div>
-			</div>
-		</div>
+	<div class="container main-container">
+		<dashboard-component class="col-xs-12">
+		</dashboard-component>
+		<navbar-component [activeRoute]="state.activeRoute" [companySelected]="state.companySelected" [contactSelected]="state.contactSelected" [quoteSelected]="state.quoteSelected" (routeSelected)="routeWithDispatch($event)" class="col-xs-12"></navbar-component>
+		<router-outlet></router-outlet>
+	</div>
 	`,
 
 })

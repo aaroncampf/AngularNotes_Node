@@ -10,7 +10,7 @@ import {CRMStoreService} from '../../services/crm-store.service';
 @Component({
 	selector: 'companies-component',
 	template: `
-	<data-loading-screen [dataReady]="!!dataReady"></data-loading-screen>
+	<data-loading-screen [dataReady]="dataReady"></data-loading-screen>
 	<div *ngIf="!!dataReady">
 		<button class="btn btn-block" [routerLink]="['/Add-Company']">Add A Company</button>
 		<table  class="table table-bordered table-responsive table-hover">
@@ -41,7 +41,7 @@ export class CompaniesComponent implements OnInit {
 	private updateCompanies(): void {
 		this.crmService.getCompanies({})
 			.then((companies: Company[]) => {
-				this.companiesSource.next(companies)
+				this.companiesSource.next(companies);
 					this.dataReady = true;
 			});
 

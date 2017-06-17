@@ -1,12 +1,15 @@
 data-loading-screen {
 
+  $loader-size: 9rem;
+  $animation-duration: 2.4s;
+
   .loading-wrapper {
     position: fixed;
     width: 100vw;
     height: 100vh;
     opacity: 1;
-    left:0;
-    top: 25%;
+    left: 0;
+    top: 39%;
     transform: translateY(0);
     -webkit-transition: all .6s linear;
     -moz-transition: all .6s linear;
@@ -23,33 +26,38 @@ data-loading-screen {
     -ms-transition: all .6s linear;
     -o-transition: all .6s linear;
     transition: all .6s linear;
-    //transform: translateY(100%);
-    animation:  moveOffAfterVanish 1s linear;
+    transform: translateY(100%);
+    animation: moveOffAfterVanish .6s linear;
+
   }
-
-  @keyframes moveOffAfterVanish{
-    0%   {transform: translateY(0)}
-    99% {transform: translateY(-10%)}
-    100% {transform: translateY(-200%)}
+  @keyframes moveOffAfterVanish {
+    0% {
+      transform: translateY(0)
+    }
+    99% {
+      transform: translateY(-10%)
+    }
+    100% {
+      transform: translateY(-200%)
+    }
   }
-
-
-
-  $loader-size: 9rem;
-  $animation-duration: 2.4s;
 
   .diamonds {
     :nth-child(1) {
-      background: blueviolet;
+      //background: blueviolet;
+      background: rgb(38, 166, 154);
     }
     :nth-child(2) {
-      background: greenyellow;
+      //background: greenyellow;
+      background: rgb(151, 114, 166);
     }
     :nth-child(3) {
-      background: orangered;
+      //background: orangered;
+      background: rgb(149, 166, 104);
     }
     :nth-child(4) {
-      background: blue;
+      //background: blue;
+      background: rgb(166, 76, 97);
     }
     display: flex;
     flex-flow: row wrap;
@@ -125,5 +133,14 @@ data-loading-screen {
     100% {
       transform: scale(2em);
     }
+  }
+
+  .loading-message {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    position: fixed;
+    top: 239px;
+    left: 0;
   }
 }

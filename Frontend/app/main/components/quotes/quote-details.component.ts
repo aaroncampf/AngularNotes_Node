@@ -64,20 +64,17 @@ import {ToastsManager} from 'ng2-toastr';
 			</div>
 		</quote-footer>
 		<hr>
-		<div *ngIf="!checkRemove">
+		<div>
 			<button type="button" class="btn-success btn-lg pull-left" (click)="onSave()">Save</button>
 			<button type="button" class="btn-warning btn-lg pull-left" [routerLink]="['/Quotes']">Cancel</button>
-			<button type="button" class="btn-danger pull-right" (click)="onCheckRemove()">REMOVE</button>
+			<button type="button" class="btn-danger pull-right" (click)="confirm = true">REMOVE</button>
 		</div>
-		<div class="check-remove" *ngIf="!!checkRemove">
-			<h4>Are you sure you want to remove {{quote.name}}?</h4>
-			<button type="button" class="btn-warning btn-lg pull-right" (click)="onCheckRemove()">Cancel</button>
-			<button type="button" class="btn-danger btn-lg pull-right" (click)="onRemove()">REMOVE</button>
-		</div>
+		<confirmation-component (response)="onConfirm($event)" [(confirm)]="confirm" [message]="'Are you sure you want to remove ' + this.quote.name"></confirmation-component>
+
 	`,
 })
 export class QuoteDetailsComponent implements OnInit , OnDestroy{
-	public checkRemove: boolean = false;
+	public confirm: boolean = false;
 	private quoteLinesSource: BehaviorSubject<QuoteLine[]> = new BehaviorSubject<QuoteLine[]>([]);
 	public quoteLines$: Observable<QuoteLine[]> = this.quoteLinesSource.asObservable();
 	public quoteLinesSub: Subscription;
@@ -152,7 +149,6 @@ export class QuoteDetailsComponent implements OnInit , OnDestroy{
 			lines[lineIndex + 1].weight--;
 			this.quoteLinesSource.next(lines);
 		}
-
 	}
 
 	public onUp(lineIndex): void {
@@ -202,6 +198,12 @@ export class QuoteDetailsComponent implements OnInit , OnDestroy{
 			})
 	}
 
+	public onConfirm(event): void {
+		if(event === 'OK'){
+			this.onRemove();
+		}
+	}
+
 	public onRemove(): void {
 		this.crmData.deleteQuote({id: this.quoteSource.value.id})
 			.then(res => {
@@ -210,9 +212,5 @@ export class QuoteDetailsComponent implements OnInit , OnDestroy{
 				this.toastr.warning(this.quoteSource.value.name + ' has been removed!');
 				this.router.navigate(['/Quotes']);
 			})
-	}
-
-	public onCheckRemove(): void {
-		this.checkRemove = !this.checkRemove;
 	}
 }

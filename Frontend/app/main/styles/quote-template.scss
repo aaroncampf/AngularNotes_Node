@@ -1,5 +1,6 @@
 quote-template {
-  template-wrapper {
+  margin: auto;
+  .template-wrapper {
     display: flex;
     flex-direction: column;
   }
@@ -56,10 +57,10 @@ quote-template {
   send-email-confirm {
     display: block;
     position: fixed;
-    bottom: 22vh;
-    height: 124px;
+    height: 156px;
+    bottom: 61vh;
+    left: 0;
     background: aliceblue;
-    left: -34px;
     width: 100vw;
     padding: 28px;
   }

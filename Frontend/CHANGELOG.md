@@ -2,7 +2,10 @@
 >To make sense of all your awesome busy-nes to other developers please log changes and use sem-ver. 
 
 ## unreleased
-
+## version 0.20.0 06/15/2017
+[code] built `confirmation-component` in `shared.module`
+[bug:fix] fixed saving method in `quotes-details.component`
+ 
 ## version 0.19.1 06/15/2017
 [refactor] rebuilt loading screen
 

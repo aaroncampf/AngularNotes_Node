@@ -32,17 +32,14 @@ import {ToastsManager} from 'ng2-toastr';
 				</div>
 			</form>
 		</div>
-		<div class="check-remove" *ngIf="!!checkRemove">
-			<h4>Are you sure you want to remove {{company.name}}?</h4>
-			<button type="button" class="btn-warning btn-lg pull-right" (click)="onCheckRemove()">Cancel</button>
-			<button type="button" class="btn-danger btn-lg pull-left" (click)="onRemove()">REMOVE</button>
-		</div>
 	</div>
+	<confirmation-component (response)="onConfirm($event)" [(confirm)]="confirm"></confirmation-component>
 	`,
 })
 export class CompanyDetailsComponent implements OnInit, OnDestroy {
 	public dataReady: boolean = false;
 	public checkRemove: boolean = false;
+	public confirm: boolean = false;
 	public company: Company = <Company>{};
 	private stateSub: Subscription;
 	public nameControl: FormControl = new FormControl('', []);
@@ -100,6 +97,12 @@ export class CompanyDetailsComponent implements OnInit, OnDestroy {
 	}
 
 	public onCheckRemove(): void {
-			this.checkRemove = !this.checkRemove;
+			this.confirm = true;
+	}
+
+	public onConfirm(event): void {
+			if (event === 'OK'){
+				this.onRemove();
+			}
 	}
 }

@@ -6,7 +6,6 @@ import {User} from '../../models/user.model';
 import {Contact} from '../../models/contact.model';
 import {Company} from '../../models/company.model';
 import {Quote, QuoteLine} from '../../models/quote.model';
-import {slideTransitions} from '../../../shared/animations/transitions.animation';
 import {ToastsManager} from 'ng2-toastr';
 import {Router} from '@angular/router';
 
@@ -20,7 +19,7 @@ export interface TemplateState {
 @Component({
 	selector: 'quote-template',
 	template: `
-		<template-wrapper>
+		<div class="template-wrapper row">
 			<template-header>
 				<template-contact-info>
 					<h5>To: </h5>
@@ -62,18 +61,13 @@ export interface TemplateState {
 					<button class="btn-warning btn-lg" [routerLink]="['/Quotes']">Cancel</button>
 				</call-to-actions>
 			</tempplate-footer>
-		</template-wrapper>
+		</div>
 		<send-email-confirm *ngIf="!!confirm">
 			<h5>Confirm: Send Email to {{stateValues.contact.email}}</h5>
 			<button class="btn-success btn-lg pull-left" (click)="sendEmail()">Send</button>
 			<button class="btn-danger btn-lg pull-right" (click)="confirm = !confirm">Cancel</button>
 		</send-email-confirm>
 	`,
-	host: { '[@routeAnimation]': 'true' },
-	styles: [':host { display: block;}'],
-	animations: [
-		slideTransitions()
-	]
 })
 
 export class QuoteTemplateComponent implements OnInit, OnDestroy {
@@ -95,20 +89,22 @@ export class QuoteTemplateComponent implements OnInit, OnDestroy {
 
 		this.userSub = this.crmStore.crmUser$.subscribe((userState: CRMUserStore) => {
 			this.stateSub = this.crmStore.crmStore$.subscribe((state: CRMStore )=> {
-				this.stateValues = Object.assign({},{
-					contact: state.selectedContact,
-					company: state.selectedCompany,
-					quote: state.selectedQuote,
-					user: userState.currentUser
-				});
-				this.stateValues.quote.quoteLines = this.stateValues.quote.quoteLines.sort((a,b) => {
-					if (a.weight > b.weight){
-						return 1;
-					}
-					if (a.weight < b.weight){
-						return -1;
-					}
-				})
+				if(state.selectedQuote.quoteLines){
+					this.stateValues = Object.assign({},{
+						contact: state.selectedContact,
+						company: state.selectedCompany,
+						quote: state.selectedQuote,
+						user: userState.currentUser
+					});
+					this.stateValues.quote.quoteLines = this.stateValues.quote.quoteLines.sort((a,b) => {
+						if (a.weight > b.weight){
+							return 1;
+						}
+						if (a.weight < b.weight){
+							return -1;
+						}
+					})
+				}
 			});
 			this.userValues = userState;
 		})

@@ -1,0 +1,52 @@
+confirmation-component {
+  .confirmation-background {
+    opacity: 0;
+    background: rgba(0, 0, 0, 0.69);
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    -webkit-transition: all .6s linear;
+    -moz-transition: all .6s linear;
+    -ms-transition: all .6s linear;
+    -o-transition: all .6s linear;
+    transition: all .6s linear;
+  }
+
+  .appear {
+    opacity: 1;
+    -webkit-transition: all .6s linear;
+    -moz-transition: all .6s linear;
+    -ms-transition: all .6s linear;
+    -o-transition: all .6s linear;
+    transition: all .6s linear;
+
+  }
+
+  .confirmation-container {
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    background: white;
+    width: 100vw;
+    min-height: 100px;
+  }
+
+  .confirmation-message {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+  }
+
+  .confirmation-options {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-around;
+  }
+
+}

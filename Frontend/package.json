@@ -1,6 +1,6 @@
 {
   "name": "angular-bros-notes",
-  "version": "0.19.0",
+  "version": "0.20.0",
   "description": "A CRM Demo for a software development portfolio.",
   "scripts": {
     "build": "webpack --display-error-details --progress",
@@ -34,7 +34,7 @@
     "jquery": "^3.2.1",
     "lodash": "^4.17.4",
     "ng2-toastr": "^4.1.0",
-    "rxjs": "^6.0.0-alpha.0",
+    "rxjs": "^5.4.1",
     "socket.io": "^2.0.2",
     "zone.js": "0.8.12"
   },
@@ -62,7 +62,8 @@
     "typescript": "2.3.4",
     "webpack": "^2.6.1",
     "webpack-dev-server": "2.4.5",
-    "webpack-merge": "^4.1.0"
+    "webpack-merge": "^4.1.0",
+    "ng-dynamic-master-forms": "0.0.2"
   },
   "keywords": [
     "Angular2",

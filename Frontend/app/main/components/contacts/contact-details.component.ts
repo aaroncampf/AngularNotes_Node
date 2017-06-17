@@ -19,23 +19,19 @@ import {Router} from '@angular/router';
 			<single-line-text-input-component label="Email" [model]="contact.email" [control]="emailControl"></single-line-text-input-component>
 			<single-line-text-input-component label="Position" [model]="contact.position" [control]="positionControl"></single-line-text-input-component>
 			<notes-component [contactID]="contact.id"></notes-component>
-			<div *ngIf="!checkRemove">
+			<div *ngIf="!confirm">
 				<button type="button" class="btn-success btn-lg pull-left" (click)="onSave()">Save</button>
 				<button type="button" class="btn-warning btn-lg pull-left" [routerLink]="['/Contacts']">Cancel</button>
-				<button type="button" class="btn-danger pull-right" (click)="onCheckRemove()">REMOVE</button>
+				<button type="button" class="btn-danger pull-right" (click)="confirm = true">REMOVE</button>
 			</div>
 		</form>
-		<div class="check-remove" *ngIf="!!checkRemove">
-			<h4>Are you sure you want to remove {{contact.name}}?</h4>
-			<button type="button" class="btn-warning btn-lg pull-right" (click)="onCheckRemove()">Cancel</button>
-			<button type="button" class="btn-danger btn-lg pull-right" (click)="onRemove()">REMOVE</button>
-		</div>
+		<confirmation-component (response)="onConfirm($event)" [(confirm)]="confirm"></confirmation-component>
 	</div>
 	`,
 })
 export class ContactDetailsComponent implements OnInit, OnDestroy {
+	public confirm: boolean = false;
 	public dataReady: boolean = false;
-	public checkRemove: boolean = false;
 	public contact: Contact = <Contact>{};
 	private stateSub: Subscription;
 	nameControl: FormControl = new FormControl('', []);
@@ -86,8 +82,9 @@ export class ContactDetailsComponent implements OnInit, OnDestroy {
 			})
 	}
 
-	public onCheckRemove(): void {
-		this.checkRemove = !this.checkRemove;
+	public onConfirm(event): void {
+		if(event === 'OK'){
+			this.onRemove();
+		}
 	}
-
 }
