@@ -1,0 +1,83 @@
+quote-builder-component {
+
+  single-line-text-input-component.quote-name input {
+    text-align: center;
+    font-size: 28px;
+  }
+
+  single-line-text-input-component.quote-line-unit {
+    width: 100%;
+  }
+
+  quote-line-input {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+  }
+  .cross-icon img {
+    width: 50px;
+  }
+  .quote-line-options {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+  }
+
+  .quote-list-line-details {
+    width: 100%;
+  }
+
+  .quote-list-line{
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+  }
+
+  .quote-line-unit-cost {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+  }
+
+  ul.builder-progress-bar {
+    display: flex;
+    flex-direction: row;
+    width: 100%;
+    justify-content: space-around;
+  }
+
+  .content {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+  }
+
+  .progress-title {
+    color: black;
+    font-size: 1.3em;
+    &.success {
+      color: #16d11c;
+    }
+  }
+
+  .check-mark {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    color: transparent;
+    font-size: 2em;
+    &.success {
+      color: #16d11c;
+    }
+  }
+
+  .content-item {
+    //max-width: 0px;
+    //transform: translateX(200%);
+    &.active {
+      //max-width: 10000px;
+      //transform: translateX(0%);
+      }
+  }
+}

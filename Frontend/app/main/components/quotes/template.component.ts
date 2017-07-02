@@ -23,24 +23,24 @@ export interface TemplateState {
 			<template-header>
 				<template-contact-info>
 					<h5>To: </h5>
-					<company-name>{{stateValues.company.name}}</company-name>
-					<contact-name>{{stateValues.contact.name}}</contact-name>
-					<contact-position>{{stateValues.contact.position}}</contact-position>
-					<contact-email>{{stateValues.contact.email}}</contact-email>
+					<company-name>{{(crmStore.crmStore$ | async).selectedCompany?.name}}</company-name>
+					<contact-name>{{(crmStore.crmStore$ | async).selectedContact?.name}}</contact-name>
+					<contact-position>{{(crmStore.crmStore$ | async).selectedContact?.position}}</contact-position>
+					<contact-email>{{(crmStore.crmStore$ | async).selectedContact?.email}}</contact-email>
 				</template-contact-info>
 			</template-header>
 			<template-body>
-				<h3 class="text-center">{{userValues.currentUser.businessName}}</h3>
+				<h3 class="text-center">{{(crmStore.crmUser$ | async).currentUser?.businessName}}</h3>
 				<quote-details>
-					<div><strong>{{stateValues.quote.name}}</strong></div>
-					<div><strong>Salesperson:</strong> {{userValues.currentUser.firstName}} {{userValues.currentUser.lastName}}</div>
-					<div><strong>On:</strong> {{stateValues.quote.created_at | date}}</div>
+					<div><strong>{{(crmStore.crmStore$ | async).selectedQuote?.name}}</strong></div>
+					<div><strong>Salesperson:</strong> {{(crmStore.crmUser$ | async).currentUser.firstName}} {{(crmStore.crmUser$ | async).currentUser.lastName}}</div>
+					<div><strong>On:</strong> {{(crmStore.crmStore$ | async).selectedQuote?.created_at | date}}</div>
 				</quote-details>
 				<quote-header>
 					<h5>Quote List:</h5>
 				</quote-header>
 				<quote-list>
-					<quote-line *ngFor="let line of stateValues.quote.quoteLines">
+					<quote-line *ngFor="let line of (crmStore.crmStore$ | async).selectedQuote.quoteLines">
 						<quote-description class="text-center"><strong>{{line.desc}}</strong></quote-description>
 						<quote-line-details>
 							<quote-line-unit>
@@ -63,7 +63,7 @@ export interface TemplateState {
 			</tempplate-footer>
 		</div>
 		<send-email-confirm *ngIf="!!confirm">
-			<h5>Confirm: Send Email to {{stateValues.contact.email}}</h5>
+			<h5>Confirm: Send Email to {{(crmStore.crmStore$ | async).email}}</h5>
 			<button class="btn-success btn-lg pull-left" (click)="sendEmail()">Send</button>
 			<button class="btn-danger btn-lg pull-right" (click)="confirm = !confirm">Cancel</button>
 		</send-email-confirm>
@@ -73,53 +73,25 @@ export interface TemplateState {
 export class QuoteTemplateComponent implements OnInit, OnDestroy {
 	public confirm: boolean = false;
 	public lines: QuoteLine[] = [];
-	public stateValues: TemplateState = <TemplateState>{};
-	public userValues: CRMUserStore;
-	private stateSub: Subscription;
-	private userSub: Subscription;
 
 	constructor(
 		public toastr: ToastsManager,
 		private router: Router,
-		private crmStore: CRMStoreService,
+		public crmStore: CRMStoreService,
 		private emailer: EmailerService
 	){}
 
 	public ngOnInit(): void {
-
-		this.userSub = this.crmStore.crmUser$.subscribe((userState: CRMUserStore) => {
-			this.stateSub = this.crmStore.crmStore$.subscribe((state: CRMStore )=> {
-				if(state.selectedQuote.quoteLines){
-					this.stateValues = Object.assign({},{
-						contact: state.selectedContact,
-						company: state.selectedCompany,
-						quote: state.selectedQuote,
-						user: userState.currentUser
-					});
-					this.stateValues.quote.quoteLines = this.stateValues.quote.quoteLines.sort((a,b) => {
-						if (a.weight > b.weight){
-							return 1;
-						}
-						if (a.weight < b.weight){
-							return -1;
-						}
-					})
-				}
-			});
-			this.userValues = userState;
-		})
 	}
 
 	public ngOnDestroy(): void {
-		this.stateSub.unsubscribe();
-		this.userSub.unsubscribe();
 	}
 
 	public sendEmail(): void {
-		this.emailer.sendEmailWithTemplate(EMAIL_TEMPLATE(this.stateValues), this.stateValues.contact.email, 'A new Quote from AngularBros!').subscribe(res => {
-			this.toastr.success('Email sent to: ' + this.stateValues.contact.name);
+		// this.emailer.sendEmailWithTemplate(EMAIL_TEMPLATE(this.stateValues), this.stateValues.contact.email, 'A new Quote from AngularBros!').subscribe(res => {
+		// 	this.toastr.success('Email sent to: ' + this.stateValues.contact.name);
 			this.router.navigate(['/Home']);
-		})
+		// })
 	}
  }
 

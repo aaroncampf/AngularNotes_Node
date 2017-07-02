@@ -9,7 +9,7 @@ import {ToastModule} from 'ng2-toastr';
 import {MainComponent} from './main/components/main.component';
 import {DashboardComponent} from './main/components/dashboard.component';
 import {NotFoundComponent} from './main/routes/not-found.component';
-import {DynamicFormsModule} from './forms/dynamic-forms.module';
+import {DynamicMasterFormsModule} from '../node_modules/ng-dynamic-master-forms/ng-dynamic-master-forms.module';
 import {NavbarComponent} from './main/components/navbar.component';
 import {CRMDataService} from './main/services/crm-data.service';
 import {ContactDetailsComponent} from './main/components/contacts/contact-details.component';
@@ -28,6 +28,8 @@ import {AddQuoteComponent} from './main/components/quotes/add-quote.component';
 import {CRMStoreService} from './main/services/crm-store.service';
 import {SharedModule} from './shared/shared.module';
 import {EmailerService} from './main/services/emailer.service';
+import {QuoteBuilderComponent} from './main/components/quote-builder.component';
+import {SortByWeightPipe} from './main/pipes/sort-by-weight.pipe';
 
 const MAIN_ROUTES: Routes = [
 	{path: 'main', component: MainComponent},
@@ -41,6 +43,7 @@ const MAIN_ROUTES: Routes = [
 	{path: 'Contact-Details', component: ContactDetailsComponent},
 	{path: 'Add-Quote', component: AddQuoteComponent},
 	{path: 'Quotes', component: QuotesComponent},
+	{path: 'Build-Quote', component: QuoteBuilderComponent},
 	{path: 'Quote', component: QuoteDetailsComponent},
 	{path: 'Quote-Template', component: QuoteTemplateComponent},
 	{path: '', redirectTo: '/Home', pathMatch: 'full'},
@@ -48,6 +51,7 @@ const MAIN_ROUTES: Routes = [
 ];
 
 const COMPONENTS = [
+	QuoteBuilderComponent,
 	AddQuoteComponent,
 	UserSettingsComponent,
 	QuoteTemplateComponent,
@@ -65,6 +69,7 @@ const COMPONENTS = [
 	ContactDetailsComponent,
 	QuotesComponent,
 	NotesComponent,
+	SortByWeightPipe
 ];
 
 const MODULES = [
@@ -77,7 +82,7 @@ const MODULES = [
 	ToastModule.forRoot(),
 	FormsModule,
 	ReactiveFormsModule,
-	DynamicFormsModule,
+	DynamicMasterFormsModule,
 	SharedModule,
 
 ];

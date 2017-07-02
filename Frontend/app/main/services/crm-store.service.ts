@@ -49,6 +49,7 @@ export class CRMStoreService {
 		const currentState = this.crmStoreSource.value;
 		const newState = this.crmStoreReducer(action, currentState);
 		this.crmStoreSource.next(newState);
+		console.log(newState);
 	}
 	
 	public crmUserDispatcher(action): void {
@@ -76,8 +77,7 @@ export class CRMStoreService {
 					activeRoute: action.payload.route
 				});
 			case'COMPANY_SELECTED':
-				const newCompany = action.payload.company;
-				if(action.payload.company.id){
+				const newCompany = action.payload;
 					return _.merge(state,{
 						selectedCompany: newCompany,
 						selectedContact: <Contact>{},
@@ -85,7 +85,7 @@ export class CRMStoreService {
 						companySelected: true
 
 					});
-				} else {
+			case'COMPANY_UN_SELECTED':{
 					return  {
 						selectedCompany: <Company>{},
 						selectedContact: <Contact>{},
@@ -97,18 +97,26 @@ export class CRMStoreService {
 					}
 				}
 			case'CONTACT_SELECTED':
-				const newContact = action.payload.contact;
-				const contactCompany = action.payload.company;
-				return _.merge(state, {
-					selectedCompany: contactCompany,
+				const newContact = action.payload;
+				return _.merge({}, state, {
 					selectedContact: newContact,
 					contactSelected: true
 				});
+			case'CONTACT_UN_SELECTED':
+				return _.merge({}, state, {
+					selectedContact: <Contact>{},
+					contactSelected: false
+				});
 			case'QUOTE_SELECTED':
-				const newQuote = action.payload.quote;
-				return _.merge(state, {
+				const newQuote = action.payload;
+				return _.merge({}, state, {
 					selectedQuote: newQuote,
 					quoteSelected: true,
+				});
+			case'QUOTE_UN_SELECTED':
+				return _.merge({}, state, {
+					selectedQuote: <Quote>{},
+					quoteSelected: false,
 				});
 			default:
 				return state;

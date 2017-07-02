@@ -1,4 +1,4 @@
-import {Component, OnInit} from '@angular/core';
+import {Component, EventEmitter, OnInit, Output} from '@angular/core';
 import {CRMDataService} from '../../services/crm-data.service';
 import {BehaviorSubject} from 'rxjs/BehaviorSubject';
 import {Company} from '../../models/company.model';
@@ -16,7 +16,7 @@ import {CRMStoreService} from '../../services/crm-store.service';
 		<table  class="table table-bordered table-responsive table-hover">
 			<tbody *ngIf="!!dataReady">
 				<tr class="crm-list-item" *ngFor="let company of (companies$ | async)">
-					<td  class="crm-list-item-title text-center" (click)="routeWithDispatch(company, ['/Company-Details'])">{{company.name}}</td>
+					<td class="crm-list-item-title text-center" (click)="action.emit({type:'COMPANY_SELECTED', payload: company})">{{company.name}} </td>
 				</tr>
 			</tbody>
 		</table>
@@ -24,6 +24,8 @@ import {CRMStoreService} from '../../services/crm-store.service';
 	`,
 })
 export class CompaniesComponent implements OnInit {
+	@Output()
+	public action: EventEmitter<{}> = new EventEmitter();
 	public dataReady: boolean = false;
 	private companiesSource: BehaviorSubject<Company[]> = new BehaviorSubject<Company[]>([]);
 	public companies$: Observable<Company[]> = this.companiesSource.asObservable();

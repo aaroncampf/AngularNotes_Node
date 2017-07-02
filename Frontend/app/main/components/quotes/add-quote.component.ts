@@ -1,11 +1,11 @@
-import {Component, OnDestroy, OnInit} from '@angular/core';
+import {Component, EventEmitter, OnDestroy, OnInit, Output} from '@angular/core';
 import {CRMDataService} from '../../services/crm-data.service';
 import {CRMStoreService} from '../../services/crm-store.service';
 import {Subscription} from 'rxjs/Subscription';
 import {BehaviorSubject} from 'rxjs/BehaviorSubject';
 import {newQuote, Quote, QuoteLine} from '../../models/quote.model';
 import {Observable} from 'rxjs/Observable';
-import {FormControl, FormGroup} from '@angular/forms';
+import {FormControl, FormGroup, Validators} from '@angular/forms';
 import * as _ from 'lodash';
 import {Router} from '@angular/router';
 import {ToastsManager} from 'ng2-toastr';
@@ -13,66 +13,61 @@ import {ToastsManager} from 'ng2-toastr';
 @Component({
 	selector: 'create-quote-component',
 	template: `
-		<h4>Add Quote</h4>
-		<hr>
-		<div *ngIf="!ownerID">
-			<h5>Please select a company to add a quote!</h5>
+	<quote-header [formGroup]="quoteForm">
+		<div class="row">
+			<single-line-text-input-component class="col-xs-12 quote-name" placeholder="Quote Name" [(model)]="quote.name" [control]="quoteNameControl"></single-line-text-input-component>
+			<hr/>
 		</div>
-		<div *ngIf="!!ownerID">
-			<quote-header [formGroup]="quoteForm">
-				<div class="row">
-					<h5>Quote Title: </h5>
-					<single-line-text-input-component class="col-xs-12 text-center" [(model)]="quote.name"></single-line-text-input-component>
-					<hr/>
+	</quote-header>
+	<quote-body *ngIf="quoteLines" [formGroup]="quoteLineForm">
+		<h5>Quote Lines</h5>
+		<ul class="quote-list">
+			<hr/>
+			<li class="quote-list-line" *ngFor="let quoteLine of quoteLines">
+				<span class="cross-icon" (click)="removeLine(i)"><img src="../../../../assets/icons/SVG/cross.svg"/></span>
+				<div class="quote-list-line-details">
+					<div class="quote-line-unit-cost">
+						<single-line-text-input-component label="Unit" class="quote-line-unit" [(model)]="quoteLine.unit"></single-line-text-input-component>
+						<single-line-text-input-component label="$" [(model)]="quoteLine.cost"></single-line-text-input-component>
+					</div>
+					<div class="quote-list-line-title-wrapper">
+						<single-line-text-input-component label="Desc." [(model)]="quoteLine.desc"></single-line-text-input-component>
+					</div>
 				</div>
-			</quote-header>
-			<quote-body [formGroup]="quoteLineForm">
-				<hr/>
-				<h5>Quote Lines</h5>
-				<ul class="quote-list">
-					<hr/>
-					<li class="quote-list-line" *ngFor="let quoteLine of quoteLines; let i = index">
-						<span class="icon icon-cross pull-right" (click)="removeLine(i)"></span>
-						<div class="quote-list-line-title-wrapper">
-							<single-line-text-input-component label="Desc." [(model)]="quoteLine.desc"></single-line-text-input-component>
-						</div>
-						<div class="quote-list-line-details">
-							<quote-line-inputs>
-								<single-line-text-input-component label="Units" [(model)]="quoteLine.unit"></single-line-text-input-component>
-								<single-line-text-input-component label="$" [(model)]="quoteLine.cost"></single-line-text-input-component>
-							</quote-line-inputs>
-							<quote-line-options>
-								<span class="icon icon-arrow-up" (click)="onUp(i)"></span>
-								<span class="icon icon-arrow-down"(click)="onDown(i)"></span>
-							</quote-line-options>
-						</div>
-					</li>
-					<hr/>
-				</ul>
-			</quote-body>
-			<quote-footer [formGroup]="newQuoteLineForm">
-				<div class="row">
-					<hr/>
-					<single-line-text-input-component label="Desc." [(model)]="newQuoteLine.desc"></single-line-text-input-component>
-					<single-line-text-input-component label="Unit Qty." [(model)]="newQuoteLine.unit"></single-line-text-input-component>
-					<single-line-text-input-component label="Cost" [(model)]="newQuoteLine.cost"></single-line-text-input-component>
-					<button class="btn btn-lg" (click)="addLine()">Add Line</button>
+				<div class="quote-line-options">
+					<span class="icon icon-arrow-up" (click)="onUp(i)"></span>
+					<span class="icon icon-arrow-down" (click)="onDown(i)"></span>
 				</div>
-			</quote-footer>
-			<hr>
-			<button class="btn-warning btn-lg pull-right" [routerLink]="['/Quotes']">Cancel</button>
-			<button class="btn-success btn-lg pull-right" (click)="onSave()">Save</button>
+			</li>
+			<hr/>
+		</ul>
+	</quote-body>
+	<quote-footer [formGroup]="newQuoteLineForm">
+		<div class="row">
+			<hr/>
+			<div class="quote-line-unit-cost">
+				<single-line-text-input-component label="Unit" class="quote-line-unit" [(model)]="newQuoteLine.unit" [control]="unitControl"></single-line-text-input-component>
+				<single-line-text-input-component label="Cost" [(model)]="newQuoteLine.cost" [control]="costControl"></single-line-text-input-component>
+			</div>
+			<single-line-text-input-component label="Desc." [(model)]="newQuoteLine.desc" [control]="descControl"></single-line-text-input-component>
+			<button class="btn btn-lg" (click)="addLine()">Add Line</button>
 		</div>
+	</quote-footer>
+	<hr>
+	<button class="btn-warning btn-lg pull-right" [routerLink]="['/Home']">Cancel</button>
+	<button class="btn-success btn-lg pull-right" (click)="onSave()">Save</button>
 	`
 })
 export class AddQuoteComponent implements OnInit , OnDestroy{
+	@Output()
+	public action: EventEmitter<any> = new EventEmitter();
+	public quote: Quote = <Quote>{};
 	private quoteLinesSource: BehaviorSubject<QuoteLine[]> = new BehaviorSubject<QuoteLine[]>([]);
 	public quoteLine$: Observable<QuoteLine[]> = this.quoteLinesSource.asObservable();
 	public quoteLinesSub: Subscription;
 	public quoteLines: QuoteLine[] = [];
 	public newQuoteLine: QuoteLine = <QuoteLine>{};
 	private stateSub: Subscription;
-	public quote: Quote = <Quote>{};
 	public ownerID: string = null;
 	public unitControl: FormControl = new FormControl('', []);
 	public costControl: FormControl = new FormControl('', []);
@@ -83,7 +78,10 @@ export class AddQuoteComponent implements OnInit , OnDestroy{
 		desc: this.descControl,
 	});
 	public quoteLineForm: FormGroup = new FormGroup({});
-	public quoteForm: FormGroup = new FormGroup({});
+	public quoteNameControl: FormControl = new FormControl('', [Validators.required]);
+	public quoteForm: FormGroup = new FormGroup({
+		quoteName: this.quoteNameControl
+	});
 
 	constructor(
 		public toastr: ToastsManager,
@@ -163,14 +161,15 @@ export class AddQuoteComponent implements OnInit , OnDestroy{
 	}
 
 	public onSave(): void {
-		this.crmData.newQuote({owner_id: this.ownerID, props:{name: this.quote.name}})
-			.then(quote => {
-				for(let quoteLine of this.quoteLines){
-					this.crmData.newQuoteLine({owner_id: quote.id, props: quoteLine});
-				}
-					this.toastr.success(this.quote.name + ' has been saved!');
-					this.crmStore.crmStoreDispatcher({type: 'QUOTE_SELECTED', payload: {quote: quote}});
-					this.router.navigate(['/Quotes']);
-			})
+				this.toastr.success(this.quote.name + ' has been saved!');
+				this.action.emit({type: 'QUOTE_SELECTED', payload: Object.assign({},this.quote, {quoteLines: this.quoteLines})});
+	// 	this.crmData.newQuote({owner_id: this.ownerID, props:{name: this.quote.name}})
+	// 		.then(quote => {
+	// 			for(let quoteLine of this.quoteLines){
+	// 				this.crmData.newQuoteLine({owner_id: quote.id, props: quoteLine});
+	// 			}
+	// 			this.toastr.success(this.quote.name + ' has been saved!');
+	// 			this.action.emit({type: 'QUOTE_SELECTED', payload: quote});
+	// 	})
 	}
 }

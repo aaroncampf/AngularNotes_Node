@@ -18,7 +18,7 @@ import {Subscription} from 'rxjs/Subscription';
 			<ul class="dropdown-menu" aria-labelledby="companyDropDown">
 				<li (click)="companySelectDispatch({})">All Companies</li>
 				<li *ngFor="let company of (companies$ | async)" (click)="companySelectDispatch(company)">{{company.name}}</li>
-			</ul>	
+			</ul>
 			<strong [routerLink]="['/Company-Details']">{{selectedCompany.name || 'No Company Selected'}}</strong>
 		</div>
 	</div>

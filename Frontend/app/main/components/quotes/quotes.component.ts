@@ -14,7 +14,7 @@ import {Contact} from '../../models/contact.model';
 	template: `
 	<data-loading-screen [dataReady]="!!dataReady"></data-loading-screen>
 	<div *ngIf="!!dataReady">
-		<button class="btn btn-block" [routerLink]="['/Add-Quote']">Create A Quote</button>
+		<button class="btn btn-block" [routerLink]="['/Build-Quote']">Create A Quote</button>
 		<ul class="crm-list">
 			<li class="crm-list-item" *ngFor="let quote of (quotes$ | async)">
 				<quote-icons class="crm-list-item-icons">

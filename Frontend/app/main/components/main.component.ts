@@ -1,6 +1,6 @@
 import {Component, OnDestroy, OnInit, ViewContainerRef} from '@angular/core';
 import {ToastsManager} from 'ng2-toastr';
-import 'rxjs/rx';
+import 'rxjs';
 import '../styles/main.scss';
 import {CRMDataService} from '../services/crm-data.service';
 import {CRMStore, CRMStoreService} from '../services/crm-store.service';
@@ -14,7 +14,7 @@ import {Subscription} from 'rxjs/Subscription';
 	<div class="container main-container">
 		<dashboard-component class="col-xs-12">
 		</dashboard-component>
-		<navbar-component [activeRoute]="state.activeRoute" [companySelected]="state.companySelected" [contactSelected]="state.contactSelected" [quoteSelected]="state.quoteSelected" (routeSelected)="routeWithDispatch($event)" class="col-xs-12"></navbar-component>
+		<!--<navbar-component [activeRoute]="state.activeRoute" [companySelected]="state.companySelected" [contactSelected]="state.contactSelected" [quoteSelected]="state.quoteSelected" (routeSelected)="routeWithDispatch($event)" class="col-xs-12"></navbar-component>-->
 		<router-outlet></router-outlet>
 	</div>
 	`,

@@ -2,6 +2,11 @@
 >To make sense of all your awesome busy-nes to other developers please log changes and use sem-ver. 
 
 ## unreleased
+
+## version RC-2.0.0 06/15/2017
+[code] built `quote-builder.component`
+[refactor] `home.component`, `quotes.component`, `companies.component`, `contacts.component` and UX flow
+
 ## version 0.20.0 06/15/2017
 [code] built `confirmation-component` in `shared.module`
 [bug:fix] fixed saving method in `quotes-details.component`

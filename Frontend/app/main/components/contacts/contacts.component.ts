@@ -1,4 +1,4 @@
-import {Component, OnDestroy, OnInit} from '@angular/core';
+import {Component, EventEmitter, OnDestroy, OnInit, Output} from '@angular/core';
 import {CRMStoreService} from '../../services/crm-store.service';
 import {CRMDataService} from '../../services/crm-data.service';
 import {BehaviorSubject} from 'rxjs/BehaviorSubject';
@@ -17,10 +17,7 @@ import {ToastsManager} from 'ng2-toastr';
 		<table class="table table-bordered table-justified table-hover">
 			<tbody>
 				<tr class="crm-list-item" *ngFor="let contact of (contacts$ | async)">
-					<td class="crm-list-item-title" (click)="routeWithDispatch(contact, ['/Contact-Details'])">{{contact.name}}</td>
-					<td>
-						<span class="icon icon-share" (click)="routeWithDispatch(contact, ['/Quotes'])"></span>
-					</td>
+					<td class="crm-list-item-title" (click)="action.emit({type: 'CONTACT_SELECTED', payload: contact})">{{contact.name}}</td>
 				</tr>
 			</tbody>
 		</table>
@@ -28,6 +25,8 @@ import {ToastsManager} from 'ng2-toastr';
 	`,
 })
 export class ContactsComponent implements OnInit, OnDestroy{
+	@Output()
+	public action: EventEmitter<any> = new EventEmitter();
 	public dataReady: boolean = false;
 	private contactsSource: BehaviorSubject<Contact[]> = new BehaviorSubject<Contact[]>([]);
 	public contacts$: Observable<Contact[]> = this.contactsSource.asObservable();
@@ -67,11 +66,11 @@ export class ContactsComponent implements OnInit, OnDestroy{
 	}
 
 	public routeWithDispatch(contact, route): void {
-		this.crmData.getCompanies({id: contact.company_id})
-			.then((company: Company )=> {
-				this.crmStore.crmStoreDispatcher({type: 'CONTACT_SELECTED', payload: {contact: contact, company: company}});
-				this.router.navigate(route);
-		})
+		// this.crmData.getCompanies({id: contact.company_id})
+		// 	.then((company: Company )=> {
+		// 		this.crmStore.crmStoreDispatcher({type: 'CONTACT_SELECTED', payload: {contact: contact, company: company}});
+		// 		this.router.navigate(route);
+		// })
 	}
 
 	public remove(contact): void {

@@ -27,7 +27,7 @@ import {ToastsManager} from 'ng2-toastr';
 				<single-line-text-input-component label="Misc" [model]="company.misc" [control]="miscControl"></single-line-text-input-component>
 				<div *ngIf="!checkRemove">
 					<button type="button" class="btn-success btn-lg pull-left" (click)="onSave()">Save</button>
-					<button type="button" class="btn-warning btn-lg pull-left" [routerLink]="['/Companies']">Cancel</button>
+					<button type="button" class="btn-warning btn-lg pull-left" [routerLink]="['/Home']">Cancel</button>
 					<button type="button" class="btn-danger pull-right" (click)="onCheckRemove()">REMOVE</button>
 				</div>
 			</form>
