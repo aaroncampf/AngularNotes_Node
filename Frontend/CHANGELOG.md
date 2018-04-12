@@ -1,7 +1,3 @@
-# WARNING STUDENT AT WORK :: An atrocious missuse of a ChangeLog ;)
-added 2017-12-05
->I am adding a warning to help anyone viewing that this is a learning environment and project and shouldn't be used as examples for real applications.. The following has my exploration and blunders of JavaScript and the slow realization of pattern and paradigms used in Software Engineering. This is saved to show my progress. Also the TWT is pronounced 'Twit'.. and has been discontinued do to my novice understandings and failure to realize other pronounciations..  
-
 # ChangeLog 
 >To make sense of all your awesome busy-nes to other developers please log changes and use sem-ver. 
 
